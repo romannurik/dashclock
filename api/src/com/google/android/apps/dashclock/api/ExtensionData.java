@@ -88,7 +88,7 @@ public class ExtensionData implements Parcelable {
     /**
      * The maximum length for {@link #status(String)}. Enforced by {@link #clean()}.
      */
-    public static final int MAX_STATUS_LENGTH = 16;
+    public static final int MAX_STATUS_LENGTH = 32;
 
     /**
      * The maximum length for {@link #expandedTitle(String)}. Enforced by {@link #clean()}.
