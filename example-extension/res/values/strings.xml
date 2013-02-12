@@ -1,0 +1,24 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">Example Extension for DashClock</string>
+    <string name="extension_title">Example extension</string>
+    <string name="extension_description">Displays a nice, friendly hello message.</string>
+    <string name="pref_name_title">Your name</string>
+    <string name="pref_name_default">John Smith</string>
+    <string name="title_settings">Example Extension Settings</string>
+</resources>

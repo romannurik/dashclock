@@ -1,0 +1,89 @@
+<!--
+  Copyright 2013 Google Inc.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:listPreferredItemHeightSmall">
+
+    <com.google.android.apps.dashclock.ui.DragGripView
+        android:id="@+id/drag_handle"
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:color="#2333" />
+    <!-- TODO: accessibility for dragging and removing -->
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="36dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:divider="?android:dividerVertical"
+        android:showDividers="middle"
+        android:dividerPadding="12dp">
+
+        <RelativeLayout android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="16dp"
+            android:layout_gravity="center_vertical">
+
+            <!--suppress AndroidLintContentDescription -->
+            <ImageView android:id="@android:id/icon1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@android:id/text1"
+                android:layout_toRightOf="@android:id/icon1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:textColor="@color/extension_list_item_color"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@android:id/text2"
+                android:layout_below="@android:id/text1"
+                android:layout_alignEnd="@android:id/text1"
+                android:layout_alignStart="@android:id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+        </RelativeLayout>
+
+        <ImageButton android:id="@+id/settings_button"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_list_settings"
+            android:contentDescription="@string/settings" />
+
+    </LinearLayout>
+</FrameLayout>

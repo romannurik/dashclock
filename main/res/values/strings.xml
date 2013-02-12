@@ -1,0 +1,176 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">DashClock Widget</string>
+    <string name="widget_label">DashClock</string>
+
+    <string name="status_none">––</string>
+
+    <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
+    <string name="permission_label_read_extension_data">Request DashClock extension data</string>
+
+    <string name="settings">Settings</string>
+    <string name="more_options">More options</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">Configure DashClock Widget</string>
+    <string name="section_extensions">Extensions</string>
+    <string name="section_appearance">Appearance</string>
+
+    <string name="add_another_extension">Add another extension</string>
+    <string name="more_extensions">More extensions</string>
+    <string name="done">Done</string>
+    <string name="add_extension">Add an extension</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="prev_date_style">Previous date style</string>
+    <string name="prev_time_style">Previous date style</string>
+    <string name="next_date_style">Next date style</string>
+    <string name="next_time_style">Next time style</string>
+
+    <string name="incompatible_extension_menu_template"><xliff:g id="title">%1$s</xliff:g> (Incompatible)</string>
+    <string name="incompatible_extension_title">Incompatible extension</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[The
+        <b>%1$s</b> extension is incompatible with this version of DashClock.
+        Look for an update to the extension on Google Play?]]></string>
+    <string name="search_play">Find on Google Play</string>
+
+    <!-- About -->
+    <string name="close">Close</string>
+    <string name="about">About</string>
+
+    <string name="app_name_and_version"><![CDATA[
+        <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
+    ]]></string>
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Terms of Service</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Privacy Policy</a><br><br>
+        Many thanks to these open source tools:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>by Günther Beyer of <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>by Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Weather</string>
+    <string name="weather_extension_description">
+        Displays the latest weather information around you, including current temperature and
+        conditions, as well as forecast information. Powered by Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Weather Extension Settings</string>
+    <string name="temperature_template"><xliff:g id="temp">%1$s</xliff:g>°
+    </string>
+    <string name="weather_expanded_title_template">
+        <xliff:g id="temp">%1$s</xliff:g>
+        —
+        <xliff:g id="condition">%2$s</xliff:g>
+    </string>
+    <string name="later_forecast_template">Later:
+        <xliff:g id="forecast">%1$s</xliff:g>
+    </string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Gmail unread count</string>
+    <string name="gmail_extension_description">
+        Displays an unread count for your Gmail inbox or priority inbox.
+    </string>
+    <string name="title_gmail_settings">Gmail Extension Settings</string>
+    <string name="gmail_title_template">
+        <xliff:g id="emails">%1$d</xliff:g>
+        unread
+    </string>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Next alarm</string>
+    <string name="next_alarm_extension_description">
+        Displays information about the next scheduled alarm, if you have one set.
+    </string>
+    <string name="next_alarm">Next alarm</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Calendar appointment</string>
+    <string name="calendar_extension_description">
+        Displays information about your next calendar appointment, if one is scheduled within
+        the next six hours.
+    </string>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">
+            <xliff:g id="hours">%1$s</xliff:g>
+            hr
+        </item>
+        <item quantity="other">
+            <xliff:g id="hours">%1$s</xliff:g>
+            hrs
+        </item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">
+            <xliff:g id="hours">%1$s</xliff:g>
+            min
+        </item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Missed calls</string>
+    <string name="missed_calls_extension_description">
+        Displays the number of missed calls and the names of callers you missed.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            missed call
+        </item>
+        <item quantity="other">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            missed calls
+        </item>
+    </plurals>
+    <string name="missed_calls_body_template">From:
+        <xliff:g id="names">%1$s</xliff:g>
+    </string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Text messages</string>
+    <string name="sms_extension_description">
+        Displays the number of unread SMS and MMS conversations, along with sender names.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            unread conversation
+        </item>
+        <item quantity="other">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            unread conversations
+        </item>
+    </plurals>
+    <string name="sms_body_template">From:
+        <xliff:g id="names">%1$s</xliff:g>
+    </string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Customize your DashClock</string>
+    <string name="welcome_description">Want to just see the current date and time? Then press
+        press the checkbox above and you\'re set! But why not customize DashClock with a
+        few <i>extensions</i>?
+        \n\n<b>Extensions</b> show you relevant and timely information, right inside DashClock!
+        Try them out by adding a few extensions below.
+    </string>
+
+</resources>

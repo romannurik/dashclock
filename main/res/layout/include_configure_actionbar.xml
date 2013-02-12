@@ -1,0 +1,44 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include layout="@layout/include_configure_actionbar_done" />
+
+    <View android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/list_divider_holo_dark" />
+
+    <Spinner android:id="@+id/section_spinner"
+        android:background="@drawable/configure_ab_spinner_background"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <Space android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <ImageButton android:id="@+id/action_overflow"
+        style="?android:actionButtonStyle"
+        android:background="@drawable/configure_ab_item_background"
+        android:src="@drawable/ic_action_overflow"
+        android:contentDescription="@string/more_options"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</merge>

@@ -1,0 +1,45 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.dashclock.exampleextension">
+
+    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="17" />
+
+    <application android:label="@string/app_name"
+        android:icon="@drawable/ic_extension_example"
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+
+        <service android:name=".ExampleExtension"
+            android:icon="@drawable/ic_extension_example"
+            android:label="@string/extension_title"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion" android:value="1" />
+            <meta-data android:name="description"
+                android:value="@string/extension_description" />
+            <meta-data android:name="settingsActivity"
+                android:value=".ExampleSettingsActivity" />
+        </service>
+
+        <activity android:name=".ExampleSettingsActivity"
+            android:label="@string/title_settings"
+            android:exported="true" />
+
+    </application>
+</manifest>

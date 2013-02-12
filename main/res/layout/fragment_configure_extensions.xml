@@ -1,0 +1,83 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/net.nurik.roman.dashclock"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2">
+
+    <com.mobeta.android.dslv.DragSortListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        app:use_default_controller="false"
+        app:sort_enabled="true"
+        app:drag_start_mode="onDown"
+        app:remove_enabled="false"
+        app:float_alpha="0.8" />
+
+    <ScrollView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            <!--suppress AndroidLintUselessParent -->
+            <LinearLayout android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="32dp"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28sp"
+                    android:textColor="#09c"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/welcome_title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:maxWidth="400dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginTop="24sp"
+                    android:layout_marginBottom="24sp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/welcome_description" />
+
+                <Button android:id="@+id/empty_add_extension_button"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:background="@drawable/btn_colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:text="@string/add_extension"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textColor="#fff" />
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+</FrameLayout>
