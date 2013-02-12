@@ -1,0 +1,67 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Advanced widget preferences -->
+    <string name="pref_homescreen_background_opacity_title">Fondo del widget de escritorio</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Completamente transparente</item>
+        <item>25% negro</item>
+        <item>50% negro</item>
+        <item>75% negro</item>
+        <item>100% negro</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Centrar siempre</string>
+    <string name="pref_aggressive_centering_description">Puede hacer que el reloj cambie de posición en base a los estados del widget</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">Unidades del clima</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">Mostrar cantidad sin leer para la etiqueta</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>Bandeja de entrada</item>
+        <item>Bandeja de prioridad</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">Mostrar cantidad sin leer para las cuentas</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">
+            <xliff:g id="selected">%1$d</xliff:g> de <xliff:g id="total">%2$d</xliff:g>
+            cuenta seleccionada
+        </item>
+        <item quantity="other">
+            <xliff:g id="selected">%1$d</xliff:g> de <xliff:g id="total">%2$d</xliff:g>
+            cuentas seleccionadas
+        </item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Mostrar citas para las próximas</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 horas</item>
+        <item>6 horas</item>
+        <item>12 horas</item>
+        <item>24 horas</item>
+        <item>2 días</item>
+        <item>semana</item>
+    </string-array>
+</resources>
