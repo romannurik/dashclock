@@ -166,7 +166,7 @@
 
     <!-- Welcome strings -->
     <string name="welcome_title">Customize your DashClock</string>
-    <string name="welcome_description">Want to just see the current date and time? Then press
+    <string name="welcome_description">Want to just see the current date and time? Then
         press the checkbox above and you\'re set! But why not customize DashClock with a
         few <i>extensions</i>?
         \n\n<b>Extensions</b> show you relevant and timely information, right inside DashClock!
