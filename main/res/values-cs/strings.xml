@@ -1,0 +1,195 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">DashClock Widget</string>
+    <string name="widget_label">DashClock</string>
+
+    <string name="status_none">––</string>
+
+    <string name="permission_desc_read_extension_data">Povoluje požadovat data rozšíření DashClock</string>
+    <string name="permission_label_read_extension_data">Požaduje data rozšíření DashClock</string>
+
+    <string name="settings">Nastavení</string>
+    <string name="more_options">Více možností</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">Nastavení DashClock Widget</string>
+    <string name="section_extensions">Rozšíření</string>
+    <string name="section_appearance">Vzhled</string>
+
+    <string name="add_another_extension">Přidat další rozšíření</string>
+    <string name="more_extensions">Více rozšíření</string>
+    <string name="done">Hotovo</string>
+    <string name="add_extension">Přidat rozšíření</string>
+    <string name="cancel">Zrušit</string>
+
+    <string name="prev_date_style">Předchozí formát datumu</string>
+    <string name="prev_time_style">Předchozí formát času</string>
+    <string name="next_date_style">Následující formát datumu</string>
+    <string name="next_time_style">Následující formát času</string>
+
+    <string name="incompatible_extension_menu_template"><xliff:g id="title">%1$s</xliff:g> (Nekompatibilní)</string>
+    <string name="incompatible_extension_title">Nekompatibilní rozšíření</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[
+        Rozšíření <b>%1$s</b> je nekompatibilní s touto verzí DashClock.
+        Prověřit aktualizaci rozšíření na Google Play?]]></string>
+    <string name="search_play">Najít na Google Play</string>
+
+    <!-- About -->
+    <string name="close">Zavřít</string>
+    <string name="about">O programu</string>
+
+    <string name="app_name_and_version"><![CDATA[
+        <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
+    ]]></string>
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Podmínky užívání (anglicky)</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Ochrana osobních údajů</a><br><br>
+        Poděkování následujícím nástrojům:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>od Günthera Beyera z <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>od Carla A. Bauera</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Počasí</string>
+    <string name="weather_extension_description">
+	      Zobrazí nejnovější informace o počasí poblíž vás, a to včetně aktuální teploty a
+	      podmínek a také předpověď počasí. Využita služba Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Nastavení počasí</string>
+    <string name="temperature_template"><xliff:g id="temp">%1$s</xliff:g>°
+    </string>
+    <string name="weather_expanded_title_template">
+        <xliff:g id="temp">%1$s</xliff:g>
+        —
+        <xliff:g id="condition">%2$s</xliff:g>
+    </string>
+    <string name="later_forecast_template">Později:
+        <xliff:g id="forecast">%1$s</xliff:g>
+    </string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Počet nepřečtených na Gmailu</string>
+    <string name="gmail_extension_description">
+	      Zobrazí počet nepřečtených zpráv prioritní nebo běžné pošty na Gmailu.
+    </string>
+    <string name="title_gmail_settings">Nastavení pro rozšíření Gmailu</string>
+    <string name="gmail_title_template">
+        <xliff:g id="emails">%1$d</xliff:g>
+        nepřečtených
+    </string>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Příští buzení</string>
+    <string name="next_alarm_extension_description">
+	      Zobrazí informaci o příštím buzení, pokud bylo nastaveno.
+    </string>
+    <string name="next_alarm">Příští buzení</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Schůzka v kalendáři</string>
+    <string name="calendar_extension_description">
+	      Zobrazí informaci o příští schůzce z kalendáře v následujících šesti hodinách.
+    </string>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">
+            <xliff:g id="hours">%1$s</xliff:g>
+            hodina
+        </item>
+	      <item quantity="few">
+		        <xliff:g id="hours">%1$s</xliff:g>
+		        hodiny
+	      </item>
+        <item quantity="other">
+            <xliff:g id="hours">%1$s</xliff:g>
+            hodin
+        </item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+	      <item quantity="one">
+		        <xliff:g id="hours">%1$s</xliff:g>
+		        minuta
+	      </item>
+	      <item quantity="few">
+		        <xliff:g id="hours">%1$s</xliff:g>
+		        minuty
+	      </item>
+        <item quantity="other">
+            <xliff:g id="hours">%1$s</xliff:g>
+            minut
+        </item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Nepřijaté hovory</string>
+    <string name="missed_calls_extension_description">
+	      Zobrazí počet nepřijatých hovorů a jména volajících.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            nepřijatý hovor
+        </item>
+	      <item quantity="few">
+		        <xliff:g id="missed_calls">%1$s</xliff:g>
+		        nepřijaté hovory
+	      </item>
+        <item quantity="other">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            nepřijatých hovorů
+        </item>
+    </plurals>
+    <string name="missed_calls_body_template">Od:
+        <xliff:g id="names">%1$s</xliff:g>
+    </string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Textové zprávy</string>
+    <string name="sms_extension_description">
+	      Zobrazí počet nepřečtených SMS a MMS a jména odesílatelů.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            nepřečtená konverzace
+        </item>
+	      <item quantity="few">
+		        <xliff:g id="missed_calls">%1$s</xliff:g>
+		        nepřečtené konverzace
+	      </item>
+        <item quantity="other">
+            <xliff:g id="missed_calls">%1$s</xliff:g>
+            nepřečtených konverzací
+        </item>
+    </plurals>
+    <string name="sms_body_template">Od:
+        <xliff:g id="names">%1$s</xliff:g>
+    </string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Vyladit DashClock</string>
+    <string name="welcome_description">Přejete si jen nastavit aktuální datum a čas?
+	    Pak vyberte zaškrtávátko vlevo nahoře a máte hotovo. Ale proč si nevyladit DashClock pomocí
+	    několika <i>rozšíření</i>?
+	    \n\n<b>Rozšíření</b> ukazují relevantní a včasnou informaci přímo ve widgetu.
+	    Vyzkoušejte si tuto funkci přidáním následujících rozšíření.
+    </string>
+
+</resources>
