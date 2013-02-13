@@ -193,7 +193,7 @@ public class ConfigurationActivity extends Activity {
                     Fragment newFragment = fragmentClass.newInstance();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, newFragment)
-                            .commit();
+                            .commitAllowingStateLoss();
                 } catch (InstantiationException e) {
                     throw new RuntimeException(e);
                 } catch (IllegalAccessException e) {

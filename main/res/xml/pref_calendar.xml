@@ -14,14 +14,15 @@
   limitations under the License.
   -->
 
-<resources>
-    <dimen name="clock_left_margin">40dp</dimen>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- We use dp units instead of sp since the lock screen is a fixed size area. -->
-    <dimen name="clock_text_size_large">96dp</dimen>
-    <dimen name="clock_text_size_small">64dp</dimen>
-    <dimen name="clock_date_text_size">22dp</dimen>
-    <dimen name="clock_date_top_margin">-22dp</dimen>
+    <ListPreference
+        android:key="pref_calendar_look_ahead_hours"
+        android:entryValues="@array/pref_calendar_look_ahead_hours_values"
+        android:entries="@array/pref_calendar_look_ahead_hours_display_names"
+        android:title="@string/pref_calendar_look_ahead_hours_title"
+        android:defaultValue="6"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
 
-    <dimen name="extension_list_margin_top">32dp</dimen>
-</resources>
+</PreferenceScreen>

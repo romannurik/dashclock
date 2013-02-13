@@ -25,6 +25,7 @@ import net.nurik.roman.dashclock.R;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.CallLog;
+import android.text.TextUtils;
 
 /**
  * Number of missed calls extension.
@@ -53,7 +54,11 @@ public class MissedCallsExtension extends DashClockExtension {
             if (names.length() > 0) {
                 names.append(", ");
             }
-            names.append(cursor.getString(MissedCallsQuery.CACHED_NAME));
+            String name = cursor.getString(MissedCallsQuery.CACHED_NAME);
+            if (TextUtils.isEmpty(name)) {
+                name = cursor.getString(MissedCallsQuery.NUMBER);
+            }
+            names.append(name);
         }
         cursor.close();
 
@@ -82,9 +87,11 @@ public class MissedCallsExtension extends DashClockExtension {
         String[] PROJECTION = {
                 CallLog.Calls._ID,
                 CallLog.Calls.CACHED_NAME,
+                CallLog.Calls.NUMBER,
         };
 
         int ID = 0;
         int CACHED_NAME = 1;
+        int NUMBER = 2;
     }
 }

@@ -44,13 +44,15 @@ public class LogUtils {
     }
 
     public static void LOGD(final String tag, String message) {
-        if (Log.isLoggable(tag, Log.DEBUG)) {
+        //noinspection PointlessBooleanExpression,ConstantConditions
+        if (BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, message);
         }
     }
 
     public static void LOGD(final String tag, String message, Throwable cause) {
-        if (Log.isLoggable(tag, Log.DEBUG)) {
+        //noinspection PointlessBooleanExpression,ConstantConditions
+        if (BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, message, cause);
         }
     }

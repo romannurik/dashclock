@@ -14,7 +14,7 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <!-- Weather -->
     <string name="pref_weather_units_title">Weather units</string>
     <string-array name="pref_weather_units_display_names">
@@ -39,13 +39,26 @@
 
     <string name="pref_gmail_accounts_title">Show unread count for accounts</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">
-            <xliff:g id="selected">%1$d</xliff:g> of <xliff:g id="total">%2$d</xliff:g>
-            account selected
-        </item>
-        <item quantity="other">
-            <xliff:g id="selected">%1$d</xliff:g> of <xliff:g id="total">%2$d</xliff:g>
-            accounts selected
-        </item>
+        <item quantity="one">%1$d of %2$d account selected</item>
+        <item quantity="other">%1$d of %2$d accounts selected</item>
     </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Show appointments in the next</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+        <item>week</item>
+    </string-array>
+    <string-array name="pref_calendar_look_ahead_hours_values">
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+        <item>168</item>
+    </string-array>
 </resources>

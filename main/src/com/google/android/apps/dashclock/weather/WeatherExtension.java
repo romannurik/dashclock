@@ -255,19 +255,31 @@ public class WeatherExtension extends DashClockExtension {
                 } else if (eventType == XmlPullParser.START_TAG
                         && "location".equals(xpp.getName())) {
                     String cityOrVillage = "--";
-                    String region = "--";
+                    String region = null;
+                    String country = "--";
                     for (int i = xpp.getAttributeCount() - 1; i >= 0; i--) {
                         if ("city".equals(xpp.getAttributeName(i))) {
                             cityOrVillage = xpp.getAttributeValue(i);
                         } else if ("region".equals(xpp.getAttributeName(i))) {
                             region = xpp.getAttributeValue(i);
+                        } else if ("country".equals(xpp.getAttributeName(i))) {
+                            country = xpp.getAttributeValue(i);
                         }
                     }
-                    if (!TextUtils.isEmpty(li.town) && !li.town.equals(cityOrVillage)) {
-                        data.location = cityOrVillage + ", " + li.town + ", " + region;
-                    } else {
-                        data.location = cityOrVillage + ", " + region;
+
+                    if (TextUtils.isEmpty(region)) {
+                        // If no region is available, show the country. Otherwise, don't
+                        // show country information.
+                        region = country;
                     }
+
+                    if (!TextUtils.isEmpty(li.town) && !li.town.equals(cityOrVillage)) {
+                        // If a town is available and it's not equivalent to the city name,
+                        // show it.
+                        cityOrVillage = cityOrVillage + ", " + li.town;
+                    }
+
+                    data.location = cityOrVillage + ", " + region;
                 }
                 eventType = xpp.next();
             }

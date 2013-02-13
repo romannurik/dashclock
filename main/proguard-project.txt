@@ -20,3 +20,5 @@
 #}
 
 -keep public class * extends android.app,backup.BackupAgent
+
+-dontobfuscate

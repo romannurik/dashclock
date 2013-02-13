@@ -23,10 +23,13 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 import net.nurik.roman.dashclock.R;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,9 +43,13 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
 public class CalendarExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(CalendarExtension.class);
 
+    public static final String PREF_LOOK_AHEAD_HOURS = "pref_calendar_look_ahead_hours";
+
     private static final long MINUTE_MILLIS = 60 * 1000;
     private static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final long MAX_CALENDAR_TIME_MILLIS = 6 * HOUR_MILLIS;
+
+    private static final int DEFAULT_LOOK_AHEAD_HOURS = 6;
+    private int mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
 
     @Override
     protected void onInitialize(boolean isReconnect) {
@@ -58,13 +65,23 @@ public class CalendarExtension extends DashClockExtension {
 
     @Override
     protected void onUpdateData(int reason) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        try {
+            mLookAheadHours = Integer.parseInt(sp.getString(PREF_LOOK_AHEAD_HOURS,
+                    Integer.toString(mLookAheadHours)));
+        } catch (NumberFormatException e) {
+            mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
+        }
+
         Cursor cursor = openEventsCursor();
 
+        long currentTimestamp = getCurrentTimestamp();
         long nextTimestamp = 0;
         long timeUntilNextAppointent = 0;
         while (cursor.moveToNext()) {
             nextTimestamp = cursor.getLong(EventsQuery.BEGIN);
-            timeUntilNextAppointent = nextTimestamp - getCurrentTimestamp();
+            timeUntilNextAppointent = nextTimestamp - currentTimestamp;
             if (timeUntilNextAppointent >= 0) {
                 break;
             }
@@ -91,8 +108,14 @@ public class CalendarExtension extends DashClockExtension {
                     minutesUntilNextAppointment);
         } else {
             int hours = Math.round(minutesUntilNextAppointment / 60f);
-            untilString = getResources().getQuantityString(
-                    R.plurals.calendar_template_hours, hours, hours);
+            if (hours < 24) {
+                untilString = getResources().getQuantityString(
+                        R.plurals.calendar_template_hours, hours, hours);
+            } else {
+                int days = hours / 24; // floor, not round for days
+                untilString = getResources().getQuantityString(
+                        R.plurals.calendar_template_days, days, days);
+            }
         }
         String eventTitle = cursor.getString(EventsQuery.TITLE);
         long eventId = cursor.getLong(EventsQuery.EVENT_ID);
@@ -103,16 +126,22 @@ public class CalendarExtension extends DashClockExtension {
         Calendar nextEventCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         nextEventCalendar.setTimeInMillis(nextTimestamp);
 
-        String expandedBody;
-        if (DateFormat.is24HourFormat(this)) {
-            expandedBody = new SimpleDateFormat("kk:mm").format(nextEventCalendar.getTime());
-        } else {
-            expandedBody = new SimpleDateFormat("h:mm a").format(nextEventCalendar.getTime());
+        StringBuilder expandedBodyFormat = new StringBuilder();
+        if (nextTimestamp - currentTimestamp > 24 * HOUR_MILLIS) {
+            expandedBodyFormat.append("EEEE, ");
         }
 
+        if (DateFormat.is24HourFormat(this)) {
+            expandedBodyFormat.append("HH:mm");
+        } else {
+            expandedBodyFormat.append("h:mm a");
+        }
+
+        String expandedBody = new SimpleDateFormat(expandedBodyFormat.toString())
+                .format(nextEventCalendar.getTime());
         publishUpdate(new ExtensionData()
                 .visible(timeUntilNextAppointent >= 0
-                        && timeUntilNextAppointent <= MAX_CALENDAR_TIME_MILLIS)
+                        && timeUntilNextAppointent <= mLookAheadHours * HOUR_MILLIS)
                 .icon(R.drawable.ic_extension_calendar)
                 .status(untilString)
                 .expandedTitle(eventTitle)
@@ -133,7 +162,7 @@ public class CalendarExtension extends DashClockExtension {
         return getContentResolver().query(
                 CalendarContract.Instances.CONTENT_URI.buildUpon()
                         .appendPath(Long.toString(now))
-                        .appendPath(Long.toString(now + MAX_CALENDAR_TIME_MILLIS))
+                        .appendPath(Long.toString(now + mLookAheadHours * HOUR_MILLIS))
                         .build(),
                 EventsQuery.PROJECTION,
                 CalendarContract.Instances.ALL_DAY + "=0 AND "
