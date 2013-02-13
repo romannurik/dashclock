@@ -22,6 +22,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import net.nurik.roman.dashclock.R;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -43,6 +44,26 @@ public class CalendarExtension extends DashClockExtension {
     private static final long MINUTE_MILLIS = 60 * 1000;
     private static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final long MAX_CALENDAR_TIME_MILLIS = 6 * HOUR_MILLIS;
+
+    static String[] getAllCalendars(Context context) {
+        // Only return calendars that are marked as synced to device. (This is different from the display flag)
+        Cursor cursor = context.getContentResolver().query(
+                CalendarContract.Calendars.CONTENT_URI,
+                CalendarsQuery.PROJECTION,
+                CalendarContract.Calendars.SYNC_EVENTS + "==1",
+                null,
+                null
+        );
+
+        String[] calendars = new String[cursor.getCount()];
+        int i = 0;
+        while (cursor.moveToNext()) {
+            calendars[i++] = cursor.getString(CalendarsQuery.DISPLAY_NAME);
+        }
+
+        cursor.close();
+        return calendars;
+    }
 
     @Override
     protected void onInitialize(boolean isReconnect) {
@@ -158,5 +179,17 @@ public class CalendarExtension extends DashClockExtension {
         int BEGIN = 1;
         int END = 2;
         int TITLE = 3;
+    }
+
+    private interface CalendarsQuery {
+        String[] PROJECTION = {
+                CalendarContract.Calendars._ID,
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+                CalendarContract.Calendars.ACCOUNT_NAME
+        };
+
+        int ID = 0;
+        int DISPLAY_NAME = 1;
+        int ACCOUNT_NAME = 2;
     }
 }

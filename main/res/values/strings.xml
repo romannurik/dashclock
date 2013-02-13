@@ -109,6 +109,7 @@
         Displays information about your next calendar appointment, if one is scheduled within
         the next six hours.
     </string>
+    <string name="title_calendar_settings">Calendar Extension Settings</string>
     <plurals name="calendar_template_hours">
         <item quantity="one">
             <xliff:g id="hours">%1$s</xliff:g>
