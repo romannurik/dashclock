@@ -33,6 +33,7 @@ public class AppearanceConfig {
             "default",
             "light",
             "alpha",
+            "stock",
             "condensed",
             "big_small",
     };
