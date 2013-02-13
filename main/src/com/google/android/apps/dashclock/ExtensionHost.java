@@ -36,6 +36,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -226,6 +227,10 @@ public class ExtensionHost {
                 if (contentUris != null && contentUris.length > 0) {
                     ContentResolver resolver = mContext.getContentResolver();
                     for (String uri : contentUris) {
+                        if (TextUtils.isEmpty(uri)) {
+                            continue;
+                        }
+
                         resolver.registerContentObserver(Uri.parse(uri), true,
                                 conn.contentObserver);
                     }

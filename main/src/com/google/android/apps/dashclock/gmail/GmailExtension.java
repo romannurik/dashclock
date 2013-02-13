@@ -104,8 +104,11 @@ public class GmailExtension extends DashClockExtension {
 
         for (String account : selectedAccounts) {
             Cursor cursor = openLabelsCursor(account);
-            if (cursor.isAfterLast()) {
+            if (cursor == null || cursor.isAfterLast()) {
                 LOGD(TAG, "No Gmail inbox information found for account.");
+                if (cursor != null) {
+                    cursor.close();
+                }
                 continue;
             }
 

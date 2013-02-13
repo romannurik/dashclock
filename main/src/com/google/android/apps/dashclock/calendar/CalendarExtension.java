@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
+import static com.google.android.apps.dashclock.LogUtils.LOGW;
 
 /**
  * Calendar "upcoming appointment" extension.
@@ -75,6 +76,10 @@ public class CalendarExtension extends DashClockExtension {
         }
 
         Cursor cursor = openEventsCursor();
+        if (cursor == null) {
+            LOGW(TAG, "Null events cursor, short-circuiting.");
+            return;
+        }
 
         long currentTimestamp = getCurrentTimestamp();
         long nextTimestamp = 0;
