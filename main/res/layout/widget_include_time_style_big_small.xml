@@ -14,29 +14,11 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:baselineAligned="true">
-
-    <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:format12Hour="h"
-        android:format24Hour="kk"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
-        android:textSize="@dimen/clock_text_size_small"
-        android:textColor="#fff" />
-
-    <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:format12Hour=":mm"
-        android:format24Hour=":mm"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
-        android:textSize="@dimen/clock_text_size_small"
-        android:textColor="#fff" />
-</LinearLayout>
+<TextClock xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TimeComponent"
+    android:format12Hour="h:mm"
+    android:format24Hour="kk:mm"
+    android:fontFamily="sans-serif-condensed"
+    android:textStyle="bold"
+    android:textSize="@dimen/clock_text_size_small"
+    android:paddingBottom="8dp"/>

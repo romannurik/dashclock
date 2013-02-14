@@ -21,21 +21,15 @@
     android:baselineAligned="true">
 
     <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TimeComponent"
         android:format12Hour="h"
         android:format24Hour="kk"
-        android:fontFamily="sans-serif-light"
-        android:textSize="@dimen/clock_text_size_large"
-        android:textColor="#fff" />
+        android:fontFamily="sans-serif-light" />
 
     <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TimeComponent"
         android:alpha="@alpha/secondary_item"
         android:format12Hour="mm"
         android:format24Hour="mm"
-        android:fontFamily="sans-serif-thin"
-        android:textSize="@dimen/clock_text_size_large"
-        android:textColor="#fff" />
+        android:fontFamily="sans-serif-thin" />
 </LinearLayout>

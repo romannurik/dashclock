@@ -29,6 +29,9 @@ public class AppearanceConfig {
     static final String PREF_STYLE_TIME = "pref_style_time";
     static final String PREF_STYLE_DATE = "pref_style_date";
 
+    static final String PREF_HOMESCREEN_BACKGROUND_OPACITY = "pref_homescreen_background_opacity";
+    static final String PREF_AGGRESSIVE_CENTERING = "pref_aggressive_centering";
+
     static String[] TIME_STYLE_NAMES = new String[]{
             "default",
             "light",
@@ -60,5 +63,25 @@ public class AppearanceConfig {
         return context.getResources().getIdentifier(
                 "widget_include_" + component + "_style_" + name,
                 "layout", context.getPackageName());
+    }
+
+    public static boolean isAggressiveCenteringEnabled(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_AGGRESSIVE_CENTERING, false);
+    }
+
+    public static int getHomescreenBackgroundColor(Context context) {
+        int opacity = 50;
+        try {
+            opacity = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString(PREF_HOMESCREEN_BACKGROUND_OPACITY, "50"));
+        } catch (NumberFormatException ignored) {
+        }
+
+        if (opacity == 100) {
+            return 0xff000000;
+        } else {
+            return (opacity * 256 / 100) << 24;
+        }
     }
 }

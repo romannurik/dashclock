@@ -114,7 +114,10 @@ public class WidgetRenderer {
 
             RemoteViews rv = new RemoteViews(context.getPackageName(),
                     isExpanded ? R.layout.widget_main_expanded : R.layout.widget_main_collapsed);
-            rv.setViewVisibility(R.id.shade, isLockscreen ? View.GONE : View.VISIBLE);
+            int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(context);
+            rv.setInt(R.id.shade, "setBackgroundColor", shadeColor);
+            rv.setViewVisibility(R.id.shade, (isLockscreen || shadeColor == 0)
+                    ? View.GONE : View.VISIBLE);
 
             // Configure clock face
             rv.removeAllViews(R.id.time_container);

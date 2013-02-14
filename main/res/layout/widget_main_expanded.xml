@@ -22,7 +22,6 @@
     <ImageView android:id="@+id/shade"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/home_screen_shade_color"
         android:visibility="gone" />
 
     <LinearLayout

@@ -52,12 +52,14 @@ public class ConfigurationActivity extends Activity {
     private static final int[] SECTION_LABELS = new int[]{
             R.string.section_extensions,
             R.string.section_appearance,
+            R.string.section_advanced,
     };
 
     @SuppressWarnings("unchecked")
     private static final Class<? extends Fragment>[] SECTION_FRAGMENTS = new Class[]{
             ConfigureExtensionsFragment.class,
             ConfigureAppearanceFragment.class,
+            ConfigureAdvancedFragment.class,
     };
 
     // only used when adding a new widget

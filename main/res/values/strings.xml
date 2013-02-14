@@ -30,6 +30,7 @@
     <string name="title_configure">Configure DashClock Widget</string>
     <string name="section_extensions">Extensions</string>
     <string name="section_appearance">Appearance</string>
+    <string name="section_advanced">Advanced</string>
 
     <string name="add_another_extension">Add another extension</string>
     <string name="more_extensions">More extensions</string>

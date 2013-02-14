@@ -15,6 +15,26 @@
   -->
 
 <resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_homescreen_background_opacity_title">Home screen widget background</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Fully transparent</item>
+        <item>25% black</item>
+        <item>50% black</item>
+        <item>75% black</item>
+        <item>100% black</item>
+    </string-array>
+    <string-array name="pref_homescreen_background_opacity_values">
+        <item>0</item>
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Aggressively center widget contents</string>
+    <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
+
     <!-- Weather -->
     <string name="pref_weather_units_title">Weather units</string>
     <string-array name="pref_weather_units_display_names">
