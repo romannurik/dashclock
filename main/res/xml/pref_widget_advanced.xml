@@ -25,12 +25,10 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
-    <!--
     <CheckBoxPreference
         android:key="pref_aggressive_centering"
         android:title="@string/pref_aggressive_centering_title"
         android:summary="@string/pref_aggressive_centering_description"
         android:defaultValue="false" />
-    -->
 
 </PreferenceScreen>

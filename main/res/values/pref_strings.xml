@@ -32,7 +32,7 @@
         <item>100</item>
     </string-array>
 
-    <string name="pref_aggressive_centering_title">Aggressively center widget contents</string>
+    <string name="pref_aggressive_centering_title">Always center</string>
     <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
 
     <!-- Weather -->
