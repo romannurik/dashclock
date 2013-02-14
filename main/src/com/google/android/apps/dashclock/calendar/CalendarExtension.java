@@ -185,11 +185,13 @@ public class CalendarExtension extends DashClockExtension {
         String[] PROJECTION = {
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                CalendarContract.Calendars.ACCOUNT_NAME
+                CalendarContract.Calendars.ACCOUNT_NAME,
+                CalendarContract.Calendars.OWNER_ACCOUNT
         };
 
         int ID = 0;
         int DISPLAY_NAME = 1;
         int ACCOUNT_NAME = 2;
+        int OWNER_ACOUNT = 3;
     }
 }
