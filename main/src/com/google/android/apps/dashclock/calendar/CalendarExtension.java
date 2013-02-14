@@ -173,7 +173,7 @@ public class CalendarExtension extends DashClockExtension {
                 CalendarContract.Instances.ALL_DAY + "=0 AND "
                         + CalendarContract.Instances.SELF_ATTENDEE_STATUS + "!="
                         + CalendarContract.Attendees.ATTENDEE_STATUS_DECLINED + " AND "
-                        + CalendarContract.Instances.STATUS + "!="
+                        + "IFNULL(" + CalendarContract.Instances.STATUS + ",0)!="
                         + CalendarContract.Instances.STATUS_CANCELED + " AND "
                         + CalendarContract.Instances.VISIBLE + "!=0",
                 null,
