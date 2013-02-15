@@ -1,0 +1,61 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_homescreen_background_opacity_title">Fond du widget de l'écran d'accueil</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Transparent</item>
+        <item>25% noir</item>
+        <item>50% noir</item>
+        <item>75% noir</item>
+        <item>100% noir</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Toujours centré</string>
+    <string name="pref_aggressive_centering_description">Peut provoquer une instabilité dans l'affichage de l'horloge dans différents états du widget</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">Unité de température</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">Afficher le nombre de courriels non lus pour le libellé</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>Boîte de réception</item>
+        <item>Prioritaire</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">Afficher le nombre de courriels non lus pour pour les comptes</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">%1$d sur %2$d compte sélectionné</item>
+        <item quantity="other">%1$d sur %2$d comptes sélectionnés</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Afficher les rendez-vous dans les prochain(e)s</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 heures</item>
+        <item>6 heures</item>
+        <item>12 heures</item>
+        <item>24 heures</item>
+        <item>2 jours</item>
+        <item>semaine</item>
+    </string-array>
+</resources>
