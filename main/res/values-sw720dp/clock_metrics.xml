@@ -22,6 +22,4 @@
     <dimen name="clock_text_size_small">64dp</dimen>
     <dimen name="clock_date_text_size">22dp</dimen>
     <dimen name="clock_date_top_margin">-22dp</dimen>
-
-    <dimen name="extension_list_margin_top">32dp</dimen>
 </resources>

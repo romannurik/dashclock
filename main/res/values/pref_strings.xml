@@ -24,7 +24,7 @@
         <item>75% black</item>
         <item>100% black</item>
     </string-array>
-    <string-array name="pref_homescreen_background_opacity_values">
+    <string-array name="pref_homescreen_background_opacity_values" translatable="false">
         <item>0</item>
         <item>25</item>
         <item>50</item>
@@ -41,7 +41,7 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
-    <string-array name="pref_weather_units_values">
+    <string-array name="pref_weather_units_values" translatable="false">
         <item>f</item>
         <item>c</item>
     </string-array>
@@ -52,7 +52,7 @@
         <item>Inbox</item>
         <item>Priority Inbox</item>
     </string-array>
-    <string-array name="pref_gmail_label_inbox_values">
+    <string-array name="pref_gmail_label_inbox_values" translatable="false">
         <item>i</item>
         <item>p</item>
     </string-array>
@@ -73,7 +73,7 @@
         <item>2 days</item>
         <item>week</item>
     </string-array>
-    <string-array name="pref_calendar_look_ahead_hours_values">
+    <string-array name="pref_calendar_look_ahead_hours_values" translatable="false">
         <item>3</item>
         <item>6</item>
         <item>12</item>

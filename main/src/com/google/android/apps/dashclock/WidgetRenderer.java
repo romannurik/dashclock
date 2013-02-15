@@ -43,6 +43,7 @@ import android.widget.RemoteViewsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 
@@ -100,6 +101,14 @@ public class WidgetRenderer {
         boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(context);
 
         int activeExtensions = mExtensions.size();
+
+        int visibleExtensions = 0;
+        for (ExtensionManager.ExtensionWithData ci : mExtensions) {
+            if (!ci.latestData.visible()) {
+                continue;
+            }
+            ++visibleExtensions;
+        }
 
         for (int appWidgetId : appWidgetIds) {
             boolean isLockscreen = false;
@@ -174,7 +183,7 @@ public class WidgetRenderer {
             }
 
             rv.setViewVisibility(R.id.widget_divider,
-                    (activeExtensions > 0) ? View.VISIBLE : View.GONE);
+                    (visibleExtensions > 0) ? View.VISIBLE : View.GONE);
             rv.setViewVisibility(R.id.collapsed_extensions_container,
                     (activeExtensions > 0 && !isExpanded) ? View.VISIBLE : View.GONE);
 
@@ -251,7 +260,7 @@ public class WidgetRenderer {
                         rv.setTextViewTextSize(extensionTextId, TypedValue.COMPLEX_UNIT_PX,
                                 extensionCollapsedTextSizeSingleLine);
                     }
-                    rv.setTextViewText(extensionTextId, status.toUpperCase());
+                    rv.setTextViewText(extensionTextId, status.toUpperCase(Locale.getDefault()));
                     rv.setImageViewBitmap(COLLAPSED_EXTENSION_SLOTS[slotIndex].iconId,
                             loadExtensionIcon(context, ci.componentName, ci.latestData.icon()));
 

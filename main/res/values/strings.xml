@@ -15,10 +15,10 @@
   -->
 
 <resources>
-    <string name="app_name">DashClock Widget</string>
-    <string name="widget_label">DashClock</string>
+    <string name="app_name" translatable="false">DashClock Widget</string>
+    <string name="widget_label" translatable="false">DashClock</string>
 
-    <string name="status_none">––</string>
+    <string name="status_none" translatable="false">––</string>
 
     <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
     <string name="permission_label_read_extension_data">Request DashClock extension data</string>
@@ -76,9 +76,7 @@
     </string>
     <string name="title_weather_settings">Weather Extension Settings</string>
     <string name="temperature_template">%1$s°</string>
-    <string name="weather_expanded_title_template">
-        %1$s — %2$s
-    </string>
+    <string name="weather_expanded_title_template" translatable="false">%1$s — %2$s</string>
     <string name="later_forecast_template">Later: %1$s</string>
 
     <!-- Gmail -->
@@ -87,7 +85,9 @@
         Displays an unread count for your Gmail inbox or priority inbox.
     </string>
     <string name="title_gmail_settings">Gmail Extension Settings</string>
-    <string name="gmail_title_template">%1$d unread</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d unread</item>
+    </plurals>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Next alarm</string>

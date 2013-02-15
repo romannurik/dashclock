@@ -139,7 +139,8 @@ public class GmailExtension extends DashClockExtension {
         publishUpdate(new ExtensionData()
                 .visible(unread > 0)
                 .status(Integer.toString(unread))
-                .expandedTitle(getString(R.string.gmail_title_template, unread))
+                .expandedTitle(getResources().getQuantityString(
+                        R.plurals.gmail_title_template, unread, unread))
                 .icon(R.drawable.ic_extension_gmail)
                 .expandedBody(body.toString())
                 .clickIntent(new Intent(Intent.ACTION_MAIN)
