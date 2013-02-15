@@ -78,6 +78,7 @@
     <string name="temperature_template">%1$s°</string>
     <string name="weather_expanded_title_template" translatable="false">%1$s — %2$s</string>
     <string name="later_forecast_template">Later: %1$s</string>
+    <string name="no_weather_data">No weather data available</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail unread count</string>

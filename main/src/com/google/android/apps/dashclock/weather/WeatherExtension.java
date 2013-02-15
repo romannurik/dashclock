@@ -42,11 +42,16 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Pair;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
@@ -165,33 +170,43 @@ public class WeatherExtension extends DashClockExtension {
     }
 
     private ExtensionData renderExtensionData(WeatherData weatherData) {
-        String temperature = weatherData.hasValidTemperature()
-                ? getString(R.string.temperature_template, weatherData.temperature)
-                : getString(R.string.status_none);
-        StringBuilder expandedBody = new StringBuilder();
+        ExtensionData extensionData = new ExtensionData();
+        if (weatherData == null) {
+            extensionData
+                    .icon(R.drawable.ic_weather_clear)
+                    .status(getString(R.string.status_none))
+                    .expandedBody(getString(R.string.no_weather_data));
+        } else {
+            String temperature = weatherData.hasValidTemperature()
+                    ? getString(R.string.temperature_template, weatherData.temperature)
+                    : getString(R.string.status_none);
+            StringBuilder expandedBody = new StringBuilder();
 
-        int conditionIconId = WeatherData.getConditionIconId(weatherData.conditionCode);
-        if (WeatherData.getConditionIconId(weatherData.todayForecastConditionCode)
-                == R.drawable.ic_weather_raining) {
-            // Show rain if it will rain today.
-            conditionIconId = R.drawable.ic_weather_raining;
-            expandedBody.append(
-                    getString(R.string.later_forecast_template, weatherData.forecastText));
+            int conditionIconId = WeatherData.getConditionIconId(weatherData.conditionCode);
+            if (WeatherData.getConditionIconId(weatherData.todayForecastConditionCode)
+                    == R.drawable.ic_weather_raining) {
+                // Show rain if it will rain today.
+                conditionIconId = R.drawable.ic_weather_raining;
+                expandedBody.append(
+                        getString(R.string.later_forecast_template, weatherData.forecastText));
+            }
+
+            if (expandedBody.length() > 0) {
+                expandedBody.append("\n");
+            }
+            expandedBody.append(weatherData.location);
+
+            extensionData
+                    .status(temperature)
+                    .expandedTitle(getString(R.string.weather_expanded_title_template,
+                            temperature + sWeatherUnits.toUpperCase(Locale.US),
+                            weatherData.conditionText))
+                    .icon(conditionIconId)
+                    .expandedBody(expandedBody.toString());
         }
 
-        if (expandedBody.length() > 0) {
-            expandedBody.append("\n");
-        }
-        expandedBody.append(weatherData.location);
-
-        return new ExtensionData()
+        return extensionData
                 .visible(true)
-                .status(temperature)
-                .expandedTitle(getString(R.string.weather_expanded_title_template,
-                        temperature + sWeatherUnits.toUpperCase(Locale.US),
-                        weatherData.conditionText))
-                .icon(conditionIconId)
-                .expandedBody(expandedBody.toString())
                 .clickIntent(new Intent(Intent.ACTION_VIEW)
                         .setData(Uri.parse("https://www.google.com/search?q=weather")));
     }
@@ -211,13 +226,24 @@ public class WeatherExtension extends DashClockExtension {
         // San Francisco = 2487956
         LocationInfo locationInfo = getLocationInfo(location);
 
-        LOGD(TAG, "Using WOEID: " + locationInfo.woeid);
+        // Loop through the woeids (they're in descending precision order) until weather data
+        // is found.
+        for (String woeid : locationInfo.woeids) {
+            LOGD(TAG, "Trying WOEID: " + woeid);
+            WeatherData data = getWeatherDataForWoeid(woeid, locationInfo.town);
+            if (data.conditionCode != WeatherData.INVALID_CONDITION
+                    && data.temperature != WeatherData.INVALID_TEMPERATURE) {
+                return data;
+            }
+        }
 
-        return getWeatherDataForLocation(locationInfo);
+        // No weather could be found :(
+        return null;
     }
 
-    private static WeatherData getWeatherDataForLocation(LocationInfo li) throws IOException {
-        HttpURLConnection connection = Utils.openUrlConnection(buildWeatherQueryUrl(li.woeid));
+    private static WeatherData getWeatherDataForWoeid(String woeid, String town)
+            throws IOException {
+        HttpURLConnection connection = Utils.openUrlConnection(buildWeatherQueryUrl(woeid));
 
         try {
             XmlPullParser xpp = sXmlPullParserFactory.newPullParser();
@@ -273,15 +299,19 @@ public class WeatherExtension extends DashClockExtension {
                         region = country;
                     }
 
-                    if (!TextUtils.isEmpty(li.town) && !li.town.equals(cityOrVillage)) {
+                    if (!TextUtils.isEmpty(town) && !town.equals(cityOrVillage)) {
                         // If a town is available and it's not equivalent to the city name,
                         // show it.
-                        cityOrVillage = cityOrVillage + ", " + li.town;
+                        cityOrVillage = cityOrVillage + ", " + town;
                     }
 
                     data.location = cityOrVillage + ", " + region;
                 }
                 eventType = xpp.next();
+            }
+
+            if (TextUtils.isEmpty(data.location)) {
+                data.location = town;
             }
 
             return data;
@@ -296,6 +326,11 @@ public class WeatherExtension extends DashClockExtension {
     private static LocationInfo getLocationInfo(Location location)
             throws IOException, InvalidLocationException {
         LocationInfo li = new LocationInfo();
+
+        // first=tagname (admin1, locality3) second=woeid
+        String primaryWoeid = null;
+        List<Pair<String,String>> alternateWoeids = new ArrayList<Pair<String, String>>();
+
         HttpURLConnection connection = Utils.openUrlConnection(buildPlaceSearchUrl(location));
         try {
             XmlPullParser xpp = sXmlPullParserFactory.newPullParser();
@@ -304,18 +339,29 @@ public class WeatherExtension extends DashClockExtension {
             boolean inWoe = false;
             boolean inTown = false;
             int eventType = xpp.getEventType();
+
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG && "woeid".equals(xpp.getName())) {
+                String tagName = xpp.getName();
+
+                if (eventType == XmlPullParser.START_TAG && "woeid".equals(tagName)) {
                     inWoe = true;
                 } else if (eventType == XmlPullParser.TEXT && inWoe) {
-                    li.woeid = xpp.getText();
+                    primaryWoeid = xpp.getText();
                 }
 
-                if (eventType == XmlPullParser.START_TAG && xpp.getName().startsWith("locality")) {
+                if (eventType == XmlPullParser.START_TAG &&
+                        (tagName.startsWith("locality") || tagName.startsWith("admin"))) {
                     for (int i = xpp.getAttributeCount() - 1; i >= 0; i--) {
-                        if ("type".equals(xpp.getAttributeName(i))
+                        String attrName = xpp.getAttributeName(i);
+                        if ("type".equals(attrName)
                                 && "Town".equals(xpp.getAttributeValue(i))) {
                             inTown = true;
+                        } else if ("woeid".equals(attrName)) {
+                            String woeid = xpp.getAttributeValue(i);
+                            if (!TextUtils.isEmpty(woeid)) {
+                                alternateWoeids.add(
+                                        new Pair<String, String>(tagName, woeid));
+                            }
                         }
                     }
                 } else if (eventType == XmlPullParser.TEXT && inTown) {
@@ -330,7 +376,25 @@ public class WeatherExtension extends DashClockExtension {
                 eventType = xpp.next();
             }
 
-            if (!TextUtils.isEmpty(li.woeid)) {
+            // Add the primary woeid if it was found.
+            if (!TextUtils.isEmpty(primaryWoeid)) {
+                li.woeids.add(primaryWoeid);
+            }
+
+            // Sort by descending tag name to order by decreasing precision
+            // (locality3, locality2, locality1, admin3, admin2, admin1, etc.)
+            Collections.sort(alternateWoeids, new Comparator<Pair<String, String>>() {
+                @Override
+                public int compare(Pair<String, String> pair1, Pair<String, String> pair2) {
+                    return pair1.first.compareTo(pair2.first);
+                }
+            });
+
+            for (Pair<String, String> pair : alternateWoeids) {
+                li.woeids.add(pair.second);
+            }
+
+            if (li.woeids.size() > 0) {
                 return li;
             }
 
@@ -356,7 +420,9 @@ public class WeatherExtension extends DashClockExtension {
     }
 
     private static class LocationInfo {
-        String woeid;
+        // Sorted by decreasing precision
+        // (point of interest, locality3, locality2, locality1, admin3, admin2, admin1, etc.)
+        List<String> woeids = new ArrayList<String>();
         String town;
     }
 
