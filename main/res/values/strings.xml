@@ -54,7 +54,7 @@
     <string name="close">Close</string>
     <string name="about">About</string>
 
-    <string name="app_name_and_version"><![CDATA[
+    <string name="app_name_and_version" translatable="false"><![CDATA[
         <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
     ]]></string>
     <string name="about_body"><![CDATA[
