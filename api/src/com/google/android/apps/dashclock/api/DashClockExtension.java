@@ -106,7 +106,7 @@ import android.util.Log;
  *
  * <pre class="prettyprint">
  * public class ExampleExtension extends DashClockExtension {
- *     protected void onUpdateData() {
+ *     protected void onUpdateData(int reason) {
  *         publishUpdate(new ExtensionData()
  *                 .visible(true)
  *                 .icon(R.drawable.ic_extension_example)
