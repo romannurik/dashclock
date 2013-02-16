@@ -79,7 +79,9 @@
         Muestra la cantidad de mensajes sin leer de la bandeja de entrada o prioritaria de Gmail.
     </string>
     <string name="title_gmail_settings">Configuración de la extensión de Gmail</string>
-    <string name="gmail_title_template">%1$d sin leer</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d sin leer</item>
+    </plurals>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Próxima alarma</string>
