@@ -330,6 +330,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                 mSelectedExtensions.add(cn);
                 repopulateAvailableExtensions();
                 mSelectedExtensionsAdapter.notifyDataSetChanged();
+                mListView.smoothScrollToPosition(mSelectedExtensionsAdapter.getCount() - 1);
                 return true;
             }
         });

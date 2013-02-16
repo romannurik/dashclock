@@ -15,7 +15,6 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -35,74 +34,9 @@
 
         <include layout="@layout/widget_include_clock" />
 
-        <LinearLayout android:id="@+id/collapsed_extensions_container"
+        <include layout="@layout/widget_include_collapsed_extensions"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!--suppress AndroidLintUseCompoundDrawables -->
-            <LinearLayout
-                style="@style/ExtensionData.Container.Collapsed"
-                android:id="@+id/collapsed_extension_1_target"
-                tools:ignore="UseCompoundDrawables">
-
-                <!--suppress AndroidLintContentDescription -->
-                <ImageView
-                    style="@style/ExtensionData.Icon.Collapsed"
-                    android:id="@+id/collapsed_extension_1_icon"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/ExtensionData.Text.Collapsed"
-                    android:id="@+id/collapsed_extension_1_text" />
-
-            </LinearLayout>
-
-            <!--suppress AndroidLintUseCompoundDrawables -->
-            <LinearLayout
-                style="@style/ExtensionData.Container.Collapsed"
-                android:id="@+id/collapsed_extension_2_target"
-                tools:ignore="UseCompoundDrawables">
-
-                <!--suppress AndroidLintContentDescription -->
-                <ImageView
-                    style="@style/ExtensionData.Icon.Collapsed"
-                    android:id="@+id/collapsed_extension_2_icon"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/ExtensionData.Text.Collapsed"
-                    android:id="@+id/collapsed_extension_2_text" />
-
-            </LinearLayout>
-
-            <!--suppress AndroidLintUseCompoundDrawables -->
-            <LinearLayout
-                style="@style/ExtensionData.Container.Collapsed"
-                android:id="@+id/collapsed_extension_3_target"
-                tools:ignore="UseCompoundDrawables">
-
-                <!--suppress AndroidLintContentDescription -->
-                <ImageView
-                    style="@style/ExtensionData.Icon.Collapsed"
-                    android:id="@+id/collapsed_extension_3_icon"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/ExtensionData.Text.Collapsed"
-                    android:id="@+id/collapsed_extension_3_text" />
-
-            </LinearLayout>
-
-            <ImageView android:id="@+id/collapsed_extension_ellipsis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="11dp"
-                android:visibility="gone"
-                android:src="@drawable/collapsed_extension_ellipsis"
-                android:contentDescription="@string/more_extensions" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
