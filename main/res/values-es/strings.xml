@@ -14,7 +14,7 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="permission_desc_read_extension_data">Permite pedir información de la extensión de DashClock</string>
     <string name="permission_label_read_extension_data">Pedir información de la extensión de DashClock</string>
 
@@ -26,6 +26,7 @@
     <string name="section_extensions">Extensiones</string>
     <string name="section_appearance">Apariencia</string>
     <string name="section_advanced">Avanzado</string>
+
     <string name="add_another_extension">Agregar otra extensión</string>
     <string name="more_extensions">Más extensiones</string>
     <string name="done">Hecho</string>
@@ -37,7 +38,7 @@
     <string name="next_date_style">Estilo de fecha siguiente</string>
     <string name="next_time_style">Estilo de hora siguiente</string>
 
-    <string name="incompatible_extension_menu_template"><xliff:g id="title">%1$s</xliff:g> (Incompatible)</string>
+    <string name="incompatible_extension_menu_template">%1$s (Incompatible)</string>
     <string name="incompatible_extension_title">Extensión incompatible</string>
     <string name="incompatible_extension_message_search_play_template"><![CDATA[La
         extensión <b>%1$s</b> no es compatible con esta versión del DashClock.
@@ -57,7 +58,7 @@
         <i>por Günther Beyer de <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
         <i>por Carl A. Bauer</i><br><br>
-        Traducción al español por Carlos Sessa<br><br>
+        Traducción al español por Carlos Sessa
     ]]></string>
 
     <!-- Weather -->
@@ -68,9 +69,8 @@
         Información proporcionada por Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Configuración de la extensión del clima</string>
-    <string name="later_forecast_template">Luego:
-        <xliff:g id="forecast">%1$s</xliff:g>
-    </string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Luego: %1$s</string>
     <string name="no_weather_data">Información de clima no disponible</string>
 
     <!-- Gmail -->
@@ -79,10 +79,7 @@
         Muestra la cantidad de mensajes sin leer de la bandeja de entrada o prioritaria de Gmail.
     </string>
     <string name="title_gmail_settings">Configuración de la extensión de Gmail</string>
-    <string name="gmail_title_template">
-        <xliff:g id="emails">%1$d</xliff:g>
-        sin leer
-    </string>
+    <string name="gmail_title_template">%1$d sin leer</string>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Próxima alarma</string>
@@ -97,21 +94,13 @@
         Muestra información acerca de su próxima cita del calendario, si tiene
         una programada dentro de las próximas seis horas.
     </string>
+    <string name="title_calendar_settings">Configuración de la extensión del Calendario</string>
     <plurals name="calendar_template_hours">
-        <item quantity="one">
-            <xliff:g id="hours">%1$s</xliff:g>
-            hr
-        </item>
-        <item quantity="other">
-            <xliff:g id="hours">%1$s</xliff:g>
-            hrs
-        </item>
+        <item quantity="one">%1$s hr</item>
+        <item quantity="other">%1$s hrs</item>
     </plurals>
     <plurals name="calendar_template_mins">
-        <item quantity="other">
-            <xliff:g id="hours">%1$s</xliff:g>
-            min
-        </item>
+        <item quantity="other">%1$s min</item>
     </plurals>
 
     <!-- Missed calls -->
@@ -121,18 +110,10 @@
         que no se pudieron comunicar.
     </string>
     <plurals name="missed_calls_title_template">
-        <item quantity="one">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            llamada perdida
-        </item>
-        <item quantity="other">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            llamadas perdidas
-        </item>
+        <item quantity="one">%1$s llamada perdida</item>
+        <item quantity="other">%1$s llamadas perdidas</item>
     </plurals>
-    <string name="missed_calls_body_template">De:
-        <xliff:g id="names">%1$s</xliff:g>
-    </string>
+    <string name="missed_calls_body_template">De: %1$s</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Mensajes de texto</string>
@@ -141,18 +122,10 @@
         del emisor.
     </string>
     <plurals name="sms_title_template">
-        <item quantity="one">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            conversación sin leer
-        </item>
-        <item quantity="other">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            conversaciones sin leer
-        </item>
+        <item quantity="one">%1$s conversación sin leer</item>
+        <item quantity="other">%1$s conversaciones sin leer</item>
     </plurals>
-    <string name="sms_body_template">De:
-        <xliff:g id="names">%1$s</xliff:g>
-    </string>
+    <string name="sms_body_template">De: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Customiza tu DashClock</string>

@@ -14,7 +14,7 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <!-- Advanced widget preferences -->
     <string name="pref_homescreen_background_opacity_title">Fondo del widget de escritorio</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
@@ -44,14 +44,8 @@
 
     <string name="pref_gmail_accounts_title">Mostrar cantidad sin leer para las cuentas</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">
-            <xliff:g id="selected">%1$d</xliff:g> de <xliff:g id="total">%2$d</xliff:g>
-            cuenta seleccionada
-        </item>
-        <item quantity="other">
-            <xliff:g id="selected">%1$d</xliff:g> de <xliff:g id="total">%2$d</xliff:g>
-            cuentas seleccionadas
-        </item>
+        <item quantity="one">%1$d de %2$d cuenta seleccionada</item>
+        <item quantity="other">%1$d de %2$d cuentas seleccionadas</item>
     </plurals>
 
     <!-- Calendar -->
