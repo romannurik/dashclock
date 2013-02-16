@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Raccourci horloge</string>
     <string name="pref_homescreen_background_opacity_title">Fond du widget de l\'écran d\'accueil</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Transparent</item>
@@ -27,6 +28,10 @@
 
     <string name="pref_aggressive_centering_title">Toujours centré</string>
     <string name="pref_aggressive_centering_description">Peut provoquer une instabilité dans l\'affichage de l\'horloge dans différents états du widget</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Raccourci</string>
+    <string name="pref_shortcut_default">(Par défaut)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Unité de température</string>

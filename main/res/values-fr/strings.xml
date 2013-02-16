@@ -27,6 +27,9 @@
     <string name="section_appearance">Apparence</string>
     <string name="section_advanced">Avancé</string>
 
+    <string name="title_apps">Applications</string>
+    <string name="title_shortcuts">Raccourcis</string>
+
     <string name="add_another_extension">Ajouter une extension</string>
     <string name="more_extensions">Plus d\'extensions</string>
     <string name="done">Terminé</string>

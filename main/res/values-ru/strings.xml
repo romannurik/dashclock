@@ -27,6 +27,9 @@
     <string name="section_appearance">Отображение</string>
     <string name="section_advanced">Дополнительно</string>
 
+    <string name="title_apps">Приложения</string>
+    <string name="title_shortcuts">Ярлыки</string>
+
     <string name="add_another_extension">Добавить другое расширение</string>
     <string name="more_extensions">Ещё расширения</string>
     <string name="done">Готово</string>

@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Acceso directo al reloj</string>
     <string name="pref_homescreen_background_opacity_title">Fondo del widget de escritorio</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Completamente transparente</item>
@@ -27,6 +28,10 @@
 
     <string name="pref_aggressive_centering_title">Centrar siempre</string>
     <string name="pref_aggressive_centering_description">Puede hacer que el reloj cambie de posición en base a los estados del widget</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Acceso directo</string>
+    <string name="pref_shortcut_default">(Predeterminada)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Unidades del clima</string>

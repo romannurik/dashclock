@@ -27,6 +27,9 @@
     <string name="section_appearance">Aussehen</string>
     <string name="section_advanced">Erweitert</string>
 
+    <string name="title_apps">Apps</string>
+    <string name="title_shortcuts">Verknüpfungen</string>
+
     <string name="add_another_extension">Erweiterungen hinzufügen</string>
     <string name="more_extensions">Weitere Erweiterungen</string>
     <string name="done">Fertig</string>

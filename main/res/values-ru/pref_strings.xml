@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Ярлык для часов</string>
     <string name="pref_homescreen_background_opacity_title">Фон виджета</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Полностью прозрачный</item>
@@ -27,6 +28,10 @@
 
     <string name="pref_aggressive_centering_title">Всегда по центру</string>
     <string name="pref_aggressive_centering_description">Может спровоцировать смещение часов для разных состояний виджета</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Ярлык</string>
+    <string name="pref_shortcut_default">(По умолчанию)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Единицы измерения</string>
