@@ -24,13 +24,18 @@ import net.nurik.roman.dashclock.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.text.format.DateFormat;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
@@ -40,6 +45,8 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
  */
 public class CalendarExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(CalendarExtension.class);
+
+    public static final String PREF_CALENDARS = "pref_calendars";
 
     private static final long MINUTE_MILLIS = 60 * 1000;
     private static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -58,11 +65,21 @@ public class CalendarExtension extends DashClockExtension {
         String[] calendars = new String[cursor.getCount()];
         int i = 0;
         while (cursor.moveToNext()) {
-            calendars[i++] = cursor.getString(CalendarsQuery.DISPLAY_NAME);
+            calendars[i++] = cursor.getString(CalendarsQuery.ID);
         }
 
         cursor.close();
         return calendars;
+    }
+
+    private Set<String> getSelectedCalendars() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        final String[] allCalendars = getAllCalendars(this);
+
+        //build a set of all calendars in the event we don't have a selection set in the preferences.
+        Set<String> calendarSet = new HashSet<String>();
+        calendarSet.addAll(Arrays.asList(allCalendars));
+        return sp.getStringSet(PREF_CALENDARS, calendarSet);
     }
 
     @Override
@@ -116,6 +133,8 @@ public class CalendarExtension extends DashClockExtension {
                     R.plurals.calendar_template_hours, hours, hours);
         }
         String eventTitle = cursor.getString(EventsQuery.TITLE);
+        String eventLocation = cursor.getString(EventsQuery.EVENT_LOCATION);
+
         long eventId = cursor.getLong(EventsQuery.EVENT_ID);
         long eventBegin = cursor.getLong(EventsQuery.BEGIN);
         long eventEnd = cursor.getLong(EventsQuery.END);
@@ -130,6 +149,8 @@ public class CalendarExtension extends DashClockExtension {
         } else {
             expandedBody = new SimpleDateFormat("h:mm a").format(nextEventCalendar.getTime());
         }
+
+        expandedBody = String.format("%s - %s", expandedBody, eventLocation);
 
         publishUpdate(new ExtensionData()
                 .visible(timeUntilNextAppointent >= 0
@@ -150,6 +171,11 @@ public class CalendarExtension extends DashClockExtension {
     }
 
     private Cursor openEventsCursor() {
+        String calendarSelection = generateCalendarSelection();
+
+        Set<String> calendarSet = getSelectedCalendars();
+        String[] calendars = calendarSet.toArray(new String[calendarSet.size()]);
+
         long now = getCurrentTimestamp();
         return getContentResolver().query(
                 CalendarContract.Instances.CONTENT_URI.buildUpon()
@@ -162,9 +188,28 @@ public class CalendarExtension extends DashClockExtension {
                         + CalendarContract.Attendees.ATTENDEE_STATUS_DECLINED + " AND "
                         + CalendarContract.Instances.STATUS + "!="
                         + CalendarContract.Instances.STATUS_CANCELED + " AND "
-                        + CalendarContract.Instances.VISIBLE + "!=0",
-                null,
+                        + CalendarContract.Instances.VISIBLE + "!=0 AND ("
+                        + calendarSelection + ")",
+                calendars,
                 CalendarContract.Instances.BEGIN);
+    }
+
+    private String generateCalendarSelection() {
+        Set<String> calendars = getSelectedCalendars();
+        int count = calendars.size();
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < count; i++) {
+            if (i != 0) {
+                sb.append(" OR ");
+            }
+
+            sb.append(CalendarContract.Events.CALENDAR_ID);
+            sb.append(" = ?");
+        }
+
+        return sb.toString();
     }
 
     private interface EventsQuery {
@@ -173,25 +218,21 @@ public class CalendarExtension extends DashClockExtension {
                 CalendarContract.Instances.BEGIN,
                 CalendarContract.Instances.END,
                 CalendarContract.Instances.TITLE,
+                CalendarContract.Instances.EVENT_LOCATION
         };
 
         int EVENT_ID = 0;
         int BEGIN = 1;
         int END = 2;
         int TITLE = 3;
+        int EVENT_LOCATION = 4;
     }
 
     private interface CalendarsQuery {
         String[] PROJECTION = {
-                CalendarContract.Calendars._ID,
-                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                CalendarContract.Calendars.ACCOUNT_NAME,
-                CalendarContract.Calendars.OWNER_ACCOUNT
+                CalendarContract.Calendars._ID
         };
 
         int ID = 0;
-        int DISPLAY_NAME = 1;
-        int ACCOUNT_NAME = 2;
-        int OWNER_ACOUNT = 3;
     }
 }
