@@ -14,11 +14,11 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">DashClock Widget</string>
-    <string name="widget_label">DashClock</string>
+<resources>
+    <string name="app_name" translatable="false">DashClock Widget</string>
+    <string name="widget_label" translatable="false">DashClock</string>
 
-    <string name="status_none">––</string>
+    <string name="status_none" translatable="false">––</string>
 
     <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
     <string name="permission_label_read_extension_data">Request DashClock extension data</string>
@@ -30,6 +30,7 @@
     <string name="title_configure">Configure DashClock Widget</string>
     <string name="section_extensions">Extensions</string>
     <string name="section_appearance">Appearance</string>
+    <string name="section_advanced">Advanced</string>
 
     <string name="add_another_extension">Add another extension</string>
     <string name="more_extensions">More extensions</string>
@@ -38,11 +39,11 @@
     <string name="cancel">Cancel</string>
 
     <string name="prev_date_style">Previous date style</string>
-    <string name="prev_time_style">Previous date style</string>
+    <string name="prev_time_style">Previous time style</string>
     <string name="next_date_style">Next date style</string>
     <string name="next_time_style">Next time style</string>
 
-    <string name="incompatible_extension_menu_template"><xliff:g id="title">%1$s</xliff:g> (Incompatible)</string>
+    <string name="incompatible_extension_menu_template">%1$s (Incompatible)</string>
     <string name="incompatible_extension_title">Incompatible extension</string>
     <string name="incompatible_extension_message_search_play_template"><![CDATA[The
         <b>%1$s</b> extension is incompatible with this version of DashClock.
@@ -53,7 +54,7 @@
     <string name="close">Close</string>
     <string name="about">About</string>
 
-    <string name="app_name_and_version"><![CDATA[
+    <string name="app_name_and_version" translatable="false"><![CDATA[
         <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
     ]]></string>
     <string name="about_body"><![CDATA[
@@ -74,16 +75,10 @@
         conditions, as well as forecast information. Powered by Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Weather Extension Settings</string>
-    <string name="temperature_template"><xliff:g id="temp">%1$s</xliff:g>°
-    </string>
-    <string name="weather_expanded_title_template">
-        <xliff:g id="temp">%1$s</xliff:g>
-        —
-        <xliff:g id="condition">%2$s</xliff:g>
-    </string>
-    <string name="later_forecast_template">Later:
-        <xliff:g id="forecast">%1$s</xliff:g>
-    </string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="weather_expanded_title_template" translatable="false">%1$s — %2$s</string>
+    <string name="later_forecast_template">Later: %1$s</string>
+    <string name="no_weather_data">No weather data available</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail unread count</string>
@@ -91,10 +86,9 @@
         Displays an unread count for your Gmail inbox or priority inbox.
     </string>
     <string name="title_gmail_settings">Gmail Extension Settings</string>
-    <string name="gmail_title_template">
-        <xliff:g id="emails">%1$d</xliff:g>
-        unread
-    </string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d unread</item>
+    </plurals>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Next alarm</string>
@@ -107,24 +101,20 @@
     <string name="calendar_extension_title">Calendar appointment</string>
     <string name="calendar_extension_description">
         Displays information about your next calendar appointment, if one is scheduled within
-        the next six hours.
+        the next few hours.
     </string>
     <string name="title_calendar_settings">Calendar Extension Settings</string>
+
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s day</item>
+        <item quantity="other">%1$s days</item>
+    </plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="one">
-            <xliff:g id="hours">%1$s</xliff:g>
-            hr
-        </item>
-        <item quantity="other">
-            <xliff:g id="hours">%1$s</xliff:g>
-            hrs
-        </item>
+        <item quantity="one">%1$s hr</item>
+        <item quantity="other">%1$s hrs</item>
     </plurals>
     <plurals name="calendar_template_mins">
-        <item quantity="other">
-            <xliff:g id="hours">%1$s</xliff:g>
-            min
-        </item>
+        <item quantity="other">%1$s min</item>
     </plurals>
 
     <!-- Missed calls -->
@@ -133,18 +123,10 @@
         Displays the number of missed calls and the names of callers you missed.
     </string>
     <plurals name="missed_calls_title_template">
-        <item quantity="one">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            missed call
-        </item>
-        <item quantity="other">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            missed calls
-        </item>
+        <item quantity="one">%1$s missed call</item>
+        <item quantity="other">%1$s missed calls</item>
     </plurals>
-    <string name="missed_calls_body_template">From:
-        <xliff:g id="names">%1$s</xliff:g>
-    </string>
+    <string name="missed_calls_body_template">From: %1$s</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Text messages</string>
@@ -152,23 +134,15 @@
         Displays the number of unread SMS and MMS conversations, along with sender names.
     </string>
     <plurals name="sms_title_template">
-        <item quantity="one">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            unread conversation
-        </item>
-        <item quantity="other">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            unread conversations
-        </item>
+        <item quantity="one">%1$s unread conversation</item>
+        <item quantity="other">%1$s unread conversations</item>
     </plurals>
-    <string name="sms_body_template">From:
-        <xliff:g id="names">%1$s</xliff:g>
-    </string>
+    <string name="sms_body_template">From: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Customize your DashClock</string>
     <string name="welcome_description">Want to just see the current date and time? Then
-        press the checkbox above and you\'re set! But why not customize DashClock with a
+        press the check mark above and you\'re set! But why not customize DashClock with a
         few <i>extensions</i>?
         \n\n<b>Extensions</b> show you relevant and timely information, right inside DashClock!
         Try them out by adding a few extensions below.

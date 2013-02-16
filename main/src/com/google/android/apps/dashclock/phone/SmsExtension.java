@@ -83,11 +83,13 @@ public class SmsExtension extends DashClockExtension {
             }
 
             if (contactId <= 0) {
-                Cursor contactCursor = openContactsCursorByAddress(address);
-                if (contactCursor.moveToFirst()) {
-                    displayName = contactCursor.getString(ContactsQuery.DISPLAY_NAME);
+                Cursor contactCursor = tryOpenContactsCursorByAddress(address);
+                if (contactCursor != null) {
+                    if (contactCursor.moveToFirst()) {
+                        displayName = contactCursor.getString(ContactsQuery.DISPLAY_NAME);
+                    }
+                    contactCursor.close();
                 }
-                contactCursor.close();
             }
 
             if (names.length() > 0) {
@@ -124,7 +126,8 @@ public class SmsExtension extends DashClockExtension {
         return getContentResolver().query(
                 TelephonyProviderConstants.MmsSms.CONTENT_CONVERSATIONS_URI,
                 MmsSmsQuery.PROJECTION,
-                TelephonyProviderConstants.Mms.READ + "=0 AND ("
+                TelephonyProviderConstants.Mms.READ + "=0 AND "
+                        + TelephonyProviderConstants.Mms.THREAD_ID + "!=0 AND ("
                         + TelephonyProviderConstants.Mms.MESSAGE_BOX + "="
                         + TelephonyProviderConstants.Mms.MESSAGE_BOX_INBOX + " OR "
                         + TelephonyProviderConstants.Sms.TYPE + "="
@@ -156,14 +159,21 @@ public class SmsExtension extends DashClockExtension {
                 null);
     }
 
-    private Cursor openContactsCursorByAddress(String phoneNumber) {
-        return getContentResolver().query(
-                ContactsContract.PhoneLookup.CONTENT_FILTER_URI.buildUpon()
-                        .appendPath(Uri.encode(phoneNumber)).build(),
-                ContactsQuery.PROJECTION,
-                null,
-                null,
-                null);
+    private Cursor tryOpenContactsCursorByAddress(String phoneNumber) {
+        try {
+            return getContentResolver().query(
+                    ContactsContract.PhoneLookup.CONTENT_FILTER_URI.buildUpon()
+                            .appendPath(Uri.encode(phoneNumber)).build(),
+                    ContactsQuery.PROJECTION,
+                    null,
+                    null,
+                    null);
+        } catch (IllegalArgumentException e) {
+            // Can be called by the content provider (from Google Play crash/ANR console)
+            // java.lang.IllegalArgumentException: URI: content://com.android.contacts/phone_lookup/
+            LogUtils.LOGW(TAG, "Error looking up contact name", e);
+            return null;
+        }
     }
 
     private interface MmsSmsQuery {

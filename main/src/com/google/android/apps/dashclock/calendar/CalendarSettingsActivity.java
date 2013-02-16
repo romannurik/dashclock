@@ -23,7 +23,6 @@ import net.nurik.roman.dashclock.R;
 import android.os.Bundle;
 
 public class CalendarSettingsActivity extends BaseSettingsActivity {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +31,12 @@ public class CalendarSettingsActivity extends BaseSettingsActivity {
 
     @Override
     protected void setupSimplePreferencesScreen() {
-        // In the simplified UI, fragments are not used at all and we instead
-        // use the older PreferenceActivity APIs.
+        // Add 'general' preferences.
+        addPreferencesFromResource(R.xml.pref_calendar);
 
-        // Initially we just have the option to set the calendars.
-        addCalendarsPreference();
-    }
-
-    private void addCalendarsPreference() {
-
+        // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
+        // their values. When their values change, their summaries are updated
+        // to reflect the new value, per the Android Design guidelines.
+        bindPreferenceSummaryToValue(findPreference(CalendarExtension.PREF_LOOK_AHEAD_HOURS));
     }
 }

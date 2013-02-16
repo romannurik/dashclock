@@ -15,10 +15,7 @@
   -->
 
 <TextClock xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    style="@style/TimeComponent"
     android:format12Hour="h:mm"
     android:format24Hour="kk:mm"
-    android:fontFamily="sans-serif-thin"
-    android:textSize="@dimen/clock_text_size_large"
-    android:textColor="#fff" />
+    android:fontFamily="sans-serif-thin" />

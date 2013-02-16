@@ -1,0 +1,140 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">Lädt Daten von DashClock-Erweiterungen</string>
+    <string name="permission_label_read_extension_data">Daten von DashClock-Erweiterungen laden</string>
+
+    <string name="settings">Einstellungen</string>
+    <string name="more_options">Erweiterte Einstellungen</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">DashClock Widget konfigurieren</string>
+    <string name="section_extensions">Erweiterungen</string>
+    <string name="section_appearance">Aussehen</string>
+    <string name="section_advanced">Erweitert</string>
+
+    <string name="add_another_extension">Erweiterungen hinzufügen</string>
+    <string name="more_extensions">Weitere Erweiterungen</string>
+    <string name="done">Fertig</string>
+    <string name="add_extension">Erweiterung hinzufügen</string>
+    <string name="cancel">Abbrechen</string>
+
+    <string name="prev_date_style">Vorheriger Datumsstil</string>
+    <string name="prev_time_style">Vorheriger Zeitstil</string>
+    <string name="next_date_style">Nächster Datumsstil</string>
+    <string name="next_time_style">Nächster Zeitstil</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (inkompatibel)</string>
+    <string name="incompatible_extension_title">Inkompatible Erweiterung</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[Die
+        Erweiterung <b>%1$s</b> ist mit dieser Version des DashClock Widgets nicht kompatibel.
+        Bitte prüfen ob ein Update auf GooglePlay verfügbar ist.]]></string>
+    <string name="search_play">Auf Google Play suchen</string>
+
+    <!-- About -->
+    <string name="close">Schließen</string>
+    <string name="about">Über</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Allgemeine Geschäftsbedingungen</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Datenschutzbestimmungen</a><br><br>
+        Ein großer Dank geht an folgende Open Source Anwendungen:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>von Günther Beyer von <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>von Carl A. Bauer</i><br><br>
+        Deutsche Übersetzung von Maximilian Narr, Claudio Weber und robvisual<br><br>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Wetter</string>
+    <string name="weather_extension_description">
+        Zeigt das aktuelle Wetter an Ihrem Standort an, darunter die aktuelle Temperatur, Wetterverhältnisse und Vorhersagen.
+        Realisiert mit Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Wetter-Einstellungen</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Später: %1$s</string>
+    <string name="no_weather_data">Keine Wetterdaten verfügbar</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Ungelesene Gmail Nachrichten</string>
+    <string name="gmail_extension_description">
+        Zeigt die Anzahl Ihrer ungelesenen GoogleMail-Nachrichten im Posteingang an.
+    </string>
+    <string name="title_gmail_settings">Gmail-Einstellungen</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d ungelesene</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Nächster Alarm</string>
+    <string name="next_alarm_extension_description">
+        Zeigt informationen über den nächsten Alarm an, sofern einer geplant ist.
+    </string>
+    <string name="next_alarm">Nächster Alarm</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Kalender</string>
+    <string name="calendar_extension_description">
+        Zeigt Informationen über Ihren nächsten Termin an, sofern einer in den nächsten Stunden bevorsteht.
+    </string>
+    <string name="title_calendar_settings">Kalendereinstellungen</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s Tag</item>
+        <item quantity="other">%1$s Tage</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s Stunde</item>
+        <item quantity="other">%1$s Stunden</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="one">%1$s Minute</item>
+        <item quantity="other">%1$s Minuten</item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Verpasste Anrufe</string>
+    <string name="missed_calls_extension_description">
+        Zeigt die Anzahl verpasster Anrufe und den Namen der Anrufer an.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s verpasster Anruf</item>
+        <item quantity="other">%1$s verpasste Anrufe</item>
+    </plurals>
+    <string name="missed_calls_body_template">Von: %1$s</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">SMS/ MMS</string>
+    <string name="sms_extension_description">
+        Zeigt die Anzahl ungelesener SMS/ MMS, sowie deren Absender an.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s ungelesene Nachricht</item>
+        <item quantity="other">%1$s ungelesene Nachrichten</item>
+    </plurals>
+    <string name="sms_body_template">Von: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Passen Sie Ihre DashClock an!</string>
+    <string name="welcome_description">Sie wollen nur die Zeit und das Datum sehen? Dann drücken Sie auf das Häkchen oben links! Aber warum die DashClock nicht mit einigen <i>Erweiterungen</i> anpassen?
+        \n\n<b>Erweiterungen</b> zeigen Ihnen neue und relevante Ereignisse und Informationen direkt in der DashClock an!
+        Probieren Sie einige Erweiterungen aus, indem Sie sie unten hinzufügen.
+    </string>
+
+</resources>

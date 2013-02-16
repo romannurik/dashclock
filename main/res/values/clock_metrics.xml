@@ -16,10 +16,10 @@
 
 <resources>
     <dimen name="clock_left_margin">0dp</dimen>
-    <dimen name="clock_text_size_large">72sp</dimen>
-    <dimen name="clock_text_size_small">48sp</dimen>
-    <dimen name="clock_date_text_size">16sp</dimen>
-    <dimen name="clock_date_top_margin">-12sp</dimen>
 
-    <dimen name="extension_list_margin_top">16dp</dimen>
+    <!-- We use dp units instead of sp since the lock screen is a fixed size area. -->
+    <dimen name="clock_text_size_large">72dp</dimen>
+    <dimen name="clock_text_size_small">48dp</dimen>
+    <dimen name="clock_date_text_size">16dp</dimen>
+    <dimen name="clock_date_top_margin">-12dp</dimen>
 </resources>

@@ -14,17 +14,22 @@
   limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:minHeight="?android:listPreferredItemHeight">
+    android:orientation="horizontal"
+    android:baselineAligned="true">
 
-    <!--
-    <ProgressBar
-        style="?android:progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true" />
-    -->
-</FrameLayout>
+    <TextClock
+        style="@style/TimeComponent"
+        android:format12Hour="h"
+        android:format24Hour="kk"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold" />
+
+    <TextClock
+        style="@style/TimeComponent"
+        android:format12Hour=":mm"
+        android:format24Hour=":mm"
+        android:fontFamily="sans-serif-thin" />
+</LinearLayout>

@@ -76,7 +76,8 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
                 // Set the summary to reflect the new value.
                 preference.setSummary(
                         index >= 0
-                                ? listPreference.getEntries()[index]
+                                ? (listPreference.getEntries()[index])
+                                .toString().replaceAll("%", "%%")
                                 : null);
 
             } else if (preference instanceof RingtonePreference) {
@@ -116,7 +117,7 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
      * value. The summary is also immediately updated upon calling this method. The exact display
      * format is dependent on the type of preference.
      */
-    protected static void bindPreferenceSummaryToValue(Preference preference) {
+    public static void bindPreferenceSummaryToValue(Preference preference) {
         setAndCallPreferenceChangeListener(preference, sBindPreferenceSummaryToValueListener);
     }
 
@@ -124,7 +125,7 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
      * When the preference's value is changed, trigger the given listener. The listener is also
      * immediately called with the preference's current value upon calling this method.
      */
-    protected static void setAndCallPreferenceChangeListener(Preference preference,
+    public static void setAndCallPreferenceChangeListener(Preference preference,
             Preference.OnPreferenceChangeListener listener) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(listener);

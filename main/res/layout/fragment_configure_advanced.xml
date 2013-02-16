@@ -14,12 +14,10 @@
   limitations under the License.
   -->
 
-<resources>
-    <dimen name="clock_left_margin">40dp</dimen>
-
-    <!-- We use dp units instead of sp since the lock screen is a fixed size area. -->
-    <dimen name="clock_text_size_large">96dp</dimen>
-    <dimen name="clock_text_size_small">64dp</dimen>
-    <dimen name="clock_date_text_size">22dp</dimen>
-    <dimen name="clock_date_top_margin">-22dp</dimen>
-</resources>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="@color/configure_light_background" />

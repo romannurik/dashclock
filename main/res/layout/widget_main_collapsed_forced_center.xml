@@ -28,17 +28,17 @@
     <LinearLayout android:id="@+id/clock_row"
         android:orientation="horizontal"
         android:baselineAligned="false"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
 
         <include layout="@layout/widget_include_clock" />
 
         <LinearLayout android:id="@+id/collapsed_extensions_container"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical">
 
             <!--suppress AndroidLintUseCompoundDrawables -->
             <LinearLayout

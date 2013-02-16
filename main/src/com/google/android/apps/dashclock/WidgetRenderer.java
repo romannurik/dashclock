@@ -43,6 +43,7 @@ import android.widget.RemoteViewsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 
@@ -95,7 +96,19 @@ public class WidgetRenderer {
         // tablets).
         boolean isTablet = res.getConfiguration().smallestScreenWidthDp >= 600;
 
+        // Pull high-level user-defined appearance options.
+        int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(context);
+        boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(context);
+
         int activeExtensions = mExtensions.size();
+
+        int visibleExtensions = 0;
+        for (ExtensionManager.ExtensionWithData ci : mExtensions) {
+            if (!ci.latestData.visible()) {
+                continue;
+            }
+            ++visibleExtensions;
+        }
 
         for (int appWidgetId : appWidgetIds) {
             boolean isLockscreen = false;
@@ -113,8 +126,16 @@ public class WidgetRenderer {
                     res.getDisplayMetrics().density);
 
             RemoteViews rv = new RemoteViews(context.getPackageName(),
-                    isExpanded ? R.layout.widget_main_expanded : R.layout.widget_main_collapsed);
-            rv.setViewVisibility(R.id.shade, isLockscreen ? View.GONE : View.VISIBLE);
+                    isExpanded
+                            ? (aggressiveCentering
+                                    ? R.layout.widget_main_expanded_forced_center
+                                    : R.layout.widget_main_expanded)
+                            : (aggressiveCentering
+                                    ? R.layout.widget_main_collapsed_forced_center
+                                    : R.layout.widget_main_collapsed));
+            rv.setInt(R.id.shade, "setBackgroundColor", shadeColor);
+            rv.setViewVisibility(R.id.shade, (isLockscreen || shadeColor == 0)
+                    ? View.GONE : View.VISIBLE);
 
             // Configure clock face
             rv.removeAllViews(R.id.time_container);
@@ -128,34 +149,43 @@ public class WidgetRenderer {
             boolean isPortrait = res.getConfiguration().orientation
                     == Configuration.ORIENTATION_PORTRAIT;
 
-            boolean forceCentered = isTablet && isPortrait && isLockscreen;
+            if (aggressiveCentering) {
+                // Forced/aggressive centering rules
+                rv.setViewVisibility(R.id.settings_button_center_displacement, View.VISIBLE);
+                rv.setViewPadding(R.id.clock_row, 0, 0, 0, 0);
+                rv.setInt(R.id.clock_target, "setGravity", Gravity.CENTER_HORIZONTAL);
 
-            int clockInnerGravity = Gravity.CENTER_HORIZONTAL;
-            if (activeExtensions > 0 && !forceCentered) {
-                // Extensions are visible, don't center clock
-                if (isLockscreen) {
-                    // lock screen
-                    clockInnerGravity = isTablet ? Gravity.LEFT : Gravity.RIGHT;
-                } else {
-                    // home screen
-                    clockInnerGravity = (isExpanded && isTablet) ? Gravity.LEFT : Gravity.RIGHT;
+            } else {
+                // Basic centering rules
+                boolean forceCentered = isTablet && isPortrait && isLockscreen;
+
+                int clockInnerGravity = Gravity.CENTER_HORIZONTAL;
+                if (activeExtensions > 0 && !forceCentered) {
+                    // Extensions are visible, don't center clock
+                    if (isLockscreen) {
+                        // lock screen
+                        clockInnerGravity = isTablet ? Gravity.LEFT : Gravity.RIGHT;
+                    } else {
+                        // home screen
+                        clockInnerGravity = (isExpanded && isTablet) ? Gravity.LEFT : Gravity.RIGHT;
+                    }
                 }
-            }
-            rv.setInt(R.id.clock_target, "setGravity", clockInnerGravity);
+                rv.setInt(R.id.clock_target, "setGravity", clockInnerGravity);
 
-            boolean clockCentered = activeExtensions == 0 || forceCentered; // left otherwise
-            rv.setViewVisibility(R.id.collapsed_extensions_container,
-                    clockCentered ? View.GONE : View.VISIBLE);
-            rv.setInt(R.id.clock_row, "setGravity",
-                    clockCentered ? Gravity.CENTER_HORIZONTAL : Gravity.LEFT);
-            rv.setViewVisibility(R.id.settings_button_center_displacement,
-                    clockCentered ? View.INVISIBLE : View.GONE);
+                boolean clockCentered = activeExtensions == 0 || forceCentered; // left otherwise
+                rv.setInt(R.id.clock_row, "setGravity",
+                        clockCentered ? Gravity.CENTER_HORIZONTAL : Gravity.LEFT);
+                rv.setViewVisibility(R.id.settings_button_center_displacement,
+                        clockCentered ? View.INVISIBLE : View.GONE);
+
+                int clockLeftMargin = res.getDimensionPixelSize(R.dimen.clock_left_margin);
+                rv.setViewPadding(R.id.clock_row, clockCentered ? 0 : clockLeftMargin, 0, 0, 0);
+            }
 
             rv.setViewVisibility(R.id.widget_divider,
-                    (activeExtensions > 0) ? View.VISIBLE : View.GONE);
-
-            int clockLeftMargin = res.getDimensionPixelSize(R.dimen.clock_left_margin);
-            rv.setViewPadding(R.id.clock_row, clockCentered ? 0 : clockLeftMargin, 0, 0, 0);
+                    (visibleExtensions > 0) ? View.VISIBLE : View.GONE);
+            rv.setViewVisibility(R.id.collapsed_extensions_container,
+                    (activeExtensions > 0 && !isExpanded) ? View.VISIBLE : View.GONE);
 
             // Clock
             rv.setOnClickPendingIntent(R.id.clock_target, PendingIntent.getActivity(
@@ -230,7 +260,7 @@ public class WidgetRenderer {
                         rv.setTextViewTextSize(extensionTextId, TypedValue.COMPLEX_UNIT_PX,
                                 extensionCollapsedTextSizeSingleLine);
                     }
-                    rv.setTextViewText(extensionTextId, status.toUpperCase());
+                    rv.setTextViewText(extensionTextId, status.toUpperCase(Locale.getDefault()));
                     rv.setImageViewBitmap(COLLAPSED_EXTENSION_SLOTS[slotIndex].iconId,
                             loadExtensionIcon(context, ci.componentName, ci.latestData.icon()));
 

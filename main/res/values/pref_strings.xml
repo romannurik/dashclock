@@ -14,14 +14,34 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_homescreen_background_opacity_title">Home screen widget background</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Fully transparent</item>
+        <item>25% black</item>
+        <item>50% black</item>
+        <item>75% black</item>
+        <item>100% black</item>
+    </string-array>
+    <string-array name="pref_homescreen_background_opacity_values" translatable="false">
+        <item>0</item>
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Always center</string>
+    <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
+
     <!-- Weather -->
     <string name="pref_weather_units_title">Weather units</string>
     <string-array name="pref_weather_units_display_names">
         <item>°F</item>
         <item>°C</item>
     </string-array>
-    <string-array name="pref_weather_units_values">
+    <string-array name="pref_weather_units_values" translatable="false">
         <item>f</item>
         <item>c</item>
     </string-array>
@@ -32,20 +52,33 @@
         <item>Inbox</item>
         <item>Priority Inbox</item>
     </string-array>
-    <string-array name="pref_gmail_label_inbox_values">
+    <string-array name="pref_gmail_label_inbox_values" translatable="false">
         <item>i</item>
         <item>p</item>
     </string-array>
 
     <string name="pref_gmail_accounts_title">Show unread count for accounts</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">
-            <xliff:g id="selected">%1$d</xliff:g> of <xliff:g id="total">%2$d</xliff:g>
-            account selected
-        </item>
-        <item quantity="other">
-            <xliff:g id="selected">%1$d</xliff:g> of <xliff:g id="total">%2$d</xliff:g>
-            accounts selected
-        </item>
+        <item quantity="one">%1$d of %2$d account selected</item>
+        <item quantity="other">%1$d of %2$d accounts selected</item>
     </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Show appointments in the next</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+        <item>week</item>
+    </string-array>
+    <string-array name="pref_calendar_look_ahead_hours_values" translatable="false">
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+        <item>168</item>
+    </string-array>
 </resources>
