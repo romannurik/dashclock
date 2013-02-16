@@ -77,14 +77,14 @@
         <activity
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
             android:label="@string/title_configure"
-            android:theme="@style/ConfigurationActivityTheme">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>-->
+            android:theme="@style/ConfigurationActivityTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

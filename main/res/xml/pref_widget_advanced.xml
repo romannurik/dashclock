@@ -14,7 +14,13 @@
   limitations under the License.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/net.nurik.roman.dashclock">
+
+    <com.google.android.apps.dashclock.configuration.AppChooserPreference
+        android:key="pref_clock_shortcut"
+        android:title="@string/pref_clock_shortcut_title"
+        app:allowUseDefault="true" />
 
     <ListPreference
         android:key="pref_homescreen_background_opacity"

@@ -69,9 +69,23 @@ public class ConfigurationActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configure);
 
         Intent intent = getIntent();
+        if (intent != null && Intent.ACTION_CREATE_SHORTCUT.equals(intent.getAction())) {
+            Intent.ShortcutIconResource icon = new Intent.ShortcutIconResource();
+            icon.packageName = getPackageName();
+            icon.resourceName = getResources().getResourceName(R.drawable.ic_launcher);
+            setResult(RESULT_OK, new Intent()
+                    .putExtra(Intent.EXTRA_SHORTCUT_NAME, getTitle())
+                    .putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon)
+                    .putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                            new Intent(this, ConfigurationActivity.class)));
+            finish();
+            return;
+        }
+
+        setContentView(R.layout.activity_configure);
+
         if (intent != null
                 && AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(intent.getAction())) {
             mNewWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mNewWidgetId);

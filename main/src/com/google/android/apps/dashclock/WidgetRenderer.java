@@ -16,6 +16,7 @@
 
 package com.google.android.apps.dashclock;
 
+import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 import com.google.android.apps.dashclock.configuration.ConfigurationActivity;
 
@@ -27,6 +28,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -34,6 +36,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -52,6 +55,11 @@ import static com.google.android.apps.dashclock.LogUtils.LOGE;
  */
 public class WidgetRenderer {
     private static final String TAG = LogUtils.makeLogTag(WidgetRenderer.class);
+
+    public static final String PREF_CLOCK_SHORTCUT = "pref_clock_shortcut";
+    public static final Intent DEFAULT_CLOCK_INTENT = new Intent(Intent.ACTION_MAIN)
+            .setPackage("com.google.android.deskclock")
+            .addCategory(Intent.CATEGORY_LAUNCHER);
 
     private static class CollapsedExtensionSlot {
         int targetId;
@@ -87,6 +95,11 @@ public class WidgetRenderer {
         final ExtensionManager extensionManager = ExtensionManager.getInstance(context);
         final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         final Resources res = context.getResources();
+
+        // Load some settings
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        Intent clockIntent = AppChooserPreference.getIntentValue(
+                sp.getString(PREF_CLOCK_SHORTCUT, null), DEFAULT_CLOCK_INTENT);
 
         // Load data from extensions
         List<ExtensionManager.ExtensionWithData> mExtensions
@@ -191,9 +204,7 @@ public class WidgetRenderer {
             rv.setOnClickPendingIntent(R.id.clock_target, PendingIntent.getActivity(
                     context,
                     0,
-                    new Intent(Intent.ACTION_MAIN)
-                            .setPackage("com.google.android.deskclock")
-                            .addCategory(Intent.CATEGORY_LAUNCHER),
+                    clockIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT));
 
             for (CollapsedExtensionSlot slot : COLLAPSED_EXTENSION_SLOTS) {

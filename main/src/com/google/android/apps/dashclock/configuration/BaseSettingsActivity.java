@@ -102,6 +102,10 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
                     }
                 }
 
+            } else if (preference instanceof AppChooserPreference) {
+                preference.setSummary(AppChooserPreference.getDisplayValue(
+                        preference.getContext(), stringValue));
+
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.

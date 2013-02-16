@@ -20,6 +20,7 @@ import com.google.android.apps.dashclock.LogUtils;
 import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
 import net.nurik.roman.dashclock.BuildConfig;
 import net.nurik.roman.dashclock.R;
@@ -65,6 +66,9 @@ public class WeatherExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(WeatherExtension.class);
 
     public static final String PREF_WEATHER_UNITS = "pref_weather_units";
+    public static final String PREF_WEATHER_SHORTCUT = "pref_weather_shortcut";
+    public static final Intent DEFAULT_WEATHER_INTENT = new Intent(Intent.ACTION_VIEW,
+            Uri.parse("https://www.google.com/search?q=weather"));
 
     private static final long STALE_LOCATION_NANOS = 10l * 60000000000l; // 10 minutes
 
@@ -73,6 +77,7 @@ public class WeatherExtension extends DashClockExtension {
     private static final Criteria sLocationCriteria;
 
     private static String sWeatherUnits = "f";
+    private static Intent sWeatherIntent;
 
     private boolean mOneTimeLocationListenerActive = false;
 
@@ -96,6 +101,8 @@ public class WeatherExtension extends DashClockExtension {
     protected void onUpdateData(int reason) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sWeatherUnits = sp.getString(PREF_WEATHER_UNITS, sWeatherUnits);
+        sWeatherIntent = AppChooserPreference.getIntentValue(
+                sp.getString(PREF_WEATHER_SHORTCUT, null), DEFAULT_WEATHER_INTENT);
 
         NetworkInfo ni = ((ConnectivityManager) getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -207,8 +214,7 @@ public class WeatherExtension extends DashClockExtension {
 
         return extensionData
                 .visible(true)
-                .clickIntent(new Intent(Intent.ACTION_VIEW)
-                        .setData(Uri.parse("https://www.google.com/search?q=weather")));
+                .clickIntent(sWeatherIntent);
     }
 
     private static WeatherData getWeatherForLocation(Location location)

@@ -14,7 +14,8 @@
   limitations under the License.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/net.nurik.roman.dashclock">
 
     <ListPreference
         android:key="pref_weather_units"
@@ -24,5 +25,10 @@
         android:defaultValue="f"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
+
+    <com.google.android.apps.dashclock.configuration.AppChooserPreference
+        android:key="pref_weather_shortcut"
+        android:title="@string/pref_shortcut_title"
+        app:allowUseDefault="true" />
 
 </PreferenceScreen>

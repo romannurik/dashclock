@@ -32,6 +32,9 @@
     <string name="section_appearance">Appearance</string>
     <string name="section_advanced">Advanced</string>
 
+    <string name="title_apps">Apps</string>
+    <string name="title_shortcuts">Shortcuts</string>
+
     <string name="add_another_extension">Add another extension</string>
     <string name="more_extensions">More extensions</string>
     <string name="done">Done</string>

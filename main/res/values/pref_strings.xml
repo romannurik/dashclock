@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Clock shortcut</string>
     <string name="pref_homescreen_background_opacity_title">Home screen widget background</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Fully transparent</item>
@@ -34,6 +35,10 @@
 
     <string name="pref_aggressive_centering_title">Always center</string>
     <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Shortcut</string>
+    <string name="pref_shortcut_default">(Default)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Weather units</string>
