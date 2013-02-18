@@ -109,7 +109,7 @@
         the next few hours.
     </string>
     <string name="title_calendar_settings">Calendar Extension Settings</string>
-
+    <string name="calendar_with_location_template" translatable="false">%1$s — %2$s</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s day</item>
         <item quantity="other">%1$s days</item>

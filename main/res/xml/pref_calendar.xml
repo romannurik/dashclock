@@ -25,4 +25,15 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
+    <CheckBoxPreference
+        android:key="pref_calendar_custom_visibility"
+        android:title="@string/pref_calendar_custom_visibility_title"
+        android:summary="@string/pref_calendar_custom_visibility_description"
+        android:defaultValue="false" />
+
+    <com.google.android.apps.dashclock.calendar.CalendarSelectionPreference
+        android:dependency="pref_calendar_custom_visibility"
+        android:key="pref_calendar_selected"
+        android:title="@string/pref_calendar_selected_title" />
+
 </PreferenceScreen>

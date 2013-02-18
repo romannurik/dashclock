@@ -94,7 +94,6 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
     @Override
     public void onExtensionsChanged() {
-        LOGD(TAG, "onExtensionsChanged");
         mUpdateHandler.removeCallbacks(mUpdateAllWidgetsRunnable);
         mUpdateHandler.postDelayed(mUpdateAllWidgetsRunnable, 2000);
     }
@@ -125,7 +124,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         for (int appWidgetId : appWidgetIds) {
             sb.append(appWidgetId).append(" ");
         }
-        LOGD(TAG, "Updating widgets with appWidgetId(s): " + sb);
+        LOGD(TAG, "Rendering widgets with appWidgetId(s): " + sb);
 
         WidgetRenderer.renderWidgets(this, appWidgetIds);
     }

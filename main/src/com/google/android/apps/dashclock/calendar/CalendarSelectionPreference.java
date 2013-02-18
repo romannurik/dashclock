@@ -23,18 +23,20 @@ import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CalendarSelectionPreference extends MultiSelectListPreference {
@@ -49,13 +51,17 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
 
     public CalendarSelectionPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        String[] allCalendars = CalendarExtension.getAllCalendars(context);
-        Set<String> allCalendarsSet = new HashSet<String>();
-        allCalendarsSet.addAll(Arrays.asList(allCalendars));
+        List<Pair<String, Boolean>> allCalendars = CalendarExtension.getAllCalendars(context);
+        Set<String> allVisibleCalendarsSet = new HashSet<String>();
+        for (Pair<String, Boolean> pair : allCalendars) {
+            if (pair.second) {
+                allVisibleCalendarsSet.add(pair.first);
+            }
+        }
 
         mSelectedCalendars = PreferenceManager
                 .getDefaultSharedPreferences(context)
-                .getStringSet(CalendarExtension.PREF_CALENDARS, allCalendarsSet);
+                .getStringSet(CalendarExtension.PREF_SELECTED_CALENDARS, allVisibleCalendarsSet);
 
         mAdapter = new CalendarListAdapter(context);
         mQueryHandler = new QueryHandler(context, mAdapter);
@@ -67,16 +73,19 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
     @Override
     protected void onPrepareDialogBuilder(Builder builder) {
         builder.setAdapter(mAdapter, null);
+        builder.setTitle(R.string.pref_calendar_selected_title);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-                sp.edit().putStringSet(CalendarExtension.PREF_CALENDARS, mSelectedCalendars).commit();
+                sp.edit().putStringSet(CalendarExtension.PREF_SELECTED_CALENDARS, mSelectedCalendars)
+                        .commit();
 
                 // since we have extended the list preference, it is our responsibility to inform the change listener.
                 if (getOnPreferenceChangeListener() != null) {
-                    getOnPreferenceChangeListener().onPreferenceChange(CalendarSelectionPreference.this,
-                            mSelectedCalendars);
+                    getOnPreferenceChangeListener()
+                            .onPreferenceChange(CalendarSelectionPreference.this,
+                                    mSelectedCalendars);
                 }
             }
         });
@@ -96,8 +105,13 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
         }
     }
 
-    public class CalendarListAdapter extends ResourceCursorAdapter {
+    @Override
+    protected Object onGetDefaultValue(TypedArray a, int index) {
+        // No support for default value attribute
+        return null;
+    }
 
+    public class CalendarListAdapter extends ResourceCursorAdapter {
         public CalendarListAdapter(Context context) {
             super(context, R.layout.list_item_calendar, null, false);
         }
@@ -110,20 +124,19 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
             TextView accountNameView = (TextView) view.findViewById(android.R.id.text2);
             accountNameView.setText(cursor.getString(CalendarQuery.ACCOUNT_NAME));
 
-            final String calendar = cursor.getString(CalendarQuery.ID);
+            final String calendarId = cursor.getString(CalendarQuery.ID);
 
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.calendar_checkbox);
-            checkBox.setChecked(mSelectedCalendars.contains(calendar));
+            checkBox.setChecked(mSelectedCalendars.contains(calendarId));
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (mSelectedCalendars.contains(calendar)) {
-                        mSelectedCalendars.remove(calendar);
+                    if (mSelectedCalendars.contains(calendarId)) {
+                        mSelectedCalendars.remove(calendarId);
                         checkBox.setChecked(false);
                     } else {
-                        mSelectedCalendars.add(calendar);
+                        mSelectedCalendars.add(calendarId);
                         checkBox.setChecked(true);
                     }
                 }
@@ -135,7 +148,7 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
         public String[] PROJECTION = new String[] {
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                CalendarContract.Calendars.ACCOUNT_NAME
+                CalendarContract.Calendars.ACCOUNT_NAME,
         };
 
         public int ID = 0;

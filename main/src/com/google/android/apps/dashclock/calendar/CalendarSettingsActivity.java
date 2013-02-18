@@ -23,9 +23,10 @@ import net.nurik.roman.dashclock.R;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.Pair;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CalendarSettingsActivity extends BaseSettingsActivity {
@@ -39,7 +40,7 @@ public class CalendarSettingsActivity extends BaseSettingsActivity {
     protected void setupSimplePreferencesScreen() {
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_calendar);
-        addCalendarsPreference();
+        bindSelectedCalendarsPreference();
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
@@ -47,24 +48,26 @@ public class CalendarSettingsActivity extends BaseSettingsActivity {
         bindPreferenceSummaryToValue(findPreference(CalendarExtension.PREF_LOOK_AHEAD_HOURS));
     }
 
-    private void addCalendarsPreference() {
-        final String[] allCalendars = CalendarExtension.getAllCalendars(this);
-        Set<String> allCalendarsSet = new HashSet<String>();
-        allCalendarsSet.addAll(Arrays.asList(allCalendars));
+    private void bindSelectedCalendarsPreference() {
+        CalendarSelectionPreference preference = (CalendarSelectionPreference) findPreference(
+                CalendarExtension.PREF_SELECTED_CALENDARS);
+        final List<Pair<String, Boolean>> allCalendars = CalendarExtension.getAllCalendars(this);
+        Set<String> allVisibleCalendarsSet = new HashSet<String>();
+        for (Pair<String, Boolean> pair : allCalendars) {
+            if (pair.second) {
+                allVisibleCalendarsSet.add(pair.first);
+            }
+        }
 
-        CalendarSelectionPreference calendarPreference = new CalendarSelectionPreference(this);
-        calendarPreference.setKey(CalendarExtension.PREF_CALENDARS);
-        calendarPreference.setTitle(R.string.pref_select_calendars_title);
-        getPreferenceScreen().addPreference(calendarPreference);
-
-        Preference.OnPreferenceChangeListener calendarsChangeListener = new Preference.OnPreferenceChangeListener() {
+        Preference.OnPreferenceChangeListener calendarsChangeListener
+                = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object value) {
                 int numSelected = 0;
-                int numTotal = allCalendars.length;
+                int numTotal = allCalendars.size();
 
                 try {
-                    //noinspection check
+                    //noinspection check,unchecked
                     Set<String> selectedCalendars = (Set<String>) value;
 
                     if (selectedCalendars != null) {
@@ -74,16 +77,16 @@ public class CalendarSettingsActivity extends BaseSettingsActivity {
                 }
 
                 preference.setSummary(getResources().getQuantityString(
-                        R.plurals.pref_calendars_selected_summary_template,
+                        R.plurals.pref_calendar_selected_summary_template,
                         numTotal, numSelected, numTotal));
                 return true;
             }
         };
 
-        calendarPreference.setOnPreferenceChangeListener(calendarsChangeListener);
-        calendarsChangeListener.onPreferenceChange(calendarPreference,
+        preference.setOnPreferenceChangeListener(calendarsChangeListener);
+        calendarsChangeListener.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(this)
-                        .getStringSet(calendarPreference.getKey(), allCalendarsSet));
+                        .getStringSet(preference.getKey(), allVisibleCalendarsSet));
     }
 }

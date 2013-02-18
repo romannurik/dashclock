@@ -87,6 +87,7 @@ public class Utils {
     }
 
     public static Intent getDefaultAlarmsIntent(Context context) {
+        // TODO: consider using AlarmClock.ACTION_SET_ALARM, although it requires a permission
         PackageManager pm = context.getPackageManager();
         for (String packageName : CLOCK_PACKAGES) {
             try {

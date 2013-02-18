@@ -29,12 +29,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Pair;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -47,7 +50,8 @@ import static com.google.android.apps.dashclock.LogUtils.LOGW;
 public class CalendarExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(CalendarExtension.class);
 
-    public static final String PREF_CALENDARS = "pref_calendars";
+    public static final String PREF_CUSTOM_VISIBILITY = "pref_calendar_custom_visibility";
+    public static final String PREF_SELECTED_CALENDARS = "pref_calendar_selected";
     public static final String PREF_LOOK_AHEAD_HOURS = "pref_calendar_look_ahead_hours";
 
     private static final long MINUTE_MILLIS = 60 * 1000;
@@ -56,20 +60,20 @@ public class CalendarExtension extends DashClockExtension {
     private static final int DEFAULT_LOOK_AHEAD_HOURS = 6;
     private int mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
 
-    static String[] getAllCalendars(Context context) {
+    static List<Pair<String, Boolean>> getAllCalendars(Context context) {
         // Only return calendars that are marked as synced to device. (This is different from the display flag)
         Cursor cursor = context.getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI,
                 CalendarsQuery.PROJECTION,
-                CalendarContract.Calendars.SYNC_EVENTS + "==1",
+                CalendarContract.Calendars.SYNC_EVENTS + "=1",
                 null,
-                null
-        );
+                null);
 
-        String[] calendars = new String[cursor.getCount()];
-        int i = 0;
+        List<Pair<String, Boolean>> calendars = new ArrayList<Pair<String, Boolean>>();
         while (cursor.moveToNext()) {
-            calendars[i++] = cursor.getString(CalendarsQuery.ID);
+            calendars.add(new Pair<String, Boolean>(
+                    cursor.getString(CalendarsQuery.ID),
+                    cursor.getInt(CalendarsQuery.VISIBLE) == 1));
         }
 
         cursor.close();
@@ -78,12 +82,21 @@ public class CalendarExtension extends DashClockExtension {
 
     private Set<String> getSelectedCalendars() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        final String[] allCalendars = getAllCalendars(this);
+        boolean customVisibility = sp.getBoolean(PREF_CUSTOM_VISIBILITY, false);
+        Set<String> selectedCalendars = sp.getStringSet(PREF_SELECTED_CALENDARS, null);
+        if (!customVisibility || selectedCalendars == null) {
+            final List<Pair<String, Boolean>> allCalendars = getAllCalendars(this);
 
-        //build a set of all calendars in the event we don't have a selection set in the preferences.
-        Set<String> calendarSet = new HashSet<String>();
-        calendarSet.addAll(Arrays.asList(allCalendars));
-        return sp.getStringSet(PREF_CALENDARS, calendarSet);
+            // Build a set of all visible calendars in case we don't have a selection set in
+            // the preferences.
+            selectedCalendars = new HashSet<String>();
+            for (Pair<String, Boolean> pair : allCalendars) {
+                if (pair.second) {
+                    selectedCalendars.add(pair.first);
+                }
+            }
+        }
+        return selectedCalendars;
     }
 
     @Override
@@ -180,7 +193,11 @@ public class CalendarExtension extends DashClockExtension {
 
         String expandedTime = new SimpleDateFormat(expandedBodyFormat.toString())
                 .format(nextEventCalendar.getTime());
-        String expandedBody = String.format("%s - %s", expandedTime, eventLocation);
+        String expandedBody = expandedTime;
+        if (!TextUtils.isEmpty(eventLocation)) {
+            expandedBody = getString(R.string.calendar_with_location_template,
+                    expandedTime, eventLocation);
+        }
 
         publishUpdate(new ExtensionData()
                 .visible(timeUntilNextAppointent >= 0
@@ -248,7 +265,7 @@ public class CalendarExtension extends DashClockExtension {
                 CalendarContract.Instances.BEGIN,
                 CalendarContract.Instances.END,
                 CalendarContract.Instances.TITLE,
-                CalendarContract.Instances.EVENT_LOCATION
+                CalendarContract.Instances.EVENT_LOCATION,
         };
 
         int EVENT_ID = 0;
@@ -260,9 +277,11 @@ public class CalendarExtension extends DashClockExtension {
 
     private interface CalendarsQuery {
         String[] PROJECTION = {
-                CalendarContract.Calendars._ID
+                CalendarContract.Calendars._ID,
+                CalendarContract.Calendars.VISIBLE,
         };
 
         int ID = 0;
+        int VISIBLE = 1;
     }
 }
