@@ -48,7 +48,6 @@ import android.util.Pair;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -113,7 +112,8 @@ public class WeatherExtension extends DashClockExtension {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         String provider = lm.getBestProvider(sLocationCriteria, true);
         if (TextUtils.isEmpty(provider)) {
-            LOGE(TAG, "No available location providers matching criteria.");
+            publishErrorUpdate(new CantGetWeatherException(R.string.no_location_data,
+                    "No available location providers matching criteria."));
             return;
         }
 
@@ -127,7 +127,7 @@ public class WeatherExtension extends DashClockExtension {
             mOneTimeLocationListenerActive = true;
             lm.requestSingleUpdate(provider, mOneTimeLocationListener, null);
         } else {
-            getWeatherAndTryPublishUpdate(lastLocation);
+            getWeatherAndPublishUpdate(lastLocation);
         }
     }
 
@@ -142,7 +142,7 @@ public class WeatherExtension extends DashClockExtension {
     private LocationListener mOneTimeLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            getWeatherAndTryPublishUpdate(location);
+            getWeatherAndPublishUpdate(location);
             disableOneTimeLocationListener();
         }
 
@@ -165,65 +165,60 @@ public class WeatherExtension extends DashClockExtension {
         disableOneTimeLocationListener();
     }
 
-    private void getWeatherAndTryPublishUpdate(Location location) {
+    private void getWeatherAndPublishUpdate(Location location) {
         try {
             WeatherData weatherData = getWeatherForLocation(location);
-            publishUpdate(renderExtensionData(weatherData));
-        } catch (InvalidLocationException e) {
-            LOGW(TAG, "Could not determine a valid location for weather.", e);
-        } catch (IOException e) {
-            LOGW(TAG, "Generic read error while retrieving weather information.", e);
+            publishWeatherUpdate(weatherData);
+        } catch (CantGetWeatherException e) {
+            publishErrorUpdate(e);
         }
     }
 
-    private ExtensionData renderExtensionData(WeatherData weatherData) {
-        ExtensionData extensionData = new ExtensionData();
-        if (weatherData == null) {
-            extensionData
-                    .icon(R.drawable.ic_weather_clear)
-                    .status(getString(R.string.status_none))
-                    .expandedBody(getString(R.string.no_weather_data));
-        } else {
-            String temperature = weatherData.hasValidTemperature()
-                    ? getString(R.string.temperature_template, weatherData.temperature)
-                    : getString(R.string.status_none);
-            StringBuilder expandedBody = new StringBuilder();
+    private void publishErrorUpdate(CantGetWeatherException e) {
+        LOGE(TAG, "Showing a weather extension error", e);
+        publishUpdate(new ExtensionData()
+                .visible(true)
+                .clickIntent(sWeatherIntent)
+                .icon(R.drawable.ic_weather_clear)
+                .status(getString(R.string.status_none))
+                .expandedBody(getString(e.getUserFacingErrorStringId())));
+    }
 
-            int conditionIconId = WeatherData.getConditionIconId(weatherData.conditionCode);
-            if (WeatherData.getConditionIconId(weatherData.todayForecastConditionCode)
-                    == R.drawable.ic_weather_raining) {
-                // Show rain if it will rain today.
-                conditionIconId = R.drawable.ic_weather_raining;
-                expandedBody.append(
-                        getString(R.string.later_forecast_template, weatherData.forecastText));
-            }
+    private void publishWeatherUpdate(WeatherData weatherData) {
+        String temperature = weatherData.hasValidTemperature()
+                ? getString(R.string.temperature_template, weatherData.temperature)
+                : getString(R.string.status_none);
+        StringBuilder expandedBody = new StringBuilder();
 
-            if (expandedBody.length() > 0) {
-                expandedBody.append("\n");
-            }
-            expandedBody.append(weatherData.location);
-
-            extensionData
-                    .status(temperature)
-                    .expandedTitle(getString(R.string.weather_expanded_title_template,
-                            temperature + sWeatherUnits.toUpperCase(Locale.US),
-                            weatherData.conditionText))
-                    .icon(conditionIconId)
-                    .expandedBody(expandedBody.toString());
+        int conditionIconId = WeatherData.getConditionIconId(weatherData.conditionCode);
+        if (WeatherData.getConditionIconId(weatherData.todayForecastConditionCode)
+                == R.drawable.ic_weather_raining) {
+            // Show rain if it will rain today.
+            conditionIconId = R.drawable.ic_weather_raining;
+            expandedBody.append(
+                    getString(R.string.later_forecast_template, weatherData.forecastText));
         }
 
-        return extensionData
+        if (expandedBody.length() > 0) {
+            expandedBody.append("\n");
+        }
+        expandedBody.append(weatherData.location);
+
+        publishUpdate(new ExtensionData()
                 .visible(true)
-                .clickIntent(sWeatherIntent);
+                .clickIntent(sWeatherIntent)
+                .status(temperature)
+                .expandedTitle(getString(R.string.weather_expanded_title_template,
+                        temperature + sWeatherUnits.toUpperCase(Locale.US),
+                        weatherData.conditionText))
+                .icon(conditionIconId)
+                .expandedBody(expandedBody.toString()));
     }
 
     private static WeatherData getWeatherForLocation(Location location)
-            throws InvalidLocationException, IOException {
+            throws CantGetWeatherException {
 
-        if (BuildConfig.DEBUG) {
-            LOGD(TAG, "Using location: " + location.getLatitude()
-                    + "," + location.getLongitude());
-        }
+        LOGD(TAG, "Using location: " + location.getLatitude() + "," + location.getLongitude());
 
         // Honolulu = 2423945
         // Paris = 615702
@@ -237,21 +232,22 @@ public class WeatherExtension extends DashClockExtension {
         for (String woeid : locationInfo.woeids) {
             LOGD(TAG, "Trying WOEID: " + woeid);
             WeatherData data = getWeatherDataForWoeid(woeid, locationInfo.town);
-            if (data.conditionCode != WeatherData.INVALID_CONDITION
+            if (data != null
+                    && data.conditionCode != WeatherData.INVALID_CONDITION
                     && data.temperature != WeatherData.INVALID_TEMPERATURE) {
                 return data;
             }
         }
 
         // No weather could be found :(
-        return null;
+        throw new CantGetWeatherException(R.string.no_weather_data);
     }
 
     private static WeatherData getWeatherDataForWoeid(String woeid, String town)
-            throws IOException {
-        HttpURLConnection connection = Utils.openUrlConnection(buildWeatherQueryUrl(woeid));
-
+            throws CantGetWeatherException {
+        HttpURLConnection connection = null;
         try {
+            connection = Utils.openUrlConnection(buildWeatherQueryUrl(woeid));
             XmlPullParser xpp = sXmlPullParserFactory.newPullParser();
             xpp.setInput(new InputStreamReader(connection.getInputStream()));
 
@@ -322,23 +318,30 @@ public class WeatherExtension extends DashClockExtension {
 
             return data;
 
+        } catch (IOException e) {
+            throw new CantGetWeatherException(R.string.no_weather_data,
+                    "Error parsing weather feed XML.", e);
         } catch (XmlPullParserException e) {
-            throw new IOException("Error parsing weather feed XML.", e);
+            throw new CantGetWeatherException(R.string.no_weather_data,
+                    "Error parsing weather feed XML.", e);
         } finally {
-            connection.disconnect();
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
     private static LocationInfo getLocationInfo(Location location)
-            throws IOException, InvalidLocationException {
+            throws CantGetWeatherException {
         LocationInfo li = new LocationInfo();
 
         // first=tagname (admin1, locality3) second=woeid
         String primaryWoeid = null;
         List<Pair<String,String>> alternateWoeids = new ArrayList<Pair<String, String>>();
 
-        HttpURLConnection connection = Utils.openUrlConnection(buildPlaceSearchUrl(location));
+        HttpURLConnection connection = null;
         try {
+            connection = Utils.openUrlConnection(buildPlaceSearchUrl(location));
             XmlPullParser xpp = sXmlPullParserFactory.newPullParser();
             xpp.setInput(new InputStreamReader(connection.getInputStream()));
 
@@ -404,21 +407,27 @@ public class WeatherExtension extends DashClockExtension {
                 return li;
             }
 
-            throw new InvalidLocationException();
+            throw new CantGetWeatherException(R.string.no_weather_data, "No WOEIDs found nearby.");
 
+        } catch (IOException e) {
+            throw new CantGetWeatherException(R.string.no_weather_data,
+                    "Error parsing place search XML", e);
         } catch (XmlPullParserException e) {
-            throw new IOException("Error parsing location XML response.", e);
+            throw new CantGetWeatherException(R.string.no_weather_data,
+                    "Error parsing place search XML", e);
         } finally {
-            connection.disconnect();
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
-    private static String buildWeatherQueryUrl(String woeid) throws MalformedURLException {
+    private static String buildWeatherQueryUrl(String woeid) {
         // http://developer.yahoo.com/weather/
         return "http://weather.yahooapis.com/forecastrss?w=" + woeid + "&u=" + sWeatherUnits;
     }
 
-    private static String buildPlaceSearchUrl(Location l) throws MalformedURLException {
+    private static String buildPlaceSearchUrl(Location l) {
         // GeoPlanet API
         return "http://where.yahooapis.com/v1/places.q('"
                 + l.getLatitude() + "," + l.getLongitude() + "')"
@@ -432,20 +441,25 @@ public class WeatherExtension extends DashClockExtension {
         String town;
     }
 
-    public static class InvalidLocationException extends Exception {
-        public InvalidLocationException() {
+    public static class CantGetWeatherException extends Exception {
+        int mUserFacingErrorStringId;
+
+        public CantGetWeatherException(int userFacingErrorStringId) {
+            this(userFacingErrorStringId, null, null);
         }
 
-        public InvalidLocationException(String detailMessage) {
-            super(detailMessage);
+        public CantGetWeatherException(int userFacingErrorStringId, String detailMessage) {
+            this(userFacingErrorStringId, detailMessage, null);
         }
 
-        public InvalidLocationException(String detailMessage, Throwable throwable) {
+        public CantGetWeatherException(int userFacingErrorStringId, String detailMessage,
+                Throwable throwable) {
             super(detailMessage, throwable);
+            mUserFacingErrorStringId = userFacingErrorStringId;
         }
 
-        public InvalidLocationException(Throwable throwable) {
-            super(throwable);
+        public int getUserFacingErrorStringId() {
+            return mUserFacingErrorStringId;
         }
     }
 }
