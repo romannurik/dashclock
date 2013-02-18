@@ -14,16 +14,30 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Zástupce hodin</string>
+    <string name="pref_homescreen_background_opacity_title">Pozadí widgetu</string>
+	  <string-array name="pref_homescreen_background_opacity_display_names">
+		    <item>Úplně průhledné</item>
+		    <item>25% černé</item>
+		    <item>50% černé</item>
+		    <item>75% černé</item>
+		    <item>100% černé</item>
+	  </string-array>
+
+    <string name="pref_aggressive_centering_title">Vždy uprostřed</string>
+    <string name="pref_aggressive_centering_description">Může způsobit poskakování pro některé hodnoty widgetu</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Zástupce</string>
+    <string name="pref_shortcut_default">(Výchozí)</string>
+
     <!-- Weather -->
     <string name="pref_weather_units_title">Jednotky teploty</string>
     <string-array name="pref_weather_units_display_names">
         <item>°F</item>
         <item>°C</item>
-    </string-array>
-    <string-array name="pref_weather_units_values">
-        <item>f</item>
-        <item>c</item>
     </string-array>
 
     <!-- Gmail -->
@@ -32,20 +46,11 @@
         <item>Pošta</item>
         <item>Prioritní pošta</item>
     </string-array>
-    <string-array name="pref_gmail_label_inbox_values">
-        <item>i</item>
-        <item>p</item>
-    </string-array>
 
     <string name="pref_gmail_accounts_title">Zobrazit počet nepřečtených na účtech</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">
-            Vybrán účet:
-	          <xliff:g id="selected">%1$d</xliff:g> z <xliff:g id="total">%2$d</xliff:g>
-        </item>
-        <item quantity="other">
-						Vybraných účtů:
-            <xliff:g id="selected">%1$d</xliff:g> z <xliff:g id="total">%2$d</xliff:g>
-        </item>
+        <item quantity="one">%1$d z %2$d účtů vybrán</item>
+	      <item quantity="few">%1$d z %2$d účtů vybrány</item>
+        <item quantity="other">%1$d z %2$d účtů vybráno</item>
     </plurals>
 </resources>

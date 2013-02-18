@@ -1,0 +1,140 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">允許請求DashClock擴展的數據</string>
+    <string name="permission_label_read_extension_data">請求DashClock擴展的數據</string>
+
+    <string name="settings">設定</string>
+    <string name="more_options">更多選項</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">設定DashClock小部件</string>
+    <string name="section_extensions">擴展</string>
+    <string name="section_appearance">外觀</string>
+    <string name="section_advanced">高級</string>
+
+    <string name="get_more_extensions">獲取更多擴展</string>
+    <string name="add_another_extension">添加其它擴展</string>
+    <string name="more_extensions">更多擴展</string>
+    <string name="done">完成</string>
+    <string name="add_extension">添加擴展</string>
+    <string name="cancel">取消</string>
+
+    <string name="prev_date_style">上一個日期樣式</string>
+    <string name="prev_time_style">上一個時間樣式</string>
+    <string name="next_date_style">下一個日期樣式</string>
+    <string name="next_time_style">下一個時間樣式</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (不兼容)</string>
+    <string name="incompatible_extension_title">不兼容擴展</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[擴展
+        <b>%1$s</b> 與當前版本的DashClock不兼容.
+        請到Google Play獲取該擴展的最新更新]]></string>
+    <string name="search_play">查詢Google Play</string>
+
+    <!-- About -->
+    <string name="close">關閉</string>
+    <string name="about">關於</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">服務條款</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">隱私權政策</a><br><br>
+        感謝以下開源工具:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>by Günther Beyer of <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>by Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">天氣</string>
+    <string name="weather_extension_description">
+        顯示當前區域最新天氣資訊，包括當前氣溫、天氣狀況和氣象預報。數據來源於Yahoo!天氣。
+    </string>
+    <string name="title_weather_settings">天氣擴展設定</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">稍後: %1$s</string>
+    <string name="no_weather_data">沒有可用的天氣數據</string>
+    <string name="no_location_data">無法獲得當前位置</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Gmail未讀取郵件數量</string>
+    <string name="gmail_extension_description">
+        顯示Gmail中收件匣的未讀取郵件數量。
+    </string>
+    <string name="title_gmail_settings">Gmail擴展設定</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d封未讀取</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">下一個鬧鐘</string>
+    <string name="next_alarm_extension_description">
+        顯示下一個鬧鐘的资讯。如果未設定任何鬧鐘，則不會顯示。
+    </string>
+    <string name="next_alarm">下一個鬧鐘</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">日曆</string>
+    <string name="calendar_extension_description">
+        顯示日曆中下一個活動的資訊。如果未來數小時內沒有活動，則不會顯示。
+    </string>
+    <string name="title_calendar_settings">日曆擴展設定</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s天</item>
+        <item quantity="other">%1$s天</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s小時</item>
+        <item quantity="other">%1$s小時</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s分鐘</item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">未接來電</string>
+    <string name="missed_calls_extension_description">
+        顯示未接來電的數量和使用者名字。
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s個未接來電</item>
+        <item quantity="other">%1$s個未接來電</item>
+    </plurals>
+    <string name="missed_calls_body_template">來自: %1$s</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">未讀取簡訊</string>
+    <string name="sms_extension_description">
+        顯示未讀取的簡訊或多媒体訊息的數量和發送者名​​字。
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$條未讀取簡訊</item>
+        <item quantity="other">%1$s條未讀取簡訊</item>
+    </plurals>
+    <string name="sms_body_template">來自: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">定制DashClock</string>
+    <string name="welcome_description">僅想顯示當前日期和時間麼？那麼直接點左上角的完成按鈕即可！但為何不添加更多的<i>擴展</i>來定制你自己的DashClock呢？
+        \n\n<b>擴展</b>能直接在DashClock中提供給你更多相關且及時的資訊！
+        不如現在就嘗試添加一些擴展吧。
+        \n\n\n
+    </string>
+
+</resources>

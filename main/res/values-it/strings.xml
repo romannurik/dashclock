@@ -15,8 +15,7 @@
   -->
 
 <resources>
-    <string name="permission_desc_read_extension_data">Consente di richiedere i dati delle estensioni di DashClock
-    </string>
+    <string name="permission_desc_read_extension_data">Consente di richiedere i dati delle estensioni di DashClock</string>
     <string name="permission_label_read_extension_data">Richiedi i dati delle estensioni di DashClock</string>
 
     <string name="settings">Impostazioni</string>
@@ -63,7 +62,7 @@
         <i>di Günther Beyer della <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
         <i>di Carl A. Bauer</i><br><br>
-        Traduzione italiana a cura di Sebastiano Poggi<br><br>
+        Traduzione italiana a cura di Sebastiano Poggi
     ]]></string>
 
     <!-- Weather -->

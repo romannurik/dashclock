@@ -15,11 +15,6 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">DashClock Widget</string>
-    <string name="widget_label" translatable="false">DashClock</string>
-
-    <string name="status_none" translatable="false">––</string>
-
     <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
     <string name="permission_label_read_extension_data">Request DashClock extension data</string>
 
@@ -54,9 +49,6 @@
     <string name="close">Zamknij</string>
     <string name="about">O aplikacji</string>
 
-    <string name="app_name_and_version" translatable="false"><![CDATA[
-        <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
-    ]]></string>
     <string name="about_body"><![CDATA[
         <a href="http://m.google.com/utos">Warunki korzystania</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
@@ -73,7 +65,6 @@
     <string name="weather_extension_description">Wyświetla aktualną pogodę w miejscu, w którym się znajdujesz. Zawiera temperaturę i warunki panujące na zewnątrz. Informacje dostarcza Yahoo! Weather.    </string>
     <string name="title_weather_settings">Ustawienia pogody</string>
     <string name="temperature_template">%1$s°</string>
-    <string name="weather_expanded_title_template" translatable="false">%1$s — %2$s</string>
     <string name="later_forecast_template">Później: %1$s</string>
     <string name="no_weather_data">Brak danych pogody</string>
 
@@ -100,7 +91,6 @@
         Wyświetla informację o następnym wydarzeniu kalendarza, jeśli zbliża się jego ustawiony czas.
     </string>
     <string name="title_calendar_settings">Ustawienia kalendarza</string>
-    <string name="calendar_with_location_template" translatable="false">%1$s — %2$s</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s dzień</item>
         <item quantity="other">%1$s dni</item>

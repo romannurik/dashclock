@@ -35,6 +35,10 @@
 
     <!-- Weather -->
     <string name="pref_weather_units_title">날씨 단위</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">다음 라벨에 대해 읽지 않은 메일 개수 표시</string>

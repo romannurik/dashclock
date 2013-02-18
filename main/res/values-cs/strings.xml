@@ -14,12 +14,7 @@
   limitations under the License.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">DashClock Widget</string>
-    <string name="widget_label">DashClock</string>
-
-    <string name="status_none">––</string>
-
+<resources>
     <string name="permission_desc_read_extension_data">Povoluje požadovat data rozšíření DashClock</string>
     <string name="permission_label_read_extension_data">Požaduje data rozšíření DashClock</string>
 
@@ -30,7 +25,12 @@
     <string name="title_configure">Nastavení DashClock Widget</string>
     <string name="section_extensions">Rozšíření</string>
     <string name="section_appearance">Vzhled</string>
+		<string name="section_advanced">Pokročilé</string>
 
+    <string name="title_apps">Aplikace</string>
+    <string name="title_shortcuts">Zástupci</string>
+
+    <string name="get_more_extensions">Získat více rozšíření</string>
     <string name="add_another_extension">Přidat další rozšíření</string>
     <string name="more_extensions">Více rozšíření</string>
     <string name="done">Hotovo</string>
@@ -42,7 +42,7 @@
     <string name="next_date_style">Následující formát datumu</string>
     <string name="next_time_style">Následující formát času</string>
 
-    <string name="incompatible_extension_menu_template"><xliff:g id="title">%1$s</xliff:g> (Nekompatibilní)</string>
+    <string name="incompatible_extension_menu_template">%1$s (Nekompatibilní)</string>
     <string name="incompatible_extension_title">Nekompatibilní rozšíření</string>
     <string name="incompatible_extension_message_search_play_template"><![CDATA[
         Rozšíření <b>%1$s</b> je nekompatibilní s touto verzí DashClock.
@@ -53,9 +53,6 @@
     <string name="close">Zavřít</string>
     <string name="about">O programu</string>
 
-    <string name="app_name_and_version"><![CDATA[
-        <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
-    ]]></string>
     <string name="about_body"><![CDATA[
         <a href="http://m.google.com/utos">Podmínky užívání (anglicky)</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
@@ -64,7 +61,8 @@
         <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
         <i>od Günthera Beyera z <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
-        <i>od Carla A. Bauera</i>
+        <i>od Carla A. Bauera</i><br><br>
+        Český překlad: <a href="mailto:ales.najmann@gmail.com">Aleš Najmann</a>
     ]]></string>
 
     <!-- Weather -->
@@ -74,16 +72,10 @@
 	      podmínek a také předpověď počasí. Využita služba Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Nastavení počasí</string>
-    <string name="temperature_template"><xliff:g id="temp">%1$s</xliff:g>°
-    </string>
-    <string name="weather_expanded_title_template">
-        <xliff:g id="temp">%1$s</xliff:g>
-        —
-        <xliff:g id="condition">%2$s</xliff:g>
-    </string>
-    <string name="later_forecast_template">Později:
-        <xliff:g id="forecast">%1$s</xliff:g>
-    </string>
+	  <string name="temperature_template">%1$s°</string>
+	  <string name="later_forecast_template">Později: %1$s</string>
+	  <string name="no_weather_data">Data o počasí nedostupná</string>
+    <string name="no_location_data">Vaši pozici nelze zjistit</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Počet nepřečtených na Gmailu</string>
@@ -91,10 +83,11 @@
 	      Zobrazí počet nepřečtených zpráv prioritní nebo běžné pošty na Gmailu.
     </string>
     <string name="title_gmail_settings">Nastavení pro rozšíření Gmailu</string>
-    <string name="gmail_title_template">
-        <xliff:g id="emails">%1$d</xliff:g>
-        nepřečtených
-    </string>
+	  <plurals name="gmail_title_template">
+		    <item quantity="one">%1$d nepřečtená</item>
+		    <item quantity="few">%1$d nepřečtené</item>
+		    <item quantity="other">%1$d nepřečtených</item>
+	  </plurals>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Příští buzení</string>
@@ -106,36 +99,23 @@
     <!-- Calendar -->
     <string name="calendar_extension_title">Schůzka v kalendáři</string>
     <string name="calendar_extension_description">
-	      Zobrazí informaci o příští schůzce z kalendáře v následujících šesti hodinách.
+	      Zobrazí informaci o příští schůzce z kalendáře v následujících několika hodinách.
     </string>
+	  <plurals name="calendar_template_days">
+        <item quantity="one">%1$s den</item>
+		    <item quantity="few">%1$s dny</item>
+			  <item quantity="other">%1$s dnů</item>
+		</plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="one">
-            <xliff:g id="hours">%1$s</xliff:g>
-            hodina
-        </item>
-	      <item quantity="few">
-		        <xliff:g id="hours">%1$s</xliff:g>
-		        hodiny
-	      </item>
-        <item quantity="other">
-            <xliff:g id="hours">%1$s</xliff:g>
-            hodin
-        </item>
-    </plurals>
-    <plurals name="calendar_template_mins">
-	      <item quantity="one">
-		        <xliff:g id="hours">%1$s</xliff:g>
-		        minuta
-	      </item>
-	      <item quantity="few">
-		        <xliff:g id="hours">%1$s</xliff:g>
-		        minuty
-	      </item>
-        <item quantity="other">
-            <xliff:g id="hours">%1$s</xliff:g>
-            minut
-        </item>
-    </plurals>
+        <item quantity="one">%1$s hodina</item>
+	      <item quantity="two">%1$s hodiny</item>
+        <item quantity="other">%1$s hodin</item>
+	  </plurals>
+	  <plurals name="calendar_template_mins">
+		    <item quantity="one">%1$s minuta</item>
+		    <item quantity="few">%1$s minuty</item>
+		    <item quantity="other">%1$s minut</item>
+	  </plurals>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nepřijaté hovory</string>
@@ -143,22 +123,11 @@
 	      Zobrazí počet nepřijatých hovorů a jména volajících.
     </string>
     <plurals name="missed_calls_title_template">
-        <item quantity="one">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            nepřijatý hovor
-        </item>
-	      <item quantity="few">
-		        <xliff:g id="missed_calls">%1$s</xliff:g>
-		        nepřijaté hovory
-	      </item>
-        <item quantity="other">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            nepřijatých hovorů
-        </item>
-    </plurals>
-    <string name="missed_calls_body_template">Od:
-        <xliff:g id="names">%1$s</xliff:g>
-    </string>
+		    <item quantity="one">%1$s nepřijatý hovor</item>
+	      <item quantity="few">%1$s nepřijaté hovory</item>
+		    <item quantity="other">%1$s nepřijatých hovorů</item>
+	  </plurals>
+    <string name="missed_calls_body_template">Od: %1$s</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Textové zprávy</string>
@@ -166,22 +135,11 @@
 	      Zobrazí počet nepřečtených SMS a MMS a jména odesílatelů.
     </string>
     <plurals name="sms_title_template">
-        <item quantity="one">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            nepřečtená konverzace
-        </item>
-	      <item quantity="few">
-		        <xliff:g id="missed_calls">%1$s</xliff:g>
-		        nepřečtené konverzace
-	      </item>
-        <item quantity="other">
-            <xliff:g id="missed_calls">%1$s</xliff:g>
-            nepřečtených konverzací
-        </item>
-    </plurals>
-    <string name="sms_body_template">Od:
-        <xliff:g id="names">%1$s</xliff:g>
-    </string>
+		    <item quantity="one">%1$s nepřečtená zpráva</item>
+	      <item quantity="few">%1$s nepřečtené zprávy</item>
+		    <item quantity="other">%1$s nepřečtených zpráv</item>
+	  </plurals>
+    <string name="sms_body_template">Od: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Vyladit DashClock</string>

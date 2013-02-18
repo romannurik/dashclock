@@ -24,13 +24,6 @@
         <item>75% czarne</item>
         <item>100% czarne</item>
     </string-array>
-    <string-array name="pref_homescreen_background_opacity_values" translatable="false">
-        <item>0</item>
-        <item>25</item>
-        <item>50</item>
-        <item>75</item>
-        <item>100</item>
-    </string-array>
 
     <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany</string>
     <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widgetu</string>
@@ -41,20 +34,12 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
-    <string-array name="pref_weather_units_values" translatable="false">
-        <item>f</item>
-        <item>c</item>
-    </string-array>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Pokaż nieprzeczytane dla skrzynki</string>
     <string-array name="pref_gmail_label_display_names">
         <item>Odebrane</item>
         <item>Priorytety</item>
-    </string-array>
-    <string-array name="pref_gmail_label_inbox_values" translatable="false">
-        <item>i</item>
-        <item>p</item>
     </string-array>
 
     <string name="pref_gmail_accounts_title">Pokaż nieprzeczytane dla konta</string>
@@ -72,14 +57,6 @@
         <item>24 godzin</item>
         <item>2 dni</item>
         <item>tygodnia</item>
-    </string-array>
-    <string-array name="pref_calendar_look_ahead_hours_values" translatable="false">
-        <item>3</item>
-        <item>6</item>
-        <item>12</item>
-        <item>24</item>
-        <item>48</item>
-        <item>168</item>
     </string-array>
     <string name="pref_calendar_selected_title">Wybierz wyświetlane kalendarze</string>
     <plurals name="pref_calendar_selected_summary_template">
