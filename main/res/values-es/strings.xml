@@ -30,6 +30,7 @@
     <string name="title_apps">Aplicaciones</string>
     <string name="title_shortcuts">Accesos directos</string>
 
+    <string name="get_more_extensions">Consiga más extensiones</string>
     <string name="add_another_extension">Agregar otra extensión</string>
     <string name="more_extensions">Más extensiones</string>
     <string name="done">Hecho</string>
@@ -74,6 +75,7 @@
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Luego: %1$s</string>
     <string name="no_weather_data">Información de clima no disponible</string>
+    <string name="no_location_data">Su ubicación no pudo ser determinada</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Mensajes sin leer de Gmail</string>
