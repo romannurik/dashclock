@@ -60,6 +60,6 @@ public class NextAlarmExtension extends DashClockExtension {
                 .icon(R.drawable.ic_extension_next_alarm)
                 .status(nextAlarm)
                 .expandedBody(getString(R.string.next_alarm))
-                .clickIntent(Utils.getDefaultClockIntent(this)));
+                .clickIntent(Utils.getDefaultAlarmsIntent(this)));
     }
 }

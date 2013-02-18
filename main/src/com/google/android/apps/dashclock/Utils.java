@@ -16,6 +16,7 @@
 
 package com.google.android.apps.dashclock;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -83,5 +84,19 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static Intent getDefaultAlarmsIntent(Context context) {
+        PackageManager pm = context.getPackageManager();
+        for (String packageName : CLOCK_PACKAGES) {
+            try {
+                ComponentName cn = new ComponentName(packageName,
+                        "com.android.deskclock.AlarmClock");
+                pm.getActivityInfo(cn, 0);
+                return Intent.makeMainActivity(cn);
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
+        }
+        return getDefaultClockIntent(context);
     }
 }
