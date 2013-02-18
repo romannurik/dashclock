@@ -1,0 +1,145 @@
+﻿<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">DashClock kiegészítő adat lekérésének engedélyezése</string>
+    <string name="permission_label_read_extension_data">DashClock kiegészítő adat lekérése</string>
+
+    <string name="settings">Beállítások</string>
+    <string name="more_options">További opciók</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">DashClock Widget beállítása</string>
+    <string name="section_extensions">Kiegészítők</string>
+    <string name="section_appearance">Kinézet</string>
+    <string name="section_advanced">Haladó</string>
+
+    <string name="title_apps">Alkalmazások</string>
+    <string name="title_shortcuts">Parancsikonok</string>
+
+    <string name="get_more_extensions">További kiegészítők beszerzése</string>
+    <string name="add_another_extension">Új kiegészítő hozzáadása</string>
+    <string name="more_extensions">További kiegészítők</string>
+    <string name="done">Kész</string>
+    <string name="add_extension">Kiegészítő hozzáadása</string>
+    <string name="cancel">Mégse</string>
+
+    <string name="prev_date_style">Elozo adatstílus</string>
+    <string name="prev_time_style">Elozo idostílus</string>
+    <string name="next_date_style">Következo adatstílus</string>
+    <string name="next_time_style">Következo idostílus</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Inkompatibilis)</string>
+    <string name="incompatible_extension_title">Inkompatibilis kiegészítő</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[A
+        <b>%1$s</b> kiegészítő inkompatibilis a DashClock ezen verziójával.
+        Keressek a kiegészítőhöz frissítést a Play Áruházban?]]></string>
+    <string name="search_play">Keresés a Play Áruházban</string>
+
+    <!-- About -->
+    <string name="close">Mégse</string>
+    <string name="about">Névjegy</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Szolgáltatási feltételek</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Adatvédelem</a><br><br>
+        Sok köszönet a következo nyílt forráskódú eszközöknek:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>Günther Beyer (<a href="http://www.opoloo.com/">Opoloo</a>)</i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>Carl A. Bauer</i>
+        Fordította <a href="https://plus.google.com/106278794296417431670/posts">Berta Dávid</a>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Időjárás</string>
+    <string name="weather_extension_description">
+       A legfrissebb idojárási információkat jeleníti meg a jelenlegi tartózkodási helyed alapján: homérsékletet, idojárási körülményeket és elorejelzéseket. Üzemelteti a Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Időjárás kiegészítő beállításai</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Később: %1$s</string>
+    <string name="no_weather_data">Nem érhető el időjárási adat</string>
+    <string name="no_location_data">Helyzeted meghatározhatatlan</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Olvasatlan email számláló</string>
+    <string name="gmail_extension_description">
+        Az olvasatlan emailek számát jeleníti meg a Gmail beérkezo vagy fontos mappájából.
+    </string>
+    <string name="title_gmail_settings">Gmail kiegészítő beállításai</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d olvasatlan</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Következo riasztás</string>
+    <string name="next_alarm_extension_description">
+        A következo beütemezett riasztásról jelenít meg információt.
+    </string>
+    <string name="next_alarm">Következo riasztás</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Naptári esemény</string>
+    <string name="calendar_extension_description">
+        A következo naptári eseményrol jelenít meg információt.
+    </string>
+    <string name="title_calendar_settings">Naptár kiegészítő beállításai</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s nap</item>
+        <item quantity="other">%1$s nap</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s óra</item>
+        <item quantity="other">%1$s óra</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s perc</item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Nem fogadott hívások</string>
+    <string name="missed_calls_extension_description">
+        A nem fogadott hívások számát és a hívók neveit jeleníti meg.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s nem fogadott hívás</item>
+        <item quantity="other">%1$s nem fogadott hívás</item>
+    </plurals>
+    <string name="missed_calls_body_template">Hívó: %1$s</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Üzenetek</string>
+    <string name="sms_extension_description">
+        Az olvasatlan SMS és MMS beszélgetések számát jeleníti meg, valamint a feladó nevét.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s olvasatlan beszélgetés</item>
+        <item quantity="other">%1$s olvasatlan beszélgetés</item>
+    </plurals>
+    <string name="sms_body_template">Feladó: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Alakítsd át a DashClock-ot!</string>
+    <string name="welcome_description">Csak a jelenlegi idot és dátumot szeretnéd látni? Akkor
+        nyomj a sarokban lévo pipára és kész is! De miért ne alakítanád át saját kedvedre a
+        DashClock néhány <i>kiegészítővel</i>?
+        A <b>kiegészítők</b> segítségével lényeges és idoszeru információkhoz juthatsz a DashClock-on belül!
+        Próbáld ki néhány hozzáadásával.
+    </string>
+
+</resources>

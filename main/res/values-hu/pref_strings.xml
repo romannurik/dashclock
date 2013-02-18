@@ -1,0 +1,73 @@
+﻿<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Óra parancsikon</string>
+    <string name="pref_homescreen_background_opacity_title">Kezdőképernyős widget háttére</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Teljesen átlátszó</item>
+        <item>25% fekete</item>
+        <item>50% fekete</item>
+        <item>75% fekete</item>
+        <item>Teljesen fekete</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Mindig középen</string>
+    <string name="pref_aggressive_centering_description">Az óra mindig középen legyen</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Parancsikon</string>
+    <string name="pref_shortcut_default">(Alapértelmezett)</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">Idojárási mértékegységek</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">Olvasatlan levelek mappája</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>Beérkező</item>
+        <item>Fontos</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">Gmail fiókok</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+      <item quantity="one">%1$d/%2$d fiók kiválasztva</item>
+      <item quantity="other">%1$d/%2$d fiók kiválasztva</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Esemény megjelenítése adott időn belül</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 óra</item>
+        <item>6 óra</item>
+        <item>12 óra</item>
+        <item>24 óra</item>
+        <item>2 nap</item>
+        <item>1 hét</item>
+    </string-array>
+    <string name="pref_calendar_selected_title">Megjelenítendő naptárak</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">%1$d/%2$d naptár kiválasztva</item>
+        <item quantity="other">%1$d/%2$d naptár kiválasztva</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">Egyéni megjelenítés</string>
+    <string name="pref_calendar_custom_visibility_description">Ha nincs bepipálva, akkor a Naptár alkalmazás összes látható naptárát megjeleníti</string>
+</resources>
