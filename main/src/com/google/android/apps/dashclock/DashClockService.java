@@ -22,6 +22,7 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
@@ -58,6 +59,8 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;
 
+    private Handler mUpdateHandler = new Handler();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -69,6 +72,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mUpdateHandler.removeCallbacksAndMessages(null);
         mExtensionManager.removeOnChangeListener(this);
         mExtensionHost.destroy();
     }
@@ -91,8 +95,16 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     @Override
     public void onExtensionsChanged() {
         LOGD(TAG, "onExtensionsChanged");
-        handleUpdateWidgets(new Intent());
+        mUpdateHandler.removeCallbacks(mUpdateAllWidgetsRunnable);
+        mUpdateHandler.postDelayed(mUpdateAllWidgetsRunnable, 2000);
     }
+
+    private Runnable mUpdateAllWidgetsRunnable = new Runnable() {
+        @Override
+        public void run() {
+            handleUpdateWidgets(new Intent());
+        }
+    };
 
     /**
      * Updates a widget's UI.

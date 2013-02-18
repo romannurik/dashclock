@@ -224,33 +224,24 @@ public class ConfigurationActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (isFinishing()) {
-            // Update extensions (settings may have changed)
-            // TODO: update only those extensions whose settings have changed
-            Intent updateExtensionsIntent = new Intent(this, DashClockService.class);
-            updateExtensionsIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
-            updateExtensionsIntent.putExtra(DashClockService.EXTRA_UPDATE_REASON,
-                    DashClockExtension.UPDATE_REASON_SETTINGS_CHANGED);
-            startService(updateExtensionsIntent);
+    protected void onStop() {
+        super.onStop();
 
-            if (mNewWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                // Setting up a widget for the first time
-                LOGD(TAG, "Updating widget with ID: " + mNewWidgetId);
+        // Update extensions (settings may have changed)
+        // TODO: update only those extensions whose settings have changed
+        Intent updateExtensionsIntent = new Intent(this, DashClockService.class);
+        updateExtensionsIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
+        updateExtensionsIntent.putExtra(DashClockService.EXTRA_UPDATE_REASON,
+                DashClockExtension.UPDATE_REASON_SETTINGS_CHANGED);
+        startService(updateExtensionsIntent);
 
-                Intent widgetUpdateIntent = new Intent(this, DashClockService.class);
-                widgetUpdateIntent.setAction(DashClockService.ACTION_UPDATE_WIDGETS);
-                widgetUpdateIntent.putExtra(DashClockService.EXTRA_APPWIDGET_ID, mNewWidgetId);
-                startService(widgetUpdateIntent);
-            } else {
-                // Otherwise, update all widgets
-                LOGD(TAG, "Updating all widgets (no specific appWidgetId provided)");
+        // Update all widgets, including a new one if it was just added
+        // We can't only update the new one because settings affecting all widgets may have
+        // been changed.
+        LOGD(TAG, "Updating all widgets");
 
-                Intent widgetUpdateIntent = new Intent(this, DashClockService.class);
-                widgetUpdateIntent.setAction(DashClockService.ACTION_UPDATE_WIDGETS);
-                startService(widgetUpdateIntent);
-            }
-        }
+        Intent widgetUpdateIntent = new Intent(this, DashClockService.class);
+        widgetUpdateIntent.setAction(DashClockService.ACTION_UPDATE_WIDGETS);
+        startService(widgetUpdateIntent);
     }
 }
