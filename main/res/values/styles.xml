@@ -48,8 +48,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingTop">@dimen/extension_collapsed_vert_padding</item>
+        <item name="android:paddingBottom">@dimen/extension_collapsed_vert_padding</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">?android:selectableItemBackground</item>

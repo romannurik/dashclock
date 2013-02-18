@@ -82,6 +82,7 @@
     <string name="weather_expanded_title_template" translatable="false">%1$s — %2$s</string>
     <string name="later_forecast_template">Later: %1$s</string>
     <string name="no_weather_data">No weather data available</string>
+    <string name="no_location_data">Your location could not be determined</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail unread count</string>
