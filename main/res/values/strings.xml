@@ -109,6 +109,7 @@
         the next few hours.
     </string>
     <string name="title_calendar_settings">Calendar Extension Settings</string>
+
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s day</item>
         <item quantity="other">%1$s days</item>

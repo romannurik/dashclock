@@ -86,4 +86,9 @@
         <item>48</item>
         <item>168</item>
     </string-array>
+    <string name="pref_select_calendars_title">Select calendars to display</string>
+    <plurals name="pref_calendars_selected_summary_template">
+        <item quantity="one">%1$d of %2$d calendar selected</item>
+        <item quantity="other">%1$d of %2$d calendars selected</item>
+    </plurals>
 </resources>
