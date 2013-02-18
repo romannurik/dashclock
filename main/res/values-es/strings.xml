@@ -67,8 +67,7 @@
     <!-- Weather -->
     <string name="weather_extension_title">Clima</string>
     <string name="weather_extension_description">
-        Muestra información del clima cerca tuyo actualizada, incluyendo temperatura
-        actual, condición y pronóstico.
+        Muestra información actualizada del clima cerca de ti, incluyendo temperatura actual, condición y pronóstico.
         Información proporcionada por Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Configuración de la extensión del clima</string>
@@ -133,7 +132,7 @@
     <string name="sms_body_template">De: %1$s</string>
 
     <!-- Welcome strings -->
-    <string name="welcome_title">Customiza tu DashClock</string>
+    <string name="welcome_title">Personaliza tu DashClock</string>
     <string name="welcome_description">¿Sólo quieres ver la fecha y la hora actual?
         ¡Entonces presiona el checkbox de arriba y listo!
         Pero, ¿por qué no customizar el DashClock con un par de <i>extensiones</i>?
