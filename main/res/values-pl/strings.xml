@@ -1,0 +1,154 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name" translatable="false">DashClock Widget</string>
+    <string name="widget_label" translatable="false">DashClock</string>
+
+    <string name="status_none" translatable="false">––</string>
+
+    <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
+    <string name="permission_label_read_extension_data">Request DashClock extension data</string>
+
+    <string name="settings">Ustawienia</string>
+    <string name="more_options">Więcej opcji</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">Konfiguracja widgetu</string>
+    <string name="section_extensions">Rozszerzenia</string>
+    <string name="section_appearance">Wygląd</string>
+    <string name="section_advanced">Zaawansowane</string>
+
+    <string name="add_another_extension">Dodaj więcej</string>
+    <string name="more_extensions">Więcej rozszerzeń</string>
+    <string name="done">Gotowe</string>
+    <string name="add_extension">Dodaj rozszerzenie</string>
+    <string name="cancel">Anuluj</string>
+
+    <string name="prev_date_style">Poprzedni styl daty</string>
+    <string name="prev_time_style">Poprzedni styl zegara</string>
+    <string name="next_date_style">Następny styl daty</string>
+    <string name="next_time_style">Następny styl zegara</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Niekompatybilny)</string>
+    <string name="incompatible_extension_title">Niekompatybilne rozszerzenie</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[Rozszerzenie
+        <b>%1$s</b> z tą wersją DashClock.
+        Sprawdzić aktualizację rozszerzenia w Google Play?]]></string>
+    <string name="search_play">Znajdź na Google Play</string>
+
+    <!-- About -->
+    <string name="close">Zamknij</string>
+    <string name="about">O aplikacji</string>
+
+    <string name="app_name_and_version" translatable="false"><![CDATA[
+        <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
+    ]]></string>
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Warunki korzystania</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Polityka prywatności</a><br><br>
+        Podziękowania za udostępnienie narzędzi:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>autorstwa Günther Beyer z <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>autorstwa Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Pogoda</string>
+    <string name="weather_extension_description">Wyświetla aktualną pogodę w miejscu, w którym się znajdujesz. Zawiera temperaturę i warunki panujące na zewnątrz. Informacje dostarcza Yahoo! Weather.    </string>
+    <string name="title_weather_settings">Ustawienia pogody</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="weather_expanded_title_template" translatable="false">%1$s — %2$s</string>
+    <string name="later_forecast_template">Później: %1$s</string>
+    <string name="no_weather_data">Brak danych pogody</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Skrzynka Gmail</string>
+    <string name="gmail_extension_description">
+        Wyświetla nieprzeczytane wiadomości ze skrzynki odebranych bądź priorytetów.
+    </string>
+    <string name="title_gmail_settings">Ustawienia Gmail</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d nieprzeczytanych</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Następny alarm</string>
+    <string name="next_alarm_extension_description">
+        Wyświetla informację o następnym alarmie jeśli ustawiony.
+    </string>
+    <string name="next_alarm">Następny alarm</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Wydarzenie kalendarza</string>
+    <string name="calendar_extension_description">
+        Wyświetla informację o następnym wydarzeniu kalendarza, jeśli zbliża się jego ustawiony czas.
+    </string>
+    <string name="title_calendar_settings">Ustawienia kalendarza</string>
+    <string name="calendar_with_location_template" translatable="false">%1$s — %2$s</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s dzień</item>
+        <item quantity="other">%1$s dni</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s godzina</item>
+        <item quantity="other">%1$s godzin</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s min</item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Nieodebrane połączenia</string>
+    <string name="missed_calls_extension_description">
+        Wyświetla ilość nieodebranych połączeń oraz nazwę kontaktu, który próbował się dodzwonić.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s nieodebrane</item>
+		<!--
+			##############################
+			MESSAGE
+			
+		In Polish, you say "nieodebranych" since 5 (1-4 - nieodebrane, 5-... - nieodebranych) 
+		
+			MESSAGE
+			##############################
+		-->
+        <item quantity="other">%1$s nieodebranych</item>
+    </plurals>
+    <string name="missed_calls_body_template">Od: %1$s</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Wiadomości tekstowe</string>
+    <string name="sms_extension_description">
+        Wyświetla ilość nieprzeczytanych SMS i MMS jak i nadawcę.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s nieprzeczytana wiadomość</item>
+        <item quantity="other">%1$s nieprzeczytane wiadomości</item>
+    </plurals>
+    <string name="sms_body_template">Od: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Dostosuj DashClock</string>
+    <string name="welcome_description">Chcesz wyświetlać tylko aktualny czas i datę? Zaznacz powyższe pole i gotowe! Ale może chciałbyś dostosować DashClock używając kilku <i>rozszerzeń</i>?
+        \n\n<b>Rozszerzenia</b> pozwalają wyświetlić przydatne dla Ciebie informacje w jednym widgecie.
+        Wypróbuj je dodając kilka, przekonaj się sam.
+    </string>
+
+</resources>
