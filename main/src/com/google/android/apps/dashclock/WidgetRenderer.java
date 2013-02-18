@@ -57,9 +57,6 @@ public class WidgetRenderer {
     private static final String TAG = LogUtils.makeLogTag(WidgetRenderer.class);
 
     public static final String PREF_CLOCK_SHORTCUT = "pref_clock_shortcut";
-    public static final Intent DEFAULT_CLOCK_INTENT = new Intent(Intent.ACTION_MAIN)
-            .setPackage("com.google.android.deskclock")
-            .addCategory(Intent.CATEGORY_LAUNCHER);
 
     private static class CollapsedExtensionSlot {
         int targetId;
@@ -99,7 +96,7 @@ public class WidgetRenderer {
         // Load some settings
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         Intent clockIntent = AppChooserPreference.getIntentValue(
-                sp.getString(PREF_CLOCK_SHORTCUT, null), DEFAULT_CLOCK_INTENT);
+                sp.getString(PREF_CLOCK_SHORTCUT, null), Utils.getDefaultClockIntent(context));
 
         // Load data from extensions
         List<ExtensionManager.ExtensionWithData> mExtensions

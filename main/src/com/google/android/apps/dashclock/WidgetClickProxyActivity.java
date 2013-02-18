@@ -46,6 +46,8 @@ public class WidgetClickProxyActivity extends Activity {
                 LOGE(TAG, "Error parsing URI.", e);
             } catch (ActivityNotFoundException e) {
                 LOGE(TAG, "Proxy'd activity not found.", e);
+            } catch (SecurityException e) {
+                LOGE(TAG, "Don't have permission to launch proxy'd activity .", e);
             }
             finish();
         }

@@ -17,6 +17,7 @@
 package com.google.android.apps.dashclock.nextalarm;
 
 import com.google.android.apps.dashclock.LogUtils;
+import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -34,7 +35,8 @@ import java.util.regex.Pattern;
  */
 public class NextAlarmExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(NextAlarmExtension.class);
-private static Pattern sDigitPattern = Pattern.compile("[0-9]");
+    private static Pattern sDigitPattern = Pattern.compile("[0-9]");
+
     @Override
     protected void onInitialize(boolean isReconnect) {
         super.onInitialize(isReconnect);
@@ -58,8 +60,6 @@ private static Pattern sDigitPattern = Pattern.compile("[0-9]");
                 .icon(R.drawable.ic_extension_next_alarm)
                 .status(nextAlarm)
                 .expandedBody(getString(R.string.next_alarm))
-                .clickIntent(new Intent(Intent.ACTION_MAIN)
-                        .setPackage("com.google.android.deskclock")
-                        .addCategory(Intent.CATEGORY_LAUNCHER)));
+                .clickIntent(Utils.getDefaultClockIntent(this)));
     }
 }

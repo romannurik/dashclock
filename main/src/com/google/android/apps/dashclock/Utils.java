@@ -16,8 +16,9 @@
 
 package com.google.android.apps.dashclock;
 
-import android.app.backup.BackupManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
@@ -35,6 +36,11 @@ public class Utils {
     private static final String USER_AGENT = "DashClock/0.0";
 
     public static final int EXTENSION_ICON_SIZE = 128;
+
+    private static final String[] CLOCK_PACKAGES = new String[] {
+            "com.google.android.deskclock",
+            "com.android.deskclock",
+    };
 
     // TODO: Let's use a *real* HTTP library, eh?
     public static HttpURLConnection openUrlConnection(String url) throws IOException {
@@ -65,5 +71,17 @@ public class Utils {
 
     public static Bitmap flattenExtensionIcon(Context context, Bitmap baseIcon, int color) {
         return flattenExtensionIcon(new BitmapDrawable(context.getResources(), baseIcon), color);
+    }
+
+    public static Intent getDefaultClockIntent(Context context) {
+        PackageManager pm = context.getPackageManager();
+        for (String packageName : CLOCK_PACKAGES) {
+            try {
+                pm.getPackageInfo(packageName, 0);
+                return pm.getLaunchIntentForPackage(packageName);
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
+        }
+        return null;
     }
 }

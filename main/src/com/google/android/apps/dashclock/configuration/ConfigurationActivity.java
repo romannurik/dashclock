@@ -28,6 +28,7 @@ import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -89,6 +90,9 @@ public class ConfigurationActivity extends Activity {
         if (intent != null
                 && AppWidgetManager.ACTION_APPWIDGET_CONFIGURE.equals(intent.getAction())) {
             mNewWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mNewWidgetId);
+            // See http://code.google.com/p/android/issues/detail?id=2539
+            setResult(RESULT_CANCELED, new Intent()
+                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mNewWidgetId));
         }
 
         // Set up UI widgets
@@ -147,19 +151,7 @@ public class ConfigurationActivity extends Activity {
                         PopupMenu actionOverflowMenu = new PopupMenu(darkThemeContext, view);
                         actionOverflowMenu.inflate(R.menu.configure_overflow);
                         actionOverflowMenu.show();
-                        actionOverflowMenu.setOnMenuItemClickListener(
-                                new PopupMenu.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem menuItem) {
-                                        switch (menuItem.getItemId()) {
-                                            case R.id.action_about:
-                                                HelpUtils.showAboutDialog(
-                                                        ConfigurationActivity.this);
-                                                return true;
-                                        }
-                                        return false;
-                                    }
-                                });
+                        actionOverflowMenu.setOnMenuItemClickListener(mActionOverflowClickListener);
                     }
                 });
         Spinner sectionSpinner = (Spinner) actionBarContainer.findViewById(R.id.section_spinner);
@@ -222,6 +214,26 @@ public class ConfigurationActivity extends Activity {
             }
         });
     }
+
+    private PopupMenu.OnMenuItemClickListener mActionOverflowClickListener
+            = new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_get_more_extensions:
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
+                                    + "&c=apps")));
+                    return true;
+
+                case R.id.action_about:
+                    HelpUtils.showAboutDialog(
+                            ConfigurationActivity.this);
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onStop() {

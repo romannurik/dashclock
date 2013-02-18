@@ -77,6 +77,7 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
+        LOGD(TAG, "onDisabled; stopping DashClockService.");
         context.stopService(new Intent(context, DashClockService.class));
     }
 
@@ -86,7 +87,10 @@ public class WidgetProvider extends AppWidgetProvider {
         int[] remainingIds = AppWidgetManager.getInstance(context).getAppWidgetIds(
                 new ComponentName(context, WidgetProvider.class));
         if (remainingIds == null || remainingIds.length == 0) {
+            LOGD(TAG, "Widget deleted, none remaining; stopping DashClockService.");
             context.stopService(new Intent(context, DashClockService.class));
+        } else {
+            LOGD(TAG, "Widget deleted, " + remainingIds.length + " remaining.");
         }
     }
 }
