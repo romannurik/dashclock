@@ -150,6 +150,9 @@ public class CalendarExtension extends DashClockExtension {
             return;
         }
 
+        Calendar nextEventCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        nextEventCalendar.setTimeInMillis(nextTimestamp);
+
         int minutesUntilNextAppointment = (int) (timeUntilNextAppointent / MINUTE_MILLIS);
 
         String untilString;
@@ -164,9 +167,7 @@ public class CalendarExtension extends DashClockExtension {
                 untilString = getResources().getQuantityString(
                         R.plurals.calendar_template_hours, hours, hours);
             } else {
-                int days = hours / 24; // floor, not round for days
-                untilString = getResources().getQuantityString(
-                        R.plurals.calendar_template_days, days, days);
+                untilString = new SimpleDateFormat("E").format(nextEventCalendar.getTime());
             }
         }
         String eventTitle = cursor.getString(EventsQuery.TITLE);
@@ -176,9 +177,6 @@ public class CalendarExtension extends DashClockExtension {
         long eventBegin = cursor.getLong(EventsQuery.BEGIN);
         long eventEnd = cursor.getLong(EventsQuery.END);
         cursor.close();
-
-        Calendar nextEventCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        nextEventCalendar.setTimeInMillis(nextTimestamp);
 
         StringBuilder expandedBodyFormat = new StringBuilder();
         if (nextTimestamp - currentTimestamp > 24 * HOUR_MILLIS) {
