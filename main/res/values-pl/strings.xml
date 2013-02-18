@@ -27,6 +27,10 @@
     <string name="section_appearance">Wygląd</string>
     <string name="section_advanced">Zaawansowane</string>
 
+    <string name="title_apps">Programy</string>
+    <string name="title_shortcuts">Skróty</string>
+
+    <string name="get_more_extensions">Pobierz więcej rozszerzeń</string>
     <string name="add_another_extension">Dodaj więcej</string>
     <string name="more_extensions">Więcej rozszerzeń</string>
     <string name="done">Gotowe</string>
@@ -66,7 +70,8 @@
     <string name="title_weather_settings">Ustawienia pogody</string>
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Później: %1$s</string>
-    <string name="no_weather_data">Brak danych pogody</string>
+    <string name="no_weather_data">Brak dostępnych danych pogody</string>
+    <string name="no_location_data">Nie udało się określić Twojego położenia</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Skrzynka Gmail</string>

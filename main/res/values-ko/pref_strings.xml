@@ -47,10 +47,10 @@
         <item>자동분류함</item>
     </string-array>
 
-    <string name="pref_gmail_accounts_title">다음 계정에 대해 읽지 않은 메일 개수 표시</string>
+    <string name="pref_gmail_accounts_title">표시할 메일 계정 선택</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">%2$d개 계정 중 %1$d개 계정 선택됨</item>
-        <item quantity="other">%2$d개 계정 중 %1$d개 계정 선택됨</item>
+        <item quantity="one">%2$d개 계정 중 %1$d개 선택됨</item>
+        <item quantity="other">%2$d개 계정 중 %1$d개 선택됨</item>
     </plurals>
 
     <!-- Calendar -->
@@ -63,4 +63,11 @@
         <item>2 일</item>
         <item>1 주</item>
     </string-array>
+    <string name="pref_calendar_selected_title">표시할 캘린더 선택</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">%2$d개 캘린더 중 %1$d개 선택됨</item>
+        <item quantity="other">%2$d개 캘린더 중 %1$d개 선택됨</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">사용자 지정 캘린더 표시</string>
+    <string name="pref_calendar_custom_visibility_description">설정 체크 해제시 캘린더 애플리케이션에 표시되는 모든 캘린더를 DashClock에 표시합니다</string>
 </resources>

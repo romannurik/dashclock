@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Aplikacja zegara</string>
     <string name="pref_homescreen_background_opacity_title">Tło widgetu na ekranie głównym</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Przeźroczyste</item>
@@ -27,6 +28,10 @@
 
     <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany</string>
     <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widgetu</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Skrót</string>
+    <string name="pref_shortcut_default">(Domyślny)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Jednostki temperatury</string>
