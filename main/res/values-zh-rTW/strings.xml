@@ -26,6 +26,9 @@
     <string name="section_extensions">擴展</string>
     <string name="section_appearance">外觀</string>
     <string name="section_advanced">高級</string>
+    
+    <string name="title_apps">應用程式</string>
+    <string name="title_shortcuts">捷徑</string>
 
     <string name="get_more_extensions">獲取更多擴展</string>
     <string name="add_another_extension">添加其它擴展</string>

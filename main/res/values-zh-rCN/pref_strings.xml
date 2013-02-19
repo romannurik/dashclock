@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">时钟快捷方式</string>
     <string name="pref_homescreen_background_opacity_title">小部件背景</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>完全透明</item>
@@ -28,6 +29,10 @@
     <string name="pref_aggressive_centering_title">永远居中</string>
     <string name="pref_aggressive_centering_description">是否强制时钟内容永远居中</string>
 
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">快捷方式</string>
+    <string name="pref_shortcut_default">(默认)</string>
+    
     <!-- Weather -->
     <string name="pref_weather_units_title">温度单位</string>
     <string-array name="pref_weather_units_display_names">
@@ -49,6 +54,7 @@
     </plurals>
 
     <!-- Calendar -->
+    
     <string name="pref_calendar_look_ahead_hours_title">显示未来多长时间的活动</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
         <item>3小时</item>
@@ -58,4 +64,11 @@
         <item>2天</item>
         <item>1周</item>
     </string-array>
+    <string name="pref_calendar_selected_title">显示日历</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">从%2$d个日历选中%1$d个</item>
+        <item quantity="other">从%2$d个日历选中%1$d个</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">自定义可见的日历</string>
+    <string name="pref_calendar_custom_visibility_description">显示日历应用程序中所有可见的日历</string>
 </resources>
