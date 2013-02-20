@@ -63,4 +63,11 @@
         <item>2 jours</item>
         <item>semaine</item>
     </string-array>
+    <string name="pref_calendar_selected_title">Choisir les calendrier à afficher</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">%1$d of %2$d calendrier sélectionné</item>
+        <item quantity="other">%1$d of %2$d calendriers sélectionnés</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">Paramétrer la visibilité du calendrier</string>
+    <string name="pref_calendar_custom_visibility_description">Si décochée, afficher tous les calendriers</string>
 </resources>
