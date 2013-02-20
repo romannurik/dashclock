@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  */
 public class NextAlarmExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(NextAlarmExtension.class);
-    private static Pattern sDigitPattern = Pattern.compile("[0-9]");
+    private static Pattern sDigitPattern = Pattern.compile("\\s[0-9]");
 
     @Override
     protected void onInitialize(boolean isReconnect) {
@@ -53,13 +53,13 @@ public class NextAlarmExtension extends DashClockExtension {
                 Settings.System.NEXT_ALARM_FORMATTED);
         Matcher m = sDigitPattern.matcher(nextAlarm);
         if (m.find() && m.start() > 0) {
-            nextAlarm = nextAlarm.substring(0, m.start()) + "\n" + nextAlarm.substring(m.start());
+            nextAlarm = nextAlarm.substring(0, m.start()) + "\n"
+                    + nextAlarm.substring(m.start() + 1); // +1 to skip whitespace
         }
         publishUpdate(new ExtensionData()
                 .visible(!TextUtils.isEmpty(nextAlarm))
                 .icon(R.drawable.ic_extension_next_alarm)
                 .status(nextAlarm)
-                .expandedBody(getString(R.string.next_alarm))
                 .clickIntent(Utils.getDefaultAlarmsIntent(this)));
     }
 }

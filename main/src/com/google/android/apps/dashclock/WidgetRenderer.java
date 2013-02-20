@@ -16,6 +16,7 @@
 
 package com.google.android.apps.dashclock;
 
+import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 import com.google.android.apps.dashclock.configuration.ConfigurationActivity;
@@ -238,8 +239,8 @@ public class WidgetRenderer {
                         .getDimensionPixelSize(R.dimen.extension_collapsed_text_size_single_line);
                 int extensionCollapsedTextSizeTwoLine = res
                         .getDimensionPixelSize(R.dimen.extension_collapsed_text_size_two_line);
-                for (ExtensionManager.ExtensionWithData ci : mExtensions) {
-                    if (!ci.latestData.visible()) {
+                for (ExtensionManager.ExtensionWithData ewd : mExtensions) {
+                    if (!ewd.latestData.visible()) {
                         continue;
                     }
 
@@ -251,7 +252,7 @@ public class WidgetRenderer {
                     rv.setViewVisibility(COLLAPSED_EXTENSION_SLOTS[slotIndex].targetId,
                             View.VISIBLE);
 
-                    String status = ci.latestData.status();
+                    String status = ewd.latestData.status();
                     if (TextUtils.isEmpty(status)) {
                         status = "";
                     }
@@ -268,11 +269,27 @@ public class WidgetRenderer {
                         rv.setTextViewTextSize(extensionTextId, TypedValue.COMPLEX_UNIT_PX,
                                 extensionCollapsedTextSizeSingleLine);
                     }
-                    rv.setTextViewText(extensionTextId, status.toUpperCase(Locale.getDefault()));
-                    rv.setImageViewBitmap(COLLAPSED_EXTENSION_SLOTS[slotIndex].iconId,
-                            loadExtensionIcon(context, ci.componentName, ci.latestData.icon()));
 
-                    Intent clickIntent = ci.latestData.clickIntent();
+                    rv.setTextViewText(extensionTextId, status.toUpperCase(Locale.getDefault()));
+
+                    StringBuilder statusContentDescription = new StringBuilder();
+                    String expandedTitle = expandedTitleOrStatus(ewd.latestData);
+                    if (!TextUtils.isEmpty(expandedTitle)) {
+                        statusContentDescription.append(expandedTitle);
+                    }
+                    String expandedBody = ewd.latestData.expandedBody();
+                    if (!TextUtils.isEmpty(expandedBody)) {
+                        statusContentDescription.append(" ").append(expandedBody);
+                    }
+                    rv.setContentDescription(extensionTextId, statusContentDescription.toString());
+
+                    rv.setImageViewBitmap(COLLAPSED_EXTENSION_SLOTS[slotIndex].iconId,
+                            loadExtensionIcon(context, ewd.listing.componentName,
+                                    ewd.latestData.icon()));
+                    rv.setContentDescription(COLLAPSED_EXTENSION_SLOTS[slotIndex].iconId,
+                            ewd.listing.title);
+
+                    Intent clickIntent = ewd.latestData.clickIntent();
                     if (clickIntent != null) {
                         rv.setOnClickPendingIntent(COLLAPSED_EXTENSION_SLOTS[slotIndex].targetId,
                                 PendingIntent.getActivity(context,
@@ -359,8 +376,8 @@ public class WidgetRenderer {
         }
 
         public long getItemId(int position) {
-            return mExtensionManager.getActiveExtensionsWithData().get(position).componentName
-                    .hashCode();
+            return mExtensionManager.getActiveExtensionsWithData().get(position)
+                    .listing.componentName.hashCode();
         }
 
         public boolean hasStableIds() {
@@ -379,23 +396,22 @@ public class WidgetRenderer {
 
             RemoteViews rv;
 
-            ExtensionManager.ExtensionWithData ci = mVisibleExtensions.get(position);
+            ExtensionManager.ExtensionWithData ewd = mVisibleExtensions.get(position);
             rv = new RemoteViews(mContext.getPackageName(),
                     R.layout.widget_list_item_expanded_extension);
 
-            String expandedTitle = ci.latestData.expandedTitle();
-            if (TextUtils.isEmpty(expandedTitle)) {
-                expandedTitle = ci.latestData.status();
-                if (!TextUtils.isEmpty(expandedTitle)) {
-                    expandedTitle = expandedTitle.replace("\n", "");
-                }
-            }
-            rv.setTextViewText(R.id.text1, expandedTitle);
-            rv.setTextViewText(R.id.text2, ci.latestData.expandedBody());
-            rv.setImageViewBitmap(R.id.icon,
-                    loadExtensionIcon(mContext, ci.componentName, ci.latestData.icon()));
+            rv.setTextViewText(R.id.text1, expandedTitleOrStatus(ewd.latestData));
 
-            Intent clickIntent = ci.latestData.clickIntent();
+            String expandedBody = ewd.latestData.expandedBody();
+            rv.setViewVisibility(R.id.text2, TextUtils.isEmpty(expandedBody)
+                    ? View.GONE : View.VISIBLE);
+            rv.setTextViewText(R.id.text2, ewd.latestData.expandedBody());
+
+            rv.setImageViewBitmap(R.id.icon,
+                    loadExtensionIcon(mContext, ewd.listing.componentName, ewd.latestData.icon()));
+            rv.setContentDescription(R.id.icon, ewd.listing.title);
+
+            Intent clickIntent = ewd.latestData.clickIntent();
             if (clickIntent != null) {
                 rv.setOnClickFillInIntent(R.id.list_item,
                         WidgetClickProxyActivity.getFillIntent(clickIntent));
@@ -447,5 +463,16 @@ public class WidgetRenderer {
         }
 
         return null;
+    }
+
+    private static String expandedTitleOrStatus(ExtensionData data) {
+        String expandedTitle = data.expandedTitle();
+        if (TextUtils.isEmpty(expandedTitle)) {
+            expandedTitle = data.status();
+            if (!TextUtils.isEmpty(expandedTitle)) {
+                expandedTitle = expandedTitle.replace("\n", " ");
+            }
+        }
+        return expandedTitle;
     }
 }

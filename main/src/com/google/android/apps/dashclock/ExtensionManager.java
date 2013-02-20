@@ -102,9 +102,9 @@ public class ExtensionManager {
 
         boolean cleanupRequired = false;
         ArrayList<ComponentName> newActiveExtensions = new ArrayList<ComponentName>();
-        for (ExtensionWithData ci : mActiveExtensions) {
-            if (availableExtensions.contains(ci.componentName)) {
-                newActiveExtensions.add(ci.componentName);
+        for (ExtensionWithData ewd : mActiveExtensions) {
+            if (availableExtensions.contains(ewd.listing.componentName)) {
+                newActiveExtensions.add(ewd.listing.componentName);
             } else {
                 cleanupRequired = true;
             }
@@ -137,7 +137,7 @@ public class ExtensionManager {
             if (sb.length() > 0) {
                 sb.append(",");
             }
-            sb.append(ci.componentName.flattenToString());
+            sb.append(ci.listing.componentName.flattenToString());
         }
         mDefaultPreferences.edit()
                 .putString(PREF_ACTIVE_EXTENSIONS, sb.toString())
@@ -153,6 +153,12 @@ public class ExtensionManager {
     }
 
     private void setActiveExtensions(List<ComponentName> extensionNames, boolean saveAndNotify) {
+        Map<ComponentName, ExtensionListing> listings
+                = new HashMap<ComponentName, ExtensionListing>();
+        for (ExtensionListing listing : getAvailableExtensions()) {
+            listings.put(listing.componentName, listing);
+        }
+
         List<ComponentName> activeExtensionNames = getActiveExtensionNames();
         if (activeExtensionNames.equals(extensionNames)) {
             LOGD(TAG, "No change to list of active extensions.");
@@ -173,16 +179,20 @@ public class ExtensionManager {
             if (mExtensionInfoMap.containsKey(cn)) {
                 newActiveExtensions.add(mExtensionInfoMap.get(cn));
             } else {
-                ExtensionWithData ci = new ExtensionWithData();
-                ci.componentName = cn;
-                ci.latestData = deserializeExtensionData(ci.componentName);
-                newActiveExtensions.add(ci);
+                ExtensionWithData ewd = new ExtensionWithData();
+                ewd.listing = listings.get(cn);
+                if (ewd.listing == null) {
+                    ewd.listing = new ExtensionListing();
+                    ewd.listing.componentName = cn;
+                }
+                ewd.latestData = deserializeExtensionData(ewd.listing.componentName);
+                newActiveExtensions.add(ewd);
             }
         }
 
         mExtensionInfoMap.clear();
-        for (ExtensionWithData ci : newActiveExtensions) {
-            mExtensionInfoMap.put(ci.componentName, ci);
+        for (ExtensionWithData ewd : newActiveExtensions) {
+            mExtensionInfoMap.put(ewd.listing.componentName, ewd);
         }
 
         mActiveExtensions = newActiveExtensions;
@@ -199,10 +209,10 @@ public class ExtensionManager {
     public boolean updateExtensionData(ComponentName cn, ExtensionData data) {
         data.clean();
 
-        ExtensionWithData ci = mExtensionInfoMap.get(cn);
-        if (ci != null && !ExtensionData.equals(ci.latestData, data)) {
-            ci.latestData = data;
-            serializeExtensionData(ci.componentName, data);
+        ExtensionWithData ewd = mExtensionInfoMap.get(cn);
+        if (ewd != null && !ExtensionData.equals(ewd.latestData, data)) {
+            ewd.latestData = data;
+            serializeExtensionData(ewd.listing.componentName, data);
             notifyOnChangeListeners();
             return true;
         }
@@ -247,7 +257,7 @@ public class ExtensionManager {
     public List<ComponentName> getActiveExtensionNames() {
         List<ComponentName> list = new ArrayList<ComponentName>();
         for (ExtensionWithData ci : mActiveExtensions) {
-            list.add(ci.componentName);
+            list.add(ci.listing.componentName);
         }
         return list;
     }
@@ -314,7 +324,7 @@ public class ExtensionManager {
     }
 
     public static class ExtensionWithData {
-        public ComponentName componentName;
+        public ExtensionListing listing;
         public ExtensionData latestData;
     }
 
