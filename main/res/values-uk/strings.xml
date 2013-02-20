@@ -1,0 +1,147 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">Дозволяє отримувати дані додатків DashClock</string>
+    <string name="permission_label_read_extension_data">Отримати дані додатків DashClock</string>
+
+    <string name="settings">Налаштування</string>
+    <string name="more_options">Додаткові налаштування</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">Налаштування DashClock Widget</string>
+    <string name="section_extensions">Додатки</string>
+    <string name="section_appearance">Відображення</string>
+    <string name="section_advanced">Додатково</string>
+
+    <string name="title_apps">Програми</string>
+    <string name="title_shortcuts">Посилання</string>
+
+    <string name="get_more_extensions">Отримати більше додатків</string>
+    <string name="add_another_extension">Додати інші додатки</string>
+    <string name="more_extensions">Ще додатки</string>
+    <string name="done">Готово</string>
+    <string name="add_extension">Додати</string>
+    <string name="cancel">Скасувати</string>
+
+    <string name="prev_date_style">Попередній стиль дати</string>
+    <string name="prev_time_style">Попередній стиль годинника</string>
+    <string name="next_date_style">Наступний стиль дати</string>
+    <string name="next_time_style">Наступний стиль годинника</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Несумісно)</string>
+    <string name="incompatible_extension_title">Несумісний додаток</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[The
+        <b>%1$s</b> додаток не сумісний з встановленою версією DashClock.
+        Перевірте наявність оновлень для додатку в Google Play?]]></string>
+    <string name="search_play">Шукати в Google Play</string>
+
+    <!-- About -->
+    <string name="close">Закрити</string>
+    <string name="about">Про DashClock Widget</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Умови використання</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Політика конфіденційності</a><br><br>
+        Велика подяка цим інструментам з відкритим кодом:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>від Гюнтера Байера из <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>от Карла А. Бауера</i><br><br>
+        Переклад на українську мову завдяки Кушніренко Ігорю та Череднику Дмитру.
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Погода</string>
+    <string name="weather_extension_description">
+        Відображає інформацію як про поточну погоду навколо Вас, так і прогноз на найближчий час. Дані надані Yahoo!
+        Weather.
+    </string>
+    <string name="title_weather_settings">Налаштування погоди</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Пізніше: %1$s</string>
+    <string name="no_weather_data">Немає даних про погоду</string>
+    <string name="no_location_data">Ваше місцезнаходження не може бути визначено</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Кількість непрочитаних повідомлень Gmail</string>
+    <string name="gmail_extension_description">
+        Відображає кількість непрочитаних повідомлень Gmail у вхідній або пріоритетній папках
+    </string>
+    <string name="title_gmail_settings">Налаштування Gmail</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d непрочитаних</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Будильник</string>
+    <string name="next_alarm_extension_description">
+        Відображає інформацію про наступний запланований будильник, якщо такий є.
+    </string>
+    <string name="next_alarm">Будильник</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Події календаря</string>
+    <string name="calendar_extension_description">
+        Відображає інформацію про наступну подію календаря, якщо вона відбудеться протягом наступних кількох годин.
+    </string>
+    <string name="title_calendar_settings">Налаштування календаря</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s день</item>
+        <item quantity="other">%1$s дн.</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s г.</item>
+        <item quantity="other">%1$s г.</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s хв.</item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Пропущені дзвінки</string>
+    <string name="missed_calls_extension_description">
+        Відображає кількість пропущених викликів разом з іменами абонентів, що дзвонили.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s пропущений дзвінок</item>
+        <item quantity="other">%1$s пропущені дзвінки</item>
+    </plurals>
+    <string name="missed_calls_body_template">Від: %1$s</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Текстові повідомлення</string>
+    <string name="sms_extension_description">
+        Відображає кількість непрочитаних бесід SMS та MMS разом з іменами відправників.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s непрочитана бесіда</item>
+        <item quantity="other">%1$s непрочитані(их) бесід(и)</item>
+    </plurals>
+    <string name="sms_body_template">Від: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Налаштуйте свій DashClock</string>
+    <string name="welcome_description">Хочете бачити тільки дату і час? Тоді
+        просто натисніть на галочку у верхньому куті! Але чому б не кастомізувати DashClock
+        декількома<i>додатками</i>?
+        \n\n
+        <b>Додатки</b>
+        відображають нові данні прямо всередині DashClock!
+    </string>
+
+</resources>

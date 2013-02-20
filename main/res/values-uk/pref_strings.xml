@@ -1,0 +1,67 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Посилання годиника</string>
+    <string name="pref_homescreen_background_opacity_title">Фон віджета</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Повністю прозорий</item>
+        <item>25%</item>
+        <item>50%</item>
+        <item>75%</item>
+        <item>100%</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Завжди по центру</string>
+    <string name="pref_aggressive_centering_description">Може спровокувати зсув годиника для різних станів віджета
+    </string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Посилання</string>
+    <string name="pref_shortcut_default">(за замовчуванням)</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">Одиниці виміру</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">Показувати кількість непрочитаних повідомлень для папки</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>Вхідні повідомлення</item>
+        <item>Пріоритетні повідомлення</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">Показувати кількість непрочитаних повідомлень для акаунтів</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">%1$d з %2$d акаунта обрано</item>
+        <item quantity="other">%1$d з %2$d акаунтів обрано</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Попередній перегляд події</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 години</item>
+        <item>6 годин</item>
+        <item>12 годин</item>
+        <item>24 години</item>
+        <item>2 дні</item>
+        <item>тиждень</item>
+    </string-array>
+</resources>

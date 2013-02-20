@@ -28,7 +28,7 @@
 
     <string name="pref_aggressive_centering_title">永遠置中</string>
     <string name="pref_aggressive_centering_description">是否強制時鐘內容永遠置中</string>
-    
+
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">捷徑</string>
     <string name="pref_shortcut_default">(預設)</string>

@@ -83,9 +83,9 @@
     </string>
     <string name="title_gmail_settings">Nastavenie Gmail rozšírenia</string>
     <plurals name="gmail_title_template">
+        <item quantity="one">%1$s neprečítaný e-mail</item>
+        <item quantity="few">%1$s neprečítané e-maily</item>
         <item quantity="other">%1$d neprečítaných e-mailov</item>
-        <item quantity="one">%1$s neprečítané e-maily</item>
-        <item quantity="few">%1$s neprečítaný e-mail</item>
     </plurals>
 
     <!-- Next alarm -->
@@ -103,19 +103,19 @@
     </string>
     <string name="title_calendar_settings">Nastavenie kalendár rozšírenia</string>
     <plurals name="calendar_template_days">
-        <item quantity="other">%1$s dní</item>
         <item quantity="one">%1$s deň</item>
         <item quantity="few">%1$s dni</item>
+        <item quantity="other">%1$s dní</item>
     </plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="other">%1$s hodín</item>
         <item quantity="one">%1$s hodina</item>
         <item quantity="few">%1$s hodiny</item>
+        <item quantity="other">%1$s hodín</item>
     </plurals>
     <plurals name="calendar_template_mins">
-        <item quantity="other">%1$s minút</item>
         <item quantity="one">%1$s minúta</item>
         <item quantity="few">%1$s minúty</item>
+        <item quantity="other">%1$s minút</item>
     </plurals>
 
     <!-- Missed calls -->
@@ -124,9 +124,9 @@
         Zobrazí počet zmeškaných hovorov a mená volajúcich.
     </string>
     <plurals name="missed_calls_title_template">
-        <item quantity="other">%1$s zmeškaných hovorov</item>
         <item quantity="one">%1$s zmeškaný hovor</item>
         <item quantity="few">%1$s zmeškané hovory</item>
+        <item quantity="other">%1$s zmeškaných hovorov</item>
     </plurals>
     <string name="missed_calls_body_template">Od: %1$s</string>
 
@@ -136,9 +136,9 @@
         Zobrazí počet neprečítaných SMS a MMS konverzácií a mená odosielateľov.
     </string>
     <plurals name="sms_title_template">
-        <item quantity="other">%1$s neprečítaných konverzácií</item>
         <item quantity="one">%1$s neprečítaná konverzácia</item>
         <item quantity="few">%1$s neprečítané konverzácie</item>
+        <item quantity="other">%1$s neprečítaných konverzácií</item>
     </plurals>
     <string name="sms_body_template">Od: %1$s</string>
 

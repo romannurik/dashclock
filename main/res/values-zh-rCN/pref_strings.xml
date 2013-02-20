@@ -32,7 +32,7 @@
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">快捷方式</string>
     <string name="pref_shortcut_default">(默认)</string>
-    
+
     <!-- Weather -->
     <string name="pref_weather_units_title">温度单位</string>
     <string-array name="pref_weather_units_display_names">
@@ -54,7 +54,6 @@
     </plurals>
 
     <!-- Calendar -->
-    
     <string name="pref_calendar_look_ahead_hours_title">显示未来多长时间的活动</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
         <item>3小时</item>
