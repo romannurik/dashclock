@@ -74,7 +74,7 @@
     <string name="no_location_data">Nie udało się określić Twojego położenia</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Skrzynka Gmail</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Wyświetla nieprzeczytane wiadomości ze skrzynki odebranych bądź priorytetów.
     </string>

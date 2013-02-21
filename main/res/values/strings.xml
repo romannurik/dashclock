@@ -86,7 +86,7 @@
     <string name="no_location_data">Your location could not be determined</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Gmail unread count</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Displays an unread count for your Gmail inbox or priority inbox.
     </string>

@@ -77,7 +77,7 @@
     <string name="no_location_data">Helyzeted meghatározhatatlan</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Olvasatlan email számláló</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Az olvasatlan emailek számát jeleníti meg a Gmail beérkezo vagy fontos mappájából.
     </string>

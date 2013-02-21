@@ -78,7 +78,7 @@
     <string name="no_location_data">Su ubicación no pudo ser determinada</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Mensajes sin leer de Gmail</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Muestra la cantidad de mensajes sin leer de la bandeja de entrada o prioritaria de Gmail.
     </string>

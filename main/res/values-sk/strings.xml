@@ -77,7 +77,7 @@
     <string name="no_location_data">Vaša poloha sa nedá určiť</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Neprečítané e-maily v službe Gmail</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Zobrazí počet neprečítaných e-mailov prioritnej alebo doručenej pošty v službe Gmail.
     </string>

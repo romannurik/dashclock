@@ -77,7 +77,7 @@
     <string name="no_location_data">위치 정보를 확인할 수 없습니다</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">읽지 않은 Gmail 개수</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Gmail의 받은편지함 또는 자동분류함의 읽지 않은 메일 개수를 표시합니다.
     </string>

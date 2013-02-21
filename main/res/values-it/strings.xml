@@ -78,7 +78,7 @@
     <string name="no_location_data">Impossibile determinare la tua posizione</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Messaggi non letti di Gmail</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Visualizza il numero di conversazioni non lette della posta in arrivo o della
         posta prioritaria del tuo account Gmail.

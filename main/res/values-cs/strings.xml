@@ -78,7 +78,7 @@
     <string name="no_location_data">Vaši pozici nelze zjistit</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Počet nepřečtených na Gmailu</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Zobrazí počet nepřečtených zpráv prioritní nebo běžné pošty na Gmailu.
     </string>

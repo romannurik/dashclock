@@ -78,12 +78,11 @@
     <string name="no_location_data">Votre position ne peut pas être déterminée</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Gmail courrier non lu</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Affiche un compteur de courriels non lus pour la boîte de réception classique ou prioritaire de Gmail.
     </string>
     <string name="title_gmail_settings">Paramètres de l\'extension Gmail</string>
-    <!-- <string name="gmail_extension_title">Gmail unread count</string> -->
     <plurals name="gmail_title_template">
         <item quantity="one">%1$d non lu</item>
         <item quantity="other">%1$d non lus</item>

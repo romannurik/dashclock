@@ -78,7 +78,7 @@
     <string name="no_location_data">Keine Position verfügbar</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Ungelesene Gmail Nachrichten</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Zeigt die Anzahl Ihrer ungelesenen GoogleMail-Nachrichten im Posteingang an.
     </string>

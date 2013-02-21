@@ -78,7 +78,7 @@
     <string name="no_location_data">Ваше місцезнаходження не може бути визначено</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Кількість непрочитаних повідомлень Gmail</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Відображає кількість непрочитаних повідомлень Gmail у вхідній або пріоритетній папках
     </string>

@@ -76,7 +76,7 @@
     <string name="no_location_data">無法獲得當前位置</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Gmail未讀取郵件數量</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         顯示Gmail中收件匣的未讀取郵件數量。
     </string>
