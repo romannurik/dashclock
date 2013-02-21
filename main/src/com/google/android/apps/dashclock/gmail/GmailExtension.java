@@ -158,6 +158,12 @@ public class GmailExtension extends DashClockExtension {
                     null, // NOTE: the Labels API doesn't allow selections here
                     null,
                     null);
+
+        } catch (SecurityException e) {
+            // From developer console: "Permission Denial: opening provider com.google.android.gsf..
+            LOGE(TAG, "Error opening Gmail labels", e);
+            return null;
+
         } catch (SQLException e) {
             // From developer console: "SQLiteException: no such table: labels"
             LOGE(TAG, "Error opening Gmail labels", e);
