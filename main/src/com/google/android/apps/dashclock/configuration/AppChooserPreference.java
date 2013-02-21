@@ -194,6 +194,10 @@ public class AppChooserPreference extends Preference {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            if (mPreference == null) {
+                return null;
+            }
+
             // Force Holo Light since ?android:actionBarXX would use dark action bar
             Context layoutContext = new ContextThemeWrapper(getActivity(),
                     android.R.style.Theme_Holo_Light);

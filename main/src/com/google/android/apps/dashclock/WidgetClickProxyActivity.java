@@ -16,8 +16,11 @@
 
 package com.google.android.apps.dashclock;
 
+import com.google.android.apps.dashclock.api.DashClockExtension;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,9 +35,28 @@ import static com.google.android.apps.dashclock.LogUtils.LOGE;
 public class WidgetClickProxyActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(WidgetClickProxyActivity.class);
 
+    /**
+     * If present, the component name of the extension to update upon being clicked.
+     */
+    private static final String EXTRA_UPDATE_EXTENSION
+            = "com.google.android.apps.dashclock.extra.UPDATE_EXTENSION";
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus) {
+            if (getIntent().hasExtra(EXTRA_UPDATE_EXTENSION)) {
+                // Update extensions
+                Intent extensionUpdateIntent = new Intent(this, DashClockService.class);
+                extensionUpdateIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
+                extensionUpdateIntent.putExtra(DashClockService.EXTRA_COMPONENT_NAME,
+                        ComponentName.unflattenFromString(
+                                getIntent().getStringExtra(EXTRA_UPDATE_EXTENSION)));
+                // TODO: new flag for UPDATE_REASON_CLICKED
+                extensionUpdateIntent.putExtra(DashClockService.EXTRA_UPDATE_REASON,
+                        DashClockExtension.UPDATE_REASON_PERIODIC);
+                startService(extensionUpdateIntent);
+            }
+
             try {
                 startActivity(
                         Intent.parseUri(getIntent().getData().toString(), Intent.URI_INTENT_SCHEME)
@@ -55,8 +77,15 @@ public class WidgetClickProxyActivity extends Activity {
     }
 
     public static Intent wrap(Context context, Intent intent) {
+        return wrap(context, intent, null);
+    }
+
+    public static Intent wrap(Context context, Intent intent, ComponentName alsoUpdateExtension) {
         return new Intent(context, WidgetClickProxyActivity.class)
                 .setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)))
+                .putExtra(EXTRA_UPDATE_EXTENSION, (alsoUpdateExtension == null)
+                        ? null
+                        : alsoUpdateExtension.flattenToString())
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
     }
@@ -68,6 +97,14 @@ public class WidgetClickProxyActivity extends Activity {
     }
 
     public static Intent getFillIntent(Intent clickIntent) {
-        return new Intent().setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        return getFillIntent(clickIntent, null);
+    }
+
+    public static Intent getFillIntent(Intent clickIntent, ComponentName alsoUpdateExtension) {
+        return new Intent()
+                .setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)))
+                .putExtra(EXTRA_UPDATE_EXTENSION, (alsoUpdateExtension == null)
+                        ? null
+                        : alsoUpdateExtension.flattenToString());
     }
 }

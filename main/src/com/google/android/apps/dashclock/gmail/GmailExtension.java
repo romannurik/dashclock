@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.preference.PreferenceManager;
 import android.util.Pair;
 
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
+import static com.google.android.apps.dashclock.LogUtils.LOGE;
 
 /**
  * Gmail unread count extension.
@@ -149,12 +151,18 @@ public class GmailExtension extends DashClockExtension {
     }
 
     private Cursor openLabelsCursor(String account) {
-        return getContentResolver().query(
-                GmailContract.Labels.getLabelsUri(account),
-                LabelsQuery.PROJECTION,
-                null, // NOTE: the Labels API doesn't allow selections here
-                null,
-                null);
+        try {
+            return getContentResolver().query(
+                    GmailContract.Labels.getLabelsUri(account),
+                    LabelsQuery.PROJECTION,
+                    null, // NOTE: the Labels API doesn't allow selections here
+                    null,
+                    null);
+        } catch (SQLException e) {
+            // From developer console: "SQLiteException: no such table: labels"
+            LOGE(TAG, "Error opening Gmail labels", e);
+            return null;
+        }
     }
 
     private interface LabelsQuery {
