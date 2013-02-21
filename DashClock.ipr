@@ -5,13 +5,13 @@
   </component>
   <component name="ArtifactManager">
     <artifact type="jar" build-on-make="true" name="dashclock-api.jar">
-      <output-path>$PROJECT_DIR$/out/production/api</output-path>
+      <output-path>$PROJECT_DIR$/out/production/api-jars</output-path>
       <root id="archive" name="dashclock-api.jar">
         <element id="module-output" name="api" />
       </root>
     </artifact>
     <artifact type="jar" build-on-make="true" name="dashclock-api-sources.jar">
-      <output-path>$PROJECT_DIR$/out/production/api</output-path>
+      <output-path>$PROJECT_DIR$/out/production/api-jars</output-path>
       <root id="archive" name="dashclock-api-sources.jar">
         <element id="dir-copy" path="$PROJECT_DIR$/api/src" />
       </root>

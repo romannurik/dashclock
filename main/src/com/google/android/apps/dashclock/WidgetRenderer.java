@@ -199,11 +199,13 @@ public class WidgetRenderer {
                     (activeExtensions > 0 && !isExpanded) ? View.VISIBLE : View.GONE);
 
             // Clock
-            rv.setOnClickPendingIntent(R.id.clock_target, PendingIntent.getActivity(
-                    context,
-                    0,
-                    clockIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT));
+            if (clockIntent != null) {
+                rv.setOnClickPendingIntent(R.id.clock_target, PendingIntent.getActivity(
+                        context,
+                        0,
+                        clockIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT));
+            }
 
             for (CollapsedExtensionSlot slot : COLLAPSED_EXTENSION_SLOTS) {
                 rv.setViewVisibility(slot.targetId, View.GONE);

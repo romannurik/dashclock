@@ -41,11 +41,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../out/production/api/dashclock-api.jar!/" />
+          <root url="jar://$MODULE_DIR$/../out/production/api-jars/dashclock-api.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../out/production/api/dashclock-api-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../out/production/api-jars/dashclock-api-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

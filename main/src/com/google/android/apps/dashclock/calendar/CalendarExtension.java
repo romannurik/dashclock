@@ -61,7 +61,8 @@ public class CalendarExtension extends DashClockExtension {
     private int mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
 
     static List<Pair<String, Boolean>> getAllCalendars(Context context) {
-        // Only return calendars that are marked as synced to device. (This is different from the display flag)
+        // Only return calendars that are marked as synced to device.
+        // (This is different from the display flag)
         Cursor cursor = context.getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI,
                 CalendarsQuery.PROJECTION,
@@ -70,13 +71,17 @@ public class CalendarExtension extends DashClockExtension {
                 null);
 
         List<Pair<String, Boolean>> calendars = new ArrayList<Pair<String, Boolean>>();
-        while (cursor.moveToNext()) {
-            calendars.add(new Pair<String, Boolean>(
-                    cursor.getString(CalendarsQuery.ID),
-                    cursor.getInt(CalendarsQuery.VISIBLE) == 1));
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                calendars.add(new Pair<String, Boolean>(
+                        cursor.getString(CalendarsQuery.ID),
+                        cursor.getInt(CalendarsQuery.VISIBLE) == 1));
+
+            }
+
+            cursor.close();
         }
 
-        cursor.close();
         return calendars;
     }
 
@@ -252,6 +257,10 @@ public class CalendarExtension extends DashClockExtension {
 
             sb.append(CalendarContract.Events.CALENDAR_ID);
             sb.append(" = ?");
+        }
+
+        if (sb.length() == 0) {
+            sb.append("1=1"); // constant expression to prevent returning null
         }
 
         return sb.toString();
