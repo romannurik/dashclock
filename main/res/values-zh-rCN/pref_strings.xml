@@ -1,0 +1,73 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">时钟快捷方式</string>
+    <string name="pref_homescreen_background_opacity_title">小部件背景</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>完全透明</item>
+        <item>75%透明</item>
+        <item>50%透明</item>
+        <item>25%透明</item>
+        <item>不透明</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">永远居中</string>
+    <string name="pref_aggressive_centering_description">是否强制时钟内容永远居中</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">快捷方式</string>
+    <string name="pref_shortcut_default">(默认)</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">温度单位</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>华氏度°F</item>
+        <item>摄氏度°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">显示未读邮件的标签</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>收件箱</item>
+        <item>优先收件箱</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">显示未读的帐户</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">从%2$d个帐户选中%1$d个</item>
+        <item quantity="other">从%2$d个帐户选中%1$d个</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">显示未来多长时间的活动</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3小时</item>
+        <item>6小时</item>
+        <item>12小时</item>
+        <item>24小时</item>
+        <item>2天</item>
+        <item>1周</item>
+    </string-array>
+    <string name="pref_calendar_selected_title">显示日历</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">从%2$d个日历选中%1$d个</item>
+        <item quantity="other">从%2$d个日历选中%1$d个</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">自定义可见的日历</string>
+    <string name="pref_calendar_custom_visibility_description">显示日历应用程序中所有可见的日历</string>
+</resources>

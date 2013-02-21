@@ -1,0 +1,154 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">Povoľuje požadovanie dát DashClock rozšírenia</string>
+    <string name="permission_label_read_extension_data">Požaduje dáta DashClock rozšírenia</string>
+
+    <string name="settings">Nastavenia</string>
+    <string name="more_options">Viac možností</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">Nastaviť DashClock</string>
+    <string name="section_extensions">Rozšírenia</string>
+    <string name="section_appearance">Vzhľad</string>
+    <string name="section_advanced">Pokročilé</string>
+
+    <string name="title_apps">Aplikácie</string>
+    <string name="title_shortcuts">Skratky</string>
+
+    <string name="get_more_extensions">Získať viac rozšírení</string>
+    <string name="add_another_extension">Pridať ďalšie rozšírenie</string>
+    <string name="more_extensions">Viac rozšírení</string>
+    <string name="done">Hotovo</string>
+    <string name="add_extension">Pridať rozšírenie</string>
+    <string name="cancel">Zrušiť</string>
+
+    <string name="prev_date_style">Predchádzajúci formát dátumu</string>
+    <string name="prev_time_style">Predchádzajúci formát času</string>
+    <string name="next_date_style">Nasledujúci formát dátumu</string>
+    <string name="next_time_style">Nasledujúci formát času</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Nekompatibilné)</string>
+    <string name="incompatible_extension_title">Nekompatibilné rozšírenie</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[Rozšírenie
+        <b>%1$s</b> nie je kompatibilné s touto verziou DashClocku.
+        Hľadať aktualizáciu rozšírenia na Google Play?]]></string>
+    <string name="search_play">Hľadať na Google Play</string>
+
+    <!-- About -->
+    <string name="close">Zavrieť</string>
+    <string name="about">O aplikácii</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Podmienky služby</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Zásady ochrany osobných údajov</a><br><br>
+        Veľká vďaka za nástroje s otvoreným zdrojovým kódom:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Ikony</a></b><br>
+        <i>od Günther Beyer z <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>od Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Počasie</string>
+    <string name="weather_extension_description">
+        Zobrazí najnovšie informácie okolo Vás a to vrátane aktuálnej teploty,
+		podmienok a predpovedi počasia. Dáta sú získavané zo služby Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Nastavenie rozšírenia s počasím</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Neskôr: %1$s</string>
+    <string name="no_weather_data">Žiadne údaje o počasí k dispozícii</string>
+    <string name="no_location_data">Vaša poloha sa nedá určiť</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Neprečítané e-maily v službe Gmail</string>
+    <string name="gmail_extension_description">
+        Zobrazí počet neprečítaných e-mailov prioritnej alebo doručenej pošty v službe Gmail.
+    </string>
+    <string name="title_gmail_settings">Nastavenie Gmail rozšírenia</string>
+    <plurals name="gmail_title_template">
+        <item quantity="one">%1$s neprečítaný e-mail</item>
+        <item quantity="few">%1$s neprečítané e-maily</item>
+        <item quantity="other">%1$d neprečítaných e-mailov</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Nasledujúci budík</string>
+    <string name="next_alarm_extension_description">
+        Zobrazí informácie o nasledujúcom budíku, ak je nastavený.
+    </string>
+    <string name="next_alarm">Nasledujúci budík</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Schôdzka v kalendári</string>
+    <string name="calendar_extension_description">
+        Zobrazí informácie o nasledujúcej schôdzke v kalendári, ak je 
+		naplánovaná v najbližších hodinách/týždni.
+    </string>
+    <string name="title_calendar_settings">Nastavenie kalendár rozšírenia</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s deň</item>
+        <item quantity="few">%1$s dni</item>
+        <item quantity="other">%1$s dní</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s hodina</item>
+        <item quantity="few">%1$s hodiny</item>
+        <item quantity="other">%1$s hodín</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="one">%1$s minúta</item>
+        <item quantity="few">%1$s minúty</item>
+        <item quantity="other">%1$s minút</item>
+    </plurals>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Zmeškané hovory</string>
+    <string name="missed_calls_extension_description">
+        Zobrazí počet zmeškaných hovorov a mená volajúcich.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s zmeškaný hovor</item>
+        <item quantity="few">%1$s zmeškané hovory</item>
+        <item quantity="other">%1$s zmeškaných hovorov</item>
+    </plurals>
+    <string name="missed_calls_body_template">Od: %1$s</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Textové správy</string>
+    <string name="sms_extension_description">
+        Zobrazí počet neprečítaných SMS a MMS konverzácií a mená odosielateľov.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s neprečítaná konverzácia</item>
+        <item quantity="few">%1$s neprečítané konverzácie</item>
+        <item quantity="other">%1$s neprečítaných konverzácií</item>
+    </plurals>
+    <string name="sms_body_template">Od: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Prispôsobenie DashClocku</string>
+    <string name="welcome_description">Chcete len vidieť aktuálny dátum a čas? 
+	    Potom stlačte zaškrt. tlačidlo hore a hotovo! Ale prečo si neprispôsobiť
+		DashClock s niekoľkými<i>rozšíreniami</i>?
+        \n\n<b>Rozšírenia</b> zobrazujú relevantné a včasné informácie v DashClock
+		Widgetu! Vyskúšajte ich pridaním niekoľkých rozšírení nižšie. 
+    </string>
+
+</resources>

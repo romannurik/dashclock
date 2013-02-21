@@ -1,0 +1,73 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">시계 바로가기</string>
+    <string name="pref_homescreen_background_opacity_title">홈 화면 위젯 배경</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>투명 배경</item>
+        <item>25% 검정</item>
+        <item>50% 검정</item>
+        <item>75% 검정</item>
+        <item>100% 검정</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">항상 가운데에 표시</string>
+    <string name="pref_aggressive_centering_description">설정 체크시 위젯의 상황에 따라 시계 위치가 이동할 수 있습니다</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">바로가기</string>
+    <string name="pref_shortcut_default">(기본)</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">날씨 단위</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">다음 라벨에 대해 읽지 않은 메일 개수 표시</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>받은편지함</item>
+        <item>자동분류함</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">표시할 메일 계정 선택</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">%2$d개 계정 중 %1$d개 선택됨</item>
+        <item quantity="other">%2$d개 계정 중 %1$d개 선택됨</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">다음 기간 대한 일정을 표시</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 시간</item>
+        <item>6 시간</item>
+        <item>12 시간</item>
+        <item>24 시간</item>
+        <item>2 일</item>
+        <item>1 주</item>
+    </string-array>
+    <string name="pref_calendar_selected_title">표시할 캘린더 선택</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">%2$d개 캘린더 중 %1$d개 선택됨</item>
+        <item quantity="other">%2$d개 캘린더 중 %1$d개 선택됨</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">사용자 지정 캘린더 표시</string>
+    <string name="pref_calendar_custom_visibility_description">설정 체크 해제시 캘린더 애플리케이션에 표시되는 모든 캘린더를 DashClock에 표시합니다</string>
+</resources>

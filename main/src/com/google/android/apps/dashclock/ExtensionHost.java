@@ -173,11 +173,13 @@ public class ExtensionHost {
 
                 // Execute operations that were deferred until the service was available.
                 // TODO: handle service disruptions that occur here
-                Iterator<Operation> it = conn.deferredOps.iterator();
-                while (it.hasNext()) {
-                    if (conn.ready) {
-                        execute(conn, it.next());
-                        it.remove();
+                synchronized (conn.deferredOps) {
+                    Iterator<Operation> it = conn.deferredOps.iterator();
+                    while (it.hasNext()) {
+                        if (conn.ready) {
+                            execute(conn, it.next());
+                            it.remove();
+                        }
                     }
                 }
             }
@@ -292,13 +294,14 @@ public class ExtensionHost {
                     }
                     operation.run(conn.binder);
                 } catch (RemoteException e) {
-                    LOGE(TAG,
-                            "Couldn't execute operation; scheduling for retry upon service "
-                                    + "reconnection.", e);
+                    LOGE(TAG, "Couldn't execute operation; scheduling for retry upon service "
+                            + "reconnection.", e);
                     // TODO: exponential backoff for retrying the same operation, or fail after
                     // n attempts (in case the remote service consistently crashes when
                     // executing this operation)
-                    conn.deferredOps.add(operation);
+                    synchronized (conn.deferredOps) {
+                        conn.deferredOps.add(operation);
+                    }
                 }
             }
         };
@@ -309,7 +312,9 @@ public class ExtensionHost {
             mAsyncHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    conn.deferredOps.add(operation);
+                    synchronized (conn.deferredOps) {
+                        conn.deferredOps.add(operation);
+                    }
                 }
             });
         }
@@ -387,6 +392,6 @@ public class ExtensionHost {
         /**
          * Only access on the async thread.
          */
-        Queue<Operation> deferredOps = new LinkedList<Operation>();
+        final Queue<Operation> deferredOps = new LinkedList<Operation>();
     }
 }

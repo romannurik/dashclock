@@ -19,85 +19,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <com.google.android.apps.dashclock.ui.PagerPositionStrip
-                android:id="@+id/pager_time_position_strip"
-                android:layout_width="200dp"
-                android:layout_height="3dp"
-                android:background="#3fff"
-                android:color="#33b5e5"
-                android:layout_gravity="center_horizontal|top"
-                android:layout_marginTop="16dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_time_style"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!--<Button android:id="@+id/prev_time_style_button"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="left|fill_vertical"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/prev_time_style"
-                android:visibility="gone" />
-
-            <Button android:id="@+id/next_time_style_button"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|fill_vertical"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/next_time_style"
-                android:visibility="gone" />-->
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/clock_date_top_margin">
-
-            <com.google.android.apps.dashclock.ui.PagerPositionStrip
-                android:id="@+id/pager_date_position_strip"
-                android:layout_width="200dp"
-                android:layout_height="3dp"
-                android:background="#3fff"
-                android:color="#33b5e5"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="16dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_date_style"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/clock_date_top_margin" />
 
-            <!--<Button android:id="@+id/prev_date_style_button"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="left|fill_vertical"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/prev_date_style"
-                android:visibility="gone" />
+        </LinearLayout>
 
-            <Button android:id="@+id/next_date_style_button"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|fill_vertical"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/next_date_style"
-                android:visibility="gone" />-->
-        </FrameLayout>
+        <com.google.android.apps.dashclock.ui.PagerPositionStrip
+            android:id="@+id/pager_time_position_strip"
+            android:layout_width="200dp"
+            android:layout_height="3dp"
+            android:background="#3fff"
+            android:color="#33b5e5"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="16dp" />
 
-    </LinearLayout>
+        <com.google.android.apps.dashclock.ui.PagerPositionStrip
+            android:id="@+id/pager_date_position_strip"
+            android:layout_width="200dp"
+            android:layout_height="3dp"
+            android:background="#3fff"
+            android:color="#33b5e5"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="16dp" />
+
+    </FrameLayout>
 
     <ImageView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,4 +76,5 @@
         android:layout_marginTop="@dimen/clock_date_top_margin"
         android:layout_gravity="center_vertical|right"
         android:alpha="0.35" />
+
 </FrameLayout>

@@ -23,7 +23,6 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import net.nurik.roman.dashclock.R;
 
-import android.content.Intent;
 import android.provider.Settings;
 import android.text.TextUtils;
 
@@ -31,7 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Next alarm exetnsion.
+ * Next alarm extension.
  */
 public class NextAlarmExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(NextAlarmExtension.class);
@@ -51,10 +50,12 @@ public class NextAlarmExtension extends DashClockExtension {
     protected void onUpdateData(int reason) {
         String nextAlarm = Settings.System.getString(getContentResolver(),
                 Settings.System.NEXT_ALARM_FORMATTED);
-        Matcher m = sDigitPattern.matcher(nextAlarm);
-        if (m.find() && m.start() > 0) {
-            nextAlarm = nextAlarm.substring(0, m.start()) + "\n"
-                    + nextAlarm.substring(m.start() + 1); // +1 to skip whitespace
+        if (!TextUtils.isEmpty(nextAlarm)) {
+            Matcher m = sDigitPattern.matcher(nextAlarm);
+            if (m.find() && m.start() > 0) {
+                nextAlarm = nextAlarm.substring(0, m.start()) + "\n"
+                        + nextAlarm.substring(m.start() + 1); // +1 to skip whitespace
+            }
         }
         publishUpdate(new ExtensionData()
                 .visible(!TextUtils.isEmpty(nextAlarm))

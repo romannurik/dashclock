@@ -1,0 +1,75 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">Scorciatoia orologio</string>
+    <string name="pref_homescreen_background_opacity_title">Sfondo del widget nella home</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Trasparente</item>
+        <item>Nero 25%</item>
+        <item>Nero 50%</item>
+        <item>Nero 75%</item>
+        <item>Nero 100%</item>
+    </string-array>
+
+    <string name="pref_aggressive_centering_title">Sempre centrato</string>
+    <string name="pref_aggressive_centering_description">Può provocare movimenti casuali dell\'orologio in diversi stati
+        del widget
+    </string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">Scorciatoia</string>
+    <string name="pref_shortcut_default">(Predefinito)</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">Unità di misura del Meteo</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">Visualizza messaggi non letti per l\'etichetta</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>Posta in arrivo</item>
+        <item>Posta prioritaria</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">Visualizza messaggi non letti per gli account</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">%1$d account selezionato di %2$d</item>
+        <item quantity="other">%1$d account selezionati di %2$d</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">Visualizza appuntamenti fissati entro…</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 ore</item>
+        <item>6 ore</item>
+        <item>12 ore</item>
+        <item>24 ore</item>
+        <item>2 giorni</item>
+        <item>una settimana</item>
+    </string-array>
+    <string name="pref_calendar_selected_title">Seleziona i calendari da visualizzare</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">%1$d calendario selezionato di %2$d</item>
+        <item quantity="other">%1$d calendarii selezionati di %2$d</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">Personalizza visibilità dei calendari</string>
+    <string name="pref_calendar_custom_visibility_description">Se non selezionata, visualizza tutti i calendari nell\'app Calendario</string>
+</resources>

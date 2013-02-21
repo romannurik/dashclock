@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.google.android.apps.dashclock.ExtensionManager.ExtensionWithData;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 
 /**
@@ -100,8 +101,7 @@ public class WidgetRenderer {
                 sp.getString(PREF_CLOCK_SHORTCUT, null), Utils.getDefaultClockIntent(context));
 
         // Load data from extensions
-        List<ExtensionManager.ExtensionWithData> mExtensions
-                = extensionManager.getActiveExtensionsWithData();
+        List<ExtensionWithData> mExtensions = extensionManager.getActiveExtensionsWithData();
 
         // Determine if we're on a tablet or not (lock screen widgets can't be collapsed on
         // tablets).
@@ -114,8 +114,8 @@ public class WidgetRenderer {
         int activeExtensions = mExtensions.size();
 
         int visibleExtensions = 0;
-        for (ExtensionManager.ExtensionWithData ci : mExtensions) {
-            if (!ci.latestData.visible()) {
+        for (ExtensionWithData ewd : mExtensions) {
+            if (!ewd.latestData.visible()) {
                 continue;
             }
             ++visibleExtensions;
@@ -239,7 +239,7 @@ public class WidgetRenderer {
                         .getDimensionPixelSize(R.dimen.extension_collapsed_text_size_single_line);
                 int extensionCollapsedTextSizeTwoLine = res
                         .getDimensionPixelSize(R.dimen.extension_collapsed_text_size_two_line);
-                for (ExtensionManager.ExtensionWithData ewd : mExtensions) {
+                for (ExtensionWithData ewd : mExtensions) {
                     if (!ewd.latestData.visible()) {
                         continue;
                     }
@@ -294,7 +294,8 @@ public class WidgetRenderer {
                         rv.setOnClickPendingIntent(COLLAPSED_EXTENSION_SLOTS[slotIndex].targetId,
                                 PendingIntent.getActivity(context,
                                         slotIndex,
-                                        WidgetClickProxyActivity.wrap(context, clickIntent),
+                                        WidgetClickProxyActivity.wrap(context, clickIntent,
+                                                ewd.listing.componentName),
                                         PendingIntent.FLAG_UPDATE_CURRENT));
                     }
 
@@ -333,8 +334,7 @@ public class WidgetRenderer {
             ExtensionManager.OnChangeListener {
         private Context mContext;
         private ExtensionManager mExtensionManager;
-        private List<ExtensionManager.ExtensionWithData> mVisibleExtensions
-                = new ArrayList<ExtensionManager.ExtensionWithData>();
+        private List<ExtensionWithData> mVisibleExtensions = new ArrayList<ExtensionWithData>();
 
         public WidgetRemoveViewsFactory(Context context) {
             mContext = context;
@@ -345,11 +345,11 @@ public class WidgetRenderer {
 
         @Override
         public void onExtensionsChanged() {
+            List<ExtensionWithData> ewds = mExtensionManager.getActiveExtensionsWithData();
             mVisibleExtensions.clear();
-            for (ExtensionManager.ExtensionWithData ci : mExtensionManager
-                    .getActiveExtensionsWithData()) {
-                if (ci.latestData.visible()) {
-                    mVisibleExtensions.add(ci);
+            for (ExtensionWithData ewd : ewds) {
+                if (ewd.latestData.visible()) {
+                    mVisibleExtensions.add(ewd);
                 }
             }
 
@@ -396,7 +396,7 @@ public class WidgetRenderer {
 
             RemoteViews rv;
 
-            ExtensionManager.ExtensionWithData ewd = mVisibleExtensions.get(position);
+            ExtensionWithData ewd = mVisibleExtensions.get(position);
             rv = new RemoteViews(mContext.getPackageName(),
                     R.layout.widget_list_item_expanded_extension);
 
@@ -414,7 +414,8 @@ public class WidgetRenderer {
             Intent clickIntent = ewd.latestData.clickIntent();
             if (clickIntent != null) {
                 rv.setOnClickFillInIntent(R.id.list_item,
-                        WidgetClickProxyActivity.getFillIntent(clickIntent));
+                        WidgetClickProxyActivity.getFillIntent(clickIntent,
+                                ewd.listing.componentName));
             }
 
             return rv;

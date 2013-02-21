@@ -30,6 +30,7 @@
     <string name="title_apps">Aplicaciones</string>
     <string name="title_shortcuts">Accesos directos</string>
 
+    <string name="get_more_extensions">Consiga más extensiones</string>
     <string name="add_another_extension">Agregar otra extensión</string>
     <string name="more_extensions">Más extensiones</string>
     <string name="done">Hecho</string>
@@ -61,20 +62,20 @@
         <i>por Günther Beyer de <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
         <i>por Carl A. Bauer</i><br><br>
-        Traducción al español por Carlos Sessa
+        Traducción al español por Carlos Sessa y David Martinez
     ]]></string>
 
     <!-- Weather -->
     <string name="weather_extension_title">Clima</string>
     <string name="weather_extension_description">
-        Muestra información del clima cerca tuyo actualizada, incluyendo temperatura
-        actual, condición y pronóstico.
+        Muestra información actualizada del clima cerca de ti, incluyendo temperatura actual, condición y pronóstico.
         Información proporcionada por Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Configuración de la extensión del clima</string>
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Luego: %1$s</string>
     <string name="no_weather_data">Información de clima no disponible</string>
+    <string name="no_location_data">Su ubicación no pudo ser determinada</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Mensajes sin leer de Gmail</string>
@@ -133,7 +134,7 @@
     <string name="sms_body_template">De: %1$s</string>
 
     <!-- Welcome strings -->
-    <string name="welcome_title">Customiza tu DashClock</string>
+    <string name="welcome_title">Personaliza tu DashClock</string>
     <string name="welcome_description">¿Sólo quieres ver la fecha y la hora actual?
         ¡Entonces presiona el checkbox de arriba y listo!
         Pero, ¿por qué no customizar el DashClock con un par de <i>extensiones</i>?

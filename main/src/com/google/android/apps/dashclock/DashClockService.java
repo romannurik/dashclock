@@ -24,6 +24,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 
@@ -137,9 +138,9 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
                 DashClockExtension.UPDATE_REASON_UNKNOWN);
 
         // Either update all extensions, or only the requested one.
-        if (intent.hasExtra(EXTRA_COMPONENT_NAME)) {
-            ComponentName cn = ComponentName.unflattenFromString(
-                    intent.getStringExtra(EXTRA_COMPONENT_NAME));
+        String updateExtension = intent.getStringExtra(EXTRA_COMPONENT_NAME);
+        if (!TextUtils.isEmpty(updateExtension)) {
+            ComponentName cn = ComponentName.unflattenFromString(updateExtension);
             mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason));
         } else {
             for (ComponentName cn : mExtensionManager.getActiveExtensionNames()) {
