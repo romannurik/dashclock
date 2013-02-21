@@ -35,7 +35,7 @@ public class DragGripView extends View {
 
     private static final int HORIZ_RIDGES = 2;
 
-    private int mGravity = Gravity.LEFT;
+    private int mGravity = Gravity.START;
     private int mColor = 0x33333333;
 
     private Paint mRidgePaint;
@@ -89,7 +89,8 @@ public class DragGripView extends View {
         float drawWidth = HORIZ_RIDGES * (mRidgeSize + mRidgeGap) - mRidgeGap;
         float drawLeft;
 
-        switch (mGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+        switch (Gravity.getAbsoluteGravity(mGravity, getLayoutDirection())
+                & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 drawLeft = getPaddingLeft()
                         + ((mWidth - getPaddingLeft() - getPaddingRight()) - drawWidth) / 2;

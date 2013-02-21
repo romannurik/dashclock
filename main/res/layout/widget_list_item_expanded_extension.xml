@@ -20,8 +20,8 @@
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
     android:orientation="horizontal"
@@ -30,20 +30,20 @@
 
     <ImageView style="@style/ExtensionData.Icon"
         android:id="@+id/icon"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         tools:ignore="ContentDescription" />
 
     <TextView style="@style/ExtensionData.Text.ExpandedTitle"
         android:id="@+id/text1"
         android:paddingBottom="4dp"
-        android:layout_toRightOf="@id/icon"
-        android:layout_alignParentRight="true" />
+        android:layout_toEndOf="@id/icon"
+        android:layout_alignParentEnd="true" />
 
     <TextView style="@style/ExtensionData.Text.ExpandedBody"
         android:id="@+id/text2"
         android:layout_marginTop="-2dp"
         android:layout_below="@id/text1"
-        android:layout_alignLeft="@id/text1"
-        android:layout_alignRight="@id/text1" />
+        android:layout_alignStart="@id/text1"
+        android:layout_alignEnd="@id/text1" />
 
 </RelativeLayout>

@@ -24,16 +24,16 @@
         android:id="@+id/drag_handle"
         android:layout_width="64dp"
         android:layout_height="match_parent"
-        android:layout_gravity="fill_vertical"
-        android:paddingLeft="16dp"
+        android:layout_gravity="fill_vertical|start"
+        android:paddingStart="16dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:color="#2333" />
     <!-- TODO: accessibility for dragging and removing -->
 
     <LinearLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="36dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
         android:orientation="horizontal"
         android:baselineAligned="false"
         android:divider="?android:dividerVertical"
@@ -45,20 +45,20 @@
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:layout_gravity="center_vertical">
 
             <!--suppress AndroidLintContentDescription -->
             <ImageView android:id="@android:id/icon1"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@android:id/text1"
-                android:layout_toRightOf="@android:id/icon1"
+                android:layout_toEndOf="@android:id/icon1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
