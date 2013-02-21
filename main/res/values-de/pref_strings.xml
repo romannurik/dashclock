@@ -63,11 +63,10 @@
         <item>2 Tagen</item>
         <item>7 Tagen</item>
     </string-array>
-    <!--<string name="pref_calendar_selected_title">Select calendars to display</string>-->
-    <!--<plurals name="pref_calendar_selected_summary_template">-->
-        <!--<item quantity="one">%1$d of %2$d calendar selected</item>-->
-        <!--<item quantity="other">%1$d of %2$d calendars selected</item>-->
-    <!--</plurals>-->
-    <!--<string name="pref_calendar_custom_visibility_title">Custom calendar visibility</string>-->
-    <!--<string name="pref_calendar_custom_visibility_description">If unchecked, show all visible calendars in the Calendar app</string>-->
+    <string name="pref_calendar_selected_title">Wählen Sie Kalender zeigen</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="other">%1$d von %2$d Kalender ausgewählt</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">Benutzerdefinierten Kalender Sichtbarkeit</string>
+    <string name="pref_calendar_custom_visibility_description">Ist die Option deaktiviert, zeigen alle sichtbaren Kalender in der Kalender-App</string>
 </resources>
