@@ -30,7 +30,8 @@
     <string name="title_apps">Приложения</string>
     <string name="title_shortcuts">Ярлыки</string>
 
-    <string name="add_another_extension">Добавить другое расширение</string>
+    <string name="get_more_extensions">Скачать ещё расширения</string>
+    <string name="add_another_extension">Добавить расширение</string>
     <string name="more_extensions">Ещё расширения</string>
     <string name="done">Готово</string>
     <string name="add_extension">Добавить расширение</string>
@@ -71,11 +72,12 @@
     </string>
     <string name="title_weather_settings">Настройки погоды</string>
     <string name="temperature_template">%1$s°</string>
-    <string name="later_forecast_template">Позже: %1$s</string>
+    <string name="later_forecast_template">Прогноз: %1$s</string>
     <string name="no_weather_data">Нет данных о погоде</string>
+    <string name="no_location_data">Нет данных о местоположение</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Количество непрочтённых сообщений Gmail</string>
+    <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
 		Отображает количество непрочтённых сообщений Gmail во входящих или приоритетных папках       
     </string>
@@ -83,7 +85,6 @@
     <plurals name="gmail_title_template">
         <item quantity="other">%1$d не прочитано</item>
     </plurals>
-
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Будильник</string>
@@ -100,11 +101,13 @@
     <string name="title_calendar_settings">Настройки календаря</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s день</item>
-        <item quantity="other">%1$s дн.</item>
+		    <item quantity="few">%1$s дня</item>
+        <item quantity="other">%1$s дней</item>
     </plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="one">%1$s ч</item>
-        <item quantity="other">%1$s ч</item>
+        <item quantity="one">%1$s час</item>
+        <item quantity="few">%1$s часа</item>
+        <item quantity="other">%1$s часов</item>
     </plurals>
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s мин</item>
@@ -117,7 +120,8 @@
     </string>
     <plurals name="missed_calls_title_template">
         <item quantity="one">%1$s пропущенный вызов</item>
-        <item quantity="other">%1$s пропущенных вызова</item>
+		    <item quantity="few">%1$s пропущенных вызова</item>
+        <item quantity="other">%1$s пропущенных вызовов</item>
     </plurals>
     <string name="missed_calls_body_template">От: %1$s</string>
 
@@ -127,8 +131,9 @@
 		Отображает количество непрочтённых цепочек SMS и MMS вместе с именами отправителей.
     </string>
     <plurals name="sms_title_template">
-        <item quantity="one">%1$s непрочтённая цепочка</item>
-        <item quantity="other">%1$s непрочтённые(ых) цепочки(ек)</item>
+        <item quantity="one">%1$s цепочка</item>
+		    <item quantity="few">%1$s цепочки</item>
+        <item quantity="other">%1$s цепочек</item>
     </plurals>
     <string name="sms_body_template">От: %1$s</string>
 
@@ -137,7 +142,7 @@
     <string name="welcome_description">Хотите видеть только дату и время? Тогда
 		просто нажмите на галочку в верхнем углу! Но почему бы не кастомизировать DashClock
 		несколькими <i>расширениями</i>?
-        \n\n<b>Расширения</b> добавляют отображение новых данных прямо внутри DashClock!        
+        \n\n<b>Расширения</b> добавляют отображение новых данных прямо внутри DashClock!
     </string>
 
 </resources>

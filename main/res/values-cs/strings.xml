@@ -25,7 +25,7 @@
     <string name="title_configure">Nastavení DashClock Widget</string>
     <string name="section_extensions">Rozšíření</string>
     <string name="section_appearance">Vzhled</string>
-		<string name="section_advanced">Pokročilé</string>
+    <string name="section_advanced">Pokročilé</string>
 
     <string name="title_apps">Aplikace</string>
     <string name="title_shortcuts">Zástupci</string>
@@ -68,26 +68,26 @@
     <!-- Weather -->
     <string name="weather_extension_title">Počasí</string>
     <string name="weather_extension_description">
-	      Zobrazí nejnovější informace o počasí poblíž vás, a to včetně aktuální teploty a
-	      podmínek a také předpověď počasí. Využita služba Yahoo! Weather.
+        Zobrazí nejnovější informace o počasí poblíž vás, a to včetně aktuální teploty a
+        podmínek a také předpověď počasí. Využita služba Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Nastavení počasí</string>
-	  <string name="temperature_template">%1$s°</string>
-	  <string name="later_forecast_template">Později: %1$s</string>
-	  <string name="no_weather_data">Data o počasí nedostupná</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Později: %1$s</string>
+    <string name="no_weather_data">Data o počasí nedostupná</string>
     <string name="no_location_data">Vaši pozici nelze zjistit</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Počet nepřečtených na Gmailu</string>
     <string name="gmail_extension_description">
-	      Zobrazí počet nepřečtených zpráv prioritní nebo běžné pošty na Gmailu.
+        Zobrazí počet nepřečtených zpráv prioritní nebo běžné pošty na Gmailu.
     </string>
     <string name="title_gmail_settings">Nastavení pro rozšíření Gmailu</string>
-	  <plurals name="gmail_title_template">
-		    <item quantity="one">%1$d nepřečtená</item>
-		    <item quantity="few">%1$d nepřečtené</item>
-		    <item quantity="other">%1$d nepřečtených</item>
-	  </plurals>
+    <plurals name="gmail_title_template">
+        <item quantity="one">%1$d nepřečtená</item>
+        <item quantity="few">%1$d nepřečtené</item>
+        <item quantity="other">%1$d nepřečtených</item>
+    </plurals>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Příští buzení</string>
@@ -99,46 +99,47 @@
     <!-- Calendar -->
     <string name="calendar_extension_title">Schůzka v kalendáři</string>
     <string name="calendar_extension_description">
-	      Zobrazí informaci o příští schůzce z kalendáře v následujících několika hodinách.
+        Zobrazí informaci o příští schůzce z kalendáře v následujících několika hodinách.
     </string>
-	  <plurals name="calendar_template_days">
+    <string name="title_calendar_settings">Nastavení pro kalendářní rozšíření</string>
+    <plurals name="calendar_template_days">
         <item quantity="one">%1$s den</item>
-		    <item quantity="few">%1$s dny</item>
-			  <item quantity="other">%1$s dnů</item>
-		</plurals>
+        <item quantity="few">%1$s dny</item>
+        <item quantity="other">%1$s dnů</item>
+    </plurals>
     <plurals name="calendar_template_hours">
         <item quantity="one">%1$s hodina</item>
-	      <item quantity="two">%1$s hodiny</item>
+        <item quantity="two">%1$s hodiny</item>
         <item quantity="other">%1$s hodin</item>
-	  </plurals>
-	  <plurals name="calendar_template_mins">
-		    <item quantity="one">%1$s minuta</item>
-		    <item quantity="few">%1$s minuty</item>
-		    <item quantity="other">%1$s minut</item>
-	  </plurals>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="one">%1$s minuta</item>
+        <item quantity="few">%1$s minuty</item>
+        <item quantity="other">%1$s minut</item>
+    </plurals>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nepřijaté hovory</string>
     <string name="missed_calls_extension_description">
-	      Zobrazí počet nepřijatých hovorů a jména volajících.
+        Zobrazí počet nepřijatých hovorů a jména volajících.
     </string>
     <plurals name="missed_calls_title_template">
-		    <item quantity="one">%1$s nepřijatý hovor</item>
-	      <item quantity="few">%1$s nepřijaté hovory</item>
-		    <item quantity="other">%1$s nepřijatých hovorů</item>
-	  </plurals>
+        <item quantity="one">%1$s nepřijatý hovor</item>
+        <item quantity="few">%1$s nepřijaté hovory</item>
+        <item quantity="other">%1$s nepřijatých hovorů</item>
+    </plurals>
     <string name="missed_calls_body_template">Od: %1$s</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Textové zprávy</string>
     <string name="sms_extension_description">
-	      Zobrazí počet nepřečtených SMS a MMS a jména odesílatelů.
+        Zobrazí počet nepřečtených SMS a MMS a jména odesílatelů.
     </string>
     <plurals name="sms_title_template">
-		    <item quantity="one">%1$s nepřečtená zpráva</item>
-	      <item quantity="few">%1$s nepřečtené zprávy</item>
-		    <item quantity="other">%1$s nepřečtených zpráv</item>
-	  </plurals>
+        <item quantity="one">%1$s nepřečtená zpráva</item>
+        <item quantity="few">%1$s nepřečtené zprávy</item>
+        <item quantity="other">%1$s nepřečtených zpráv</item>
+    </plurals>
     <string name="sms_body_template">Od: %1$s</string>
 
     <!-- Welcome strings -->
