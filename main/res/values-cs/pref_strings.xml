@@ -55,20 +55,20 @@
     </plurals>
 
     <!-- Calendar -->
-    <!--<string name="pref_calendar_look_ahead_hours_title">Show appointments in the next</string>-->
-    <!--<string-array name="pref_calendar_look_ahead_hours_display_names">-->
-        <!--<item>3 hours</item>-->
-        <!--<item>6 hours</item>-->
-        <!--<item>12 hours</item>-->
-        <!--<item>24 hours</item>-->
-        <!--<item>2 days</item>-->
-        <!--<item>week</item>-->
-    <!--</string-array>-->
-    <!--<string name="pref_calendar_selected_title">Select calendars to display</string>-->
-    <!--<plurals name="pref_calendar_selected_summary_template">-->
-        <!--<item quantity="one">%1$d of %2$d calendar selected</item>-->
-        <!--<item quantity="other">%1$d of %2$d calendars selected</item>-->
-    <!--</plurals>-->
-    <!--<string name="pref_calendar_custom_visibility_title">Custom calendar visibility</string>-->
-    <!--<string name="pref_calendar_custom_visibility_description">If unchecked, show all visible calendars in the Calendar app</string>-->
+    <string name="pref_calendar_look_ahead_hours_title">Zobrazit schůzky během následných</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 hodin</item>
+        <item>6 hodin</item>
+        <item>12 hodin</item>
+        <item>24 hodin</item>
+        <item>2 dnů</item>
+        <item>1 týdne</item>
+    </string-array>
+    <string name="pref_calendar_selected_title">Zvolit kalendáře k zobrazení</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">Vybrán kalendář %1$d z %2$d</item>
+        <item quantity="other">Vybrány %1$d z %2$d kalendářů</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">Zvolte viditelnost kalendáře</string>
+    <string name="pref_calendar_custom_visibility_description">Když není zaškrtnuto, ukázat všechny viditelné kalendáře z aplikace Kalendář</string>
 </resources>

@@ -181,6 +181,12 @@ public class AppChooserPreference extends Preference {
 
         private AppChooserPreference mPreference;
 
+        private ActivityListAdapter mAppsAdapter;
+        private ActivityListAdapter mShortcutsAdapter;
+
+        private ListView mAppsList;
+        private ListView mShortcutsList;
+
         public AppChooserDialogFragment() {
         }
 
@@ -190,14 +196,17 @@ public class AppChooserPreference extends Preference {
 
         public void setPreference(AppChooserPreference preference) {
             mPreference = preference;
+            tryBindLists();
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+            tryBindLists();
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            if (mPreference == null) {
-                return null;
-            }
-
             // Force Holo Light since ?android:actionBarXX would use dark action bar
             Context layoutContext = new ContextThemeWrapper(getActivity(),
                     android.R.style.Theme_Holo_Light);
@@ -215,16 +224,12 @@ public class AppChooserPreference extends Preference {
             helper.addTab(R.string.title_shortcuts, R.id.shortcuts_list);
 
             // Set up apps
-            final ActivityListAdapter appsAdapter = new ActivityListAdapter(
-                    new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
-                    mPreference.mAllowUseDefault);
-            ListView appsList = (ListView) rootView.findViewById(R.id.apps_list);
-            appsList.setAdapter(appsAdapter);
-            appsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mAppsList = (ListView) rootView.findViewById(R.id.apps_list);
+            mAppsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> listView, View view,
                         int position, long itemId) {
-                    Intent intent = appsAdapter.getIntent(position);
+                    Intent intent = mAppsAdapter.getIntent(position);
                     if (intent != null) {
                         intent = Intent.makeMainActivity(intent.getComponent());
                     }
@@ -234,23 +239,43 @@ public class AppChooserPreference extends Preference {
             });
 
             // Set up shortcuts
-            final ActivityListAdapter shortcutsAdapter = new ActivityListAdapter(
-                    new Intent(Intent.ACTION_CREATE_SHORTCUT).addCategory(Intent.CATEGORY_DEFAULT),
-                    false);
-            ListView shortcutsList = (ListView) rootView.findViewById(R.id.shortcuts_list);
-            shortcutsList.setAdapter(shortcutsAdapter);
-            shortcutsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mShortcutsList = (ListView) rootView.findViewById(R.id.shortcuts_list);
+            mShortcutsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> listView, View view,
                         int position, long itemId) {
-                    startActivityForResult(shortcutsAdapter.getIntent(position),
+                    startActivityForResult(mShortcutsAdapter.getIntent(position),
                             REQUEST_CREATE_SHORTCUT);
                 }
             });
 
+            tryBindLists();
+
             return new AlertDialog.Builder(getActivity())
                     .setView(rootView)
                     .create();
+        }
+
+        private void tryBindLists() {
+            if (mPreference == null) {
+                return;
+            }
+
+            if (isAdded() && mAppsAdapter == null && mShortcutsAdapter == null) {
+                mAppsAdapter = new ActivityListAdapter(
+                        new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                        mPreference.mAllowUseDefault);
+                mShortcutsAdapter = new ActivityListAdapter(
+                        new Intent(Intent.ACTION_CREATE_SHORTCUT)
+                                .addCategory(Intent.CATEGORY_DEFAULT),
+                        false);
+            }
+
+            if (mAppsAdapter != null && mAppsList != null
+                    && mShortcutsAdapter != null && mShortcutsList != null) {
+                mAppsList.setAdapter(mAppsAdapter);
+                mShortcutsList.setAdapter(mShortcutsAdapter);
+            }
         }
 
         @Override

@@ -63,11 +63,11 @@
         <item>2 дня</item>
         <item>неделя</item>
     </string-array>
-    <string name="pref_calendar_selected_title">Выбрать видимые календари</string>
+    <string name="pref_calendar_selected_title">Выбрать календари для отображения</string>
     <plurals name="pref_calendar_selected_summary_template">
-        <item quantity="one">%1$d из %2$d календарей выбран</item>
-        <item quantity="other">%1$d of %2$d календари выбраны</item>
+        <item quantity="one">%1$d из %2$d календаря выбрано</item>
+        <item quantity="other">%1$d из %2$d календарей выбрано</item>
     </plurals>
-    <string name="pref_calendar_custom_visibility_title">Различная видимость для календарей</string>
-    <string name="pref_calendar_custom_visibility_description">Если флажок выключен, все видимые календари в Календарь будут показаны</string>
+    <string name="pref_calendar_custom_visibility_title">Отображать выбранные календари</string>
+    <string name="pref_calendar_custom_visibility_description">Если флажок снят, будут показаны события из всех видимые календари в Календарь</string>
 </resources>

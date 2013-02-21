@@ -74,7 +74,7 @@
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Прогноз: %1$s</string>
     <string name="no_weather_data">Нет данных о погоде</string>
-    <string name="no_location_data">Нет данных о местоположение</string>
+    <string name="no_location_data">Нет данных о местоположении</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail</string>
