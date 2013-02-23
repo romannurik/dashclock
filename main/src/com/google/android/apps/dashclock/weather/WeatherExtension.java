@@ -319,9 +319,11 @@ public class WeatherExtension extends DashClockExtension {
             return data;
 
         } catch (IOException e) {
+            // TODO: exponential backoff
             throw new CantGetWeatherException(R.string.no_weather_data,
                     "Error parsing weather feed XML.", e);
         } catch (XmlPullParserException e) {
+            // TODO: exponential backoff
             throw new CantGetWeatherException(R.string.no_weather_data,
                     "Error parsing weather feed XML.", e);
         } finally {
