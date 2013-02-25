@@ -19,7 +19,7 @@
     <string name="pref_clock_shortcut_title">시계 바로가기</string>
     <string name="pref_homescreen_background_opacity_title">홈 화면 위젯 배경</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>투명 배경</item>
+        <item>투명</item>
         <item>25% 검정</item>
         <item>50% 검정</item>
         <item>75% 검정</item>
@@ -41,7 +41,7 @@
     </string-array>
 
     <!-- Gmail -->
-    <string name="pref_gmail_label_title">다음 라벨에 대해 읽지 않은 메일 개수 표시</string>
+    <string name="pref_gmail_label_title">다음 라벨에 대해 메일 개수 표시</string>
     <string-array name="pref_gmail_label_display_names">
         <item>받은편지함</item>
         <item>자동분류함</item>
@@ -54,14 +54,14 @@
     </plurals>
 
     <!-- Calendar -->
-    <string name="pref_calendar_look_ahead_hours_title">다음 기간 대한 일정을 표시</string>
+    <string name="pref_calendar_look_ahead_hours_title">다음 기간에 대해 일정을 표시</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
-        <item>3 시간</item>
-        <item>6 시간</item>
-        <item>12 시간</item>
-        <item>24 시간</item>
-        <item>2 일</item>
-        <item>1 주</item>
+        <item>3시간</item>
+        <item>6시간</item>
+        <item>12시간</item>
+        <item>24시간</item>
+        <item>2일</item>
+        <item>1주</item>
     </string-array>
     <string name="pref_calendar_selected_title">표시할 캘린더 선택</string>
     <plurals name="pref_calendar_selected_summary_template">

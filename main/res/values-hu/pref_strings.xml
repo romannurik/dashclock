@@ -16,7 +16,7 @@
 
 <resources>
     <!-- Advanced widget preferences -->
-    <string name="pref_clock_shortcut_title">Óra parancsikon</string>
+    <string name="pref_clock_shortcut_title">Óra parancsikonja</string>
     <string name="pref_homescreen_background_opacity_title">Kezdőképernyős widget háttére</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Teljesen átlátszó</item>
@@ -34,7 +34,7 @@
     <string name="pref_shortcut_default">(Alapértelmezett)</string>
 
     <!-- Weather -->
-    <string name="pref_weather_units_title">Idojárási mértékegységek</string>
+    <string name="pref_weather_units_title">Mértékegység</string>
     <string-array name="pref_weather_units_display_names">
         <item>°F</item>
         <item>°C</item>

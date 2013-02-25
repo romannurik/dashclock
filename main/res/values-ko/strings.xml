@@ -30,7 +30,7 @@
     <string name="title_apps">애플리케이션</string>
     <string name="title_shortcuts">바로가기</string>
 
-    <string name="get_more_extensions">더 많은 확장 프로그램 가져 오기</string>
+    <string name="get_more_extensions">더 많은 확장 프로그램 다운로드</string>
     <string name="add_another_extension">다른 확장 프로그램 추가</string>
     <string name="more_extensions">추가 확장 프로그램</string>
     <string name="done">완료</string>
@@ -61,7 +61,8 @@
         <i><a href="http://www.opoloo.com/">Opoloo</a>의 Günther Beyer의</i><br>
         <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br><br>
         <i>Carl A. Bauer의</i><br>
-        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br><br>
+        <i>이용대 와 Shuhrat Dehkanov 옮김</i>
     ]]></string>
 
     <!-- Weather -->
@@ -104,11 +105,11 @@
         <item quantity="other">%1$s 일</item>
     </plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="one">%1$s 시간</item>
-        <item quantity="other">%1$s 시간</item>
+        <item quantity="one">%1$s시간</item>
+        <item quantity="other">%1$s시간</item>
     </plurals>
     <plurals name="calendar_template_mins">
-        <item quantity="other">%1$s 분</item>
+        <item quantity="other">%1$s분</item>
     </plurals>
 
     <!-- Missed calls -->

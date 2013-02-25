@@ -68,5 +68,5 @@
         <item quantity="other">%1$d von %2$d Kalender ausgewählt</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Benutzerdefinierten Kalender Sichtbarkeit</string>
-    <string name="pref_calendar_custom_visibility_description">Ist die Option deaktiviert, zeigen alle sichtbaren Kalender in der Kalender-App</string>
+    <string name="pref_calendar_custom_visibility_description">Aktivieren, um nur ausgewählte Kalender anzuzeigen</string>
 </resources>

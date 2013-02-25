@@ -37,10 +37,10 @@
     <string name="add_extension">Kiegészítő hozzáadása</string>
     <string name="cancel">Mégse</string>
 
-    <string name="prev_date_style">Elozo adatstílus</string>
-    <string name="prev_time_style">Elozo idostílus</string>
-    <string name="next_date_style">Következo adatstílus</string>
-    <string name="next_time_style">Következo idostílus</string>
+    <string name="prev_date_style">Előző adatstílus</string>
+    <string name="prev_time_style">Előző időstílus</string>
+    <string name="next_date_style">Következő adatstílus</string>
+    <string name="next_time_style">Következő időstílus</string>
 
     <string name="incompatible_extension_menu_template">%1$s (Inkompatibilis)</string>
     <string name="incompatible_extension_title">Inkompatibilis kiegészítő</string>
@@ -57,20 +57,20 @@
         <a href="http://m.google.com/utos">Szolgáltatási feltételek</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
         <a href="http://www.google.com/policies/privacy/">Adatvédelem</a><br><br>
-        Sok köszönet a következo nyílt forráskódú eszközöknek:<br><br>
+        Sok köszönet a következő nyílt forráskódú eszközöknek:<br><br>
         <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
         <i>Günther Beyer (<a href="http://www.opoloo.com/">Opoloo</a>)</i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
-        <i>Carl A. Bauer</i>
-        Fordította <a href="https://plus.google.com/106278794296417431670/posts">Berta Dávid</a>
+        <i>Carl A. Bauer</i><br><br>
+        Fordította <b><a href="https://plus.google.com/106278794296417431670/posts">Berta Dávid</a></b>
     ]]></string>
 
     <!-- Weather -->
     <string name="weather_extension_title">Időjárás</string>
     <string name="weather_extension_description">
-       A legfrissebb idojárási információkat jeleníti meg a jelenlegi tartózkodási helyed alapján: homérsékletet, idojárási körülményeket és elorejelzéseket. Üzemelteti a Yahoo! Weather.
+       A legfrissebb időjárási információkat jeleníti meg a jelenlegi tartózkodási helyed alapján: hőmérsékletet, időjárási körülményeket és előrejelzéseket. Üzemelteti a Yahoo! Weather.
     </string>
-    <string name="title_weather_settings">Időjárás kiegészítő beállításai</string>
+    <string name="title_weather_settings">Időjárás kiegészítő beállítása</string>
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Később: %1$s</string>
     <string name="no_weather_data">Nem érhető el időjárási adat</string>
@@ -79,26 +79,26 @@
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
-        Az olvasatlan emailek számát jeleníti meg a Gmail beérkezo vagy fontos mappájából.
+        Az olvasatlan emailek számát jeleníti meg a Gmail beérkező vagy fontos mappájából.
     </string>
-    <string name="title_gmail_settings">Gmail kiegészítő beállításai</string>
+    <string name="title_gmail_settings">Gmail kiegészítő beállítása</string>
     <plurals name="gmail_title_template">
         <item quantity="other">%1$d olvasatlan</item>
     </plurals>
 
     <!-- Next alarm -->
-    <string name="next_alarm_extension_title">Következo riasztás</string>
+    <string name="next_alarm_extension_title">Riasztás</string>
     <string name="next_alarm_extension_description">
-        A következo beütemezett riasztásról jelenít meg információt.
+        A következő beütemezett riasztásról jelenít meg információt.
     </string>
-    <string name="next_alarm">Következo riasztás</string>
+    <string name="next_alarm">Következő riasztás</string>
 
     <!-- Calendar -->
-    <string name="calendar_extension_title">Naptári esemény</string>
+    <string name="calendar_extension_title">Naptár</string>
     <string name="calendar_extension_description">
-        A következo naptári eseményrol jelenít meg információt.
+        A következő naptári eseményről jelenít meg információt.
     </string>
-    <string name="title_calendar_settings">Naptár kiegészítő beállításai</string>
+    <string name="title_calendar_settings">Naptár kiegészítő beállítása</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s nap</item>
         <item quantity="other">%1$s nap</item>
@@ -134,12 +134,12 @@
     <string name="sms_body_template">Feladó: %1$s</string>
 
     <!-- Welcome strings -->
-    <string name="welcome_title">Alakítsd át a DashClock-ot!</string>
-    <string name="welcome_description">Csak a jelenlegi idot és dátumot szeretnéd látni? Akkor
-        nyomj a sarokban lévo pipára és kész is! De miért ne alakítanád át saját kedvedre a
-        DashClock néhány <i>kiegészítővel</i>?
-        A <b>kiegészítők</b> segítségével lényeges és idoszeru információkhoz juthatsz a DashClock-on belül!
-        Próbáld ki néhány hozzáadásával.
+    <string name="welcome_title">Alakítsd át a DashClockot!</string>
+    <string name="welcome_description">Csak a jelenlegi időt és dátumot szeretnéd látni? Akkor
+        nyomj a sarokban lévő pipára és kész is! De miért ne alakítanád át saját kedvedre a
+        DashClockot néhány <i>kiegészítővel</i>?<br><br>
+        A <b>kiegészítők</b> segítségével lényeges és időszerű információkhoz juthatsz.<br>
+        Próbáld ki néhány hozzáadásával!
     </string>
 
 </resources>
