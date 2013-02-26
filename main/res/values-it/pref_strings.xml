@@ -25,11 +25,10 @@
         <item>Nero 75%</item>
         <item>Nero 100%</item>
     </string-array>
-
     <string name="pref_aggressive_centering_title">Sempre centrato</string>
-    <string name="pref_aggressive_centering_description">Può provocare movimenti casuali dell\'orologio in diversi stati
-        del widget
-    </string>
+    <string name="pref_aggressive_centering_description">Può provocare movimenti casuali dell\'orologio in diversi stati del widget</string>
+    <!--<string name="pref_hide_settings_title">Hide settings button</string>-->
+    <!--<string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a "Configure DashClock Widget" home screen shortcut is available as an alternative)</string>-->
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Scorciatoia</string>
@@ -72,4 +71,6 @@
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Personalizza visibilità dei calendari</string>
     <string name="pref_calendar_custom_visibility_description">Se non selezionata, visualizza tutti i calendari nell\'app Calendario</string>
+    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
+    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
 </resources>

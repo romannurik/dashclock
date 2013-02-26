@@ -25,9 +25,10 @@
         <item>75% 검정</item>
         <item>100% 검정</item>
     </string-array>
-
     <string name="pref_aggressive_centering_title">항상 가운데에 표시</string>
     <string name="pref_aggressive_centering_description">설정 체크시 위젯의 상황에 따라 시계 위치가 이동할 수 있습니다</string>
+    <!--<string name="pref_hide_settings_title">Hide settings button</string>-->
+    <!--<string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a "Configure DashClock Widget" home screen shortcut is available as an alternative)</string>-->
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">바로가기</string>
@@ -70,4 +71,6 @@
     </plurals>
     <string name="pref_calendar_custom_visibility_title">사용자 지정 캘린더 표시</string>
     <string name="pref_calendar_custom_visibility_description">설정 체크 해제시 캘린더 애플리케이션에 표시되는 모든 캘린더를 DashClock에 표시합니다</string>
+    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
+    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
 </resources>

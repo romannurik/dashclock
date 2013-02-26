@@ -110,6 +110,7 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s perc</item>
     </plurals>
+    <!--<string name="today">Today</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nem fogadott hívások</string>

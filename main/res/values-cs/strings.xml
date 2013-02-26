@@ -117,6 +117,7 @@
         <item quantity="few">%1$s minuty</item>
         <item quantity="other">%1$s minut</item>
     </plurals>
+    <!--<string name="today">Today</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nepřijaté hovory</string>
