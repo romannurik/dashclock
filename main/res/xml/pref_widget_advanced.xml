@@ -37,4 +37,10 @@
         android:summary="@string/pref_aggressive_centering_description"
         android:defaultValue="false" />
 
+    <CheckBoxPreference
+        android:key="pref_hide_settings"
+        android:title="@string/pref_hide_settings_title"
+        android:summary="@string/pref_hide_settings_description"
+        android:defaultValue="false" />
+
 </PreferenceScreen>

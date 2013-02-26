@@ -137,8 +137,8 @@
     <string name="welcome_title">Alakítsd át a DashClockot!</string>
     <string name="welcome_description">Csak a jelenlegi időt és dátumot szeretnéd látni? Akkor
         nyomj a sarokban lévő pipára és kész is! De miért ne alakítanád át saját kedvedre a
-        DashClockot néhány <i>kiegészítővel</i>?<br><br>
-        A <b>kiegészítők</b> segítségével lényeges és időszerű információkhoz juthatsz.<br>
+        DashClockot néhány <i>kiegészítővel</i>?
+        \n\nA <b>kiegészítők</b> segítségével lényeges és időszerű információkhoz juthatsz.
         Próbáld ki néhány hozzáadásával!
     </string>
 

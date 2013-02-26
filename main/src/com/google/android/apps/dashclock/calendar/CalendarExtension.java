@@ -53,6 +53,9 @@ public class CalendarExtension extends DashClockExtension {
     public static final String PREF_CUSTOM_VISIBILITY = "pref_calendar_custom_visibility";
     public static final String PREF_SELECTED_CALENDARS = "pref_calendar_selected";
     public static final String PREF_LOOK_AHEAD_HOURS = "pref_calendar_look_ahead_hours";
+    public static final String PREF_SHOW_ALL_DAY = "pref_calendar_show_all_day";
+
+    private static final String SQL_TAUTOLOGY = "1=1";
 
     private static final long MINUTE_MILLIS = 60 * 1000;
     private static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -63,23 +66,30 @@ public class CalendarExtension extends DashClockExtension {
     static List<Pair<String, Boolean>> getAllCalendars(Context context) {
         // Only return calendars that are marked as synced to device.
         // (This is different from the display flag)
-        Cursor cursor = context.getContentResolver().query(
-                CalendarContract.Calendars.CONTENT_URI,
-                CalendarsQuery.PROJECTION,
-                CalendarContract.Calendars.SYNC_EVENTS + "=1",
-                null,
-                null);
-
         List<Pair<String, Boolean>> calendars = new ArrayList<Pair<String, Boolean>>();
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                calendars.add(new Pair<String, Boolean>(
-                        cursor.getString(CalendarsQuery.ID),
-                        cursor.getInt(CalendarsQuery.VISIBLE) == 1));
 
+        try {
+            Cursor cursor = context.getContentResolver().query(
+                    CalendarContract.Calendars.CONTENT_URI,
+                    CalendarsQuery.PROJECTION,
+                    CalendarContract.Calendars.SYNC_EVENTS + "=1",
+                    null,
+                    null);
+
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    calendars.add(new Pair<String, Boolean>(
+                            cursor.getString(CalendarsQuery.ID),
+                            cursor.getInt(CalendarsQuery.VISIBLE) == 1));
+
+                }
+
+                cursor.close();
             }
 
-            cursor.close();
+        } catch (SecurityException e) {
+            LOGE(TAG, "Error querying calendar API", e);
+            return null;
         }
 
         return calendars;
@@ -119,6 +129,7 @@ public class CalendarExtension extends DashClockExtension {
     @Override
     protected void onUpdateData(int reason) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean showAllDay = sp.getBoolean(PREF_SHOW_ALL_DAY, false);
 
         try {
             mLookAheadHours = Integer.parseInt(sp.getString(PREF_LOOK_AHEAD_HOURS,
@@ -127,7 +138,7 @@ public class CalendarExtension extends DashClockExtension {
             mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
         }
 
-        Cursor cursor = openEventsCursor();
+        Cursor cursor = openEventsCursor(showAllDay);
         if (cursor == null) {
             LOGE(TAG, "Null events cursor, short-circuiting.");
             return;
@@ -136,9 +147,19 @@ public class CalendarExtension extends DashClockExtension {
         long currentTimestamp = getCurrentTimestamp();
         long nextTimestamp = 0;
         long timeUntilNextAppointent = 0;
+        boolean allDay = false;
+        int allDayPosition = -1;
         while (cursor.moveToNext()) {
             nextTimestamp = cursor.getLong(EventsQuery.BEGIN);
+            allDay = cursor.getInt(EventsQuery.ALL_DAY) != 0;
+            if (showAllDay && allDay && allDayPosition < 0) {
+                // Store the position of this all day event. If no regular events are found
+                // and the user wanted to see all day events, then show this all day event.
+                allDayPosition = cursor.getPosition();
+            }
+
             timeUntilNextAppointent = nextTimestamp - currentTimestamp;
+
             if (timeUntilNextAppointent >= 0) {
                 break;
             }
@@ -146,13 +167,31 @@ public class CalendarExtension extends DashClockExtension {
             // Skip over events that are not ALL_DAY but span multiple days, including
             // the next 6 hours. An example is an event that starts at 4pm yesterday
             // day and ends 6pm tomorrow.
+            LOGD(TAG, "Skipping over event with start timestamp " + nextTimestamp + ". "
+                    + "Current timestamp " + currentTimestamp);
         }
 
         if (cursor.isAfterLast()) {
-            LOGD(TAG, "No upcoming appointments found.");
-            cursor.close();
-            publishUpdate(new ExtensionData());
-            return;
+            if (allDayPosition >= 0) {
+                // But wait, we have an all day event! Use it.
+                cursor.moveToPosition(allDayPosition);
+                allDay = true;
+
+                // For all day events (if the user wants to see them), convert the begin
+                // timestamp, which is the midnight UTC time, to local time. That is,
+                // nextTimestamp will now be midnight in local time since that's a more
+                // relevant representation of that day to the user.
+                nextTimestamp = cursor.getLong(EventsQuery.BEGIN)
+                        - TimeZone.getDefault().getOffset(nextTimestamp);
+                timeUntilNextAppointent = nextTimestamp - currentTimestamp;
+                LOGD(TAG, "No regular events found but an all day event was found; showing it.");
+
+            } else {
+                LOGD(TAG, "No upcoming appointments found.");
+                cursor.close();
+                publishUpdate(new ExtensionData());
+                return;
+            }
         }
 
         Calendar nextEventCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -161,7 +200,15 @@ public class CalendarExtension extends DashClockExtension {
         int minutesUntilNextAppointment = (int) (timeUntilNextAppointent / MINUTE_MILLIS);
 
         String untilString;
-        if (minutesUntilNextAppointment < 60) {
+        if (allDay) {
+            if (timeUntilNextAppointent <= 0) {
+                // All day event happening today (its start time is past today's midnight
+                // offset.
+                untilString = getString(R.string.today);
+            } else {
+                untilString = new SimpleDateFormat("E").format(nextEventCalendar.getTime());
+            }
+        } else if (minutesUntilNextAppointment < 60) {
             untilString = getResources().getQuantityString(
                     R.plurals.calendar_template_mins,
                     minutesUntilNextAppointment,
@@ -183,19 +230,35 @@ public class CalendarExtension extends DashClockExtension {
         long eventEnd = cursor.getLong(EventsQuery.END);
         cursor.close();
 
-        StringBuilder expandedBodyFormat = new StringBuilder();
-        if (nextTimestamp - currentTimestamp > 24 * HOUR_MILLIS) {
-            expandedBodyFormat.append("EEEE, ");
-        }
+        String expandedTime = null;
+        StringBuilder expandedTimeFormat = new StringBuilder();
+        if (allDay) {
+            if (timeUntilNextAppointent <= 0) {
+                // All day event happening today (its start time is past today's midnight
+                // offset.
+                expandedTimeFormat.setLength(0);
+                expandedTime = getString(R.string.today);
+            } else {
+                expandedTimeFormat.append("EEEE, MMM dd");
+            }
 
-        if (DateFormat.is24HourFormat(this)) {
-            expandedBodyFormat.append("HH:mm");
         } else {
-            expandedBodyFormat.append("h:mm a");
+            if (nextTimestamp - currentTimestamp > 24 * HOUR_MILLIS) {
+                expandedTimeFormat.append("EEEE, ");
+            }
+
+            if (DateFormat.is24HourFormat(this)) {
+                expandedTimeFormat.append("HH:mm");
+            } else {
+                expandedTimeFormat.append("h:mm a");
+            }
         }
 
-        String expandedTime = new SimpleDateFormat(expandedBodyFormat.toString())
-                .format(nextEventCalendar.getTime());
+        if (expandedTimeFormat.length() > 0) {
+            expandedTime = new SimpleDateFormat(expandedTimeFormat.toString())
+                    .format(nextEventCalendar.getTime());
+        }
+
         String expandedBody = expandedTime;
         if (!TextUtils.isEmpty(eventLocation)) {
             expandedBody = getString(R.string.calendar_with_location_template,
@@ -203,8 +266,8 @@ public class CalendarExtension extends DashClockExtension {
         }
 
         publishUpdate(new ExtensionData()
-                .visible(timeUntilNextAppointent >= 0
-                        && timeUntilNextAppointent <= mLookAheadHours * HOUR_MILLIS)
+                .visible(allDay || (timeUntilNextAppointent >= 0
+                        && timeUntilNextAppointent <= mLookAheadHours * HOUR_MILLIS))
                 .icon(R.drawable.ic_extension_calendar)
                 .status(untilString)
                 .expandedTitle(eventTitle)
@@ -220,11 +283,25 @@ public class CalendarExtension extends DashClockExtension {
         return Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
     }
 
-    private Cursor openEventsCursor() {
-        String calendarSelection = generateCalendarSelection();
+    private Cursor openEventsCursor(boolean showAllDay) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean customVisibility = sp.getBoolean(PREF_CUSTOM_VISIBILITY, false);
 
+        // Filter out all day events unless the user expressly requested to show all day events
+        String allDaySelection = SQL_TAUTOLOGY;
+        if (!showAllDay) {
+            allDaySelection = CalendarContract.Instances.ALL_DAY + "=0";
+        }
+
+        // Only filter on visible calendars if there isn't custom visibility
+        String visibleCalendarsSelection = SQL_TAUTOLOGY;
+        if (!customVisibility) {
+            allDaySelection = CalendarContract.Instances.VISIBLE + "!=0";
+        }
+
+        String calendarSelection = generateCalendarSelection();
         Set<String> calendarSet = getSelectedCalendars();
-        String[] calendars = calendarSet.toArray(new String[calendarSet.size()]);
+        String[] calendarsSelectionArgs = calendarSet.toArray(new String[calendarSet.size()]);
 
         long now = getCurrentTimestamp();
 
@@ -235,14 +312,14 @@ public class CalendarExtension extends DashClockExtension {
                             .appendPath(Long.toString(now + mLookAheadHours * HOUR_MILLIS))
                             .build(),
                     EventsQuery.PROJECTION,
-                    CalendarContract.Instances.ALL_DAY + "=0 AND "
+                    allDaySelection + " AND "
                             + CalendarContract.Instances.SELF_ATTENDEE_STATUS + "!="
                             + CalendarContract.Attendees.ATTENDEE_STATUS_DECLINED + " AND "
                             + "IFNULL(" + CalendarContract.Instances.STATUS + ",0)!="
                             + CalendarContract.Instances.STATUS_CANCELED + " AND "
-                            + CalendarContract.Instances.VISIBLE + "!=0 AND ("
+                            + visibleCalendarsSelection + " AND ("
                             + calendarSelection + ")",
-                    calendars,
+                    calendarsSelectionArgs,
                     CalendarContract.Instances.BEGIN);
 
         } catch (SecurityException e) {
@@ -267,7 +344,7 @@ public class CalendarExtension extends DashClockExtension {
         }
 
         if (sb.length() == 0) {
-            sb.append("1=1"); // constant expression to prevent returning null
+            sb.append(SQL_TAUTOLOGY); // constant expression to prevent returning null
         }
 
         return sb.toString();
@@ -280,6 +357,7 @@ public class CalendarExtension extends DashClockExtension {
                 CalendarContract.Instances.END,
                 CalendarContract.Instances.TITLE,
                 CalendarContract.Instances.EVENT_LOCATION,
+                CalendarContract.Instances.ALL_DAY,
         };
 
         int EVENT_ID = 0;
@@ -287,6 +365,7 @@ public class CalendarExtension extends DashClockExtension {
         int END = 2;
         int TITLE = 3;
         int EVENT_LOCATION = 4;
+        int ALL_DAY = 5;
     }
 
     private interface CalendarsQuery {

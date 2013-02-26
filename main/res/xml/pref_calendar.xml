@@ -36,4 +36,10 @@
         android:key="pref_calendar_selected"
         android:title="@string/pref_calendar_selected_title" />
 
+    <CheckBoxPreference
+        android:key="pref_calendar_show_all_day"
+        android:title="@string/pref_calendar_show_all_day_title"
+        android:summary="@string/pref_calendar_show_all_day_description"
+        android:defaultValue="false" />
+
 </PreferenceScreen>
