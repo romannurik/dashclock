@@ -57,6 +57,13 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     public static final String EXTRA_UPDATE_REASON =
             "com.google.android.apps.dashclock.extra.UPDATE_REASON";
 
+    /**
+     * The amount of time to wait after extension data has changed before triggering an update. Any
+     * update attempts within this time window will be collapsed, and will further delay the update
+     * by this time.
+     */
+    private static final int UPDATE_COLLAPSE_TIME_MILLIS = 2000;
+
     private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;
 
@@ -96,7 +103,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     @Override
     public void onExtensionsChanged() {
         mUpdateHandler.removeCallbacks(mUpdateAllWidgetsRunnable);
-        mUpdateHandler.postDelayed(mUpdateAllWidgetsRunnable, 2000);
+        mUpdateHandler.postDelayed(mUpdateAllWidgetsRunnable, UPDATE_COLLAPSE_TIME_MILLIS);
     }
 
     private Runnable mUpdateAllWidgetsRunnable = new Runnable() {
@@ -141,10 +148,12 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         String updateExtension = intent.getStringExtra(EXTRA_COMPONENT_NAME);
         if (!TextUtils.isEmpty(updateExtension)) {
             ComponentName cn = ComponentName.unflattenFromString(updateExtension);
-            mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason));
+            mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
+                    UPDATE_COLLAPSE_TIME_MILLIS, reason);
         } else {
             for (ComponentName cn : mExtensionManager.getActiveExtensionNames()) {
-                mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason));
+                mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
+                        UPDATE_COLLAPSE_TIME_MILLIS, reason);
             }
         }
     }

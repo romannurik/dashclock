@@ -36,7 +36,9 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -64,6 +66,13 @@ public class ExtensionHost {
     private static final String TAG = LogUtils.makeLogTag(ExtensionHost.class);
 
     private static final int CURRENT_EXTENSION_PROTOCOL_VERSION = 1;
+
+    /**
+     * The amount of time to wait after content has changed before triggering an extension data
+     * update request. Any update attempts within this time window will be collapsed, and will
+     * further delay the update by this time.
+     */
+    private static final int UPDATE_COLLAPSE_TIME_MILLIS = 2000;
 
     private Context mContext;
     private Handler mClientThreadHandler = new Handler();
@@ -145,7 +154,9 @@ public class ExtensionHost {
             @Override
             public void onChange(boolean selfChange) {
                 execute(conn.componentName,
-                        UPDATE_OPERATIONS.get(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED));
+                        UPDATE_OPERATIONS.get(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED),
+                        UPDATE_COLLAPSE_TIME_MILLIS,
+                        DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
             }
         };
         conn.hostInterface = makeHostInterface(conn);
@@ -164,20 +175,33 @@ public class ExtensionHost {
                         // when used with remote extensions, this call does not block.
                         extension.onInitialize(conn.hostInterface, isReconnect);
                     }
-                });
+                }, 0, null);
 
                 if (!isReconnect) {
                     execute(conn.componentName,
-                            UPDATE_OPERATIONS.get(DashClockExtension.UPDATE_REASON_INITIAL));
+                            UPDATE_OPERATIONS.get(DashClockExtension.UPDATE_REASON_INITIAL),
+                            0,
+                            null);
                 }
 
                 // Execute operations that were deferred until the service was available.
                 // TODO: handle service disruptions that occur here
                 synchronized (conn.deferredOps) {
-                    Iterator<Operation> it = conn.deferredOps.iterator();
-                    while (it.hasNext()) {
-                        if (conn.ready) {
-                            execute(conn, it.next());
+                    if (conn.ready) {
+                        Set<Object> processedCollapsedTokens = new HashSet<Object>();
+                        Iterator<Pair<Object, Operation>> it = conn.deferredOps.iterator();
+                        while (it.hasNext()) {
+                            Pair<Object, Operation> op = it.next();
+                            if (op.first != null) {
+                                if (processedCollapsedTokens.contains(op.first)) {
+                                    // An operation with this collapse token has already been
+                                    // processed; skip this one.
+                                    continue;
+                                }
+
+                                processedCollapsedTokens.add(op.first);
+                            }
+                            execute(conn, op.second, 0, null);
                             it.remove();
                         }
                     }
@@ -284,7 +308,16 @@ public class ExtensionHost {
         }
     };
 
-    private void execute(final Connection conn, final Operation operation) {
+    private void execute(final Connection conn, final Operation operation,
+            int collapseDelayMillis, final Object collapseToken) {
+        final Object collapseTokenForConn;
+        if (collapseDelayMillis > 0 && collapseToken != null) {
+            collapseTokenForConn = new Pair<ComponentName, Object>(conn.componentName,
+                    collapseToken);
+        } else {
+            collapseTokenForConn = null;
+        }
+
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -300,27 +333,39 @@ public class ExtensionHost {
                     // n attempts (in case the remote service consistently crashes when
                     // executing this operation)
                     synchronized (conn.deferredOps) {
-                        conn.deferredOps.add(operation);
+                        conn.deferredOps.add(new Pair<Object, Operation>(
+                                collapseTokenForConn, operation));
                     }
                 }
             }
         };
 
         if (conn.ready) {
-            mAsyncHandler.post(runnable);
+            if (collapseTokenForConn != null) {
+                mAsyncHandler.removeCallbacksAndMessages(collapseTokenForConn);
+            }
+
+            if (collapseDelayMillis > 0) {
+                mAsyncHandler.postAtTime(runnable, collapseTokenForConn,
+                        SystemClock.uptimeMillis() + collapseDelayMillis);
+            } else {
+                mAsyncHandler.post(runnable);
+            }
         } else {
             mAsyncHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     synchronized (conn.deferredOps) {
-                        conn.deferredOps.add(operation);
+                        conn.deferredOps.add(new Pair<Object, Operation>(
+                                collapseTokenForConn, operation));
                     }
                 }
             });
         }
     }
 
-    public void execute(ComponentName cn, Operation operation) {
+    public void execute(ComponentName cn, Operation operation,
+                int collapseDelayMillis, final Object collapseToken) {
         Connection conn = mExtensionConnections.get(cn);
         if (conn == null) {
             conn = createConnection(cn, true);
@@ -333,7 +378,7 @@ public class ExtensionHost {
             }
         }
 
-        execute(conn, operation);
+        execute(conn, operation, collapseDelayMillis, collapseToken);
     }
 
     private final BroadcastReceiver mScreenOnReceiver = new BroadcastReceiver() {
@@ -341,7 +386,8 @@ public class ExtensionHost {
         public void onReceive(Context context, Intent intent) {
             synchronized (mExtensionsToUpdateWhenScreenOn) {
                 for (ComponentName cn : mExtensionsToUpdateWhenScreenOn) {
-                    execute(cn, UPDATE_OPERATIONS.get(DashClockExtension.UPDATE_REASON_SCREEN_ON));
+                    execute(cn, UPDATE_OPERATIONS.get(DashClockExtension.UPDATE_REASON_SCREEN_ON),
+                            0, null);
                 }
             }
         }
@@ -390,8 +436,9 @@ public class ExtensionHost {
         ContentObserver contentObserver;
 
         /**
-         * Only access on the async thread.
+         * Only access on the async thread. The pair is (collapse token, operation)
          */
-        final Queue<Operation> deferredOps = new LinkedList<Operation>();
+        final Queue<Pair<Object, Operation>> deferredOps
+                = new LinkedList<Pair<Object, Operation>>();
     }
 }

@@ -37,6 +37,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -341,6 +342,14 @@ public class WidgetRenderer {
      */
     private static class WidgetRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory,
             ExtensionManager.OnChangeListener {
+        /**
+         * The amount of time to wait after content has changed before triggering a ListView
+         * refresh. Any changes within this time window will be collapsed, and will
+         * further delay the ListView refresh by this time.
+         */
+        private static final int HANDLE_EXTENSIONS_CHANGED_COLLAPSE_TIME_MILLIS = 500;
+
+        private Handler mHandler  = new Handler();
         private Context mContext;
         private ExtensionManager mExtensionManager;
         private List<ExtensionWithData> mVisibleExtensions = new ArrayList<ExtensionWithData>();
@@ -354,19 +363,29 @@ public class WidgetRenderer {
 
         @Override
         public void onExtensionsChanged() {
-            List<ExtensionWithData> ewds = mExtensionManager.getActiveExtensionsWithData();
-            mVisibleExtensions.clear();
-            for (ExtensionWithData ewd : ewds) {
-                if (ewd.latestData.visible()) {
-                    mVisibleExtensions.add(ewd);
-                }
-            }
-
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
-            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    new ComponentName(mContext, WidgetProvider.class));
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.expanded_extensions);
+            mHandler.removeCallbacks(mHandleExtensionsChanged);
+            mHandler.postDelayed(mHandleExtensionsChanged,
+                    HANDLE_EXTENSIONS_CHANGED_COLLAPSE_TIME_MILLIS);
         }
+
+        private Runnable mHandleExtensionsChanged = new Runnable() {
+            @Override
+            public void run() {
+                List<ExtensionWithData> ewds = mExtensionManager.getActiveExtensionsWithData();
+                mVisibleExtensions.clear();
+                for (ExtensionWithData ewd : ewds) {
+                    if (ewd.latestData.visible()) {
+                        mVisibleExtensions.add(ewd);
+                    }
+                }
+
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                        new ComponentName(mContext, WidgetProvider.class));
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
+                        R.id.expanded_extensions);
+            }
+        };
 
         public void onCreate() {
             // Since we reload the cursor in onDataSetChanged() which gets called immediately after
