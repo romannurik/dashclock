@@ -152,10 +152,13 @@ public class CalendarExtension extends DashClockExtension {
         while (cursor.moveToNext()) {
             nextTimestamp = cursor.getLong(EventsQuery.BEGIN);
             allDay = cursor.getInt(EventsQuery.ALL_DAY) != 0;
-            if (showAllDay && allDay && allDayPosition < 0) {
-                // Store the position of this all day event. If no regular events are found
-                // and the user wanted to see all day events, then show this all day event.
-                allDayPosition = cursor.getPosition();
+            if (allDay) {
+                if (showAllDay && allDayPosition < 0) {
+                    // Store the position of this all day event. If no regular events are found
+                    // and the user wanted to see all day events, then show this all day event.
+                    allDayPosition = cursor.getPosition();
+                }
+                continue;
             }
 
             timeUntilNextAppointent = nextTimestamp - currentTimestamp;
