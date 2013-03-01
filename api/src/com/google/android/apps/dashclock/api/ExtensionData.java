@@ -137,7 +137,7 @@ public class ExtensionData implements Parcelable {
 
     /**
      * Sets the ID of the resource within the extension's package that represents this
-     * data. The icon should be entirely white, with alpha, and about 96x96 pixels. It will be
+     * data. The icon should be entirely white, with alpha, and about 48x48 dp. It will be
      * scaled down as needed. If there is no contextual icon representation of the data, simply
      * use the extension or app icon. Default 0.
      */
@@ -157,7 +157,7 @@ public class ExtensionData implements Parcelable {
     /**
      * Sets the short string representing this data, to be shown in DashClock's collapsed form.
      * Should be no longer than a few characters. For example, if your {@link #expandedTitle()} is
-     * "45°, Sunny", your status could be simply "45°". Alternatively, if the status contains a
+     * "45°, Sunny", your status could simply be "45°". Alternatively, if the status contains a
      * single newline, DashClock may break it up over two lines and use a smaller font. This should
      * be avoided where possible in favor of an {@link #expandedTitle(String)}. Default null.
      */
