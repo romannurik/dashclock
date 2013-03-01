@@ -107,7 +107,7 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s min</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Dzisiaj</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nieodebrane połączenia</string>

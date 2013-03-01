@@ -30,7 +30,7 @@
     <string name="title_apps">Alkalmazások</string>
     <string name="title_shortcuts">Parancsikonok</string>
 
-    <string name="get_more_extensions">További kiegészítők beszerzése</string>
+    <string name="get_more_extensions">Kiegészítők keresése</string>
     <string name="add_another_extension">Új kiegészítő hozzáadása</string>
     <string name="more_extensions">További kiegészítők</string>
     <string name="done">Kész</string>
@@ -110,12 +110,12 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s perc</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Ma</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nem fogadott hívások</string>
     <string name="missed_calls_extension_description">
-        A nem fogadott hívások számát és a hívók neveit jeleníti meg.
+        A nem fogadott hívások számát és a hívó nevét jeleníti meg.
     </string>
     <plurals name="missed_calls_title_template">
         <item quantity="one">%1$s nem fogadott hívás</item>

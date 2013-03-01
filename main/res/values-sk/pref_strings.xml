@@ -27,8 +27,8 @@
     </string-array>
     <string name="pref_aggressive_centering_title">Vždy centrovať</string>
     <string name="pref_aggressive_centering_description">Môže mať za následok skákanie hodín okolo rôznych widgetov</string>
-    <!--<string name="pref_hide_settings_title">Hide settings button</string>-->
-    <!--<string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a "Configure DashClock Widget" home screen shortcut is available as an alternative)</string>-->
+    <string name="pref_hide_settings_title">Skryť nastav. tlačidlo</string>
+    <string name="pref_hide_settings_description">Skryť nastav. tlačidlo ak je widget zvislo rozšírený (skratka na domov. obrazovku "Nastaviť DashClock" je dostupná ako alternatíva)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Skratka</string>
@@ -50,8 +50,9 @@
 
     <string name="pref_gmail_accounts_title">Zobraziť počet neprečít. e-mailov pre účty</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="other">%1$d z %2$d účtov vybraný</item>
-        <item quantity="one">%1$d z %2$d účta vybraný</item>
+        <item quantity="one">vybraný %1$d účet z %2$d</item>
+        <item quantity="few">vybrané %1$d účty z %2$d</item>
+        <item quantity="other">vybraných %1$d účtov z %2$d</item>
     </plurals>
 
     <!-- Calendar -->
@@ -66,11 +67,12 @@
     </string-array>
     <string name="pref_calendar_selected_title">Zobraziť kalendár</string>
     <plurals name="pref_calendar_selected_summary_template">
-        <item quantity="one">%1$d z %2$d kalendára vybraný</item>
-        <item quantity="other">%1$d z %2$d kalendárov vybraný</item>
+        <item quantity="one">vybraný %1$d kalendár z %2$d</item>
+        <item quantity="few">vybrané %1$d kalendáre z %2$d</item>
+        <item quantity="other">vybraných %1$d kalendárov z %2$d</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Vlastná viditeľnosť kalendára</string>
     <string name="pref_calendar_custom_visibility_description">Ak nie je označené, zobrazí všetky viditeľné kalendáre v aplikácii Kalendár</string>
-    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
-    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
+    <string name="pref_calendar_show_all_day_title">Zobraziť celodenné udalosti</string>
+    <string name="pref_calendar_show_all_day_description">Zahrnúť všetky celodenné udalosti (napr. narodeniny)</string>
 </resources>

@@ -109,7 +109,7 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s分鐘</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">今天</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">未接來電</string>

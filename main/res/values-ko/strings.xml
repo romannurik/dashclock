@@ -22,7 +22,7 @@
     <string name="more_options">추가 옵션</string>
 
     <!-- Configuration -->
-    <string name="title_configure">DashClock Widget 구성</string>
+    <string name="title_configure">DashClock 위젯 구성</string>
     <string name="section_extensions">확장 프로그램</string>
     <string name="section_appearance">외관</string>
     <string name="section_advanced">고급</string>
@@ -62,7 +62,8 @@
         <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br><br>
         <i>Carl A. Bauer의</i><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br><br>
-        <i>이용대 와 Shuhrat Dehkanov 옮김</i>
+        한국어 번역:<br>
+        <i>이용대, Shuhrat Dehkanov</i>
     ]]></string>
 
     <!-- Weather -->
@@ -78,7 +79,7 @@
     <string name="no_location_data">위치 정보를 확인할 수 없습니다</string>
 
     <!-- Gmail -->
-    <string name="gmail_extension_title">Gmail</string>
+    <string name="gmail_extension_title">읽지 않은 Gmail 개수</string>
     <string name="gmail_extension_description">
         Gmail의 받은편지함 또는 자동분류함의 읽지 않은 메일 개수를 표시합니다.
     </string>
@@ -111,7 +112,7 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s분</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">오늘</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">부재중 전화</string>

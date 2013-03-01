@@ -27,8 +27,8 @@
     </string-array>
     <string name="pref_aggressive_centering_title">永远居中</string>
     <string name="pref_aggressive_centering_description">是否强制时钟内容永远居中</string>
-    <!--<string name="pref_hide_settings_title">Hide settings button</string>-->
-    <!--<string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a "Configure DashClock Widget" home screen shortcut is available as an alternative)</string>-->
+    <string name="pref_hide_settings_title">隐藏设置按钮</string>
+    <string name="pref_hide_settings_description">当竖直展开时钟时，隐藏设置按钮。(取而代之，可以在主屏幕的Configure DashClock Widget快捷方式进入设置。)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">快捷方式</string>
@@ -71,6 +71,6 @@
     </plurals>
     <string name="pref_calendar_custom_visibility_title">自定义可见的日历</string>
     <string name="pref_calendar_custom_visibility_description">显示日历应用程序中所有可见的日历</string>
-    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
-    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
+    <string name="pref_calendar_show_all_day_title">显示一整天长度的活动</string>
+    <string name="pref_calendar_show_all_day_description">显示一整天长度的活动，比如生日。</string>
 </resources>

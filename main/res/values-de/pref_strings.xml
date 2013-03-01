@@ -68,8 +68,8 @@
     <plurals name="pref_calendar_selected_summary_template">
         <item quantity="other">%1$d von %2$d Kalender ausgewählt</item>
     </plurals>
-    <string name="pref_calendar_custom_visibility_title">Benutzerdefinierten Kalender Sichtbarkeit</string>
+    <string name="pref_calendar_custom_visibility_title">Sichtbarkeit benutzerdefinierter Kalender</string>
     <string name="pref_calendar_custom_visibility_description">Aktivieren, um nur ausgewählte Kalender anzuzeigen</string>
-    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
-    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
+    <string name="pref_calendar_show_all_day_title">Zeige ganztägige Termine</string>
+    <string name="pref_calendar_show_all_day_description">Zeige ganztägige Kalendertermine wie Geburtstage</string>
 </resources>

@@ -27,8 +27,8 @@
     </string-array>
     <string name="pref_aggressive_centering_title">Mindig középen</string>
     <string name="pref_aggressive_centering_description">Az óra mindig középen legyen</string>
-    <!--<string name="pref_hide_settings_title">Hide settings button</string>-->
-    <!--<string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a "Configure DashClock Widget" home screen shortcut is available as an alternative)</string>-->
+    <string name="pref_hide_settings_title">Beállítások gomb elrejtése</string>
+    <string name="pref_hide_settings_description">Beállítások gomb elrejtése függőleges widgetnél (alternatívaként a "DashClock beállítások" parancsikont lehet használni)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Parancsikon</string>
@@ -55,7 +55,7 @@
     </plurals>
 
     <!-- Calendar -->
-    <string name="pref_calendar_look_ahead_hours_title">Esemény megjelenítése adott időn belül</string>
+    <string name="pref_calendar_look_ahead_hours_title">Megjelenítés ennyi időn belül</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
         <item>3 óra</item>
         <item>6 óra</item>
@@ -71,6 +71,6 @@
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Egyéni megjelenítés</string>
     <string name="pref_calendar_custom_visibility_description">Ha nincs bepipálva, akkor a Naptár alkalmazás összes látható naptárát megjeleníti</string>
-    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
-    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
+    <string name="pref_calendar_show_all_day_title">Egész napos események</string>
+    <string name="pref_calendar_show_all_day_description">Születésnapok és más események mutatása</string>
 </resources>
