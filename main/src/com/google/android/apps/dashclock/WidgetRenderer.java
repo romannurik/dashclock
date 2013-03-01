@@ -342,12 +342,6 @@ public class WidgetRenderer {
      */
     private static class WidgetRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory,
             ExtensionManager.OnChangeListener {
-        /**
-         * The amount of time to wait after content has changed before triggering a ListView
-         * refresh. Any changes within this time window will be collapsed, and will
-         * further delay the ListView refresh by this time.
-         */
-        private static final int HANDLE_EXTENSIONS_CHANGED_COLLAPSE_TIME_MILLIS = 500;
 
         private Handler mHandler  = new Handler();
         private Context mContext;
@@ -365,7 +359,7 @@ public class WidgetRenderer {
         public void onExtensionsChanged() {
             mHandler.removeCallbacks(mHandleExtensionsChanged);
             mHandler.postDelayed(mHandleExtensionsChanged,
-                    HANDLE_EXTENSIONS_CHANGED_COLLAPSE_TIME_MILLIS);
+                    ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
         }
 
         private Runnable mHandleExtensionsChanged = new Runnable() {

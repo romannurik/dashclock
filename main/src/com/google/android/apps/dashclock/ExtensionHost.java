@@ -68,11 +68,11 @@ public class ExtensionHost {
     private static final int CURRENT_EXTENSION_PROTOCOL_VERSION = 1;
 
     /**
-     * The amount of time to wait after content has changed before triggering an extension data
-     * update request. Any update attempts within this time window will be collapsed, and will
-     * further delay the update by this time.
+     * The amount of time to wait after something has changed before recognizing it as an individual
+     * event. Any changes within this time window will be collapsed, and will further delay the
+     * handling of the event.
      */
-    private static final int UPDATE_COLLAPSE_TIME_MILLIS = 2000;
+    public static final int UPDATE_COLLAPSE_TIME_MILLIS = 500;
 
     private Context mContext;
     private Handler mClientThreadHandler = new Handler();
