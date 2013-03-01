@@ -123,6 +123,7 @@
         <item quantity="other">%1$s пропущені дзвінки</item>
     </plurals>
     <string name="missed_calls_body_template">Від: %1$s</string>
+    <!--<string name="missed_calls_unknown">Unknown</string>-->
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Текстові повідомлення</string>

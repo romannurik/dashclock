@@ -27,6 +27,9 @@ import android.database.Cursor;
 import android.provider.CallLog;
 import android.text.TextUtils;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 /**
  * Number of missed calls extension.
  */
@@ -48,17 +51,23 @@ public class MissedCallsExtension extends DashClockExtension {
         Cursor cursor = openMissedCallsCursor();
 
         int missedCalls = 0;
-        StringBuilder names = new StringBuilder();
+        SortedSet<String> names = new TreeSet<String>();
         while (cursor.moveToNext()) {
             ++missedCalls;
-            if (names.length() > 0) {
-                names.append(", ");
-            }
             String name = cursor.getString(MissedCallsQuery.CACHED_NAME);
             if (TextUtils.isEmpty(name)) {
                 name = cursor.getString(MissedCallsQuery.NUMBER);
+                long parsedNumber = 0;
+                try {
+                    parsedNumber = Long.parseLong(name);
+                } catch (Exception ignored) {
+                }
+                if (parsedNumber < 0) {
+                    // Unknown or private number
+                    name = getString(R.string.missed_calls_unknown);
+                }
             }
-            names.append(name);
+            names.add(name);
         }
         cursor.close();
 
@@ -69,7 +78,8 @@ public class MissedCallsExtension extends DashClockExtension {
                 .expandedTitle(
                         getResources().getQuantityString(
                                 R.plurals.missed_calls_title_template, missedCalls, missedCalls))
-                .expandedBody(getString(R.string.missed_calls_body_template, names.toString()))
+                .expandedBody(getString(R.string.missed_calls_body_template,
+                        TextUtils.join(", ", names)))
                 .clickIntent(new Intent(Intent.ACTION_VIEW, CallLog.Calls.CONTENT_URI)));
     }
 

@@ -121,6 +121,7 @@
         <item quantity="other">%1$s個未接來電</item>
     </plurals>
     <string name="missed_calls_body_template">來自: %1$s</string>
+    <!--<string name="missed_calls_unknown">Unknown</string>-->
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">未讀取簡訊</string>

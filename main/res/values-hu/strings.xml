@@ -122,6 +122,7 @@
         <item quantity="other">%1$s nem fogadott hívás</item>
     </plurals>
     <string name="missed_calls_body_template">Hívó: %1$s</string>
+    <!--<string name="missed_calls_unknown">Unknown</string>-->
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Üzenetek</string>

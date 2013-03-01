@@ -130,6 +130,7 @@
         <item quantity="other">%1$s zmeškaných hovorov</item>
     </plurals>
     <string name="missed_calls_body_template">Od: %1$s</string>
+    <!--<string name="missed_calls_unknown">Unknown</string>-->
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Textové správy</string>

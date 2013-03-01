@@ -126,6 +126,7 @@
         <item quantity="other">%1$s chiamate perse</item>
     </plurals>
     <string name="missed_calls_body_template">Da: %1$s</string>
+    <!--<string name="missed_calls_unknown">Unknown</string>-->
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">SMS</string>
