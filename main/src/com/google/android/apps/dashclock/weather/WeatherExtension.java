@@ -22,13 +22,13 @@ import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
-import net.nurik.roman.dashclock.BuildConfig;
 import net.nurik.roman.dashclock.R;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -69,7 +69,12 @@ public class WeatherExtension extends DashClockExtension {
     public static final Intent DEFAULT_WEATHER_INTENT = new Intent(Intent.ACTION_VIEW,
             Uri.parse("https://www.google.com/search?q=weather"));
 
+    public static final String STATE_WEATHER_LAST_BACKOFF_MILLIS
+            = "state_weather_last_backoff_millis";
+
     private static final long STALE_LOCATION_NANOS = 10l * 60000000000l; // 10 minutes
+
+    private static final int INITIAL_BACKOFF_MILLIS = 30000; // 30 seconds for first error retry
 
     private static XmlPullParserFactory sXmlPullParserFactory;
 
@@ -96,8 +101,31 @@ public class WeatherExtension extends DashClockExtension {
         }
     }
 
+    private void resetAndCancelRetries() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().remove(STATE_WEATHER_LAST_BACKOFF_MILLIS).apply();
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.cancel(WeatherRetryReceiver.getPendingIntent(this));
+    }
+
+    private void scheduleRetry() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        int lastBackoffMillis = sp.getInt(STATE_WEATHER_LAST_BACKOFF_MILLIS, 0);
+        int backoffMillis = (lastBackoffMillis > 0)
+                ? lastBackoffMillis * 2
+                : INITIAL_BACKOFF_MILLIS;
+        sp.edit().putInt(STATE_WEATHER_LAST_BACKOFF_MILLIS, backoffMillis).apply();
+        LOGD(TAG, "Scheduling weather retry in " + (backoffMillis / 1000) + " second(s)");
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + backoffMillis,
+                WeatherRetryReceiver.getPendingIntent(this));
+    }
+
     @Override
     protected void onUpdateData(int reason) {
+        LOGD(TAG, "Attempting weather update; reason=" + reason);
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sWeatherUnits = sp.getString(PREF_WEATHER_UNITS, sWeatherUnits);
         sWeatherIntent = AppChooserPreference.getIntentValue(
@@ -106,13 +134,14 @@ public class WeatherExtension extends DashClockExtension {
         NetworkInfo ni = ((ConnectivityManager) getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()) {
+            LOGD(TAG, "No network connection; not attempting to update weather.");
             return;
         }
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         String provider = lm.getBestProvider(sLocationCriteria, true);
         if (TextUtils.isEmpty(provider)) {
-            publishErrorUpdate(new CantGetWeatherException(R.string.no_location_data,
+            publishErrorUpdate(new CantGetWeatherException(false, R.string.no_location_data,
                     "No available location providers matching criteria."));
             return;
         }
@@ -169,8 +198,12 @@ public class WeatherExtension extends DashClockExtension {
         try {
             WeatherData weatherData = getWeatherForLocation(location);
             publishWeatherUpdate(weatherData);
+            resetAndCancelRetries();
         } catch (CantGetWeatherException e) {
             publishErrorUpdate(e);
+            if (e.isRetryable()) {
+                scheduleRetry();
+            }
         }
     }
 
@@ -240,7 +273,7 @@ public class WeatherExtension extends DashClockExtension {
         }
 
         // No weather could be found :(
-        throw new CantGetWeatherException(R.string.no_weather_data);
+        throw new CantGetWeatherException(true, R.string.no_weather_data);
     }
 
     private static WeatherData getWeatherDataForWoeid(String woeid, String town)
@@ -319,12 +352,10 @@ public class WeatherExtension extends DashClockExtension {
             return data;
 
         } catch (IOException e) {
-            // TODO: exponential backoff
-            throw new CantGetWeatherException(R.string.no_weather_data,
+            throw new CantGetWeatherException(true, R.string.no_weather_data,
                     "Error parsing weather feed XML.", e);
         } catch (XmlPullParserException e) {
-            // TODO: exponential backoff
-            throw new CantGetWeatherException(R.string.no_weather_data,
+            throw new CantGetWeatherException(true, R.string.no_weather_data,
                     "Error parsing weather feed XML.", e);
         } finally {
             if (connection != null) {
@@ -409,13 +440,14 @@ public class WeatherExtension extends DashClockExtension {
                 return li;
             }
 
-            throw new CantGetWeatherException(R.string.no_weather_data, "No WOEIDs found nearby.");
+            throw new CantGetWeatherException(true, R.string.no_weather_data,
+                    "No WOEIDs found nearby.");
 
         } catch (IOException e) {
-            throw new CantGetWeatherException(R.string.no_weather_data,
+            throw new CantGetWeatherException(true, R.string.no_weather_data,
                     "Error parsing place search XML", e);
         } catch (XmlPullParserException e) {
-            throw new CantGetWeatherException(R.string.no_weather_data,
+            throw new CantGetWeatherException(true, R.string.no_weather_data,
                     "Error parsing place search XML", e);
         } finally {
             if (connection != null) {
@@ -446,22 +478,30 @@ public class WeatherExtension extends DashClockExtension {
     public static class CantGetWeatherException extends Exception {
         int mUserFacingErrorStringId;
 
-        public CantGetWeatherException(int userFacingErrorStringId) {
-            this(userFacingErrorStringId, null, null);
+        boolean mRetryable;
+
+        public CantGetWeatherException(boolean retryable, int userFacingErrorStringId) {
+            this(retryable, userFacingErrorStringId, null, null);
         }
 
-        public CantGetWeatherException(int userFacingErrorStringId, String detailMessage) {
-            this(userFacingErrorStringId, detailMessage, null);
+        public CantGetWeatherException(boolean retryable, int userFacingErrorStringId,
+                String detailMessage) {
+            this(retryable, userFacingErrorStringId, detailMessage, null);
         }
 
-        public CantGetWeatherException(int userFacingErrorStringId, String detailMessage,
-                Throwable throwable) {
+        public CantGetWeatherException(boolean retryable, int userFacingErrorStringId,
+                String detailMessage, Throwable throwable) {
             super(detailMessage, throwable);
             mUserFacingErrorStringId = userFacingErrorStringId;
+            mRetryable = retryable;
         }
 
         public int getUserFacingErrorStringId() {
             return mUserFacingErrorStringId;
+        }
+
+        public boolean isRetryable() {
+            return mRetryable;
         }
     }
 }

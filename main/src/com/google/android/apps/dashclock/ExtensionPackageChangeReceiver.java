@@ -60,6 +60,7 @@ public class ExtensionPackageChangeReceiver extends BroadcastReceiver {
                 if (packageName.equals(cn.getPackageName())) {
                     Intent extensionUpdateIntent = new Intent(context, DashClockService.class);
                     extensionUpdateIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
+                    // TODO: UPDATE_REASON_PACKAGE_CHANGED
                     extensionUpdateIntent.putExtra(DashClockService.EXTRA_COMPONENT_NAME,
                             cn.flattenToShortString());
                     context.startService(extensionUpdateIntent);

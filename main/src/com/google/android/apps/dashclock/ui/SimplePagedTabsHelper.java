@@ -62,20 +62,12 @@ public class SimplePagedTabsHelper {
                 return mPager.findViewById(mTabContentIds.get(position));
             }
         });
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-            }
-
+        pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 for (int i = 0; i < mTabContainer.getChildCount(); i++) {
                     mTabContainer.getChildAt(i).setSelected(i == position);
                 }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
             }
         });
     }

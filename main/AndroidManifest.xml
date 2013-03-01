@@ -126,6 +126,8 @@
                 android:value="com.google.android.apps.dashclock.weather.WeatherSettingsActivity" />
         </service>
 
+        <receiver android:name="com.google.android.apps.dashclock.weather.WeatherRetryReceiver" />
+
         <activity android:name="com.google.android.apps.dashclock.weather.WeatherSettingsActivity"
             android:label="@string/title_weather_settings" />
 
