@@ -16,8 +16,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.nurik.roman.dashclock"
-    android:versionCode="15"
-    android:versionName="1.4">
+    android:versionCode="16"
+    android:versionName="1.4.1">
 
     <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="17" />
 
