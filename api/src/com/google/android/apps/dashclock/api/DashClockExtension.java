@@ -308,7 +308,8 @@ public abstract class DashClockExtension extends Service {
     /**
      * Requests that the main DashClock app call (or not call) this extension's
      * {@link #onUpdateData(int)} method when the screen turns on (the phone resumes from idle).
-     * This should generally be called in the {@link #onInitialize(boolean)} method.
+     * This should generally be called in the {@link #onInitialize(boolean)} method. By default,
+     * extensions do not get updated when the screen turns on.
      *
      * @see Intent#ACTION_SCREEN_ON
      * @param updateWhenScreenOn Whether or not a call to {@link #onUpdateData(int)} method when
