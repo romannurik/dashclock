@@ -59,15 +59,20 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
             }
         }
 
-        mSelectedCalendars = PreferenceManager
+        mSelectedCalendars = new HashSet<String>(PreferenceManager
                 .getDefaultSharedPreferences(context)
-                .getStringSet(CalendarExtension.PREF_SELECTED_CALENDARS, allVisibleCalendarsSet);
+                .getStringSet(CalendarExtension.PREF_SELECTED_CALENDARS, allVisibleCalendarsSet));
 
         mAdapter = new CalendarListAdapter(context);
         mQueryHandler = new QueryHandler(context, mAdapter);
 
-        mQueryHandler.startQuery(0, null, CalendarContract.Calendars.CONTENT_URI, CalendarQuery.PROJECTION,
-                CalendarContract.Calendars.SYNC_EVENTS + "==1", null, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME);
+        mQueryHandler.startQuery(0,
+                null,
+                CalendarContract.Calendars.CONTENT_URI,
+                CalendarQuery.PROJECTION,
+                CalendarContract.Calendars.SYNC_EVENTS + "=1",
+                null,
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME);
     }
 
     @Override
@@ -78,8 +83,8 @@ public class CalendarSelectionPreference extends MultiSelectListPreference {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-                sp.edit().putStringSet(CalendarExtension.PREF_SELECTED_CALENDARS, mSelectedCalendars)
-                        .commit();
+                sp.edit().putStringSet(CalendarExtension.PREF_SELECTED_CALENDARS,
+                        mSelectedCalendars).commit();
 
                 // since we have extended the list preference, it is our responsibility to inform the change listener.
                 if (getOnPreferenceChangeListener() != null) {

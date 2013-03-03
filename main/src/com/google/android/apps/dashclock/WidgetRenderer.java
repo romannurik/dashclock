@@ -228,6 +228,10 @@ public class WidgetRenderer {
                 remoteAdapterIntent.setData(
                         Uri.parse(remoteAdapterIntent.toUri(Intent.URI_INTENT_SCHEME)));
                 rv.setRemoteAdapter(R.id.expanded_extensions, remoteAdapterIntent);
+                // During an update to an existing expanded widget, setRemoteAdapter does nothing,
+                // so we need to explicitly call notifyAppWidgetViewDataChanged to update data.
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,
+                        R.id.expanded_extensions);
 
                 final Intent onClickIntent = WidgetClickProxyActivity.getTemplate(context);
                 final PendingIntent onClickPendingIntent = PendingIntent.getActivity(context, 0,
