@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.preference.PreferenceManager;
 import android.util.Pair;
 
@@ -105,7 +104,7 @@ public class GmailExtension extends DashClockExtension {
         List<Pair<String, Integer>> unreadPerAccount = new ArrayList<Pair<String, Integer>>();
 
         for (String account : selectedAccounts) {
-            Cursor cursor = openLabelsCursor(account);
+            Cursor cursor = tryOpenLabelsCursor(account);
             if (cursor == null || cursor.isAfterLast()) {
                 LOGD(TAG, "No Gmail inbox information found for account.");
                 if (cursor != null) {
@@ -150,7 +149,7 @@ public class GmailExtension extends DashClockExtension {
                         .addCategory(Intent.CATEGORY_LAUNCHER)));
     }
 
-    private Cursor openLabelsCursor(String account) {
+    private Cursor tryOpenLabelsCursor(String account) {
         try {
             return getContentResolver().query(
                     GmailContract.Labels.getLabelsUri(account),
@@ -159,13 +158,10 @@ public class GmailExtension extends DashClockExtension {
                     null,
                     null);
 
-        } catch (SecurityException e) {
+        } catch (Exception e) {
             // From developer console: "Permission Denial: opening provider com.google.android.gsf..
-            LOGE(TAG, "Error opening Gmail labels", e);
-            return null;
-
-        } catch (SQLException e) {
             // From developer console: "SQLiteException: no such table: labels"
+            // From developer console: "NullPointerException"
             LOGE(TAG, "Error opening Gmail labels", e);
             return null;
         }

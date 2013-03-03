@@ -30,6 +30,8 @@ import android.text.TextUtils;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.google.android.apps.dashclock.LogUtils.LOGE;
+
 /**
  * Number of missed calls extension.
  */
@@ -48,7 +50,11 @@ public class MissedCallsExtension extends DashClockExtension {
 
     @Override
     protected void onUpdateData(int reason) {
-        Cursor cursor = openMissedCallsCursor();
+        Cursor cursor = tryOpenMissedCallsCursor();
+        if (cursor == null) {
+            LOGE(TAG, "Null missed calls cursor, short-circuiting.");
+            return;
+        }
 
         int missedCalls = 0;
         SortedSet<String> names = new TreeSet<String>();
@@ -83,14 +89,20 @@ public class MissedCallsExtension extends DashClockExtension {
                 .clickIntent(new Intent(Intent.ACTION_VIEW, CallLog.Calls.CONTENT_URI)));
     }
 
-    private Cursor openMissedCallsCursor() {
-        return getContentResolver().query(
-                CallLog.Calls.CONTENT_URI,
-                MissedCallsQuery.PROJECTION,
-                CallLog.Calls.TYPE + "=" + CallLog.Calls.MISSED_TYPE + " AND "
-                        + CallLog.Calls.NEW + "!=0",
-                null,
-                null);
+    private Cursor tryOpenMissedCallsCursor() {
+        try {
+            return getContentResolver().query(
+                    CallLog.Calls.CONTENT_URI,
+                    MissedCallsQuery.PROJECTION,
+                    CallLog.Calls.TYPE + "=" + CallLog.Calls.MISSED_TYPE + " AND "
+                            + CallLog.Calls.NEW + "!=0",
+                    null,
+                    null);
+
+        } catch (Exception e) {
+            LOGE(TAG, "Error opening missed calls cursor", e);
+            return null;
+        }
     }
 
     private interface MissedCallsQuery {

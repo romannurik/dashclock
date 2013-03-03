@@ -24,7 +24,6 @@ import net.nurik.roman.dashclock.R;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -52,7 +51,7 @@ public class SmsExtension extends DashClockExtension {
     protected void onUpdateData(int reason) {
         int unreadConversations = 0;
         StringBuilder names = new StringBuilder();
-        Cursor cursor = openMmsSmsCursor();
+        Cursor cursor = tryOpenMmsSmsCursor();
         if (cursor == null) {
             LOGE(TAG, "Null SMS cursor, short-circuiting.");
             return;
@@ -71,24 +70,28 @@ public class SmsExtension extends DashClockExtension {
 
             if (contactId == 0 && TextUtils.isEmpty(address) && id != 0) {
                 // Try MMS addr query
-                Cursor addrCursor = openMmsAddrCursor(id);
-                if (addrCursor.moveToFirst()) {
-                    contactId = addrCursor.getLong(MmsAddrQuery.CONTACT_ID);
-                    address = addrCursor.getString(MmsAddrQuery.ADDRESS);
+                Cursor addrCursor = tryOpenMmsAddrCursor(id);
+                if (addrCursor != null) {
+                    if (addrCursor.moveToFirst()) {
+                        contactId = addrCursor.getLong(MmsAddrQuery.CONTACT_ID);
+                        address = addrCursor.getString(MmsAddrQuery.ADDRESS);
+                    }
+                    addrCursor.close();
                 }
-                addrCursor.close();
             }
 
             String displayName = address;
 
             if (contactId > 0) {
-                Cursor contactCursor = openContactsCursorById(contactId);
-                if (contactCursor.moveToFirst()) {
-                    displayName = contactCursor.getString(RawContactsQuery.DISPLAY_NAME);
-                } else {
-                    contactId = 0;
+                Cursor contactCursor = tryOpenContactsCursorById(contactId);
+                if (contactCursor != null) {
+                    if (contactCursor.moveToFirst()) {
+                        displayName = contactCursor.getString(RawContactsQuery.DISPLAY_NAME);
+                    } else {
+                        contactId = 0;
+                    }
+                    contactCursor.close();
                 }
-                contactCursor.close();
             }
 
             if (contactId <= 0) {
@@ -131,7 +134,7 @@ public class SmsExtension extends DashClockExtension {
     }
 
 
-    private Cursor openMmsSmsCursor() {
+    private Cursor tryOpenMmsSmsCursor() {
         try {
             return getContentResolver().query(
                     TelephonyProviderConstants.MmsSms.CONTENT_CONVERSATIONS_URI,
@@ -153,27 +156,41 @@ public class SmsExtension extends DashClockExtension {
         }
     }
 
-    private Cursor openMmsAddrCursor(long mmsMsgId) {
-        return getContentResolver().query(
-                TelephonyProviderConstants.Mms.CONTENT_URI.buildUpon()
-                        .appendPath(Long.toString(mmsMsgId))
-                        .appendPath("addr")
-                        .build(),
-                MmsAddrQuery.PROJECTION,
-                TelephonyProviderConstants.Mms.Addr.MSG_ID + "=?",
-                new String[]{Long.toString(mmsMsgId)},
-                null);
+    private Cursor tryOpenMmsAddrCursor(long mmsMsgId) {
+        try {
+            return getContentResolver().query(
+                    TelephonyProviderConstants.Mms.CONTENT_URI.buildUpon()
+                            .appendPath(Long.toString(mmsMsgId))
+                            .appendPath("addr")
+                            .build(),
+                    MmsAddrQuery.PROJECTION,
+                    TelephonyProviderConstants.Mms.Addr.MSG_ID + "=?",
+                    new String[]{Long.toString(mmsMsgId)},
+                    null);
+
+        } catch (Exception e) {
+            // Catch all exceptions because the SMS provider is crashy
+            // From developer console: "SQLiteException: table spam_filter already exists"
+            LOGE(TAG, "Error accessing SMS provider", e);
+            return null;
+        }
     }
 
-    private Cursor openContactsCursorById(long contactId) {
-        return getContentResolver().query(
-                ContactsContract.RawContacts.CONTENT_URI.buildUpon()
-                        .appendPath(Long.toString(contactId))
-                        .build(),
-                RawContactsQuery.PROJECTION,
-                null,
-                null,
-                null);
+    private Cursor tryOpenContactsCursorById(long contactId) {
+        try {
+            return getContentResolver().query(
+                    ContactsContract.RawContacts.CONTENT_URI.buildUpon()
+                            .appendPath(Long.toString(contactId))
+                            .build(),
+                    RawContactsQuery.PROJECTION,
+                    null,
+                    null,
+                    null);
+
+        } catch (Exception e) {
+            LOGE(TAG, "Error accessing contacts provider", e);
+            return null;
+        }
     }
 
     private Cursor tryOpenContactsCursorByAddress(String phoneNumber) {
@@ -185,7 +202,8 @@ public class SmsExtension extends DashClockExtension {
                     null,
                     null,
                     null);
-        } catch (IllegalArgumentException e) {
+
+        } catch (Exception e) {
             // Can be called by the content provider (from Google Play crash/ANR console)
             // java.lang.IllegalArgumentException: URI: content://com.android.contacts/phone_lookup/
             LOGW(TAG, "Error looking up contact name", e);
