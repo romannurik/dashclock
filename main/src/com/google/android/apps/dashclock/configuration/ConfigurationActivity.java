@@ -151,6 +151,7 @@ public class ConfigurationActivity extends Activity {
                     public void onClick(View view) {
                         PopupMenu actionOverflowMenu = new PopupMenu(darkThemeContext, view);
                         actionOverflowMenu.inflate(R.menu.configure_overflow);
+                        //noinspection PointlessBooleanExpression,ConstantConditions
                         if (!(BuildConfig.DEBUG || LogUtils.FORCE_DEBUG)) {
                             MenuItem sendLogsItem = actionOverflowMenu.getMenu()
                                     .findItem(R.id.action_send_logs);
