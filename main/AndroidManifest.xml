@@ -216,6 +216,12 @@
         <meta-data android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIa1QlfEeCheCwYdoLcnkacrOnV27ypQaB8qfgLg" />
 
+        <!-- For sending logs as attachments -->
+
+        <provider android:name="com.google.android.apps.dashclock.LogUtils$LogAttachmentProvider"
+            android:authorities="com.google.android.apps.dashclock.logs"
+            android:exported="true" />
+
     </application>
 
 </manifest>

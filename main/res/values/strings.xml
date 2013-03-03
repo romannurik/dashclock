@@ -42,6 +42,8 @@
     <string name="add_extension">Add an extension</string>
     <string name="cancel">Cancel</string>
 
+    <string name="send_logs">Send debug log</string>
+
     <string name="prev_date_style">Previous date style</string>
     <string name="prev_time_style">Previous time style</string>
     <string name="next_date_style">Next date style</string>
