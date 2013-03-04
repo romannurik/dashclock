@@ -112,7 +112,7 @@
         <item quantity="one">%1$s Minute</item>
         <item quantity="other">%1$s Minuten</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Heute</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Verpasste Anrufe</string>

@@ -68,7 +68,7 @@
     <!-- Weather -->
     <string name="weather_extension_title">Погода</string>
     <string name="weather_extension_description">
-		Отображает информацию как о текущей погоде, так и прогноз на ближайшее время. Данные предоставлены Yahoo! Weather.
+        Отображает информацию как о текущей погоде, так и прогноз на ближайшее время. Данные предоставлены Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Настройки погоды</string>
     <string name="temperature_template">%1$s°</string>
@@ -79,7 +79,7 @@
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
-		Отображает количество непрочтённых сообщений Gmail во входящих или приоритетных папках       
+        Отображает количество непрочтённых сообщений Gmail во входящих или приоритетных папках
     </string>
     <string name="title_gmail_settings">Настройки Gmail</string>
     <plurals name="gmail_title_template">
@@ -89,19 +89,19 @@
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Будильник</string>
     <string name="next_alarm_extension_description">
-		Отображает информацию о следующем запланированном будильнике, если таковой имеется.
+        Отображает информацию о следующем запланированном будильнике, если таковой имеется.
     </string>
     <string name="next_alarm">Будильник</string>
 
     <!-- Calendar -->
     <string name="calendar_extension_title">События календаря</string>
     <string name="calendar_extension_description">
-		Отображает информацию о следующем событии календаря, если оно произойдёт в течение следующих нескольких часов.        
+       Отображает информацию о следующем событии календаря, если оно произойдёт в течение следующих нескольких часов.        
     </string>
     <string name="title_calendar_settings">Настройки календаря</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s день</item>
-		    <item quantity="few">%1$s дня</item>
+        <item quantity="few">%1$s дня</item>
         <item quantity="other">%1$s дней</item>
     </plurals>
     <plurals name="calendar_template_hours">
@@ -112,29 +112,29 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s мин</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Сегодня</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Пропущенные вызовы</string>
     <string name="missed_calls_extension_description">
-		Отображает количество пропущенных вызовов вместе с именами звонивших абонентов.
+        Отображает количество пропущенных вызовов вместе с именами звонивших абонентов.
     </string>
     <plurals name="missed_calls_title_template">
         <item quantity="one">%1$s пропущенный вызов</item>
-		    <item quantity="few">%1$s пропущенных вызова</item>
+        <item quantity="few">%1$s пропущенных вызова</item>
         <item quantity="other">%1$s пропущенных вызовов</item>
     </plurals>
     <string name="missed_calls_body_template">От: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Неизвестно</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Текстовые сообщения</string>
     <string name="sms_extension_description">
-		Отображает количество непрочтённых цепочек SMS и MMS вместе с именами отправителей.
+        Отображает количество непрочтённых цепочек SMS и MMS вместе с именами отправителей.
     </string>
     <plurals name="sms_title_template">
         <item quantity="one">%1$s цепочка</item>
-		    <item quantity="few">%1$s цепочки</item>
+        <item quantity="few">%1$s цепочки</item>
         <item quantity="other">%1$s цепочек</item>
     </plurals>
     <string name="sms_body_template">От: %1$s</string>
@@ -142,8 +142,8 @@
     <!-- Welcome strings -->
     <string name="welcome_title">Настройте ваш DashClock</string>
     <string name="welcome_description">Хотите видеть только дату и время? Тогда
-		просто нажмите на галочку в верхнем углу! Но почему бы не кастомизировать DashClock
-		несколькими <i>расширениями</i>?
+        просто нажмите на галочку в верхнем углу! Но почему бы не кастомизировать DashClock
+        несколькими <i>расширениями</i>?
         \n\n<b>Расширения</b> добавляют отображение новых данных прямо внутри DashClock!
     </string>
 

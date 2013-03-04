@@ -117,7 +117,7 @@
         <item quantity="few">%1$s minuty</item>
         <item quantity="other">%1$s minut</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Dnes</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nepřijaté hovory</string>
@@ -130,7 +130,7 @@
         <item quantity="other">%1$s nepřijatých hovorů</item>
     </plurals>
     <string name="missed_calls_body_template">Od: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Nezjištěno</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Textové zprávy</string>

@@ -30,7 +30,7 @@
     <string name="title_apps">Applicazioni</string>
     <string name="title_shortcuts">Scorciatoie</string>
 
-    <string name="get_more_extensions">Ottieni altre estensioni</string>
+    <string name="get_more_extensions">Altre estensioni</string>
     <string name="add_another_extension">Aggiungi un\'altra estensione</string>
     <string name="more_extensions">Altre estensioni</string>
     <string name="done">Fatto</string>
@@ -114,7 +114,7 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s min</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Oggi</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Chiamate perse</string>
@@ -126,7 +126,7 @@
         <item quantity="other">%1$s chiamate perse</item>
     </plurals>
     <string name="missed_calls_body_template">Da: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Sconosciuto</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">SMS</string>

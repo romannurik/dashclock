@@ -25,7 +25,7 @@
     <string name="title_configure">DashClock Widget beállítása</string>
     <string name="section_extensions">Kiegészítők</string>
     <string name="section_appearance">Kinézet</string>
-    <string name="section_advanced">Haladó</string>
+    <string name="section_advanced">Beállítások</string>
 
     <string name="title_apps">Alkalmazások</string>
     <string name="title_shortcuts">Parancsikonok</string>
@@ -83,7 +83,7 @@
     </string>
     <string name="title_gmail_settings">Gmail kiegészítő beállítása</string>
     <plurals name="gmail_title_template">
-        <item quantity="other">%1$d olvasatlan</item>
+        <item quantity="other">%1$d olvasatlan email</item>
     </plurals>
 
     <!-- Next alarm -->
@@ -121,8 +121,8 @@
         <item quantity="one">%1$s nem fogadott hívás</item>
         <item quantity="other">%1$s nem fogadott hívás</item>
     </plurals>
-    <string name="missed_calls_body_template">Hívó: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_body_template">%1$s</string>
+    <string name="missed_calls_unknown">Magántelefonszám</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Üzenetek</string>
@@ -133,7 +133,7 @@
         <item quantity="one">%1$s olvasatlan beszélgetés</item>
         <item quantity="other">%1$s olvasatlan beszélgetés</item>
     </plurals>
-    <string name="sms_body_template">Feladó: %1$s</string>
+    <string name="sms_body_template">%1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Alakítsd át a DashClockot!</string>

@@ -35,34 +35,34 @@
     <string name="pref_shortcut_default">(Predeterminada)</string>
 
     <!-- Weather -->
-    <string name="pref_weather_units_title">Unidades del clima</string>
+    <string name="pref_weather_units_title">Unidades climáticas</string>
     <string-array name="pref_weather_units_display_names">
         <item>°F</item>
         <item>°C</item>
     </string-array>
 
     <!-- Gmail -->
-    <string name="pref_gmail_label_title">Mostrar cantidad sin leer para la etiqueta</string>
+    <string name="pref_gmail_label_title">Mostrar no leídos por etiqueta</string>
     <string-array name="pref_gmail_label_display_names">
         <item>Bandeja de entrada</item>
-        <item>Bandeja de prioridad</item>
+        <item>Bandeja prioritaria</item>
     </string-array>
 
-    <string name="pref_gmail_accounts_title">Mostrar cantidad sin leer para las cuentas</string>
+    <string name="pref_gmail_accounts_title">Mostrar no leídos por cuenta</string>
     <plurals name="pref_gmail_accounts_summary_template">
         <item quantity="one">%1$d de %2$d cuenta seleccionada</item>
         <item quantity="other">%1$d de %2$d cuentas seleccionadas</item>
     </plurals>
 
     <!-- Calendar -->
-    <string name="pref_calendar_look_ahead_hours_title">Mostrar citas para las próximas</string>
+    <string name="pref_calendar_look_ahead_hours_title">Mostrar las citas próximas</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
         <item>3 horas</item>
         <item>6 horas</item>
         <item>12 horas</item>
         <item>24 horas</item>
         <item>2 días</item>
-        <item>semana</item>
+        <item>una semana</item>
     </string-array>
     <string name="pref_calendar_selected_title">Selecciona el calendario a mostrar</string>
     <plurals name="pref_calendar_selected_summary_template">
@@ -70,7 +70,7 @@
         <item quantity="other">%1$d de %2$d calendarios seleccionados</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Visibilidad personalizada del calendario</string>
-    <string name="pref_calendar_custom_visibility_description">Si lo desmarca, se mostraran todos los calendarios</string>
+    <string name="pref_calendar_custom_visibility_description">Si lo desmarca, se mostrarán todos los calendarios</string>
     <string name="pref_calendar_show_all_day_title">Mostrar eventos de todo el día</string>
-    <string name="pref_calendar_show_all_day_description">Incluir eventos de todo el día como ser cumpleaños</string>
+    <string name="pref_calendar_show_all_day_description">Incluir eventos de todo el día como los cumpleaños</string>
 </resources>

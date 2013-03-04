@@ -42,8 +42,8 @@
     <string name="next_date_style">Estilo de fecha siguiente</string>
     <string name="next_time_style">Estilo de hora siguiente</string>
 
-    <string name="incompatible_extension_menu_template">%1$s (Incompatible)</string>
-    <string name="incompatible_extension_title">Extensión incompatible</string>
+    <string name="incompatible_extension_menu_template">%1$s (No compatible)</string>
+    <string name="incompatible_extension_title">Extensión no compatible</string>
     <string name="incompatible_extension_message_search_play_template"><![CDATA[La
         extensión <b>%1$s</b> no es compatible con esta versión del DashClock.
         ¿Buscar actualización de la extensión en Google Play?]]></string>
@@ -121,7 +121,7 @@
         <item quantity="other">%1$s llamadas perdidas</item>
     </plurals>
     <string name="missed_calls_body_template">De: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Desconocido</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Mensajes de texto</string>
@@ -139,9 +139,9 @@
     <string name="welcome_title">Personaliza tu DashClock</string>
     <string name="welcome_description">¿Sólo quieres ver la fecha y la hora actual?
         ¡Entonces presiona el checkbox de arriba y listo!
-        Pero, ¿por qué no customizar el DashClock con un par de <i>extensiones</i>?
+        Pero, ¿por qué no personalizar el DashClock con un par de <i>extensiones</i>?
         \n\nLas <b>Extensiones</b> muestran información relevante y actualizada dentro de DashClock.
-        Prueba agregar un par de extensiones debajo.
+        Prueba a agregar un par de extensiones debajo.
     </string>
 
 </resources>

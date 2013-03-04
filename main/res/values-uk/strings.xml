@@ -111,7 +111,7 @@
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s хв.</item>
     </plurals>
-    <!--<string name="today">Today</string>-->
+    <string name="today">Сьогодні</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Пропущені дзвінки</string>
@@ -123,7 +123,7 @@
         <item quantity="other">%1$s пропущені дзвінки</item>
     </plurals>
     <string name="missed_calls_body_template">Від: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Невідомо</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Текстові повідомлення</string>

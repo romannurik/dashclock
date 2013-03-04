@@ -72,5 +72,5 @@
     <string name="pref_calendar_custom_visibility_title">Egyéni megjelenítés</string>
     <string name="pref_calendar_custom_visibility_description">Ha nincs bepipálva, akkor a Naptár alkalmazás összes látható naptárát megjeleníti</string>
     <string name="pref_calendar_show_all_day_title">Egész napos események</string>
-    <string name="pref_calendar_show_all_day_description">Születésnapok és más események mutatása</string>
+    <string name="pref_calendar_show_all_day_description">Születésnapok és más egész napos események mutatása</string>
 </resources>

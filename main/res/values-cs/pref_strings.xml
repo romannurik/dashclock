@@ -27,8 +27,8 @@
     </string-array>
     <string name="pref_aggressive_centering_title">Vždy uprostřed</string>
     <string name="pref_aggressive_centering_description">Může způsobit poskakování pro některé hodnoty widgetu</string>
-    <!--<string name="pref_hide_settings_title">Hide settings button</string>-->
-    <!--<string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a "Configure DashClock Widget" home screen shortcut is available as an alternative)</string>-->
+    <string name="pref_hide_settings_title">Schovat tlačítko nastavení</string>
+    <string name="pref_hide_settings_description">Schovat tlačítko nastavení, pokud je widget vertikálně roztažený (Zástupce "Nastavení DashClock Widgetu" je dostupná alternativa)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Zástupce</string>
@@ -56,14 +56,14 @@
     </plurals>
 
     <!-- Calendar -->
-    <string name="pref_calendar_look_ahead_hours_title">Zobrazit schůzky během následných</string>
+    <string name="pref_calendar_look_ahead_hours_title">Čas do další schůzky</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
-        <item>3 hodin</item>
+        <item>3 hodiny</item>
         <item>6 hodin</item>
         <item>12 hodin</item>
         <item>24 hodin</item>
-        <item>2 dnů</item>
-        <item>1 týdne</item>
+        <item>2 dny</item>
+        <item>1 týden</item>
     </string-array>
     <string name="pref_calendar_selected_title">Zvolit kalendáře k zobrazení</string>
     <plurals name="pref_calendar_selected_summary_template">
@@ -72,6 +72,6 @@
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Zvolte viditelnost kalendáře</string>
     <string name="pref_calendar_custom_visibility_description">Když není zaškrtnuto, ukázat všechny viditelné kalendáře z aplikace Kalendář</string>
-    <!--<string name="pref_calendar_show_all_day_title">Show all-day events</string>-->
-    <!--<string name="pref_calendar_show_all_day_description">Include all-day events such as birthdays</string>-->
+    <string name="pref_calendar_show_all_day_title">Zobrazit celodenní události</string>
+    <string name="pref_calendar_show_all_day_description">Zahrnout celodenní události, narozeniny apod.</string>
 </resources>
