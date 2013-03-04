@@ -131,67 +131,70 @@ public class LogUtils {
     /**
      * Only for use with debug versions of the app!
      */
-    public static void sendLogs(Context context) {
-        StringBuilder log = new StringBuilder();
+    public static void sendDebugLog(Context context) {
+        //noinspection PointlessBooleanExpression,ConstantConditions
+        if (FORCE_DEBUG || BuildConfig.DEBUG) {
+            StringBuilder log = new StringBuilder();
 
-        // Append app version name
-        PackageManager pm = context.getPackageManager();
-        String packageName = context.getPackageName();
-        String versionName;
-        try {
-            PackageInfo info = pm.getPackageInfo(packageName, 0);
-            versionName = info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            versionName = "??";
-        }
-        log.append("App version:\n").append(versionName).append("\n\n");
-
-        // Append device build fingerprint
-        log.append("Device fingerprint:\n").append(Build.FINGERPRINT).append("\n\n");
-
-        try {
-            // Append app's logs
-            String[] logcatCmd = new String[]{ "logcat", "-v", "threadtime", "-d", };
-            Process process = Runtime.getRuntime().exec(logcatCmd);
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                log.append(line);
-                log.append("\n");
+            // Append app version name
+            PackageManager pm = context.getPackageManager();
+            String packageName = context.getPackageName();
+            String versionName;
+            try {
+                PackageInfo info = pm.getPackageInfo(packageName, 0);
+                versionName = info.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                versionName = "??";
             }
+            log.append("App version:\n").append(versionName).append("\n\n");
 
-            // Write everything to a file
-            File logsDir = context.getCacheDir();
-            if (logsDir == null) {
-                throw new IOException("Cache directory inaccessible");
+            // Append device build fingerprint
+            log.append("Device fingerprint:\n").append(Build.FINGERPRINT).append("\n\n");
+
+            try {
+                // Append app's logs
+                String[] logcatCmd = new String[]{ "logcat", "-v", "threadtime", "-d", };
+                Process process = Runtime.getRuntime().exec(logcatCmd);
+                BufferedReader bufferedReader = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    log.append(line);
+                    log.append("\n");
+                }
+
+                // Write everything to a file
+                File logsDir = context.getCacheDir();
+                if (logsDir == null) {
+                    throw new IOException("Cache directory inaccessible");
+                }
+                logsDir = new File(logsDir, "logs");
+                deleteRecursive(logsDir);
+                logsDir.mkdirs();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm");
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String fileName = "DashClock_log_" + sdf.format(new Date()) + ".txt";
+                File logFile = new File(logsDir, fileName);
+
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(logFile)));
+                writer.write(log.toString());
+                writer.close();
+
+                // Send the file
+                Intent sendIntent = new Intent(Intent.ACTION_SENDTO)
+                        .setData(Uri.parse("mailto:dashclock+support@gmail.com"))
+                        .putExtra(Intent.EXTRA_SUBJECT, "DashClock debug log")
+                        .putExtra(Intent.EXTRA_STREAM, Uri.parse(
+                                "content://" + LogAttachmentProvider.AUTHORITY + "/" + fileName));
+                context.startActivity(Intent.createChooser(sendIntent, "Send logs using"));
+
+            } catch (IOException e) {
+                LOGE(TAG, "Error accessing or sending app's logs.", e);
+                Toast.makeText(context, "Error accessing or sending app's logs.",
+                        Toast.LENGTH_SHORT).show();
             }
-            logsDir = new File(logsDir, "logs");
-            deleteRecursive(logsDir);
-            logsDir.mkdirs();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm");
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            String fileName = "DashClock_log_" + sdf.format(new Date()) + ".txt";
-            File logFile = new File(logsDir, fileName);
-
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(logFile)));
-            writer.write(log.toString());
-            writer.close();
-
-            // Send the file
-            Intent sendIntent = new Intent(Intent.ACTION_SENDTO)
-                    .setData(Uri.parse("mailto:dashclock+support@gmail.com"))
-                    .putExtra(Intent.EXTRA_SUBJECT, "DashClock debug log")
-                    .putExtra(Intent.EXTRA_STREAM, Uri.parse(
-                            "content://" + LogAttachmentProvider.AUTHORITY + "/" + fileName));
-            context.startActivity(Intent.createChooser(sendIntent, "Send logs using"));
-
-        } catch (IOException e) {
-            LOGE(TAG, "Error accessing or sending app's logs.", e);
-            Toast.makeText(context, "Error accessing or sending app's logs.", Toast.LENGTH_SHORT)
-                    .show();
         }
     }
 
