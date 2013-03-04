@@ -28,6 +28,10 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.google.android.apps.dashclock.LogUtils.LOGD;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 import static com.google.android.apps.dashclock.LogUtils.LOGW;
 
@@ -49,24 +53,47 @@ public class SmsExtension extends DashClockExtension {
 
     @Override
     protected void onUpdateData(int reason) {
+        Set<Long> unreadThreadIds = null;
+        Cursor cursor = tryOpenSimpleThreadsCursor();
+        if (cursor != null) {
+            unreadThreadIds = new HashSet<Long>();
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(SimpleThreadsQuery.READ) == 0) {
+                    unreadThreadIds.add(cursor.getLong(SimpleThreadsQuery._ID));
+                }
+            }
+            cursor.close();
+
+            LOGD(TAG, "Unread thread IDs: [" + TextUtils.join(", ", unreadThreadIds) + "]");
+        }
+
         int unreadConversations = 0;
         StringBuilder names = new StringBuilder();
-        Cursor cursor = tryOpenMmsSmsCursor();
+        cursor = tryOpenMmsSmsCursor();
         if (cursor == null) {
-            LOGE(TAG, "Null SMS cursor, short-circuiting.");
+            LOGE(TAG, "Null conversations cursor, short-circuiting.");
             return;
         }
 
         long threadId = 0;
 
         while (cursor.moveToNext()) {
-            ++unreadConversations;
-
             // Get display name. SMS's are easy; MMS's not so much.
             long id = cursor.getLong(MmsSmsQuery._ID);
             long contactId = cursor.getLong(MmsSmsQuery.PERSON);
             String address = cursor.getString(MmsSmsQuery.ADDRESS);
             threadId = cursor.getLong(MmsSmsQuery.THREAD_ID);
+            if (unreadThreadIds != null && !unreadThreadIds.contains(threadId)) {
+                // We have the list of all thread IDs (same as what the messaging app uses), and
+                // this supposedly unread message's thread isn't in the list. This message is likely
+                // an orphaned message whose thread was deleted. Not skipping it is likely the
+                // cause of http://code.google.com/p/dashclock/issues/detail?id=8
+                LOGD(TAG, "Skipping probably orphaned message " + id + " with thread ID "
+                        + threadId);
+                continue;
+            }
+
+            ++unreadConversations;
 
             if (contactId == 0 && TextUtils.isEmpty(address) && id != 0) {
                 // Try MMS addr query
@@ -133,7 +160,6 @@ public class SmsExtension extends DashClockExtension {
                 .clickIntent(clickIntent));
     }
 
-
     private Cursor tryOpenMmsSmsCursor() {
         try {
             return getContentResolver().query(
@@ -151,7 +177,25 @@ public class SmsExtension extends DashClockExtension {
         } catch (Exception e) {
             // Catch all exceptions because the SMS provider is crashy
             // From developer console: "SQLiteException: table spam_filter already exists"
-            LOGE(TAG, "Error accessing SMS provider", e);
+            LOGE(TAG, "Error accessing conversations cursor in SMS/MMS provider", e);
+            return null;
+        }
+    }
+
+    private Cursor tryOpenSimpleThreadsCursor() {
+        try {
+            return getContentResolver().query(
+                    TelephonyProviderConstants.Threads.CONTENT_URI
+                            .buildUpon()
+                            .appendQueryParameter("simple", "true")
+                            .build(),
+                    SimpleThreadsQuery.PROJECTION,
+                    null,
+                    null,
+                    null);
+
+        } catch (Exception e) {
+            LOGW(TAG, "Error accessing simple SMS threads cursor", e);
             return null;
         }
     }
@@ -209,6 +253,16 @@ public class SmsExtension extends DashClockExtension {
             LOGW(TAG, "Error looking up contact name", e);
             return null;
         }
+    }
+
+    private interface SimpleThreadsQuery {
+        String[] PROJECTION = {
+                TelephonyProviderConstants.Threads._ID,
+                TelephonyProviderConstants.Threads.READ,
+        };
+
+        int _ID = 0;
+        int READ = 1;
     }
 
     private interface MmsSmsQuery {
