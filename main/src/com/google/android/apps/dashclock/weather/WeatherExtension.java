@@ -36,6 +36,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -177,15 +178,19 @@ public class WeatherExtension extends DashClockExtension {
         }
 
         @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            LOGD(TAG, "Network location provider status change: " + status);
+            if (status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
+                scheduleRetry();
+            }
         }
 
         @Override
-        public void onProviderEnabled(String s) {
+        public void onProviderEnabled(String provider) {
         }
 
         @Override
-        public void onProviderDisabled(String s) {
+        public void onProviderDisabled(String provider) {
         }
     };
 
