@@ -45,7 +45,8 @@ public class WeatherRetryReceiver extends BroadcastReceiver {
                 .putExtra(DashClockService.EXTRA_UPDATE_REASON,
                         DashClockExtension.UPDATE_REASON_UNKNOWN) // TODO: UPDATE_REASON_RETRY
                 .putExtra(DashClockService.EXTRA_COMPONENT_NAME,
-                        new ComponentName(context, WeatherExtension.class)));
+                        new ComponentName(context, WeatherExtension.class)
+                                .flattenToShortString()));
 
     }
 }
