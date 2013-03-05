@@ -22,4 +22,6 @@
     <dimen name="clock_text_size_small">56dp</dimen>
     <dimen name="clock_date_text_size">18dp</dimen>
     <dimen name="clock_date_top_margin">-18dp</dimen>
+    <dimen name="clock_margin_offset">18dp</dimen>
+    <dimen name="analog_clock_size">112dp</dimen>
 </resources>

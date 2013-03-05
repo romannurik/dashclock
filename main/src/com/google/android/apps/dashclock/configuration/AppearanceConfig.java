@@ -39,12 +39,14 @@ public class AppearanceConfig {
             "stock",
             "condensed",
             "big_small",
+            "analog1",
+            "analog2",
     };
 
     static String[] DATE_STYLE_NAMES = new String[]{
             "default",
             "simple",
-            "condensed_bold"
+            "condensed_bold",
     };
 
     public static int getCurrentTimeLayout(Context context) {

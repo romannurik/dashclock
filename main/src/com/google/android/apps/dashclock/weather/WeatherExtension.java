@@ -171,6 +171,7 @@ public class WeatherExtension extends DashClockExtension {
     private LocationListener mOneTimeLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
+            LOGD(TAG, "Got network location update");
             getWeatherAndPublishUpdate(location);
             disableOneTimeLocationListener();
         }
