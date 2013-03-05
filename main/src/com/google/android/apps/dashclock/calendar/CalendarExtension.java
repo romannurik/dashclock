@@ -146,6 +146,8 @@ public class CalendarExtension extends DashClockExtension {
 
         long currentTimestamp = getCurrentTimestamp();
         long nextTimestamp = 0;
+        long endTimestamp = 0;
+        int tzOffset = TimeZone.getDefault().getOffset(nextTimestamp);
         long timeUntilNextAppointent = 0;
         boolean allDay = false;
         int allDayPosition = -1;
@@ -154,7 +156,9 @@ public class CalendarExtension extends DashClockExtension {
             nextTimestamp = cursor.getLong(EventsQuery.BEGIN);
             allDay = cursor.getInt(EventsQuery.ALL_DAY) != 0;
             if (allDay) {
-                if (showAllDay && allDayPosition < 0) {
+                endTimestamp = cursor.getLong(EventsQuery.END) - tzOffset;
+
+                if (showAllDay && allDayPosition < 0 && endTimestamp > currentTimestamp) {
                     // Store the position of this all day event. If no regular events are found
                     // and the user wanted to see all day events, then show this all day event.
                     allDayPosition = cursor.getPosition();
@@ -163,8 +167,7 @@ public class CalendarExtension extends DashClockExtension {
                     // timestamp, which is the midnight UTC time, to local time. That is,
                     // nextTimestamp will now be midnight in local time since that's a more
                     // relevant representation of that day to the user.
-                    allDayTimestamp = nextTimestamp
-                            - TimeZone.getDefault().getOffset(nextTimestamp);
+                    allDayTimestamp = nextTimestamp - tzOffset;
                 }
                 continue;
             }
