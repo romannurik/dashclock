@@ -75,14 +75,14 @@ public class SmsExtension extends DashClockExtension {
             return;
         }
 
-        long threadId = 0;
+        long lastUnreadThreadId = 0;
 
         while (cursor.moveToNext()) {
             // Get display name. SMS's are easy; MMS's not so much.
             long id = cursor.getLong(MmsSmsQuery._ID);
             long contactId = cursor.getLong(MmsSmsQuery.PERSON);
             String address = cursor.getString(MmsSmsQuery.ADDRESS);
-            threadId = cursor.getLong(MmsSmsQuery.THREAD_ID);
+            long threadId = cursor.getLong(MmsSmsQuery.THREAD_ID);
             if (unreadThreadIds != null && !unreadThreadIds.contains(threadId)) {
                 // We have the list of all thread IDs (same as what the messaging app uses), and
                 // this supposedly unread message's thread isn't in the list. This message is likely
@@ -94,6 +94,7 @@ public class SmsExtension extends DashClockExtension {
             }
 
             ++unreadConversations;
+            lastUnreadThreadId = threadId;
 
             if (contactId == 0 && TextUtils.isEmpty(address) && id != 0) {
                 // Try MMS addr query
@@ -139,10 +140,10 @@ public class SmsExtension extends DashClockExtension {
         cursor.close();
 
         Intent clickIntent;
-        if (unreadConversations == 1 && threadId > 0) {
+        if (unreadConversations == 1 && lastUnreadThreadId > 0) {
             clickIntent = new Intent(Intent.ACTION_VIEW,
                     TelephonyProviderConstants.MmsSms.CONTENT_CONVERSATIONS_URI.buildUpon()
-                            .appendPath(Long.toString(threadId)).build());
+                            .appendPath(Long.toString(lastUnreadThreadId)).build());
         } else {
             clickIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN,
                     Intent.CATEGORY_APP_MESSAGING);
