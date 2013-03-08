@@ -182,6 +182,7 @@ public class WeatherExtension extends DashClockExtension {
             LOGD(TAG, "Network location provider status change: " + status);
             if (status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
                 scheduleRetry();
+                disableOneTimeLocationListener();
             }
         }
 
