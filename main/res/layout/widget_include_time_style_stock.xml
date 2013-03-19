@@ -23,7 +23,7 @@
     <TextClock
         style="@style/TimeComponent"
         android:format12Hour="h"
-        android:format24Hour="kk"
+        android:format24Hour="HH"
         android:fontFamily="sans-serif"
         android:textStyle="bold" />
 
