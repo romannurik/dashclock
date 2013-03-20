@@ -147,13 +147,13 @@ public class CalendarExtension extends DashClockExtension {
         long currentTimestamp = getCurrentTimestamp();
         long nextTimestamp = 0;
         long endTimestamp = 0;
-        int tzOffset = TimeZone.getDefault().getOffset(nextTimestamp);
         long timeUntilNextAppointent = 0;
         boolean allDay = false;
         int allDayPosition = -1;
-        long allDayTimestamp = 0;
+        long allDayTimestampLocalMidnight = 0;
         while (cursor.moveToNext()) {
             nextTimestamp = cursor.getLong(EventsQuery.BEGIN);
+            int tzOffset = TimeZone.getDefault().getOffset(nextTimestamp);
             allDay = cursor.getInt(EventsQuery.ALL_DAY) != 0;
             if (allDay) {
                 endTimestamp = cursor.getLong(EventsQuery.END) - tzOffset;
@@ -165,9 +165,9 @@ public class CalendarExtension extends DashClockExtension {
 
                     // For all day events (if the user wants to see them), convert the begin
                     // timestamp, which is the midnight UTC time, to local time. That is,
-                    // nextTimestamp will now be midnight in local time since that's a more
-                    // relevant representation of that day to the user.
-                    allDayTimestamp = nextTimestamp - tzOffset;
+                    // allDayTimestampLocalMidnight will be midnight in local time since that's a
+                    // more relevant representation of that day to the user.
+                    allDayTimestampLocalMidnight = nextTimestamp - tzOffset;
                 }
                 continue;
             }
@@ -190,12 +190,12 @@ public class CalendarExtension extends DashClockExtension {
             // or if the all day event is tomorrow or later and the all day event is later than
             // the regular event.
             if (cursor.isAfterLast()
-                    || ((allDayTimestamp - currentTimestamp) > 0
-                    && allDayTimestamp < nextTimestamp)) {
+                    || ((allDayTimestampLocalMidnight - currentTimestamp) > 0
+                    && allDayTimestampLocalMidnight < nextTimestamp)) {
                 cursor.moveToPosition(allDayPosition);
                 allDay = true;
 
-                nextTimestamp = allDayTimestamp;
+                nextTimestamp = allDayTimestampLocalMidnight;
                 timeUntilNextAppointent = nextTimestamp - currentTimestamp;
                 LOGD(TAG, "Showing an all day event because either no regular event was found or "
                         + "it's a full day later than the all-day event.");
