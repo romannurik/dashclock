@@ -41,6 +41,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -77,6 +78,8 @@ public class WeatherExtension extends DashClockExtension {
 
     private static final int INITIAL_BACKOFF_MILLIS = 30000; // 30 seconds for first error retry
 
+    private static final int LOCATION_TIMEOUT_MILLIS = 60000; // 60 sec timeout for location attempt
+
     private static XmlPullParserFactory sXmlPullParserFactory;
 
     private static final Criteria sLocationCriteria;
@@ -85,6 +88,8 @@ public class WeatherExtension extends DashClockExtension {
     private static Intent sWeatherIntent;
 
     private boolean mOneTimeLocationListenerActive = false;
+
+    private Handler mTimeoutHandler = new Handler();
 
     static {
         sLocationCriteria = new Criteria();
@@ -156,6 +161,17 @@ public class WeatherExtension extends DashClockExtension {
             disableOneTimeLocationListener();
             mOneTimeLocationListenerActive = true;
             lm.requestSingleUpdate(provider, mOneTimeLocationListener, null);
+
+            // Time-out single location update request
+            mTimeoutHandler.removeCallbacksAndMessages(null);
+            mTimeoutHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LOGE(TAG, "Location request timed out.");
+                    disableOneTimeLocationListener();
+                    scheduleRetry();
+                }
+            }, LOCATION_TIMEOUT_MILLIS);
         } else {
             getWeatherAndPublishUpdate(lastLocation);
         }
@@ -173,6 +189,7 @@ public class WeatherExtension extends DashClockExtension {
         @Override
         public void onLocationChanged(Location location) {
             LOGD(TAG, "Got network location update");
+            mTimeoutHandler.removeCallbacksAndMessages(null);
             getWeatherAndPublishUpdate(location);
             disableOneTimeLocationListener();
         }
