@@ -1,0 +1,146 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">Sta dataverzoeken van DashClock-extensies toe</string>
+    <string name="permission_label_read_extension_data">Verzoek data van DashClock-extensies</string>
+
+    <string name="settings">Instellingen</string>
+    <string name="more_options">Meer opties</string>
+
+    <!-- Configuration -->
+    <string name="shortcut_label_configure">DashClock Widget instellen</string>
+    <string name="title_configure">DashClock Widget instellen</string>
+    <string name="section_extensions">Extensies</string>
+    <string name="section_appearance">Uiterlijk</string>
+    <string name="section_advanced">Geavanceerd</string>
+
+    <string name="title_apps">Apps</string>
+    <string name="title_shortcuts">Snelkoppelingen</string>
+
+    <string name="get_more_extensions">Meer extensies verkrijgen</string>
+    <string name="add_another_extension">Nog een extensie toevoegen</string>
+    <string name="more_extensions">Meer extensies</string>
+    <string name="done">Klaar</string>
+    <string name="add_extension">Een extensie toevoegen</string>
+    <string name="cancel">Annuleren</string>
+
+    <string name="prev_date_style">Vorige datumopmaak</string>
+    <string name="prev_time_style">Vorige tijdsopmaak</string>
+    <string name="next_date_style">Volgende datumopmaak</string>
+    <string name="next_time_style">Volgende tijdsopmaak</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Incompatibel)</string>
+    <string name="incompatible_extension_title">Incompatibele extensie</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[De
+        <b>%1$s</b> extenise is niet compatibel net deze versue van DashClock.
+        Zoeken voor een update voor deze extensie op Google Play?]]></string>
+    <string name="search_play">Zoeken op Google Play</string>
+
+    <!-- About -->
+    <string name="close">Sluiten</string>
+    <string name="about">Over</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Algemene voorwaaren</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Privacyverklaring</a><br><br>
+        Hartelijk dank voor deze open source tools:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer pictogrammen</a></b><br>
+        <i>door Günther Beyer van <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>door Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Weer</string>
+    <string name="weather_extension_description">
+        Geeft de laatste weersinformatie voor jouw omgeving weer, waaronder de huidige temperatuur en weerscondities, maar ook de laatste weersvoorspellingen. Mogelijk gemaakt door Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Weer-extensie instellingen</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Later: %1$s</string>
+    <string name="no_weather_data">Geen weersinformatie beschikbaar</string>
+    <string name="no_location_data">Je locatie kon niet worden bepaald</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Gmail</string>
+    <string name="gmail_extension_description">
+        Geeft het aantal ongelezen e-mails weer van je Gmail inbox of Postvak Prioriteit.
+    </string>
+    <string name="title_gmail_settings">Gmail-extensie instellingen</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d ongelezen</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Volgende alarm</string>
+    <string name="next_alarm_extension_description">
+        Geeft informatie weer over het volgende alarm, als er een is ingesteld.
+    </string>
+    <string name="next_alarm">Volgende alarm</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Agenda-afspraak</string>
+    <string name="calendar_extension_description">
+        Geeft informatie weer over de volgende afspraak in de agenda, als er een gepland is voor de komende uren.
+    </string>
+    <string name="title_calendar_settings">Agenda-extensie instellingen</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s dag</item>
+        <item quantity="other">%1$s dagen</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s uur</item>
+        <item quantity="other">%1$s uren</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s min</item>
+    </plurals>
+    <string name="today">Vandaag</string>
+    <!--<string name="now">Now</string>-->
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Gemiste oproepen</string>
+    <string name="missed_calls_extension_description">
+        Geeft het aantal gemiste oproepen weer, inclusief de namen van de bellers.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s gemiste oproep</item>
+        <item quantity="other">%1$s gemiste oproepen</item>
+    </plurals>
+    <string name="missed_calls_body_template">Van: %1$s</string>
+    <string name="missed_calls_unknown">Onbekend</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Tekstberichten</string>
+    <string name="sms_extension_description">
+        Geeft het aantal ongelezen SMS-/MSS-berichten weer, inclusief de namen van de verzenders.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s ongelezen gesprek</item>
+        <item quantity="other">%1$s ongelezen gesprekken</item>
+    </plurals>
+    <string name="sms_body_template">Van: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Jouw DashClock aanpassen</string>
+    <string name="welcome_description">Wil je alleen de huidige tijd en datum zien? Tik dan
+        op het bovenstaande vinkje en je bent klaar om te beginnen! Maar waarom pas je DashClock niet aan met een paar <i>extensies</i>?
+        \n\n<b>Extensies</b> geven relevante informatie weer, direct vanuit DashClock! Probeer ze uit door hieronder een paar extensies toe te voegen.
+    </string>
+
+</resources>
