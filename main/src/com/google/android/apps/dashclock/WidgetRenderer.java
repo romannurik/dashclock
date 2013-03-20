@@ -402,8 +402,8 @@ public class WidgetRenderer {
         }
 
         public long getItemId(int position) {
-            return mExtensionManager.getActiveExtensionsWithData().get(position)
-                    .listing.componentName.hashCode();
+            ExtensionWithData ewd = getEwdAtProtected(position);
+            return (ewd != null) ? ewd.listing.componentName.hashCode() : 0;
         }
 
         public boolean hasStableIds() {
@@ -414,17 +414,33 @@ public class WidgetRenderer {
             return mVisibleExtensions.size();
         }
 
+        private ExtensionWithData getEwdAtProtected(int position) {
+            try {
+                return mVisibleExtensions.get(position);
+            } catch (IndexOutOfBoundsException e) {
+                return null;
+            }
+        }
+
         public RemoteViews getViewAt(int position) {
-            if (position >= getCount()) {
+            if (position >= mVisibleExtensions.size()) {
                 // TODO: trap this better
+                // See note on synchronization below.
                 return null;
             }
 
-            RemoteViews rv;
-
-            ExtensionWithData ewd = mVisibleExtensions.get(position);
-            rv = new RemoteViews(mContext.getPackageName(),
+            RemoteViews rv = new RemoteViews(mContext.getPackageName(),
                     R.layout.widget_list_item_expanded_extension);
+            ExtensionWithData ewd = getEwdAtProtected(position);
+            if (ewd == null || ewd.latestData == null) {
+                // This only occurs if there's a synchronization issue where the list of
+                // visible extensions changes in between the widget host's calls to
+                // getViewAt/getCount. This hack basically just shows empty data in that case.
+                rv.setTextViewText(R.id.text1, mContext.getResources()
+                        .getText(R.string.status_none));
+                rv.setViewVisibility(R.id.text2, View.GONE);
+                return rv;
+            }
 
             rv.setTextViewText(R.id.text1, expandedTitleOrStatus(ewd.latestData));
 
