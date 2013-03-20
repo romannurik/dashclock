@@ -21,6 +21,8 @@
     <string name="settings">Ρυθμίσεις</string>
     <string name="more_options">Περισσότερες Επιλογές</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">Ρύθμιση DashClock Widget</string>
     <string name="title_configure">Ρύθμιση DashClock Widget</string>
@@ -37,6 +39,10 @@
     <string name="done">Έτοιμο!</string>
     <string name="add_extension">Προσθήκη επέκτασης</string>
     <string name="cancel">Άκυρωση</string>
+
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">Send debug log</string>
+    <string name="send_logs_chooser_title">Send logs using</string>
 
     <string name="prev_date_style">Προηγούμενο σύστημα ημερομηνίας</string>
     <string name="prev_time_style">Προηγούμενο σύστημα ώρας</string>

@@ -20,5 +20,5 @@
     android:fontFamily="sans-serif-condensed"
     android:textStyle="bold"
     android:textAllCaps="true"
-    android:format12Hour="E, MMM dd"
-    android:format24Hour="E, MMM dd" />
+    android:format12Hour="@string/simple_date_format"
+    android:format24Hour="@string/simple_date_format" />

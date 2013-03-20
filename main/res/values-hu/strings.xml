@@ -21,6 +21,8 @@
     <string name="settings">Beállítások</string>
     <string name="more_options">További opciók</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">DashClock Widget beállítása</string>
     <string name="title_configure">DashClock Widget beállítása</string>
@@ -37,6 +39,10 @@
     <string name="done">Kész</string>
     <string name="add_extension">Kiegészítő hozzáadása</string>
     <string name="cancel">Mégse</string>
+
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">Send debug log</string>
+    <string name="send_logs_chooser_title">Send logs using</string>
 
     <string name="prev_date_style">Előző adatstílus</string>
     <string name="prev_time_style">Előző időstílus</string>

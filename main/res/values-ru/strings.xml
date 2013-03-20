@@ -21,6 +21,8 @@
     <string name="settings">Настройки</string>
     <string name="more_options">Ещё настройки</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">Настройки DashClock Widget</string>
     <string name="title_configure">Настройки DashClock Widget</string>
@@ -37,6 +39,10 @@
     <string name="done">Готово</string>
     <string name="add_extension">Добавить расширение</string>
     <string name="cancel">Отмена</string>
+
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">Send debug log</string>
+    <string name="send_logs_chooser_title">Send logs using</string>
 
     <string name="prev_date_style">Предыдущий стиль</string>
     <string name="prev_time_style">Предыдущий стиль</string>

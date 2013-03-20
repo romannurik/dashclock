@@ -21,6 +21,8 @@
     <string name="settings">Impostazioni</string>
     <string name="more_options">Altre opzioni</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">Configura il widget DashClock</string>
     <string name="title_configure">Configura il widget DashClock</string>
@@ -38,6 +40,7 @@
     <string name="add_extension">Aggiungi un\'estensione</string>
     <string name="cancel">Annulla</string>
 
+    <!-- These strings never appear in release builds; translation is very low priority -->
     <string name="send_logs">Invia log di debug</string>
     <string name="send_logs_chooser_title">Invia log usando</string>
 

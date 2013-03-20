@@ -21,6 +21,8 @@
     <string name="settings">设置</string>
     <string name="more_options">更多选项</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">设置DashClock小部件</string>
     <string name="title_configure">设置DashClock小部件</string>
@@ -37,6 +39,10 @@
     <string name="done">完成</string>
     <string name="add_extension">添加扩展</string>
     <string name="cancel">取消</string>
+
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">Send debug log</string>
+    <string name="send_logs_chooser_title">Send logs using</string>
 
     <string name="prev_date_style">上一个日期风格</string>
     <string name="prev_time_style">上一个时间风格</string>

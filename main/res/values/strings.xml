@@ -26,6 +26,8 @@
     <string name="settings">Settings</string>
     <string name="more_options">More options</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">DashClock Settings</string>
     <string name="title_configure">Configure DashClock Widget</string>
@@ -43,9 +45,9 @@
     <string name="add_extension">Add an extension</string>
     <string name="cancel">Cancel</string>
 
-    <!-- These strings are marked untranslatable because they never appear in release builds -->
-    <string name="send_logs" translatable="false">Send debug log</string>
-    <string name="send_logs_chooser_title" translatable="false">Send logs using</string>
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">Send debug log</string>
+    <string name="send_logs_chooser_title">Send logs using</string>
 
     <string name="prev_date_style">Previous date style</string>
     <string name="prev_time_style">Previous time style</string>

@@ -21,6 +21,8 @@
     <string name="settings">설정</string>
     <string name="more_options">추가 옵션</string>
 
+    <string name="simple_date_format">E, MMM dd</string>
+
     <!-- Configuration -->
     <string name="shortcut_label_configure">DashClock 위젯 구성</string>
     <string name="title_configure">DashClock 위젯 구성</string>
@@ -37,6 +39,10 @@
     <string name="done">완료</string>
     <string name="add_extension">확장 프로그램 추가</string>
     <string name="cancel">취소</string>
+
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">Send debug log</string>
+    <string name="send_logs_chooser_title">Send logs using</string>
 
     <string name="prev_date_style">이전 날짜 스타일</string>
     <string name="prev_time_style">이전 시간 스타일</string>
