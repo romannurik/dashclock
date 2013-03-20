@@ -51,6 +51,7 @@ public class ConfigureAppearanceFragment extends Fragment {
 
     private Map<String, String> mCurrentStyleNames = new HashMap<String, String>();
     private int mAnimationDuration;
+    private View[] mPositionStrips;
 
     public ConfigureAppearanceFragment() {
     }
@@ -96,13 +97,14 @@ public class ConfigureAppearanceFragment extends Fragment {
         super.onResume();
         View rootView = getView();
         if (rootView != null) {
-            View strip = rootView.findViewById(R.id.pager_time_position_strip);
-            strip.setAlpha(0f);
-            showPositionStrip(strip, true, AUTO_HIDE_DELAY_MILLIS);
-
-            strip = rootView.findViewById(R.id.pager_date_position_strip);
-            strip.setAlpha(0f);
-            showPositionStrip(strip, true, AUTO_HIDE_DELAY_MILLIS);
+            mPositionStrips = new View[] {
+                    rootView.findViewById(R.id.pager_time_position_strip),
+                    rootView.findViewById(R.id.pager_date_position_strip)
+            };
+            for (View strip : mPositionStrips) {
+                strip.setAlpha(0f);
+            }
+            showPositionStrips(true, AUTO_HIDE_DELAY_MILLIS);
         }
     }
 
@@ -191,11 +193,11 @@ public class ConfigureAppearanceFragment extends Fragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
-                        showPositionStrip(positionStrip, true, -1);
+                        showPositionStrips(true, -1);
                         break;
 
                     case MotionEvent.ACTION_UP:
-                        showPositionStrip(positionStrip, false, AUTO_HIDE_DELAY_MILLIS);
+                        showPositionStrips(false, AUTO_HIDE_DELAY_MILLIS);
                         break;
                 }
                 return false;
@@ -211,33 +213,30 @@ public class ConfigureAppearanceFragment extends Fragment {
         }
     }
 
-    private void showPositionStrip(final View view, final boolean show, final int hideDelay) {
-        // remove any currently scheduled runnables on this view
-        Runnable hideRunnable = mHidePositionStripRunnables.get(view);
-        if (hideRunnable != null) {
-            mHandler.removeCallbacks(hideRunnable);
-        }
-
-        hideRunnable = new Runnable() {
-            @Override
-            public void run() {
-                showPositionStrip(view, false, 0);
-                mHidePositionStripRunnables.remove(view);
-            }
-        };
+    private void showPositionStrips(final boolean show, final int hideDelay) {
+        // remove any currently scheduled runnables
+        mHandler.removeCallbacks(mHidePositionStripsRunnable);
 
         // if show or hide immediately, take action now
         if (show || hideDelay <= 0) {
-            view.animate().cancel();
-            view.animate().alpha(show ? 1f : 0f).setDuration(mAnimationDuration);
+            for (View strip : mPositionStrips) {
+                strip.animate().cancel();
+                strip.animate().alpha(show ? 1f : 0f).setDuration(mAnimationDuration);
+            }
         }
 
         // schedule a hide if hideDelay > 0
         if (hideDelay > 0) {
-            mHidePositionStripRunnables.put(view, hideRunnable);
-            mHandler.postDelayed(hideRunnable, hideDelay);
+            mHandler.postDelayed(mHidePositionStripsRunnable, hideDelay);
         }
     }
+
+    private Runnable mHidePositionStripsRunnable = new Runnable() {
+        @Override
+        public void run() {
+            showPositionStrips(false, 0);
+        }
+    };
 
     @Override
     public void onDetach() {
