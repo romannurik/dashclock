@@ -1,0 +1,148 @@
+﻿<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="permission_desc_read_extension_data">Επιτρέπει την αίτηση δεδομένων επέκτασης από το DashClock</string>
+    <string name="permission_label_read_extension_data">Αίτηση δεδομένων επέκτασης DashClock</string>
+
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="more_options">Περισσότερες Επιλογές</string>
+
+    <!-- Configuration -->
+    <string name="shortcut_label_configure">Ρύθμιση DashClock Widget</string>
+    <string name="title_configure">Ρύθμιση DashClock Widget</string>
+    <string name="section_extensions">Επεκτάσεις</string>
+    <string name="section_appearance">Εμφάνιση</string>
+    <string name="section_advanced">Προχωρημένα</string>
+
+    <string name="title_apps">Εφαρμογές</string>
+    <string name="title_shortcuts">Συντομεύσεις</string>
+
+    <string name="get_more_extensions">Βρείτε περισσότερες επεκτάσεις</string>
+    <string name="add_another_extension">Προσθήκη επέκτασης</string>
+    <string name="more_extensions">Περισσότερες επεκτάσεις</string>
+    <string name="done">Έτοιμο!</string>
+    <string name="add_extension">Προσθήκη επέκτασης</string>
+    <string name="cancel">Άκυρωση</string>
+
+    <string name="prev_date_style">Προηγούμενο σύστημα ημερομηνίας</string>
+    <string name="prev_time_style">Προηγούμενο σύστημα ώρας</string>
+    <string name="next_date_style">Επόμενο σύστημα ημερομηνίας</string>
+    <string name="next_time_style">Επόμενο σύστημα ώρας</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Ασύμβατο)</string>
+    <string name="incompatible_extension_title">Ασύμβατη επέκταση</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[Η επέκταση
+        <b>%1$s</b> δεν είναι συμβατή με αυτή την έκδοση του DashClock.
+        Θέλετε να ψάξετε για αναβάθμιση αυτής της επέκτασης, στο Google Play;]]></string>
+    <string name="search_play">Αναζήτηση στο Google Play</string>
+
+    <!-- About -->
+    <string name="close">Κλείσιμο</string>
+    <string name="about">Σχετικά</string>
+
+    <string name="about_body"><![CDATA[
+        <a href="http://m.google.com/utos">Όροι χρήσης</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">Πολιτική Προστασίας Προσωπικών Δεδομένων</a><br><br>
+        Πολλές ευχαριστίες στα ακόλουθα εργαλεία ανοιχτού κώδικα:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
+        <i>by Gunther Beyer of <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>by Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">Kαιρός</string>
+    <string name="weather_extension_description">
+        Εμφανίζει τις τελευταίες πληροφορίες για τον καιρό γύρω σας, συμπεριλαμβανομένων της τρέχουσας θερμοκρασίας,
+        συνθηκών, καθώς και πληροφορίες για τις προβλέψεις. Μέσω του Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Ρυθμίσεις επέκτασης Καιρού</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">Αργότερα: %1$s</string>
+    <string name="no_weather_data">Μη διαθέσιμα δεδομένα καιρού</string>
+    <string name="no_location_data">Η τοποθεσία σας δεν μπορεί να προσδιοριστεί</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Gmail</string>
+    <string name="gmail_extension_description">
+         Εμφανίζει τον αριθμό μη αναγνωσμένων emails από το Gmail ή τα εισερχόμενα προτεραιότητας.
+    </string>
+    <string name="title_gmail_settings">Ρυθμίσεις επέκτασης Gmail</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d μη διαβασμένα</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">Επόμενης αφύπνιση</string>
+    <string name="next_alarm_extension_description">
+        Εμφανίζει πληροφορίες σχετικά με την επόμενη προγραμματισμένη αφύπνιση, αν έχετε θέσει μία.
+    </string>
+    <string name="next_alarm">Επόμενης αφύπνιση</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">Ημερολογιακή συνάντηση</string>
+    <string name="calendar_extension_description">
+        Εμφανίζει πληροφορίες σχετικά με την επόμενη ημερολογιακή συνάντηση, αν μία έχει προγραμματιστεί για τις επόμενες ώρες.
+    </string>
+    <string name="title_calendar_settings">Ρυθμίσεις επέκτασης Ημερολογίου</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s ημέρα</item>
+        <item quantity="other">%1$s ημέρες</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s ωρ</item>
+        <item quantity="other">%1$s ωρς</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s λεπ</item>
+    </plurals>
+    <string name="today">Σήμερα</string>
+    <!--<string name="now">Now</string>-->
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">Αναπάντητες κλήσεις</string>
+    <string name="missed_calls_extension_description">
+        Εμφανίζει τον αριθμό αναπάντητων κλήσεων και τον όνομα των καλούντων που έχασες.
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s αναπάντηση κλήση</item>
+        <item quantity="other">%1$s αναπάντητες κλήσεις</item>
+    </plurals>
+    <string name="missed_calls_body_template">From: %1$s</string>
+    <!--<string name="missed_calls_unknown">Unknown</string>-->
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">Μηνύματα</string>
+    <string name="sms_extension_description">
+        Εμφανίζει τον αριθμό μη διαβασμένων συνομιλιών SMS και MMS, μαζί με το όνομα του αποστολέα.
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s μη διαβασμένη συνομιλία</item>
+        <item quantity="other">%1$s μη διαβασμένες συνομιλίες</item>
+    </plurals>
+    <string name="sms_body_template">From: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">Εξατομίκευση του DashClock σας</string>
+    <string name="welcome_description">Θέλετε απλά να βέπετε τη τρέχουσα ημερομηνία και ώρα;
+        τότε πατήστε το σημάδη επιλογής από επάνω και είστε έτοιμοι! Αλλά γιατί να μην
+        εξατομικεύσετε το DashClock σας με μερικές<i>επεκτάσεις</i>?
+        \n\n<b>Επεκτάσεις</b> εμφανίστε εγκαίρως σχετικές πληροφορίες απ\'ευθείας από το DashClock!
+        Δοκιμαστέ μερικές από τις παρακάτω επεκτάσεις.
+    </string>
+</resources>
