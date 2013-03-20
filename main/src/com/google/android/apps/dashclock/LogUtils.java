@@ -32,6 +32,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.widget.Toast;
+import net.nurik.roman.dashclock.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -188,7 +189,8 @@ public class LogUtils {
                         .putExtra(Intent.EXTRA_SUBJECT, "DashClock debug log")
                         .putExtra(Intent.EXTRA_STREAM, Uri.parse(
                                 "content://" + LogAttachmentProvider.AUTHORITY + "/" + fileName));
-                context.startActivity(Intent.createChooser(sendIntent, "Send logs using"));
+                context.startActivity(Intent.createChooser(sendIntent,
+                        context.getString(R.string.send_logs_chooser_title)));
 
             } catch (IOException e) {
                 LOGE(TAG, "Error accessing or sending app's logs.", e);

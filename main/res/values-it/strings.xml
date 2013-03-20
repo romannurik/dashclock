@@ -37,6 +37,9 @@
     <string name="add_extension">Aggiungi un\'estensione</string>
     <string name="cancel">Annulla</string>
 
+    <string name="send_logs">Invia log di debug</string>
+    <string name="send_logs_chooser_title">Invia log usando</string>
+
     <string name="prev_date_style">Stile data precedente</string>
     <string name="prev_time_style">Stile ora precedente</string>
     <string name="next_date_style">Stile data successivo</string>
