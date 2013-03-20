@@ -22,6 +22,7 @@
     <string name="more_options">Erweiterte Einstellungen</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">DashClock Widget konfigurieren</string>
     <string name="title_configure">DashClock Widget konfigurieren</string>
     <string name="section_extensions">Erweiterungen</string>
     <string name="section_appearance">Aussehen</string>
@@ -113,6 +114,7 @@
         <item quantity="other">%1$s Minuten</item>
     </plurals>
     <string name="today">Heute</string>
+    <!--<string name="now">Now</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Verpasste Anrufe</string>

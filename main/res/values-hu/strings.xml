@@ -22,6 +22,7 @@
     <string name="more_options">További opciók</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">DashClock Widget beállítása</string>
     <string name="title_configure">DashClock Widget beállítása</string>
     <string name="section_extensions">Kiegészítők</string>
     <string name="section_appearance">Kinézet</string>
@@ -111,6 +112,7 @@
         <item quantity="other">%1$s perc</item>
     </plurals>
     <string name="today">Ma</string>
+    <!--<string name="now">Now</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nem fogadott hívások</string>

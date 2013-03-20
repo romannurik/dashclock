@@ -22,6 +22,7 @@
     <string name="more_options">Más opciones</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">Configurar DashClock Widget</string>
     <string name="title_configure">Configurar DashClock Widget</string>
     <string name="section_extensions">Extensiones</string>
     <string name="section_appearance">Apariencia</string>
@@ -109,6 +110,7 @@
         <item quantity="other">%1$s min</item>
     </plurals>
     <string name="today">Hoy</string>
+    <!--<string name="now">Now</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Llamadas perdidas</string>

@@ -60,6 +60,9 @@ public class CalendarExtension extends DashClockExtension {
     private static final long MINUTE_MILLIS = 60 * 1000;
     private static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
 
+    // Show events happening "now" if they started under 5 minutes ago
+    public static final long NOW_BUFFER_TIME_MILLIS = 5 * MINUTE_MILLIS;
+
     private static final int DEFAULT_LOOK_AHEAD_HOURS = 6;
     private int mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
 
@@ -174,7 +177,8 @@ public class CalendarExtension extends DashClockExtension {
 
             timeUntilNextAppointent = nextTimestamp - currentTimestamp;
 
-            if (timeUntilNextAppointent >= 0) {
+            if (timeUntilNextAppointent >= -NOW_BUFFER_TIME_MILLIS) {
+                // Use this event even if it's already started, a few minutes in
                 break;
             }
 
@@ -187,7 +191,7 @@ public class CalendarExtension extends DashClockExtension {
 
         if (allDayPosition >= 0) {
             // Only show all day events if there's no regular event (cursor is after last)
-            // or if the all day event is tomorrow or later and the all day event is later than
+            // or if the all day event is tomorrow or later and the all day event is earlier than
             // the regular event.
             if (cursor.isAfterLast()
                     || ((allDayTimestampLocalMidnight - currentTimestamp) > 0
@@ -223,6 +227,8 @@ public class CalendarExtension extends DashClockExtension {
             } else {
                 untilString = new SimpleDateFormat("E").format(nextEventCalendar.getTime());
             }
+        } else if (minutesUntilNextAppointment < 2) {
+            untilString = getResources().getString(R.string.now);
         } else if (minutesUntilNextAppointment < 60) {
             untilString = getResources().getQuantityString(
                     R.plurals.calendar_template_mins,
@@ -256,9 +262,12 @@ public class CalendarExtension extends DashClockExtension {
             } else {
                 expandedTimeFormat.append("EEEE, MMM dd");
             }
-
+        } else if (minutesUntilNextAppointment < 2) {
+            // Event happening right now!
+            expandedTimeFormat.setLength(0);
+            expandedTime = getString(R.string.now);
         } else {
-            if (nextTimestamp - currentTimestamp > 24 * HOUR_MILLIS) {
+            if (timeUntilNextAppointent > 24 * HOUR_MILLIS) {
                 expandedTimeFormat.append("EEEE, ");
             }
 
@@ -281,7 +290,7 @@ public class CalendarExtension extends DashClockExtension {
         }
 
         publishUpdate(new ExtensionData()
-                .visible(allDay || (timeUntilNextAppointent >= 0
+                .visible(allDay || (timeUntilNextAppointent >= -NOW_BUFFER_TIME_MILLIS
                         && timeUntilNextAppointent <= mLookAheadHours * HOUR_MILLIS))
                 .icon(R.drawable.ic_extension_calendar)
                 .status(untilString)
@@ -323,7 +332,7 @@ public class CalendarExtension extends DashClockExtension {
         try {
             return getContentResolver().query(
                     CalendarContract.Instances.CONTENT_URI.buildUpon()
-                            .appendPath(Long.toString(now))
+                            .appendPath(Long.toString(now - NOW_BUFFER_TIME_MILLIS))
                             .appendPath(Long.toString(now + mLookAheadHours * HOUR_MILLIS))
                             .build(),
                     EventsQuery.PROJECTION,

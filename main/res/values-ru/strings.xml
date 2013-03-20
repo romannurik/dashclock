@@ -22,6 +22,7 @@
     <string name="more_options">Ещё настройки</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">Настройки DashClock Widget</string>
     <string name="title_configure">Настройки DashClock Widget</string>
     <string name="section_extensions">Расширения</string>
     <string name="section_appearance">Отображение</string>
@@ -113,6 +114,7 @@
         <item quantity="other">%1$s мин</item>
     </plurals>
     <string name="today">Сегодня</string>
+    <!--<string name="now">Now</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Пропущенные вызовы</string>

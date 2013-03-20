@@ -22,6 +22,7 @@
     <string name="more_options">Viac možností</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">Nastaviť DashClock</string>
     <string name="title_configure">Nastaviť DashClock</string>
     <string name="section_extensions">Rozšírenia</string>
     <string name="section_appearance">Vzhľad</string>
@@ -118,6 +119,7 @@
         <item quantity="other">%1$s minút</item>
     </plurals>
     <string name="today">Dnes</string>
+    <!--<string name="now">Now</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Zmeškané hovory</string>

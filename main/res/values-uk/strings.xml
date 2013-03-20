@@ -22,6 +22,7 @@
     <string name="more_options">Додаткові налаштування</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">Налаштування DashClock Widget</string>
     <string name="title_configure">Налаштування DashClock Widget</string>
     <string name="section_extensions">Додатки</string>
     <string name="section_appearance">Відображення</string>
@@ -112,6 +113,7 @@
         <item quantity="other">%1$s хв.</item>
     </plurals>
     <string name="today">Сьогодні</string>
+    <!--<string name="now">Now</string>-->
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Пропущені дзвінки</string>

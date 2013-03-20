@@ -78,7 +78,8 @@ public class ConfigurationActivity extends Activity {
             icon.packageName = getPackageName();
             icon.resourceName = getResources().getResourceName(R.drawable.ic_launcher);
             setResult(RESULT_OK, new Intent()
-                    .putExtra(Intent.EXTRA_SHORTCUT_NAME, getTitle())
+                    .putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                            getString(R.string.shortcut_label_configure))
                     .putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon)
                     .putExtra(Intent.EXTRA_SHORTCUT_INTENT,
                             new Intent(this, ConfigurationActivity.class)));

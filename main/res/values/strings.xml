@@ -27,6 +27,7 @@
     <string name="more_options">More options</string>
 
     <!-- Configuration -->
+    <string name="shortcut_label_configure">DashClock Settings</string>
     <string name="title_configure">Configure DashClock Widget</string>
     <string name="section_extensions">Extensions</string>
     <string name="section_appearance">Appearance</string>
@@ -42,8 +43,9 @@
     <string name="add_extension">Add an extension</string>
     <string name="cancel">Cancel</string>
 
-    <string name="send_logs">Send debug log</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <!-- These strings are marked untranslatable because they never appear in release builds -->
+    <string name="send_logs" translatable="false">Send debug log</string>
+    <string name="send_logs_chooser_title" translatable="false">Send logs using</string>
 
     <string name="prev_date_style">Previous date style</string>
     <string name="prev_time_style">Previous time style</string>
@@ -125,6 +127,7 @@
         <item quantity="other">%1$s min</item>
     </plurals>
     <string name="today">Today</string>
+    <string name="now">Now</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Missed calls</string>
