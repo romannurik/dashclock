@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2013 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,8 +14,5 @@
   limitations under the License.
   -->
 
-<resources>
-    <color name="extension_list_item_color">#09c</color>
-    <color name="configure_light_background">#f2f2f2</color>
-    <color name="daydream_fore_color">#09c</color>
-</resources>
+<dream xmlns:android="http://schemas.android.com/apk/res/android" />
+    <!--android:settingsActivity="com.example.android.sampledream/.SettingsActivity" />-->

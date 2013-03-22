@@ -26,6 +26,7 @@
     android:paddingBottom="12dp"
     android:orientation="horizontal"
     android:baselineAligned="false"
+    android:background="?android:selectableItemBackground"
     android:minHeight="?android:listPreferredItemHeightSmall">
 
     <ImageView style="@style/ExtensionData.Icon"

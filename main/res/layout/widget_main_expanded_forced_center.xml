@@ -56,13 +56,15 @@
             android:layout_height="1dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/widget_divider" />
+            android:scaleType="fitXY"
+            android:src="@drawable/widget_divider" />
 
         <ListView android:id="@+id/expanded_extensions"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:listSelector="@android:color/transparent"
             android:divider="@null" />
 
     </LinearLayout>

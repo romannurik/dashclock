@@ -16,30 +16,28 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
-    <!--suppress AndroidLintContentDescription -->
-    <ImageView android:id="@+id/shade"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <LinearLayout android:id="@+id/clock_row"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout android:id="@+id/daydream_container"
+        android:orientation="vertical"
         android:layout_gravity="center"
-        android:gravity="center">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <include layout="@layout/widget_include_clock" />
 
-        <LinearLayout
-            android:id="@+id/collapsed_extensions_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+        <ImageView android:id="@+id/widget_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/widget_divider" />
 
+        <LinearLayout android:id="@+id/extensions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </FrameLayout>

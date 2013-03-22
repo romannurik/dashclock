@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2013 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,8 +14,11 @@
   limitations under the License.
   -->
 
-<resources>
-    <color name="extension_list_item_color">#09c</color>
-    <color name="configure_light_background">#f2f2f2</color>
-    <color name="daydream_fore_color">#09c</color>
-</resources>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/collapsed_extension_ellipsis"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="11dp"
+    android:src="@drawable/collapsed_extension_ellipsis"
+    android:scaleType="fitStart"
+    android:contentDescription="@string/more_extensions" />

@@ -16,7 +16,7 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import com.google.android.apps.dashclock.WidgetRenderer;
+import com.google.android.apps.dashclock.render.DashClockRenderer;
 
 import net.nurik.roman.dashclock.R;
 
@@ -48,7 +48,7 @@ public class ConfigureAdvancedFragment extends PreferenceFragment
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
         BaseSettingsActivity.bindPreferenceSummaryToValue(
-                findPreference(WidgetRenderer.PREF_CLOCK_SHORTCUT));
+                findPreference(DashClockRenderer.PREF_CLOCK_SHORTCUT));
         BaseSettingsActivity.bindPreferenceSummaryToValue(
                 findPreference(AppearanceConfig.PREF_HOMESCREEN_BACKGROUND_OPACITY));
     }

@@ -16,24 +16,37 @@
 
 package com.google.android.apps.dashclock;
 
+import com.google.android.apps.dashclock.api.ExtensionData;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.google.android.apps.dashclock.LogUtils.LOGE;
+
 /**
  * Because every project needs a Utils class.
  */
 public class Utils {
+    private static final String TAG = LogUtils.makeLogTag(Utils.class);
+
     private static final String USER_AGENT = "DashClock/0.0";
 
     public static final int EXTENSION_ICON_SIZE = 128;
@@ -99,5 +112,72 @@ public class Utils {
             }
         }
         return getDefaultClockIntent(context);
+    }
+
+    public static Bitmap loadExtensionIcon(Context context, ComponentName extension, int icon) {
+        if (icon <= 0) {
+            return null;
+        }
+
+        String packageName = extension.getPackageName();
+        try {
+            Context packageContext = context.createPackageContext(packageName, 0);
+            Resources packageRes = packageContext.getResources();
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(packageRes, icon, options);
+
+            // Cut down the icon to a smaller size.
+            int sampleSize = 1;
+            while (true) {
+                if (options.outHeight / (sampleSize * 2) > Utils.EXTENSION_ICON_SIZE / 2) {
+                    sampleSize *= 2;
+                } else {
+                    break;
+                }
+            }
+
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = sampleSize;
+
+            return Utils.flattenExtensionIcon(
+                    context,
+                    BitmapFactory.decodeResource(packageRes, icon, options),
+                    0xffffffff);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            LOGE(TAG, "Couldn't access extension's package while loading icon data.");
+        }
+
+        return null;
+    }
+
+    public static String expandedTitleOrStatus(ExtensionData data) {
+        String expandedTitle = data.expandedTitle();
+        if (TextUtils.isEmpty(expandedTitle)) {
+            expandedTitle = data.status();
+            if (!TextUtils.isEmpty(expandedTitle)) {
+                expandedTitle = expandedTitle.replace("\n", " ");
+            }
+        }
+        return expandedTitle;
+    }
+
+    public static void traverseAndRecolor(View root, int color) {
+        if (root instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) root;
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                traverseAndRecolor(parent.getChildAt(i), color);
+            }
+
+        } else if (root instanceof ImageView) {
+            ImageView imageView = (ImageView) root;
+            imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+
+        } else if (root instanceof TextView) {
+            TextView textView = (TextView) root;
+            textView.setTextColor(color);
+        }
     }
 }
