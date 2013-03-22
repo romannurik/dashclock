@@ -132,10 +132,10 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
                 return null;
             }
 
-            DashClockRenderer.Options options = new DashClockRenderer.Options();
             WidgetRenderer renderer = new WidgetRenderer(mContext);
+            renderer.setOptions(new DashClockRenderer.Options());
             ExtensionManager.ExtensionWithData ewd = getItemAtProtected(position);
-            return (RemoteViews) renderer.renderExpandedExtension(null, null, ewd, options);
+            return (RemoteViews) renderer.renderExpandedExtension(null, null, ewd);
         }
 
         public RemoteViews getLoadingView() {

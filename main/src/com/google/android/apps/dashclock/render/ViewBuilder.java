@@ -25,7 +25,7 @@ import android.graphics.Bitmap;
  */
 public interface ViewBuilder {
     void loadRootLayout(Object container, int layoutResId);
-    void reuseRootLayout(Object root);
+    void useRoot(Object root);
     Object inflateChildLayout(int layoutResId, int containerId);
     void setViewClickIntent(int viewId, Intent clickIntent);
     void setViewClickFillInIntent(int viewId, Intent fillIntent);

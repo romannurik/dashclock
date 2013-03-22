@@ -19,8 +19,4 @@
 
     <dimen name="drag_grip_ridge_size">4dp</dimen>
     <dimen name="drag_grip_ridge_gap">2dp</dimen>
-
-    <!-- We use dp units instead of sp since the collapsed lock screen is a fixed size area. -->
-    <dimen name="extension_collapsed_text_size_single_line">16dp</dimen>
-    <dimen name="extension_collapsed_text_size_two_line">10dp</dimen>
 </resources>

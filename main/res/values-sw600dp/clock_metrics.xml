@@ -24,4 +24,6 @@
     <dimen name="clock_date_top_margin">-18dp</dimen>
     <dimen name="clock_margin_offset">18dp</dimen>
     <dimen name="analog_clock_size">112dp</dimen>
+
+    <dimen name="daydream_extensions_width">400dp</dimen>
 </resources>

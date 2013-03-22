@@ -26,4 +26,15 @@
     <dimen name="clock_date_top_margin">-10dp</dimen>
     <dimen name="clock_margin_offset">10dp</dimen>
     <dimen name="analog_clock_size">74dp</dimen>
+
+    <dimen name="extension_collapsed_text_size_single_line">16dp</dimen>
+    <dimen name="extension_collapsed_text_size_two_line">10dp</dimen>
+
+    <dimen name="extension_expanded_title_text_size">18sp</dimen>
+    <dimen name="extension_expanded_body_text_size">12sp</dimen>
+
+    <dimen name="extension_icon_expanded_size">24dp</dimen>
+    <dimen name="extension_icon_collapsed_size">22dp</dimen>
+
+    <dimen name="daydream_extensions_width">300dp</dimen>
 </resources>

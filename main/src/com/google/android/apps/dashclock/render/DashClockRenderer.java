@@ -32,13 +32,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.drawable.GradientDrawable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +55,8 @@ public abstract class DashClockRenderer {
     public static final String PREF_HIDE_SETTINGS = "pref_hide_settings";
 
     protected Context mContext;
-    protected Options mCurrentOptions;
+
+    protected Options mOptions;
     protected ExtensionManager mExtensionManager;
 
     protected DashClockRenderer(Context context) {
@@ -65,9 +64,11 @@ public abstract class DashClockRenderer {
         mExtensionManager = ExtensionManager.getInstance(context);
     }
 
-    public Object renderDashClock(Object container, Options options) {
-        mCurrentOptions = options;
+    public void setOptions(Options options) {
+        mOptions = options;
+    }
 
+    public Object renderWidget(Object container) {
         ViewBuilder vb = onCreateViewBuilder();
         Resources res = mContext.getResources();
 
@@ -94,10 +95,11 @@ public abstract class DashClockRenderer {
         int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(mContext);
         boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(mContext);
 
-        boolean isExpanded = (options.minHeightDp
+        boolean isExpanded = (mOptions.minHeightDp
                 >= res.getDimensionPixelSize(R.dimen.min_expanded_height) /
                 res.getDisplayMetrics().density);
 
+        // Step 1. Load the root layout
         vb.loadRootLayout(container, isExpanded
                 ? (aggressiveCentering
                         ? R.layout.widget_main_expanded_forced_center
@@ -106,15 +108,16 @@ public abstract class DashClockRenderer {
                         ? R.layout.widget_main_collapsed_forced_center
                         : R.layout.widget_main_collapsed));
 
+        // Step 2. Configure the shade, if it should exist
         vb.setViewBackgroundColor(R.id.shade, shadeColor);
         vb.setViewVisibility(R.id.shade,
-                (options.target != Options.TARGET_HOME_SCREEN || shadeColor == 0)
+                (mOptions.target != Options.TARGET_HOME_SCREEN || shadeColor == 0)
                         ? View.GONE : View.VISIBLE);
 
-        // Configure clock face
+        // Step 3. Draw the basic clock face
         renderClockFace(vb);
 
-        // Align the clock
+        // Step 4. Align the clock face and settings button (if shown)
         boolean isPortrait = res.getConfiguration().orientation
                 == Configuration.ORIENTATION_PORTRAIT;
 
@@ -126,14 +129,14 @@ public abstract class DashClockRenderer {
             vb.setLinearLayoutGravity(R.id.clock_target, Gravity.CENTER_HORIZONTAL);
 
         } else {
-            // Basic centering rules
+            // Normal centering rules
             boolean forceCentered = isTablet && isPortrait
-                    && options.target != Options.TARGET_HOME_SCREEN;
+                    && mOptions.target != Options.TARGET_HOME_SCREEN;
 
             int clockInnerGravity = Gravity.CENTER_HORIZONTAL;
             if (activeExtensions > 0 && !forceCentered) {
                 // Extensions are visible, don't center clock
-                if (options.target == Options.TARGET_LOCK_SCREEN) {
+                if (mOptions.target == Options.TARGET_LOCK_SCREEN) {
                     // lock screen doesn't look at expanded state; the UI should
                     // not jitter across expanded/collapsed states for lock screen
                     clockInnerGravity = isTablet ? Gravity.LEFT : Gravity.RIGHT;
@@ -157,25 +160,31 @@ public abstract class DashClockRenderer {
                     0, 0, 0);
         }
 
-        vb.setViewVisibility(R.id.settings_button, hideSettings ? View.GONE : View.VISIBLE);
+        // Settings button
+        if (isExpanded) {
+            vb.setViewVisibility(R.id.settings_button, hideSettings ? View.GONE : View.VISIBLE);
+            vb.setViewClickIntent(R.id.settings_button,
+                    new Intent(mContext, ConfigurationActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS));
+        }
+
+        // Step 6. Render the extensions (collapsed or expanded)
+
         vb.setViewVisibility(R.id.widget_divider,
                 (visibleExtensions > 0) ? View.VISIBLE : View.GONE);
-        vb.setViewVisibility(R.id.collapsed_extensions_container,
-                (activeExtensions > 0 && !isExpanded) ? View.VISIBLE : View.GONE);
 
         if (isExpanded) {
+            // Expanded style
             final Intent onClickTemplateIntent = WidgetClickProxyActivity.getTemplate(mContext);
             builderSetExpandedExtensionsAdapter(vb, R.id.expanded_extensions,
                     onClickTemplateIntent);
 
-            // Settings button
-            Intent settingsIntent = new Intent(mContext, ConfigurationActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            vb.setViewClickIntent(R.id.settings_button, settingsIntent);
-
         } else {
-            // Update status slots
+            // Collapsed style
+            vb.setViewVisibility(R.id.collapsed_extensions_container,
+                    activeExtensions > 0 ? View.VISIBLE : View.GONE);
+
             boolean ellipsisVisible = false;
             vb.removeAllViews(R.id.collapsed_extensions_container);
             int slotIndex = 0;
@@ -190,7 +199,7 @@ public abstract class DashClockRenderer {
                 }
 
                 vb.addView(R.id.collapsed_extensions_container,
-                        renderCollapsedExtension(null, ewd, options));
+                        renderCollapsedExtension(null, ewd));
 
                 ++slotIndex;
             }
@@ -206,7 +215,7 @@ public abstract class DashClockRenderer {
         return vb.getRoot();
     }
 
-    public void renderClockFace(ViewBuilder vb) {
+    public  void renderClockFace(ViewBuilder vb) {
         vb.removeAllViews(R.id.time_container);
         vb.addView(R.id.time_container,
                 vb.inflateChildLayout(
@@ -227,10 +236,7 @@ public abstract class DashClockRenderer {
         }
     }
 
-    public Object renderCollapsedExtension(Object container, ExtensionWithData ewd,
-            Options options) {
-        mCurrentOptions = options;
-
+    public Object renderCollapsedExtension(Object container, ExtensionWithData ewd) {
         ViewBuilder vb = onCreateViewBuilder();
         vb.loadRootLayout(container, R.layout.widget_include_collapsed_extension);
 
@@ -290,12 +296,11 @@ public abstract class DashClockRenderer {
     }
 
     public Object renderExpandedExtension(Object container, Object convertRoot,
-            ExtensionWithData ewd, Options options) {
-        mCurrentOptions = options;
+            ExtensionWithData ewd) {
         ViewBuilder vb = onCreateViewBuilder();
 
         if (convertRoot != null) {
-            vb.reuseRootLayout(convertRoot);
+            vb.useRoot(convertRoot);
         } else {
             vb.loadRootLayout(container, R.layout.widget_list_item_expanded_extension);
         }

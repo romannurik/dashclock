@@ -18,14 +18,12 @@ package com.google.android.apps.dashclock.render;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.view.View;
 import android.widget.AbsListView;
 
 /**
  * Class in charge of rendering DashClock to a normal view hierarchy (i.e. not RemoteViews), along
- * with {@link SimpleExpandedExtensionsAdapter}.
+ * with {@link SimpleExpandedExtensionsAdapter} if needed.
  */
 public class SimpleRenderer extends DashClockRenderer implements SimpleViewBuilder.Callbacks {
     public SimpleRenderer(Context context) {
@@ -37,32 +35,36 @@ public class SimpleRenderer extends DashClockRenderer implements SimpleViewBuild
         return new SimpleViewBuilder(mContext, this);
     }
 
+    public SimpleViewBuilder createSimpleViewBuilder() {
+        return (SimpleViewBuilder) onCreateViewBuilder();
+    }
+
     @Override
     protected void builderSetExpandedExtensionsAdapter(ViewBuilder builder,
             int viewId, Intent clickTemplateIntent) {
         View root = (View) builder.getRoot();
 
         // TODO: create a copy of the options object with the clickIntentTemplate set.
-        mCurrentOptions.clickIntentTemplate = clickTemplateIntent;
+        mOptions.clickIntentTemplate = clickTemplateIntent;
 
         AbsListView listView = (AbsListView) root.findViewById(viewId);
-        listView.setAdapter(new SimpleExpandedExtensionsAdapter(mContext, this, mCurrentOptions));
+        listView.setAdapter(new SimpleExpandedExtensionsAdapter(mContext, this, mOptions));
     }
 
     @Override
     public Intent onGetClickIntentTemplate() {
-        return mCurrentOptions.clickIntentTemplate;
+        return mOptions.clickIntentTemplate;
     }
 
     @Override
     public void onModifyClickIntent(Intent clickIntent) {
-        if (mCurrentOptions.newTaskOnClick) {
+        if (mOptions.newTaskOnClick) {
             clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
     }
 
     @Override
     public void onClickIntentCalled(int viewId) {
-        mCurrentOptions.onClickListener.onClick();
+        mOptions.onClickListener.onClick();
     }
 }

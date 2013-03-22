@@ -20,30 +20,32 @@
 
     <!--suppress AndroidLintUselessParent -->
     <LinearLayout android:id="@+id/daydream_container"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_gravity="center"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
         android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:paddingBottom="16dp"
-        android:gravity="center_horizontal"
-        android:layout_width="@dimen/daydream_extensions_width"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <include layout="@layout/widget_include_clock" />
 
         <ImageView android:id="@+id/widget_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:scaleType="fitXY"
             android:src="@drawable/widget_divider" />
 
         <ScrollView android:id="@+id/extensions_scroller"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="@dimen/daydream_extensions_width"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_height="wrap_content"
             android:scrollbars="none">
 
             <LinearLayout android:id="@+id/extensions_container"

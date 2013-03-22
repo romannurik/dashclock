@@ -62,8 +62,9 @@ public class WidgetRenderer extends DashClockRenderer {
                         ? Options.TARGET_LOCK_SCREEN : Options.TARGET_HOME_SCREEN;
             }
 
+            renderer.setOptions(options);
             appWidgetManager.updateAppWidget(appWidgetId,
-                    (RemoteViews) renderer.renderDashClock(null, options));
+                    (RemoteViews) renderer.renderWidget(null));
 
             // During an update to an existing expanded widget, setRemoteAdapter does nothing,
             // so we need to explicitly call notifyAppWidgetViewDataChanged to update data.
@@ -76,9 +77,9 @@ public class WidgetRenderer extends DashClockRenderer {
     protected void builderSetExpandedExtensionsAdapter(ViewBuilder vb, int viewId,
             Intent clickTemplateIntent) {
         Intent remoteAdapterIntent = new Intent(mContext, WidgetRemoteViewsFactoryService.class);
-        if (mCurrentOptions.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+        if (mOptions.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             remoteAdapterIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    mCurrentOptions.appWidgetId);
+                    mOptions.appWidgetId);
         }
 
         // TODO: is this setData call really necessary?

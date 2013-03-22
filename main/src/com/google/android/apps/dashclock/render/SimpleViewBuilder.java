@@ -41,7 +41,7 @@ public class SimpleViewBuilder implements ViewBuilder {
     }
 
     @Override
-    public void reuseRootLayout(Object root) {
+    public void useRoot(Object root) {
         mRootView = (View) root;
     }
 

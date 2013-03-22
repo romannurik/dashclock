@@ -44,7 +44,7 @@ public class SimpleExpandedExtensionsAdapter extends BaseAdapter {
             DashClockRenderer.Options options) {
         mContext = context;
         mRenderer = renderer;
-        mOptions = options;
+        mRenderer.setOptions(options);
 
         mVisibleExtensions = ExtensionManager.getInstance(context).getVisibleExtensionsWithData();
     }
@@ -67,7 +67,7 @@ public class SimpleExpandedExtensionsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup container) {
         convertView = (View) mRenderer.renderExpandedExtension(container, convertView,
-                mVisibleExtensions.get(position), mOptions);
+                mVisibleExtensions.get(position));
         Utils.traverseAndRecolor(convertView,
                 mContext.getResources().getColor(R.color.daydream_fore_color));
         return convertView;
