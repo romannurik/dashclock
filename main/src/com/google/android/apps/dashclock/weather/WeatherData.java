@@ -42,6 +42,7 @@ public class WeatherData {
     public static int getConditionIconId(int conditionCode) {
         // http://developer.yahoo.com/weather/
         switch (conditionCode) {
+            case 19: // dust or sand
             case 20: // foggy
             case 21: // haze
             case 22: // smoky
@@ -80,7 +81,6 @@ public class WeatherData {
             case 12: // showers
             case 17: // hail
             case 18: // sleet
-            case 19: // dust
             case 35: // mixed rain and hail
             case 37: // isolated thunderstorms
             case 38: // scattered thunderstorms
