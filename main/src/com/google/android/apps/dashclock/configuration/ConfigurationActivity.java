@@ -234,7 +234,7 @@ public class ConfigurationActivity extends Activity {
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
                                     + "&c=apps"))
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET));
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     return true;
 
                 case R.id.action_send_logs:
