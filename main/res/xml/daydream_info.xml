@@ -14,5 +14,5 @@
   limitations under the License.
   -->
 
-<dream xmlns:android="http://schemas.android.com/apk/res/android" />
-    <!--android:settingsActivity="com.example.android.sampledream/.SettingsActivity" />-->
+<dream xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="net.nurik.roman.dashclock/com.google.android.apps.dashclock.configuration.ConfigurationActivity" />

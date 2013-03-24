@@ -14,7 +14,9 @@
   limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    class="com.google.android.apps.dashclock.DaydreamService$TouchToAwakeFrameLayout"
+    android:id="@+id/touch_awake_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,15 +34,8 @@
 
         <include layout="@layout/widget_include_clock" />
 
-        <ImageView android:id="@+id/widget_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/widget_divider" />
-
-        <ScrollView android:id="@+id/extensions_scroller"
+        <view class="com.google.android.apps.dashclock.DaydreamService$ExposedScrollView"
+            android:id="@+id/extensions_scroller"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -51,8 +46,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-        </ScrollView>
+        </view>
 
     </LinearLayout>
 
-</FrameLayout>
+</view>

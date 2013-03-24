@@ -22,13 +22,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,20 +168,56 @@ public class Utils {
         return expandedTitle;
     }
 
-    public static void traverseAndRecolor(View root, int color) {
+    public static void traverseAndRecolor(View root, int color, boolean withStates) {
         if (root instanceof ViewGroup) {
             ViewGroup parent = (ViewGroup) root;
             for (int i = 0; i < parent.getChildCount(); i++) {
-                traverseAndRecolor(parent.getChildAt(i), color);
+                traverseAndRecolor(parent.getChildAt(i), color, withStates);
             }
 
         } else if (root instanceof ImageView) {
             ImageView imageView = (ImageView) root;
-            imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            Drawable sourceDrawable = imageView.getDrawable();
+            if (withStates && sourceDrawable != null && sourceDrawable instanceof BitmapDrawable) {
+                BitmapDrawable sourceBitmapDrawable = (BitmapDrawable) sourceDrawable;
+
+                Bitmap newBitmap = Bitmap.createBitmap(sourceBitmapDrawable.getBitmap());
+                Canvas newCanvas = new Canvas(newBitmap);
+                Paint paint = new Paint();
+                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+                paint.setColor(color);
+                newCanvas.drawRect(0, 0, newBitmap.getWidth(), newBitmap.getHeight(), paint);
+                BitmapDrawable recoloredDrawable = new BitmapDrawable(
+                        root.getContext().getResources(), newBitmap);
+
+                StateListDrawable stateDrawable = new StateListDrawable();
+                stateDrawable.addState(new int[]{android.R.attr.state_pressed},
+                        sourceDrawable);
+                stateDrawable.addState(new int[]{android.R.attr.state_focused},
+                        sourceDrawable);
+                stateDrawable.addState(new int[]{}, recoloredDrawable);
+                imageView.setImageDrawable(stateDrawable);
+            } else {
+                imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            }
 
         } else if (root instanceof TextView) {
             TextView textView = (TextView) root;
-            textView.setTextColor(color);
+            if (withStates) {
+                int sourceColor = textView.getCurrentTextColor();
+                ColorStateList colorStateList = new ColorStateList(new int[][]{
+                        new int[]{android.R.attr.state_pressed},
+                        new int[]{android.R.attr.state_focused},
+                        new int[]{}
+                }, new int[]{
+                        sourceColor,
+                        sourceColor,
+                        color
+                });
+                textView.setTextColor(colorStateList);
+            } else {
+                textView.setTextColor(color);
+            }
         }
     }
 }

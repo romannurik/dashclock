@@ -22,21 +22,28 @@ import com.google.android.apps.dashclock.render.SimpleViewBuilder;
 
 import net.nurik.roman.dashclock.R;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.service.dreams.DreamService;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Property;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 
 import java.util.List;
 
-import static android.view.View.MeasureSpec;
 import static com.google.android.apps.dashclock.ExtensionManager.ExtensionWithData;
 
 /**
@@ -46,12 +53,18 @@ public class DaydreamService extends DreamService implements
         ExtensionManager.OnChangeListener,
         DashClockRenderer.OnClickListener {
     private static final int CYCLE_INTERVAL_MILLIS = 20000;
-    private static final long FADE_MILLIS = 5000;
+    private static final int FADE_MILLIS = 5000;
+    private static final int TRAVEL_ROTATE_DEGREES = 3;
 
     private Handler mHandler = new Handler();
     private ExtensionManager mExtensionManager;
     private ViewGroup mDaydreamContainer;
+    private AnimatorSet mSingleCycleAnimator;
     private boolean mAttached;
+    private int mTravelDistance;
+    private ViewGroup mExtensionsContainer;
+    private boolean mNeedsRelayout;
+    private boolean mMovingLeft;
 
     @Override
     public void onDreamingStarted() {
@@ -101,56 +114,50 @@ public class DaydreamService extends DreamService implements
     private Runnable mHandleExtensionsChanged = new Runnable() {
         @Override
         public void run() {
-            renderDaydream();
+            renderDaydream(false);
         }
     };
 
     private void layoutDream() {
         setContentView(R.layout.daydream);
-        renderDaydream();
+        mNeedsRelayout = true;
+        renderDaydream(true);
 
         mHandler.removeCallbacks(mCycleRunnable);
-        mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS);
+        mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS - FADE_MILLIS);
     }
 
-    public class TouchToAwakeFrameLayout extends FrameLayout {
-        public TouchToAwakeFrameLayout(Context context) {
-            super(context);
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(MotionEvent ev) {
-            switch (ev.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    mHandler.removeCallbacks(mCycleRunnable);
-                    mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS);
-                    mDaydreamContainer.animate().alpha(1f).setDuration(250);
-                    break;
-
-                // ACTION_UP doesn't seem to reliably get called. Otherwise
-                // should postDelayed on ACTION_UP instead of ACTION_DOWN.
-            }
-            return false;
-        }
-    }
-
-    private void renderDaydream() {
+    private void renderDaydream(final boolean restartAnimation) {
         if (!mAttached) {
             return;
         }
 
-        mDaydreamContainer = (ViewGroup) findViewById(R.id.daydream_container);
+        final Resources res = getResources();
+        mTravelDistance = res.getDimensionPixelSize(R.dimen.daydream_travel_distance);
 
-        Resources res = getResources();
+        mDaydreamContainer = (ViewGroup) findViewById(R.id.daydream_container);
+        TouchToAwakeFrameLayout awakeContainer = (TouchToAwakeFrameLayout)
+                findViewById(R.id.touch_awake_container);
+        awakeContainer.setOnAwakeListener(new TouchToAwakeFrameLayout.OnAwakeListener() {
+            @Override
+            public void onAwake() {
+                mHandler.removeCallbacks(mCycleRunnable);
+                mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS);
+                mDaydreamContainer.animate()
+                        .alpha(1f)
+                        .rotation(0)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .translationX(0f)
+                        .translationY(0f)
+                        .setDuration(res.getInteger(android.R.integer.config_shortAnimTime));
+                mSingleCycleAnimator.cancel();
+            }
+        });
+
         DisplayMetrics displayMetrics = res.getDisplayMetrics();
 
         int screenHeightDp = (int) (displayMetrics.heightPixels * 1f / displayMetrics.density);
-
-//        int maxWidth = res.getDimensionPixelSize(R.dimen.daydream_max_width);
-//
-//        ViewGroup.LayoutParams lp = mDaydreamContainer.getLayoutParams();
-//        lp.width = Math.min(maxWidth, displayMetrics.widthPixels);
-//        mDaydreamContainer.setLayoutParams(lp);
 
         // Set up rendering
         SimpleRenderer renderer = new SimpleRenderer(this);
@@ -169,39 +176,93 @@ public class DaydreamService extends DreamService implements
         vb.setLinearLayoutGravity(R.id.clock_target, Gravity.CENTER_HORIZONTAL);
 
         // Render extensions
-        ViewGroup extensionsContainer = (ViewGroup) findViewById(R.id.extensions_container);
-        extensionsContainer.removeAllViews();
+        mExtensionsContainer = (ViewGroup) findViewById(R.id.extensions_container);
+        mExtensionsContainer.removeAllViews();
         List<ExtensionWithData> visibleExtensions
                 = ExtensionManager.getInstance(this).getVisibleExtensionsWithData();
         for (ExtensionWithData ewd : visibleExtensions) {
-            extensionsContainer.addView(
-                    (View) renderer.renderExpandedExtension(extensionsContainer, null, ewd));
+            mExtensionsContainer.addView(
+                    (View) renderer.renderExpandedExtension(mExtensionsContainer, null, ewd));
         }
 
-        // Adjust the ScrollView
-        View scrollView = findViewById(R.id.extensions_scroller);
-        mDaydreamContainer.measure(
-                MeasureSpec.makeMeasureSpec(displayMetrics.widthPixels, MeasureSpec.AT_MOST),
-                MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, MeasureSpec.AT_MOST));
-        int contentHeight = extensionsContainer.getMeasuredHeight();
-        int maxAvailableHeight = (res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                ? displayMetrics.heightPixels
-                : scrollView.getMeasuredHeight();
+        if (mDaydreamContainer.getHeight() == 0 || mNeedsRelayout) {
+            ViewTreeObserver vto = mDaydreamContainer.getViewTreeObserver();
+            if (vto.isAlive()) {
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        ViewTreeObserver vto = mDaydreamContainer.getViewTreeObserver();
+                        if (vto.isAlive()) {
+                            vto.removeOnGlobalLayoutListener(this);
+                        }
 
-        if (contentHeight < maxAvailableHeight) {
+                        postLayoutRender(restartAnimation);
+                    }
+                });
+            }
+            mDaydreamContainer.requestLayout();
+            mNeedsRelayout = false;
+        } else {
+            postLayoutRender(restartAnimation);
+        }
+    }
+
+    /**
+     * Post-layout render code.
+     */
+    public void postLayoutRender(boolean restartAnimation) {
+        Resources res = getResources();
+
+        // Adjust the ScrollView
+        ExposedScrollView scrollView = (ExposedScrollView) findViewById(R.id.extensions_scroller);
+        int maxScroll = scrollView.computeVerticalScrollRange() - scrollView.getHeight();
+        if (maxScroll < 0) {
             ViewGroup.LayoutParams lp = scrollView.getLayoutParams();
-            lp.height = contentHeight + 2;
+            lp.height = mExtensionsContainer.getHeight();
             scrollView.setLayoutParams(lp);
             mDaydreamContainer.requestLayout();
         }
 
         // Recolor widget
-        Utils.traverseAndRecolor(mDaydreamContainer, res.getColor(R.color.daydream_fore_color));
+        Utils.traverseAndRecolor(mDaydreamContainer,
+                res.getColor(R.color.daydream_fore_color), true);
 
-//        ViewGroup container = new TouchToAwakeFrameLayout(this);
-//        container.setLayoutParams(new ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//        container.addView(dayDreamView);
+        if (restartAnimation) {
+            int x = (mMovingLeft ? 1 : -1) * mTravelDistance;
+            int deg = (mMovingLeft ? 1 : -1) * TRAVEL_ROTATE_DEGREES;
+            mMovingLeft = !mMovingLeft;
+            mDaydreamContainer.animate().cancel();
+            mDaydreamContainer.setScaleX(0.85f);
+            mDaydreamContainer.setScaleY(0.85f);
+            if (mSingleCycleAnimator != null) {
+                mSingleCycleAnimator.cancel();
+            }
+
+            Animator scrollDownAnimator = ObjectAnimator.ofInt(scrollView,
+                    ExposedScrollView.SCROLL_POS, 0, maxScroll);
+            scrollDownAnimator.setDuration(CYCLE_INTERVAL_MILLIS / 5);
+            scrollDownAnimator.setStartDelay(CYCLE_INTERVAL_MILLIS / 5);
+
+            Animator scrollUpAnimator = ObjectAnimator.ofInt(scrollView,
+                    ExposedScrollView.SCROLL_POS, 0);
+            scrollUpAnimator.setDuration(CYCLE_INTERVAL_MILLIS / 5);
+            scrollUpAnimator.setStartDelay(CYCLE_INTERVAL_MILLIS / 5);
+
+            AnimatorSet scrollAnimator = new AnimatorSet();
+            scrollAnimator.playSequentially(scrollDownAnimator, scrollUpAnimator);
+
+            Animator moveAnimator = ObjectAnimator.ofFloat(mDaydreamContainer,
+                    View.TRANSLATION_X, x, -x).setDuration(CYCLE_INTERVAL_MILLIS);
+            moveAnimator.setInterpolator(new LinearInterpolator());
+
+            Animator rotateAnimator = ObjectAnimator.ofFloat(mDaydreamContainer,
+                    View.ROTATION, deg, -deg).setDuration(CYCLE_INTERVAL_MILLIS);
+            moveAnimator.setInterpolator(new LinearInterpolator());
+
+            mSingleCycleAnimator = new AnimatorSet();
+            mSingleCycleAnimator.playTogether(scrollAnimator, moveAnimator, rotateAnimator);
+            mSingleCycleAnimator.start();
+        }
     }
 
     public Runnable mCycleRunnable = new Runnable() {
@@ -211,17 +272,11 @@ public class DaydreamService extends DreamService implements
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
-                            renderDaydream();
-
-                            mDaydreamContainer.animate().alpha(1f).setDuration(FADE_MILLIS)
-                                    .withEndAction(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mHandler.removeCallbacks(mCycleRunnable);
-                                            mHandler.postDelayed(mCycleRunnable,
-                                                    CYCLE_INTERVAL_MILLIS);
-                                        }
-                                    });
+                            renderDaydream(true);
+                            mHandler.removeCallbacks(mCycleRunnable);
+                            mHandler.postDelayed(mCycleRunnable,
+                                    CYCLE_INTERVAL_MILLIS - FADE_MILLIS);
+                            mDaydreamContainer.animate().alpha(1f).setDuration(FADE_MILLIS);
                         }
                     });
         }
@@ -231,5 +286,82 @@ public class DaydreamService extends DreamService implements
     public void onClick() {
         // Any time anything in DashClock is clicked
         finish();
+    }
+
+    /**
+     * FrameLayout that can notify listeners of ACTION_DOWN events.
+     */
+    public static class TouchToAwakeFrameLayout extends FrameLayout {
+        private OnAwakeListener mOnAwakeListener;
+
+        public TouchToAwakeFrameLayout(Context context) {
+            super(context);
+        }
+
+        public TouchToAwakeFrameLayout(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        public TouchToAwakeFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+            super(context, attrs, defStyle);
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent ev) {
+            switch (ev.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (mOnAwakeListener != null) {
+                        mOnAwakeListener.onAwake();
+                    }
+                    break;
+
+                // ACTION_UP doesn't seem to reliably get called. Otherwise
+                // should postDelayed on ACTION_UP instead of ACTION_DOWN.
+            }
+            return false;
+        }
+
+        public void setOnAwakeListener(OnAwakeListener onAwakeListener) {
+            mOnAwakeListener = onAwakeListener;
+        }
+
+        public static interface OnAwakeListener {
+            void onAwake();
+        }
+    }
+
+    /**
+     * ScrollView that exposes its scroll range.
+     */
+    public static class ExposedScrollView extends ScrollView {
+        public ExposedScrollView(Context context) {
+            super(context);
+        }
+
+        public ExposedScrollView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        public ExposedScrollView(Context context, AttributeSet attrs, int defStyle) {
+            super(context, attrs, defStyle);
+        }
+
+        @Override
+        public int computeVerticalScrollRange() {
+            return super.computeVerticalScrollRange();
+        }
+
+        public static final Property<ScrollView, Integer> SCROLL_POS
+                = new Property<ScrollView, Integer>(Integer.class, "scrollPos") {
+            @Override
+            public void set(ScrollView object, Integer value) {
+                object.scrollTo(0, value);
+            }
+
+            @Override
+            public Integer get(ScrollView object) {
+                return object.getScrollY();
+            }
+        };
     }
 }

@@ -22,8 +22,7 @@ import android.view.View;
 import android.widget.AbsListView;
 
 /**
- * Class in charge of rendering DashClock to a normal view hierarchy (i.e. not RemoteViews), along
- * with {@link SimpleExpandedExtensionsAdapter} if needed.
+ * Class in charge of rendering DashClock to a normal view hierarchy (i.e. not RemoteViews).
  */
 public class SimpleRenderer extends DashClockRenderer implements SimpleViewBuilder.Callbacks {
     public SimpleRenderer(Context context) {
@@ -47,8 +46,8 @@ public class SimpleRenderer extends DashClockRenderer implements SimpleViewBuild
         // TODO: create a copy of the options object with the clickIntentTemplate set.
         mOptions.clickIntentTemplate = clickTemplateIntent;
 
-        AbsListView listView = (AbsListView) root.findViewById(viewId);
-        listView.setAdapter(new SimpleExpandedExtensionsAdapter(mContext, this, mOptions));
+//        AbsListView listView = (AbsListView) root.findViewById(viewId);
+//        listView.setAdapter(new SimpleExpandedExtensionsAdapter(mContext, this, mOptions));
     }
 
     @Override
