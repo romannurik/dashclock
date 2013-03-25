@@ -213,6 +213,10 @@
 
         <!-- Daydream -->
 
+        <activity
+            android:name="com.google.android.apps.dashclock.configuration.DaydreamProxyActivity"
+            android:theme="@style/ConfigurationActivityTheme" />
+
         <!--suppress AndroidLintExportedService -->
         <service
             android:name="com.google.android.apps.dashclock.DaydreamService"

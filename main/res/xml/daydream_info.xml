@@ -15,4 +15,4 @@
   -->
 
 <dream xmlns:android="http://schemas.android.com/apk/res/android"
-    android:settingsActivity="net.nurik.roman.dashclock/com.google.android.apps.dashclock.configuration.ConfigurationActivity" />
+    android:settingsActivity="net.nurik.roman.dashclock/com.google.android.apps.dashclock.configuration.DaydreamProxyActivity" />

@@ -26,9 +26,11 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.service.dreams.DreamService;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -52,17 +54,23 @@ import static com.google.android.apps.dashclock.ExtensionManager.ExtensionWithDa
 public class DaydreamService extends DreamService implements
         ExtensionManager.OnChangeListener,
         DashClockRenderer.OnClickListener {
+    private static final String PREF_DAYDREAM_COLOR = "pref_daydream_color";
+    private static final int DEFAULT_FOREGROUND_COLOR = 0xffffffff;
+
     private static final int CYCLE_INTERVAL_MILLIS = 20000;
     private static final int FADE_MILLIS = 5000;
     private static final int TRAVEL_ROTATE_DEGREES = 3;
 
     private Handler mHandler = new Handler();
     private ExtensionManager mExtensionManager;
-    private ViewGroup mDaydreamContainer;
-    private AnimatorSet mSingleCycleAnimator;
-    private boolean mAttached;
     private int mTravelDistance;
+    private int mForegroundColor;
+
+    private ViewGroup mDaydreamContainer;
     private ViewGroup mExtensionsContainer;
+    private AnimatorSet mSingleCycleAnimator;
+
+    private boolean mAttached;
     private boolean mNeedsRelayout;
     private boolean mMovingLeft;
 
@@ -87,6 +95,13 @@ public class DaydreamService extends DreamService implements
         setInteractive(true);
         setFullscreen(false);
         setScreenBright(false);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        mForegroundColor = sp.getInt(PREF_DAYDREAM_COLOR, DEFAULT_FOREGROUND_COLOR);
+
+        Resources res = getResources();
+        mTravelDistance = res.getDimensionPixelSize(R.dimen.daydream_travel_distance);
+
         layoutDream();
     }
 
@@ -94,7 +109,7 @@ public class DaydreamService extends DreamService implements
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mHandler.removeCallbacksAndMessages(null);
-        mAttached = true;
+        mAttached = false;
     }
 
     @Override
@@ -133,7 +148,6 @@ public class DaydreamService extends DreamService implements
         }
 
         final Resources res = getResources();
-        mTravelDistance = res.getDimensionPixelSize(R.dimen.daydream_travel_distance);
 
         mDaydreamContainer = (ViewGroup) findViewById(R.id.daydream_container);
         TouchToAwakeFrameLayout awakeContainer = (TouchToAwakeFrameLayout)
@@ -224,8 +238,7 @@ public class DaydreamService extends DreamService implements
         }
 
         // Recolor widget
-        Utils.traverseAndRecolor(mDaydreamContainer,
-                res.getColor(R.color.daydream_fore_color), true);
+        Utils.traverseAndRecolor(mDaydreamContainer, mForegroundColor, true);
 
         if (restartAnimation) {
             int x = (mMovingLeft ? 1 : -1) * mTravelDistance;

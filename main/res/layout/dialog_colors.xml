@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2013 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,15 @@
   limitations under the License.
   -->
 
-<resources>
-    <color name="extension_list_item_color">#09c</color>
-    <color name="configure_light_background">#f2f2f2</color>
-</resources>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridView android:id="@+id/color_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="5"
+        android:stretchMode="columnWidth" />
+
+</LinearLayout>
