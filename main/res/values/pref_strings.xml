@@ -35,7 +35,7 @@
     <string name="pref_aggressive_centering_title">Always center</string>
     <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
     <string name="pref_hide_settings_title">Hide settings button</string>
-    <string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a \"Configure DashClock Widget\" home screen shortcut is available as an alternative)</string>
+    <string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a \"DashClock Settings\" home screen shortcut is available as an alternative)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Shortcut</string>
