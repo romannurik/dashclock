@@ -51,9 +51,18 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
 public class ConfigurationActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(ConfigurationActivity.class);
 
+    public static final String EXTRA_START_SECTION =
+            "com.google.android.apps.dashclock.configuration.extra.START_SECTION";
+
+    public static final int START_SECTION_EXTENSIONS = 0;
+    public static final int START_SECTION_APPEARANCE = 1;
+    public static final int START_SECTION_DAYDREAM = 2;
+    public static final int START_SECTION_ADVANCED = 3;
+
     private static final int[] SECTION_LABELS = new int[]{
             R.string.section_extensions,
             R.string.section_appearance,
+            R.string.section_daydream,
             R.string.section_advanced,
     };
 
@@ -61,11 +70,14 @@ public class ConfigurationActivity extends Activity {
     private static final Class<? extends Fragment>[] SECTION_FRAGMENTS = new Class[]{
             ConfigureExtensionsFragment.class,
             ConfigureAppearanceFragment.class,
+            ConfigureDaydreamFragment.class,
             ConfigureAdvancedFragment.class,
     };
 
     // only used when adding a new widget
     private int mNewWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+
+    private int mStartSection = START_SECTION_EXTENSIONS;
 
     private boolean mBackgroundCleared = false;
 
@@ -73,18 +85,22 @@ public class ConfigurationActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        if (intent != null && Intent.ACTION_CREATE_SHORTCUT.equals(intent.getAction())) {
-            Intent.ShortcutIconResource icon = new Intent.ShortcutIconResource();
-            icon.packageName = getPackageName();
-            icon.resourceName = getResources().getResourceName(R.drawable.ic_launcher);
-            setResult(RESULT_OK, new Intent()
-                    .putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                            getString(R.string.shortcut_label_configure))
-                    .putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon)
-                    .putExtra(Intent.EXTRA_SHORTCUT_INTENT,
-                            new Intent(this, ConfigurationActivity.class)));
-            finish();
-            return;
+        if (intent != null) {
+            if (Intent.ACTION_CREATE_SHORTCUT.equals(intent.getAction())) {
+                Intent.ShortcutIconResource icon = new Intent.ShortcutIconResource();
+                icon.packageName = getPackageName();
+                icon.resourceName = getResources().getResourceName(R.drawable.ic_launcher);
+                setResult(RESULT_OK, new Intent()
+                        .putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                                getString(R.string.shortcut_label_configure))
+                        .putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon)
+                        .putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                                new Intent(this, ConfigurationActivity.class)));
+                finish();
+                return;
+            }
+
+            mStartSection = intent.getIntExtra(EXTRA_START_SECTION, 0);
         }
 
         setContentView(R.layout.activity_configure);
@@ -99,6 +115,10 @@ public class ConfigurationActivity extends Activity {
 
         // Set up UI widgets
         setupActionBar();
+    }
+
+    public int getStartSection() {
+        return mStartSection;
     }
 
     @Override
@@ -223,6 +243,8 @@ public class ConfigurationActivity extends Activity {
             public void onNothingSelected(AdapterView<?> spinner) {
             }
         });
+
+        sectionSpinner.setSelection(mStartSection);
     }
 
     private PopupMenu.OnMenuItemClickListener mActionOverflowClickListener
@@ -233,7 +255,8 @@ public class ConfigurationActivity extends Activity {
                 case R.id.action_get_more_extensions:
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
-                                    + "&c=apps")));
+                                    + "&c=apps"))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     return true;
 
                 case R.id.action_send_logs:

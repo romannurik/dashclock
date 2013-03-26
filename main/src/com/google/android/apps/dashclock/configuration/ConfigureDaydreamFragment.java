@@ -16,8 +16,6 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import com.google.android.apps.dashclock.render.DashClockRenderer;
-
 import net.nurik.roman.dashclock.R;
 
 import android.app.backup.BackupManager;
@@ -29,12 +27,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Fragment for allowing the user to configure advanced widget settings, shown within a {@link
- * com.google.android.apps.dashclock.configuration.ConfigurationActivity}.
+ * Fragment for allowing the user to configure daydream settings, shown within a {@link
+ * ConfigurationActivity}.
  */
-public class ConfigureAdvancedFragment extends PreferenceFragment
+public class ConfigureDaydreamFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
-    public ConfigureAdvancedFragment() {
+    public ConfigureDaydreamFragment() {
     }
 
     @Override
@@ -42,15 +40,11 @@ public class ConfigureAdvancedFragment extends PreferenceFragment
         super.onCreate(savedInstanceState);
 
         // Add 'advanced' preferences.
-        addPreferencesFromResource(R.xml.pref_advanced);
+        addPreferencesFromResource(R.xml.pref_daydream);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        BaseSettingsActivity.bindPreferenceSummaryToValue(
-                findPreference(DashClockRenderer.PREF_CLOCK_SHORTCUT));
-        BaseSettingsActivity.bindPreferenceSummaryToValue(
-                findPreference(AppearanceConfig.PREF_HOMESCREEN_BACKGROUND_OPACITY));
     }
 
     @Override

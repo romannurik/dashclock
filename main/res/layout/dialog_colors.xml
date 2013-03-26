@@ -14,16 +14,15 @@
   limitations under the License.
   -->
 
-<resources>
-    <dimen name="clock_left_margin">40dp</dimen>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- We use dp units instead of sp since the lock screen is a fixed size area. -->
-    <dimen name="clock_text_size_large">84dp</dimen>
-    <dimen name="clock_text_size_small">56dp</dimen>
-    <dimen name="clock_date_text_size">18dp</dimen>
-    <dimen name="clock_date_top_margin">-18dp</dimen>
-    <dimen name="clock_margin_offset">18dp</dimen>
-    <dimen name="analog_clock_size">112dp</dimen>
+    <GridView android:id="@+id/color_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="5"
+        android:stretchMode="columnWidth" />
 
-    <dimen name="daydream_extensions_width">400dp</dimen>
-</resources>
+</LinearLayout>

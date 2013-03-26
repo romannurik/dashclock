@@ -17,6 +17,7 @@
 package com.google.android.apps.dashclock;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.render.WidgetRenderer;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;

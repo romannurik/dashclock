@@ -16,8 +16,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.nurik.roman.dashclock"
-    android:versionCode="19"
-    android:versionName="1.4.3">
+    android:versionCode="20"
+    android:versionName="1.5">
 
     <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="17" />
 
@@ -71,7 +71,7 @@
         </receiver>
 
         <service
-            android:name="com.google.android.apps.dashclock.WidgetRenderer$ViewFactoryService"
+            android:name="com.google.android.apps.dashclock.render.WidgetRemoteViewsFactoryService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false" />
 
@@ -209,6 +209,25 @@
                 android:value="@integer/current_extension_protocol_version" />
             <meta-data android:name="description"
                 android:value="@string/sms_extension_description" />
+        </service>
+
+        <!-- Daydream -->
+
+        <activity
+            android:name="com.google.android.apps.dashclock.configuration.DaydreamProxyActivity"
+            android:theme="@style/ConfigurationActivityTheme" />
+
+        <!--suppress AndroidLintExportedService -->
+        <service
+            android:name="com.google.android.apps.dashclock.DaydreamService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.dream"
+                android:resource="@xml/daydream_info" />
         </service>
 
         <!-- For the Android Backup Service -->

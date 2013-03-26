@@ -16,24 +16,41 @@
 
 package com.google.android.apps.dashclock;
 
+import com.google.android.apps.dashclock.api.ExtensionData;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.google.android.apps.dashclock.LogUtils.LOGE;
+
 /**
  * Because every project needs a Utils class.
  */
 public class Utils {
+    private static final String TAG = LogUtils.makeLogTag(Utils.class);
+
     private static final String USER_AGENT = "DashClock/0.0";
 
     public static final int EXTENSION_ICON_SIZE = 128;
@@ -99,5 +116,108 @@ public class Utils {
             }
         }
         return getDefaultClockIntent(context);
+    }
+
+    public static Bitmap loadExtensionIcon(Context context, ComponentName extension, int icon) {
+        if (icon <= 0) {
+            return null;
+        }
+
+        String packageName = extension.getPackageName();
+        try {
+            Context packageContext = context.createPackageContext(packageName, 0);
+            Resources packageRes = packageContext.getResources();
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(packageRes, icon, options);
+
+            // Cut down the icon to a smaller size.
+            int sampleSize = 1;
+            while (true) {
+                if (options.outHeight / (sampleSize * 2) > Utils.EXTENSION_ICON_SIZE / 2) {
+                    sampleSize *= 2;
+                } else {
+                    break;
+                }
+            }
+
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = sampleSize;
+
+            return Utils.flattenExtensionIcon(
+                    context,
+                    BitmapFactory.decodeResource(packageRes, icon, options),
+                    0xffffffff);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            LOGE(TAG, "Couldn't access extension's package while loading icon data.");
+        }
+
+        return null;
+    }
+
+    public static String expandedTitleOrStatus(ExtensionData data) {
+        String expandedTitle = data.expandedTitle();
+        if (TextUtils.isEmpty(expandedTitle)) {
+            expandedTitle = data.status();
+            if (!TextUtils.isEmpty(expandedTitle)) {
+                expandedTitle = expandedTitle.replace("\n", " ");
+            }
+        }
+        return expandedTitle;
+    }
+
+    public static void traverseAndRecolor(View root, int color, boolean withStates) {
+        if (root instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) root;
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                traverseAndRecolor(parent.getChildAt(i), color, withStates);
+            }
+
+        } else if (root instanceof ImageView) {
+            ImageView imageView = (ImageView) root;
+            Drawable sourceDrawable = imageView.getDrawable();
+            if (withStates && sourceDrawable != null && sourceDrawable instanceof BitmapDrawable) {
+                BitmapDrawable sourceBitmapDrawable = (BitmapDrawable) sourceDrawable;
+
+                Bitmap newBitmap = Bitmap.createBitmap(sourceBitmapDrawable.getBitmap());
+                Canvas newCanvas = new Canvas(newBitmap);
+                Paint paint = new Paint();
+                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+                paint.setColor(color);
+                newCanvas.drawRect(0, 0, newBitmap.getWidth(), newBitmap.getHeight(), paint);
+                BitmapDrawable recoloredDrawable = new BitmapDrawable(
+                        root.getContext().getResources(), newBitmap);
+
+                StateListDrawable stateDrawable = new StateListDrawable();
+                stateDrawable.addState(new int[]{android.R.attr.state_pressed},
+                        sourceDrawable);
+                stateDrawable.addState(new int[]{android.R.attr.state_focused},
+                        sourceDrawable);
+                stateDrawable.addState(new int[]{}, recoloredDrawable);
+                imageView.setImageDrawable(stateDrawable);
+            } else {
+                imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            }
+
+        } else if (root instanceof TextView) {
+            TextView textView = (TextView) root;
+            if (withStates) {
+                int sourceColor = textView.getCurrentTextColor();
+                ColorStateList colorStateList = new ColorStateList(new int[][]{
+                        new int[]{android.R.attr.state_pressed},
+                        new int[]{android.R.attr.state_focused},
+                        new int[]{}
+                }, new int[]{
+                        sourceColor,
+                        sourceColor,
+                        color
+                });
+                textView.setTextColor(colorStateList);
+            } else {
+                textView.setTextColor(color);
+            }
+        }
     }
 }
