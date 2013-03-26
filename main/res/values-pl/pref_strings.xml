@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">Jeśli nie jest zaznaczony wyświetla wszystkie kalendarze widoczne w aplikacji Kalendarza</string>
     <string name="pref_calendar_show_all_day_title">Pokazuj wydarzenia całodniowe</string>
     <string name="pref_calendar_show_all_day_description">Wyświetla wydarzenia całodniowe takie jak np. urodziny</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

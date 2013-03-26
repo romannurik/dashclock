@@ -28,6 +28,7 @@
     <string name="title_configure">Nastaviť DashClock</string>
     <string name="section_extensions">Rozšírenia</string>
     <string name="section_appearance">Vzhľad</string>
+    <!--<string name="section_daydream">Daydream</string>-->
     <string name="section_advanced">Pokročilé</string>
 
     <string name="title_apps">Aplikácie</string>

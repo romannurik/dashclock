@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">Se non selezionata, visualizza tutti i calendari nell\'app Calendario</string>
     <string name="pref_calendar_show_all_day_title">Visualizza gli eventi di durata "Tutto il giorno"</string>
     <string name="pref_calendar_show_all_day_description">Includi gli eventi di durata "Tutto il giorno", ad esempio i compleanni</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

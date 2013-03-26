@@ -72,4 +72,8 @@
     <string name="pref_calendar_custom_visibility_description">Aktivieren, um nur ausgewählte Kalender anzuzeigen</string>
     <string name="pref_calendar_show_all_day_title">Zeige ganztägige Termine</string>
     <string name="pref_calendar_show_all_day_description">Zeige ganztägige Kalendertermine wie Geburtstage</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

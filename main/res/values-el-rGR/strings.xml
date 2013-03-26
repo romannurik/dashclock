@@ -28,6 +28,7 @@
     <string name="title_configure">Ρύθμιση DashClock Widget</string>
     <string name="section_extensions">Επεκτάσεις</string>
     <string name="section_appearance">Εμφάνιση</string>
+    <!--<string name="section_daydream">Daydream</string>-->
     <string name="section_advanced">Προχωρημένα</string>
 
     <string name="title_apps">Εφαρμογές</string>

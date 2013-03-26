@@ -28,6 +28,7 @@
     <string name="title_configure">設定DashClock小部件</string>
     <string name="section_extensions">擴展</string>
     <string name="section_appearance">外觀</string>
+    <!--<string name="section_daydream">Daydream</string>-->
     <string name="section_advanced">高級</string>
 
     <string name="title_apps">應用程式</string>

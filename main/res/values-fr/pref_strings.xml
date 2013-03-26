@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">Si décochée, afficher tous les calendriers</string>
     <string name="pref_calendar_show_all_day_title">Afficher tous les évènements de la journée</string>
     <string name="pref_calendar_show_all_day_description">Inclus tous les évènements de la journée tels que les anniversaires</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">顯示日歷應用程式中所有可見的日歷</string>
     <string name="pref_calendar_show_all_day_title">顯示一整天長度的活動</string>
     <string name="pref_calendar_show_all_day_description">顯示一整天長度的活動，比如生日。</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

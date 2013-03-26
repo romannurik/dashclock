@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">Если флажок снят, будут показаны события из всех видимые календари в Календарь</string>
     <string name="pref_calendar_show_all_day_title">Отображать события на весь день</string>
     <string name="pref_calendar_show_all_day_description">Включить события, проходящие в течение всего дня, такие как день рожденья</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

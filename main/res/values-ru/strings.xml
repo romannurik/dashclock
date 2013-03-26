@@ -28,6 +28,7 @@
     <string name="title_configure">Настройки DashClock Widget</string>
     <string name="section_extensions">Расширения</string>
     <string name="section_appearance">Отображение</string>
+    <!--<string name="section_daydream">Daydream</string>-->
     <string name="section_advanced">Дополнительно</string>
 
     <string name="title_apps">Приложения</string>

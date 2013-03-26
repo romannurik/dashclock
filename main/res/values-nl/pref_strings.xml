@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">Laat alle agenda\'s uit de Agenda-app zien op het moment dat dit uitgevinkt is</string>
     <string name="pref_calendar_show_all_day_title">Laat \'Hele dag\'-afspraken zien</string>
     <string name="pref_calendar_show_all_day_description">Laat \'Hele dag\'-afspraken zien zoals verjaardagen</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

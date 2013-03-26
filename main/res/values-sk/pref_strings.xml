@@ -75,4 +75,8 @@
     <string name="pref_calendar_custom_visibility_description">Ak nie je označené, zobrazí všetky viditeľné kalendáre v aplikácii Kalendár</string>
     <string name="pref_calendar_show_all_day_title">Zobraziť celodenné udalosti</string>
     <string name="pref_calendar_show_all_day_description">Zahrnúť všetky celodenné udalosti (napr. narodeniny)</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

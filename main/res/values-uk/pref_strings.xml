@@ -73,4 +73,8 @@
     <string name="pref_calendar_custom_visibility_description">Якщо не обрано, будуть відображені події з усіх видимих календарів в Календар</string>
     <string name="pref_calendar_show_all_day_title">Відображати події на весь день</string>
     <string name="pref_calendar_show_all_day_description">Відображати події, які проходять протягом усього дня, наприклад, день народження</string>
+
+    <!-- Daydream preferences -->
+    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
+    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
 </resources>

@@ -28,6 +28,7 @@
     <string name="title_configure">DashClock Widget beállítása</string>
     <string name="section_extensions">Kiegészítők</string>
     <string name="section_appearance">Kinézet</string>
+    <!--<string name="section_daydream">Daydream</string>-->
     <string name="section_advanced">Beállítások</string>
 
     <string name="title_apps">Alkalmazások</string>
