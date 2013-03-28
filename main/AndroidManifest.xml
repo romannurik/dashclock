@@ -237,7 +237,7 @@
 
         <!-- For sending logs as attachments -->
 
-        <provider android:name="com.google.android.apps.dashclock.LogUtils$LogAttachmentProvider"
+        <provider android:name="com.google.android.apps.dashclock.LogAttachmentProvider"
             android:authorities="com.google.android.apps.dashclock.logs"
             android:exported="true" />
 

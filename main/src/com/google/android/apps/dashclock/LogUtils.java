@@ -17,34 +17,26 @@
 package com.google.android.apps.dashclock;
 
 import net.nurik.roman.dashclock.BuildConfig;
+import net.nurik.roman.dashclock.R;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
 import android.util.Log;
 import android.widget.Toast;
-import net.nurik.roman.dashclock.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -210,86 +202,6 @@ public class LogUtils {
             } else {
                 file.delete();
             }
-        }
-    }
-
-    /**
-     * Content provider for exposing log files as attachments.
-     */
-    public static class LogAttachmentProvider extends ContentProvider {
-        static final String AUTHORITY = "com.google.android.apps.dashclock.logs";
-
-        @Override
-        public boolean onCreate() {
-            return true;
-        }
-
-        @Override
-        public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                String orderBy) {
-            // Ensure logfile exists
-            List<String> pathSegments = uri.getPathSegments();
-            String fileName = pathSegments.get(0);
-            File logFile = getContext().getCacheDir();
-            if (logFile == null) {
-                LOGE(TAG, "No cache dir.");
-                return null;
-            }
-
-            logFile = new File(new File(logFile, "logs"), fileName);
-            if (!logFile.exists()) {
-                LOGE(TAG, "Requested log file doesn't exist.");
-                return null;
-            }
-
-            // Create matrix cursor
-            if (projection == null) {
-                projection = new String[]{
-                        "_data",
-                        OpenableColumns.DISPLAY_NAME,
-                        OpenableColumns.SIZE,
-                };
-            }
-
-            MatrixCursor matrixCursor = new MatrixCursor(projection, 1);
-            Object[] row = new Object[projection.length];
-            for (int col = 0; col < projection.length; col++) {
-                if ("_data".equals(projection[col])) {
-                    row[col] = logFile.getAbsolutePath();
-                } else if (OpenableColumns.DISPLAY_NAME.equals(projection[col])) {
-                    row[col] = fileName;
-                } else if (OpenableColumns.SIZE.equals(projection[col])) {
-                    row[col] = logFile.length();
-                }
-            }
-            matrixCursor.addRow(row);
-            return matrixCursor;
-        }
-
-        @Override
-        public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-            return openFileHelper(uri, "r");
-        }
-
-        @Override
-        public String getType(Uri uri) {
-            return "text/plain";
-        }
-
-        @Override
-        public Uri insert(Uri uri, ContentValues values) {
-            throw new UnsupportedOperationException("insert not supported");
-        }
-
-        @Override
-        public int delete(Uri uri, String selection, String[] selectionArgs) {
-            throw new UnsupportedOperationException("delete not supported");
-        }
-
-        @Override
-        public int update(Uri uri, ContentValues contentValues, String selection,
-                String[] selectionArgs) {
-            throw new UnsupportedOperationException("update not supported");
         }
     }
 }
