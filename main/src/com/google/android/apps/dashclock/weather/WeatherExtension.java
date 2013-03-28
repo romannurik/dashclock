@@ -378,6 +378,9 @@ public class WeatherExtension extends DashClockExtension {
         } catch (IOException e) {
             throw new CantGetWeatherException(true, R.string.no_weather_data,
                     "Error parsing weather feed XML.", e);
+        } catch (NumberFormatException e) {
+            throw new CantGetWeatherException(true, R.string.no_weather_data,
+                    "Error parsing weather feed XML.", e);
         } catch (XmlPullParserException e) {
             throw new CantGetWeatherException(true, R.string.no_weather_data,
                     "Error parsing weather feed XML.", e);
