@@ -55,6 +55,8 @@ public class DaydreamService extends DreamService implements
         ExtensionManager.OnChangeListener,
         DashClockRenderer.OnClickListener {
     private static final String PREF_DAYDREAM_COLOR = "pref_daydream_color";
+    private static final String PREF_DAYDREAM_NIGHT_MODE = "pref_daydream_night_mode";
+
     private static final int DEFAULT_FOREGROUND_COLOR = 0xffffffff;
 
     private static final int CYCLE_INTERVAL_MILLIS = 20000;
@@ -93,14 +95,12 @@ public class DaydreamService extends DreamService implements
         super.onAttachedToWindow();
         mAttached = true;
         setInteractive(true);
-        setFullscreen(false);
-        setScreenBright(false);
+        setFullscreen(true);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         mForegroundColor = sp.getInt(PREF_DAYDREAM_COLOR, DEFAULT_FOREGROUND_COLOR);
 
-        Resources res = getResources();
-        mTravelDistance = res.getDimensionPixelSize(R.dimen.daydream_travel_distance);
+        setScreenBright(!sp.getBoolean(PREF_DAYDREAM_NIGHT_MODE, true));
 
         layoutDream();
     }
@@ -147,14 +147,24 @@ public class DaydreamService extends DreamService implements
             return;
         }
 
+        if (restartAnimation) {
+            // Only modify fullscreen state if this render will restart an animation (enter a new
+            // cycle)
+            setFullscreen(true);
+        }
+
         final Resources res = getResources();
 
         mDaydreamContainer = (ViewGroup) findViewById(R.id.daydream_container);
-        TouchToAwakeFrameLayout awakeContainer = (TouchToAwakeFrameLayout)
-                findViewById(R.id.touch_awake_container);
-        awakeContainer.setOnAwakeListener(new TouchToAwakeFrameLayout.OnAwakeListener() {
+        RootLayout rootContainer = (RootLayout)
+                findViewById(R.id.daydream_root);
+        if (mTravelDistance == 0) {
+            mTravelDistance = rootContainer.getWidth() / 4;
+        }
+        rootContainer.setRootLayoutListener(new RootLayout.RootLayoutListener() {
             @Override
             public void onAwake() {
+                setFullscreen(false);
                 mHandler.removeCallbacks(mCycleRunnable);
                 mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS);
                 mDaydreamContainer.animate()
@@ -166,6 +176,11 @@ public class DaydreamService extends DreamService implements
                         .translationY(0f)
                         .setDuration(res.getInteger(android.R.integer.config_shortAnimTime));
                 mSingleCycleAnimator.cancel();
+            }
+
+            @Override
+            public void onSizeChanged(int width, int height) {
+                mTravelDistance = width / 4;
             }
         });
 
@@ -304,18 +319,18 @@ public class DaydreamService extends DreamService implements
     /**
      * FrameLayout that can notify listeners of ACTION_DOWN events.
      */
-    public static class TouchToAwakeFrameLayout extends FrameLayout {
-        private OnAwakeListener mOnAwakeListener;
+    public static class RootLayout extends FrameLayout {
+        private RootLayoutListener mRootLayoutListener;
 
-        public TouchToAwakeFrameLayout(Context context) {
+        public RootLayout(Context context) {
             super(context);
         }
 
-        public TouchToAwakeFrameLayout(Context context, AttributeSet attrs) {
+        public RootLayout(Context context, AttributeSet attrs) {
             super(context, attrs);
         }
 
-        public TouchToAwakeFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+        public RootLayout(Context context, AttributeSet attrs, int defStyle) {
             super(context, attrs, defStyle);
         }
 
@@ -323,8 +338,8 @@ public class DaydreamService extends DreamService implements
         public boolean onInterceptTouchEvent(MotionEvent ev) {
             switch (ev.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
-                    if (mOnAwakeListener != null) {
-                        mOnAwakeListener.onAwake();
+                    if (mRootLayoutListener != null) {
+                        mRootLayoutListener.onAwake();
                     }
                     break;
 
@@ -334,12 +349,21 @@ public class DaydreamService extends DreamService implements
             return false;
         }
 
-        public void setOnAwakeListener(OnAwakeListener onAwakeListener) {
-            mOnAwakeListener = onAwakeListener;
+        public void setRootLayoutListener(RootLayoutListener rootLayoutListener) {
+            mRootLayoutListener = rootLayoutListener;
         }
 
-        public static interface OnAwakeListener {
+        @Override
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+            super.onSizeChanged(w, h, oldw, oldh);
+            if (mRootLayoutListener != null) {
+                mRootLayoutListener.onSizeChanged(w, h);
+            }
+        }
+
+        public static interface RootLayoutListener {
             void onAwake();
+            void onSizeChanged(int width, int height);
         }
     }
 

@@ -15,8 +15,8 @@
   -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    class="com.google.android.apps.dashclock.DaydreamService$TouchToAwakeFrameLayout"
-    android:id="@+id/touch_awake_container"
+    class="com.google.android.apps.dashclock.DaydreamService$RootLayout"
+    android:id="@+id/daydream_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

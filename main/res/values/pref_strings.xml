@@ -99,5 +99,8 @@
 
     <!-- Daydream preferences -->
     <string name="pref_daydream_color_title">Foreground color</string>
+    <string name="pref_daydream_color_description">The color of text and icons in Daydream mode</string>
+    <string name="pref_daydream_night_mode_title">Night mode</string>
+    <string name="pref_daydream_night_mode_description">Very dim display (for dark rooms)</string>
     <string name="pref_daydream_system_settings_title">System Daydream settings</string>
 </resources>

@@ -63,6 +63,9 @@ public class ColorPreference extends Preference {
             0xffcc0000,
 
             0xffffffff,
+            0xffeeeeee,
+            0xffcccccc,
+            0xff888888,
     };
 
     private int mValue = 0;
