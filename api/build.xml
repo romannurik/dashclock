@@ -1,92 +1,249 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="api" default="help">
+<!--
+  Copyright 2013 Google Inc.
 
-    <!-- The local.properties file is created and updated by the 'android' tool.
-         It contains the path to the SDK. It should *NOT* be checked into
-         Version Control Systems. -->
-    <property file="local.properties" />
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    <!-- The ant.properties file can be created by you. It is only edited by the
-         'android' tool to add properties to it.
-         This is the place to change some Ant specific build properties.
-         Here are some properties you may want to change/update:
+      http://www.apache.org/licenses/LICENSE-2.0
 
-         source.dir
-             The name of the source directory. Default is 'src'.
-         out.dir
-             The name of the output directory. Default is 'bin'.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
 
-         For other overridable properties, look at the beginning of the rules
-         files in the SDK, at tools/ant/build.xml
+<project name="dashclock-api" default="all">
 
-         Properties related to the SDK location or the project target should
-         be updated using the 'android' tool with the 'update' action.
+    <property file="project.properties" />
 
-         This file is an integral part of the build system for your
-         application and should be checked into Version Control Systems.
+    <!-- Compiler options -->
 
-         -->
-    <property file="ant.properties" />
+    <property name="compiler.debug" value="on" />
+    <property name="compiler.generate.no.warnings" value="off" />
+    <property name="compiler.args" value="" />
+    <property name="compiler.max.memory" value="128m" />
+    <patternset id="ignored.files">
+        <exclude name="**/.DS_Store/**" />
+        <exclude name="**/.git/**" />
+        <exclude name="**/*.hprof/**" />
+        <exclude name="**/*.lib/**" />
+        <exclude name="**/*~/**" />
+        <exclude name="**/.bundle/**" />
+        <exclude name="**/*.rbc/**" />
+    </patternset>
+    <patternset id="compiler.excluded">
+        <exclude name="${basedir}/gen/**" />
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.zip" />
+        <include name="*.apk" />
+        <include name="*.war" />
+        <include name="*.egg" />
+        <include name="*.ear" />
+        <include name="*.ane" />
+        <include name="*.swc" />
+        <include name="*.jar" />
+    </patternset>
+    <patternset id="compiler.resources">
+        <include name="**/?*.properties" />
+        <include name="**/?*.xml" />
+        <include name="**/?*.gif" />
+        <include name="**/?*.png" />
+        <include name="**/?*.jpeg" />
+        <include name="**/?*.jpg" />
+        <include name="**/?*.html" />
+        <include name="**/?*.dtd" />
+        <include name="**/?*.tld" />
+        <include name="**/?*.ftl" />
+    </patternset>
 
-    <!-- if sdk.dir was not set from one of the property file, then
-         get it from the ANDROID_HOME env var.
-         This must be done before we load project.properties since
-         the proguard config can use sdk.dir -->
-    <property environment="env" />
-    <condition property="sdk.dir" value="${env.ANDROID_HOME}">
-        <isset property="env.ANDROID_HOME" />
-    </condition>
+    <!-- JDK definitions -->
 
-    <!-- The project.properties file is created and updated by the 'android'
-         tool, as well as ADT.
+    <property name="jdk.bin.android"
+        value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin" />
+    <path id="jdk.classpath.android">
+        <fileset dir="${android.sdk.dir}">
+            <include name="platforms/android-17/android.jar" />
+            <include name="platforms/android-17/data/res" />
+            <include name="tools/support/annotations.jar" />
+        </fileset>
+    </path>
 
-         This contains project specific properties such as project target, and library
-         dependencies. Lower level build properties are stored in ant.properties
-         (or in .classpath for Eclipse projects).
+    <property name="project.jdk.home" value="${android.sdk.dir}" />
+    <property name="project.jdk.bin" value="${jdk.bin.android}" />
+    <property name="project.jdk.classpath" value="jdk.classpath.android" />
 
-         This file is an integral part of the build system for your
-         application and should be checked into Version Control Systems. -->
-    <loadproperties srcFile="project.properties" />
+    <!-- Global Libraries -->
+    <!-- Register Custom Compiler Taskdefs -->
+    <property name="javac.home" value="${idea.home}/lib" />
+    <path id="javac.classpath">
+        <pathelement location="${javac.home}/javac.jar" />
+        <pathelement location="${javac.home}/jdom.jar" />
+        <pathelement location="${javac.home}/asm4-all.jar" />
+        <pathelement location="${javac.home}/jgoodies-forms.jar" />
+    </path>
 
-    <!-- quick check on sdk.dir -->
-    <fail
-            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through the ANDROID_HOME environment variable."
-            unless="sdk.dir"
-    />
+    <!-- Modules -->
 
-    <!--
-        Import per project custom build rules if present at the root of the project.
-        This is the place to put custom intermediary targets such as:
-            -pre-build
-            -pre-compile
-            -post-compile (This is typically used for code obfuscation.
-                           Compiled code location: ${out.classes.absolute.dir}
-                           If this is not done in place, override ${out.dex.input.absolute.dir})
-            -post-package
-            -post-build
-            -pre-clean
-    -->
-    <import file="custom_rules.xml" optional="true" />
 
-    <!-- Import the actual build file.
+    <!-- Module api -->
 
-         To customize existing targets, there are two options:
-         - Customize only one target:
-             - copy/paste the target into this file, *before* the
-               <import> task.
-             - customize it to your needs.
-         - Customize the whole content of build.xml
-             - copy/paste the content of the rules files (minus the top node)
-               into this file, replacing the <import> task.
-             - customize to your needs.
+    <property name="module.jdk.home.api" value="${project.jdk.home}" />
+    <property name="module.jdk.bin.api" value="${project.jdk.bin}" />
+    <property name="module.jdk.classpath.api" value="${project.jdk.classpath}" />
 
-         ***********************
-         ****** IMPORTANT ******
-         ***********************
-         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
-         in order to avoid having your file be overridden by tools such as "android update project"
-    -->
-    <!-- version-tag: 1 -->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
+    <property name="compiler.args.api" value="${compiler.args}" />
 
+    <property name="api.output.dir" value="${basedir}/../out/production/api" />
+    <property name="api.testoutput.dir" value="${basedir}/../out/test/api" />
+
+    <path id="api.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="api.module.production.classpath">
+        <path refid="${module.jdk.classpath.api}" />
+    </path>
+
+    <path id="api.runtime.production.module.classpath">
+        <pathelement location="${api.output.dir}" />
+    </path>
+
+    <path id="api.module.classpath">
+        <path refid="${module.jdk.classpath.api}" />
+        <pathelement location="${api.output.dir}" />
+    </path>
+
+    <path id="api.runtime.module.classpath">
+        <pathelement location="${api.testoutput.dir}" />
+        <pathelement location="${api.output.dir}" />
+    </path>
+
+    <patternset id="excluded.from.module.api">
+        <patternset refid="ignored.files" />
+    </patternset>
+
+    <patternset id="excluded.from.compilation.api">
+        <patternset refid="compiler.excluded" />
+        <patternset refid="excluded.from.module.api" />
+    </patternset>
+
+    <path id="api.module.sourcepath">
+        <dirset dir="${basedir}">
+            <include name="src" />
+            <include name="gen" />
+        </dirset>
+    </path>
+
+    <target name="compile.aidl"
+        description="Create AIDL files">
+        <delete dir="${basedir}/gen" />
+        <apply executable="aidl" failonerror="true">
+            <arg value="-p${android.sdk.dir}/platforms/${android.platform}/framework.aidl" />
+            <arg value="-I${basedir}/src" />
+            <arg value="-o${basedir}/gen" />
+            <fileset dir="${basedir}/src" includes="**/I*.aidl" />
+        </apply>
+    </target>
+
+    <target name="compile.module.api"
+        depends="compile.aidl"
+        description="Compile module api">
+        <mkdir dir="${api.output.dir}" />
+        <javac destdir="${api.output.dir}"
+            debug="${compiler.debug}"
+            nowarn="${compiler.generate.no.warnings}"
+            memorymaximumsize="${compiler.max.memory}"
+            fork="true"
+            executable="${module.jdk.bin.api}/javac">
+            <compilerarg line="${compiler.args.api}" />
+            <bootclasspath refid="api.module.bootclasspath" />
+            <classpath refid="api.module.production.classpath" />
+            <src refid="api.module.sourcepath" />
+            <patternset refid="excluded.from.compilation.api" />
+        </javac>
+
+        <copy todir="${api.output.dir}">
+            <fileset dir="${basedir}/src">
+                <patternset refid="compiler.resources" />
+                <type type="file" />
+                <patternset refid="excluded.from.compilation.api" />
+            </fileset>
+            <fileset dir="${basedir}/gen">
+                <patternset refid="compiler.resources" />
+                <type type="file" />
+                <patternset refid="excluded.from.compilation.api" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean" description="cleanup api module">
+        <delete dir="${api.output.dir}" />
+        <delete dir="${api.testoutput.dir}" />
+    </target>
+
+    <target name="init.artifacts">
+        <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp" />
+        <property name="artifact.output.dashclock-api-sources.jar"
+            value="${basedir}/../out/production/api-jars" />
+        <property name="artifact.output.dashclock-api.jar"
+            value="${basedir}/../out/production/api-jars" />
+        <mkdir dir="${artifacts.temp.dir}" />
+        <property name="temp.jar.path.dashclock-api-sources.jar"
+            value="${artifacts.temp.dir}/dashclock-api-sources.jar" />
+        <property name="temp.jar.path.dashclock-api.jar"
+            value="${artifacts.temp.dir}/dashclock-api.jar" />
+    </target>
+
+    <target name="artifact.dashclock-api-sources.jar"
+        depends="init.artifacts"
+        description="Build &#39;dashclock-api-sources.jar&#39; artifact">
+        <property name="artifact.temp.output.dashclock-api-sources.jar"
+            value="${artifacts.temp.dir}/dashclock_api_sources_jar" />
+        <mkdir dir="${artifact.temp.output.dashclock-api-sources.jar}" />
+        <jar destfile="${temp.jar.path.dashclock-api-sources.jar}"
+            duplicate="preserve"
+            filesetmanifest="mergewithoutmain">
+            <zipfileset dir="${basedir}/src" />
+        </jar>
+        <copy file="${temp.jar.path.dashclock-api-sources.jar}"
+            tofile="${artifact.temp.output.dashclock-api-sources.jar}/dashclock-api-sources.jar" />
+    </target>
+
+    <target name="artifact.dashclock-api.jar"
+        depends="init.artifacts, compile.module.api"
+        description="Build &#39;dashclock-api.jar&#39; artifact">
+        <property name="artifact.temp.output.dashclock-api.jar"
+            value="${artifacts.temp.dir}/dashclock_api_jar" />
+        <mkdir dir="${artifact.temp.output.dashclock-api.jar}" />
+        <jar destfile="${temp.jar.path.dashclock-api.jar}"
+            duplicate="preserve"
+            filesetmanifest="mergewithoutmain">
+            <zipfileset dir="${api.output.dir}" />
+        </jar>
+        <copy file="${temp.jar.path.dashclock-api.jar}"
+            tofile="${artifact.temp.output.dashclock-api.jar}/dashclock-api.jar" />
+    </target>
+
+    <target name="build.all.artifacts"
+        depends="artifact.dashclock-api-sources.jar, artifact.dashclock-api.jar"
+        description="Build all artifacts">
+        <mkdir dir="${artifact.output.dashclock-api-sources.jar}" />
+        <copy todir="${artifact.output.dashclock-api-sources.jar}">
+            <fileset dir="${artifact.temp.output.dashclock-api-sources.jar}" />
+        </copy>
+        <mkdir dir="${artifact.output.dashclock-api.jar}" />
+        <copy todir="${artifact.output.dashclock-api.jar}">
+            <fileset dir="${artifact.temp.output.dashclock-api.jar}" />
+        </copy>
+
+        <!-- Delete temporary files -->
+        <delete dir="${artifacts.temp.dir}" />
+    </target>
+
+    <target name="all"
+        depends="clean, compile.module.api, build.all.artifacts"
+        description="build all" />
 </project>
