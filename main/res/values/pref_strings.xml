@@ -102,5 +102,18 @@
     <string name="pref_daydream_color_description">The color of text and icons in Daydream mode</string>
     <string name="pref_daydream_night_mode_title">Night mode</string>
     <string name="pref_daydream_night_mode_description">Very dim display (for dark rooms)</string>
+    <string name="pref_daydream_animation_title">Animation</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>Pendulum (default)</item>
+        <item>Slide</item>
+        <item>Fade</item>
+        <item>None (may damage your screen)</item>
+    </string-array>
+    <string-array name="pref_daydream_animation_values" translatable="false">
+        <item>pendulum</item>
+        <item>slide</item>
+        <item>fade</item>
+        <item>none</item>
+    </string-array>
     <string name="pref_daydream_system_settings_title">System Daydream settings</string>
 </resources>

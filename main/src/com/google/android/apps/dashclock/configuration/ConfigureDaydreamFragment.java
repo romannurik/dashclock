@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.apps.dashclock.DaydreamService;
+
 /**
  * Fragment for allowing the user to configure daydream settings, shown within a {@link
  * ConfigurationActivity}.
@@ -45,6 +47,8 @@ public class ConfigureDaydreamFragment extends PreferenceFragment
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
+        BaseSettingsActivity.bindPreferenceSummaryToValue(
+                findPreference(DaydreamService.PREF_DAYDREAM_ANIMATION));
     }
 
     @Override

@@ -16,19 +16,15 @@
 
 package com.google.android.apps.dashclock;
 
-import com.google.android.apps.dashclock.render.DashClockRenderer;
-import com.google.android.apps.dashclock.render.SimpleRenderer;
-import com.google.android.apps.dashclock.render.SimpleViewBuilder;
-
-import net.nurik.roman.dashclock.R;
-
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.service.dreams.DreamService;
@@ -44,6 +40,12 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
+import com.google.android.apps.dashclock.render.DashClockRenderer;
+import com.google.android.apps.dashclock.render.SimpleRenderer;
+import com.google.android.apps.dashclock.render.SimpleViewBuilder;
+
+import net.nurik.roman.dashclock.R;
+
 import java.util.List;
 
 import static com.google.android.apps.dashclock.ExtensionManager.ExtensionWithData;
@@ -51,22 +53,35 @@ import static com.google.android.apps.dashclock.ExtensionManager.ExtensionWithDa
 /**
  * Daydream for DashClock.
  */
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class DaydreamService extends DreamService implements
         ExtensionManager.OnChangeListener,
         DashClockRenderer.OnClickListener {
-    private static final String PREF_DAYDREAM_COLOR = "pref_daydream_color";
-    private static final String PREF_DAYDREAM_NIGHT_MODE = "pref_daydream_night_mode";
+    public static final String PREF_DAYDREAM_COLOR = "pref_daydream_color";
+    public static final String PREF_DAYDREAM_NIGHT_MODE = "pref_daydream_night_mode";
+    public static final String PREF_DAYDREAM_ANIMATION = "pref_daydream_animation";
 
     private static final int DEFAULT_FOREGROUND_COLOR = 0xffffffff;
+
+    private static final int ANIMATION_HAS_ROTATE = 0x1;
+    private static final int ANIMATION_HAS_SLIDE = 0x2;
+    private static final int ANIMATION_HAS_FADE = 0x4;
+
+    private static final int ANIMATION_NONE = 0;
+    private static final int ANIMATION_FADE = ANIMATION_HAS_FADE;
+    private static final int ANIMATION_SLIDE = ANIMATION_FADE | ANIMATION_HAS_SLIDE;
+    private static final int ANIMATION_PENDULUM = ANIMATION_SLIDE | ANIMATION_HAS_ROTATE;
 
     private static final int CYCLE_INTERVAL_MILLIS = 20000;
     private static final int FADE_MILLIS = 5000;
     private static final int TRAVEL_ROTATE_DEGREES = 3;
+    private static final float SCALE_WHEN_MOVING = 0.85f;
 
     private Handler mHandler = new Handler();
     private ExtensionManager mExtensionManager;
     private int mTravelDistance;
     private int mForegroundColor;
+    private int mAnimation;
 
     private ViewGroup mDaydreamContainer;
     private ViewGroup mExtensionsContainer;
@@ -97,11 +112,24 @@ public class DaydreamService extends DreamService implements
         setInteractive(true);
         setFullscreen(true);
 
+        // Read preferences
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         mForegroundColor = sp.getInt(PREF_DAYDREAM_COLOR, DEFAULT_FOREGROUND_COLOR);
 
+        String animation = sp.getString(PREF_DAYDREAM_ANIMATION, "");
+        if ("none".equals(animation)) {
+            mAnimation = ANIMATION_NONE;
+        } else if ("slide".equals(animation)) {
+            mAnimation = ANIMATION_SLIDE;
+        } else if ("fade".equals(animation)) {
+            mAnimation = ANIMATION_FADE;
+        } else {
+            mAnimation = ANIMATION_PENDULUM;
+        }
+
         setScreenBright(!sp.getBoolean(PREF_DAYDREAM_NIGHT_MODE, true));
 
+        // Begin daydream
         layoutDream();
     }
 
@@ -256,12 +284,21 @@ public class DaydreamService extends DreamService implements
         Utils.traverseAndRecolor(mDaydreamContainer, mForegroundColor, true);
 
         if (restartAnimation) {
-            int x = (mMovingLeft ? 1 : -1) * mTravelDistance;
-            int deg = (mMovingLeft ? 1 : -1) * TRAVEL_ROTATE_DEGREES;
+            int x = 0;
+            int deg = 0;
+            if ((mAnimation & ANIMATION_HAS_SLIDE) != 0) {
+                x = (mMovingLeft ? 1 : -1) * mTravelDistance;
+            }
+            if ((mAnimation & ANIMATION_HAS_ROTATE) != 0) {
+                deg = (mMovingLeft ? 1 : -1) * TRAVEL_ROTATE_DEGREES;
+            }
             mMovingLeft = !mMovingLeft;
             mDaydreamContainer.animate().cancel();
-            mDaydreamContainer.setScaleX(0.85f);
-            mDaydreamContainer.setScaleY(0.85f);
+            if ((mAnimation & ANIMATION_HAS_SLIDE) != 0) {
+                // Only use small size when moving
+                mDaydreamContainer.setScaleX(SCALE_WHEN_MOVING);
+                mDaydreamContainer.setScaleY(SCALE_WHEN_MOVING);
+            }
             if (mSingleCycleAnimator != null) {
                 mSingleCycleAnimator.cancel();
             }
@@ -296,7 +333,11 @@ public class DaydreamService extends DreamService implements
     public Runnable mCycleRunnable = new Runnable() {
         @Override
         public void run() {
-            mDaydreamContainer.animate().alpha(0f).setDuration(FADE_MILLIS)
+            float outAlpha = 1f;
+            if ((mAnimation & ANIMATION_HAS_FADE) != 0) {
+                outAlpha = 0f;
+            }
+            mDaydreamContainer.animate().alpha(outAlpha).setDuration(FADE_MILLIS)
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
