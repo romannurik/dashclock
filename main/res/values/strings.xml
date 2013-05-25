@@ -70,6 +70,7 @@
         <b>DashClock</b>&nbsp;<font color="#888888">v%1$s</font>
     ]]></string>
     <string name="about_body"><![CDATA[
+        Copyright 2012-2013 Google Inc. All Rights Reserved.<br>
         <a href="http://m.google.com/utos">Terms of Service</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
         <a href="http://www.google.com/policies/privacy/">Privacy Policy</a><br><br>
