@@ -304,6 +304,7 @@ public class ExtensionManager {
             Bundle metaData = resolveInfo.serviceInfo.metaData;
             if (metaData != null) {
                 listing.protocolVersion = metaData.getInt("protocolVersion");
+                listing.worldReadable = metaData.getBoolean("worldReadable", false);
                 listing.description = metaData.getString("description");
                 String settingsActivity = metaData.getString("settingsActivity");
                 if (!TextUtils.isEmpty(settingsActivity)) {
@@ -357,6 +358,7 @@ public class ExtensionManager {
     public static class ExtensionListing {
         public ComponentName componentName;
         public int protocolVersion;
+        public boolean worldReadable;
         public String title;
         public String description;
         public Drawable icon;

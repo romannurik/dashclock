@@ -42,6 +42,7 @@ public class ExampleExtension extends DashClockExtension {
                 .status("Hello")
                 .expandedTitle("Hello, " + name + "!")
                 .expandedBody("Thanks for checking out this example extension for DashClock.")
+                .contentDescription("Completely different text for accessibility if needed.")
                 .clickIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))));
     }
 }

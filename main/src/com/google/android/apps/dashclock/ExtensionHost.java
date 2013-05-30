@@ -65,7 +65,7 @@ public class ExtensionHost {
     // TODO: this class badly needs inline docs
     private static final String TAG = LogUtils.makeLogTag(ExtensionHost.class);
 
-    private static final int CURRENT_EXTENSION_PROTOCOL_VERSION = 1;
+    private static final int CURRENT_EXTENSION_PROTOCOL_VERSION = 2;
 
     /**
      * The amount of time to wait after something has changed before recognizing it as an individual
@@ -162,7 +162,7 @@ public class ExtensionHost {
         conn.hostInterface = makeHostInterface(conn);
         conn.serviceConnection = new ServiceConnection() {
             @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            public void onServiceConnected(final ComponentName componentName, IBinder iBinder) {
                 conn.ready = true;
                 conn.binder = IExtension.Stub.asInterface(iBinder);
 
@@ -173,7 +173,12 @@ public class ExtensionHost {
                         // Note that this is protected from ANRs since it runs in the
                         // AsyncHandler thread. Also, since this is a 'oneway' call,
                         // when used with remote extensions, this call does not block.
-                        extension.onInitialize(conn.hostInterface, isReconnect);
+                        try {
+                            extension.onInitialize(conn.hostInterface, isReconnect);
+                        } catch (SecurityException e) {
+                            LOGE(TAG, "Error initializing extension "
+                                    + componentName.toString(), e);
+                        }
                     }
                 }, 0, null);
 

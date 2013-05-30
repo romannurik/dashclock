@@ -17,6 +17,8 @@
 package com.google.android.apps.dashclock;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.IDashClockDataProvider;
+import com.google.android.apps.dashclock.api.VisibleExtension;
 import com.google.android.apps.dashclock.render.WidgetRenderer;
 
 import android.app.Service;
@@ -25,7 +27,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 
@@ -57,6 +63,19 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
             "com.google.android.apps.dashclock.extra.COMPONENT_NAME";
     public static final String EXTRA_UPDATE_REASON =
             "com.google.android.apps.dashclock.extra.UPDATE_REASON";
+
+    /**
+     * Broadcast intent action that's triggered when the set of visible extensions or their
+     * data change.
+     */
+    public static final String ACTION_EXTENSIONS_CHANGED =
+            "com.google.android.apps.dashclock.action.EXTENSIONS_CHANGED";
+
+    /**
+     * Private Read API
+     */
+    public static final String ACTION_BIND_DASHCLOCK_SERVICE
+            = "com.google.android.apps.dashclock.action.BIND_SERVICE";
 
     private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;
@@ -96,14 +115,15 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
     @Override
     public void onExtensionsChanged() {
-        mUpdateHandler.removeCallbacks(mUpdateAllWidgetsRunnable);
-        mUpdateHandler.postDelayed(mUpdateAllWidgetsRunnable,
+        mUpdateHandler.removeCallbacks(mExtensionsChangedRunnable);
+        mUpdateHandler.postDelayed(mExtensionsChangedRunnable,
                 ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
     }
 
-    private Runnable mUpdateAllWidgetsRunnable = new Runnable() {
+    private Runnable mExtensionsChangedRunnable = new Runnable() {
         @Override
         public void run() {
+            sendBroadcast(new Intent(ACTION_EXTENSIONS_CHANGED));
             handleUpdateWidgets(new Intent());
         }
     };
@@ -155,6 +175,27 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
     @Override
     public IBinder onBind(Intent intent) {
+        if (ACTION_BIND_DASHCLOCK_SERVICE.equals(intent.getAction())) {
+            // Private Read API
+            return new IDashClockDataProvider.Stub() {
+                @Override
+                public List<VisibleExtension> getVisibleExtensionData() throws RemoteException {
+                    List<VisibleExtension> visibleExtensions = new ArrayList<VisibleExtension>();
+                    for (ExtensionManager.ExtensionWithData extension :
+                            mExtensionManager.getVisibleExtensionsWithData()) {
+                        if (!extension.listing.worldReadable) {
+                            // Enforce permissions. This private 'read API' only exposes
+                            // data from world-readable extensions.
+                            continue;
+                        }
+                        visibleExtensions.add(new VisibleExtension()
+                                .data(extension.latestData)
+                                .componentName(extension.listing.componentName));
+                    }
+                    return visibleExtensions;
+                }
+            };
+        }
         return null;
     }
 }

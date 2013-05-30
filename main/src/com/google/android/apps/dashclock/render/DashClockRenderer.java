@@ -268,17 +268,20 @@ public abstract class DashClockRenderer {
         vb.setTextViewText(R.id.collapsed_extension_text,
                 status.toUpperCase(Locale.getDefault()));
 
-        StringBuilder statusContentDescription = new StringBuilder();
-        String expandedTitle = Utils.expandedTitleOrStatus(ewd.latestData);
-        if (!TextUtils.isEmpty(expandedTitle)) {
-            statusContentDescription.append(expandedTitle);
+        String statusContentDescription = ewd.latestData.contentDescription();
+        if (TextUtils.isEmpty(statusContentDescription)) {
+            StringBuilder builder = new StringBuilder();
+            String expandedTitle = Utils.expandedTitleOrStatus(ewd.latestData);
+            if (!TextUtils.isEmpty(expandedTitle)) {
+                builder.append(expandedTitle);
+            }
+            String expandedBody = ewd.latestData.expandedBody();
+            if (!TextUtils.isEmpty(expandedBody)) {
+                builder.append(" ").append(expandedBody);
+            }
+            statusContentDescription = builder.toString();
         }
-        String expandedBody = ewd.latestData.expandedBody();
-        if (!TextUtils.isEmpty(expandedBody)) {
-            statusContentDescription.append(" ").append(expandedBody);
-        }
-        vb.setViewContentDescription(R.id.collapsed_extension_text,
-                statusContentDescription.toString());
+        vb.setViewContentDescription(R.id.collapsed_extension_text, statusContentDescription);
 
         vb.setImageViewBitmap(R.id.collapsed_extension_icon,
                 Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
@@ -322,7 +325,18 @@ public abstract class DashClockRenderer {
         vb.setImageViewBitmap(R.id.icon,
                 Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
                         ewd.latestData.icon()));
-        vb.setViewContentDescription(R.id.icon, ewd.listing.title);
+        String contentDescription = ewd.latestData.contentDescription();
+        if (TextUtils.isEmpty(contentDescription)) {
+            // No specific content description provided. Just set the minimal extra content
+            // description for the icon.
+            vb.setViewContentDescription(R.id.icon, ewd.listing.title);
+        } else {
+            // Content description for the entire row provided. Use it!
+            vb.setViewContentDescription(R.id.list_item,
+                    ewd.listing.title + ". " + contentDescription);
+            vb.setViewContentDescription(R.id.text1, "."); // silence title
+            vb.setViewContentDescription(R.id.text2, "."); // silence body
+        }
 
         Intent clickIntent = ewd.latestData.clickIntent();
         if (clickIntent != null) {

@@ -49,7 +49,7 @@
         android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
         android:label="@string/permission_label_read_extension_data"
         android:description="@string/permission_desc_read_extension_data"
-        android:protectionLevel="signature" />
+        android:protectionLevel="normal" />
 
     <uses-permission android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" />
 
@@ -61,7 +61,8 @@
         android:backupAgent="com.google.android.apps.dashclock.BackupAgent"
         android:restoreAnyVersion="true">
 
-        <receiver android:name="com.google.android.apps.dashclock.WidgetProvider" android:label="@string/widget_label">
+        <receiver android:name="com.google.android.apps.dashclock.WidgetProvider"
+            android:label="@string/widget_label">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -75,7 +76,14 @@
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false" />
 
-        <service android:name="com.google.android.apps.dashclock.DashClockService" />
+        <service android:name="com.google.android.apps.dashclock.DashClockService"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
+            android:exported="true">
+            <!-- Private Read API -->
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.action.BIND_SERVICE" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
@@ -120,6 +128,7 @@
 
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/weather_extension_description" />
             <meta-data android:name="settingsActivity"
@@ -141,6 +150,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/next_alarm_extension_description" />
         </service>
@@ -155,6 +165,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/gmail_extension_description" />
             <meta-data android:name="settingsActivity"
@@ -174,6 +185,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/calendar_extension_description" />
             <meta-data android:name="settingsActivity"
@@ -193,6 +205,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/missed_calls_extension_description" />
         </service>
@@ -207,6 +220,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/sms_extension_description" />
         </service>

@@ -19,6 +19,7 @@ package com.google.android.apps.dashclock.configuration;
 import com.google.android.apps.dashclock.ExtensionHost;
 import com.google.android.apps.dashclock.ExtensionManager;
 import com.google.android.apps.dashclock.Utils;
+import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
 
 import com.mobeta.android.dslv.DragSortController;
@@ -511,8 +512,10 @@ public class ConfigureExtensionsFragment extends Fragment implements
                             @Override
                             public void onClick(View view) {
                                 try {
-                                    startActivity(new Intent().setComponent(
-                                            listing.settingsActivity));
+                                    startActivity(new Intent()
+                                            .setComponent(listing.settingsActivity)
+                                            .putExtra(DashClockExtension
+                                                    .EXTRA_FROM_DASHCLOCK_SETTINGS, true));
                                 } catch (ActivityNotFoundException e) {
                                     // TODO: show error to user
                                 } catch (SecurityException e) {
