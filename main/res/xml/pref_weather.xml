@@ -26,6 +26,10 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
+    <com.google.android.apps.dashclock.weather.WeatherLocationPreference
+        android:key="pref_weather_location"
+        android:title="@string/pref_weather_location_title" />
+
     <com.google.android.apps.dashclock.configuration.AppChooserPreference
         android:key="pref_weather_shortcut"
         android:title="@string/pref_shortcut_title"

@@ -26,6 +26,8 @@ public class WeatherData {
     public static final int INVALID_CONDITION = -1;
 
     public int temperature = INVALID_TEMPERATURE;
+    public int low = INVALID_TEMPERATURE;
+    public int high = INVALID_TEMPERATURE;
     public int conditionCode = INVALID_CONDITION;
     public int todayForecastConditionCode = INVALID_CONDITION;
     public String conditionText;
@@ -33,10 +35,6 @@ public class WeatherData {
     public String location;
 
     public WeatherData() {
-    }
-
-    public boolean hasValidTemperature() {
-        return temperature > Integer.MIN_VALUE;
     }
 
     public static int getConditionIconId(int conditionCode) {

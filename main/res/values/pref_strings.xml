@@ -51,6 +51,10 @@
         <item>f</item>
         <item>c</item>
     </string-array>
+    <string name="pref_weather_location_title">Location</string>
+    <string name="pref_weather_location_query_hint">Find a location</string>
+    <string name="pref_weather_location_automatic">Automatic</string>
+    <string name="pref_weather_location_automatic_description">Based on your current location.</string>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Show unread count for label</string>

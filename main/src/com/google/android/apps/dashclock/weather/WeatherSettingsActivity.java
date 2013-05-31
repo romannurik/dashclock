@@ -42,5 +42,6 @@ public class WeatherSettingsActivity extends BaseSettingsActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_UNITS));
         bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_SHORTCUT));
+        bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_LOCATION));
     }
 }

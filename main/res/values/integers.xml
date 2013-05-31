@@ -15,6 +15,6 @@
   -->
 
 <resources>
-    <integer name="current_extension_protocol_version">1</integer>
+    <integer name="current_extension_protocol_version">2</integer>
     <item name="secondary_item" format="float" type="alpha">0.5</item>
 </resources>

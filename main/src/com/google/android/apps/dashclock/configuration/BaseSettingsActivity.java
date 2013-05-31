@@ -28,6 +28,8 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.google.android.apps.dashclock.weather.WeatherLocationPreference;
+
 /**
  * A base activity for extension configuration activities.
  */
@@ -104,6 +106,10 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
 
             } else if (preference instanceof AppChooserPreference) {
                 preference.setSummary(AppChooserPreference.getDisplayValue(
+                        preference.getContext(), stringValue));
+
+            } else if (preference instanceof WeatherLocationPreference) {
+                preference.setSummary(WeatherLocationPreference.getDisplayValue(
                         preference.getContext(), stringValue));
 
             } else {
