@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class GmailExtension extends DashClockExtension {
     public static final String PREF_LABEL = "pref_gmail_label";
 
     private static final String ACCOUNT_TYPE_GOOGLE = "com.google";
+
+    private static final String SECTIONED_INBOX_CANONICAL_NAME_PREFIX = "^sq_ig_i_";
 
     //private static final String[] FEATURES_MAIL = {"service_mail"};
 
@@ -113,13 +116,23 @@ public class GmailExtension extends DashClockExtension {
                 continue;
             }
 
+            int accountUnread = 0;
+
             while (cursor.moveToNext()) {
-                if (labelCanonical.equals(cursor.getString(LabelsQuery.CANONICAL_NAME))) {
-                    int unreadThisAccount = cursor.getInt(LabelsQuery.NUM_UNREAD_CONVERSATIONS);
-                    unreadPerAccount.add(new Pair<String, Integer>(account, unreadThisAccount));
-                    unread += unreadThisAccount;
+                int thisUnread = cursor.getInt(LabelsQuery.NUM_UNREAD_CONVERSATIONS);
+                String thisCanonicalName = cursor.getString(LabelsQuery.CANONICAL_NAME);
+                if (labelCanonical.equals(thisCanonicalName)) {
+                    accountUnread = thisUnread;
                     break;
+                } else if (!TextUtils.isEmpty(thisCanonicalName)
+                        && thisCanonicalName.startsWith(SECTIONED_INBOX_CANONICAL_NAME_PREFIX)) {
+                    accountUnread += thisUnread;
                 }
+            }
+
+            if (accountUnread > 0) {
+                unreadPerAccount.add(new Pair<String, Integer>(account, accountUnread));
+                unread += accountUnread;
             }
 
             cursor.close();
