@@ -22,6 +22,7 @@
 
     <TextClock
         style="@style/TimeComponent"
+        android:id="@id/large_time_component_1"
         android:format12Hour="h"
         android:format24Hour="kk"
         android:fontFamily="sans-serif"
@@ -29,6 +30,7 @@
 
     <TextClock
         style="@style/TimeComponent"
+        android:id="@id/large_time_component_2"
         android:format12Hour=":mm"
         android:format24Hour=":mm"
         android:fontFamily="sans-serif-thin" />

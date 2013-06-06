@@ -16,6 +16,7 @@
 
 <TextClock xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/TimeComponent"
+    android:id="@id/small_time_component_1"
     android:format12Hour="h:mm"
     android:format24Hour="kk:mm"
     android:fontFamily="sans-serif-condensed"

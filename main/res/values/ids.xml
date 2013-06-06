@@ -14,9 +14,16 @@
   limitations under the License.
   -->
 
-<TextClock xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/TimeComponent"
-    android:id="@id/large_time_component_1"
-    android:format12Hour="h:mm"
-    android:format24Hour="kk:mm"
-    android:fontFamily="sans-serif-thin" />
+<resources>
+    <item type="id" name="large_time_component_1" />
+    <item type="id" name="large_time_component_2" />
+    <item type="id" name="large_time_component_3" />
+
+    <item type="id" name="small_time_component_1" />
+    <item type="id" name="small_time_component_2" />
+    <item type="id" name="small_time_component_3" />
+
+    <item type="id" name="date_component_1" />
+    <item type="id" name="date_component_2" />
+    <item type="id" name="date_component_3" />
+</resources>

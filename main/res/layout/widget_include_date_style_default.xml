@@ -22,12 +22,14 @@
 
     <TextClock
         style="@style/DateComponent"
+        android:id="@id/date_component_1"
         android:textAllCaps="true"
         android:format12Hour="E"
         android:format24Hour="E" />
 
     <TextClock
         style="@style/DateComponent"
+        android:id="@id/date_component_2"
         android:layout_marginLeft="6sp"
         android:layout_marginRight="6sp"
         android:format12Hour="dd"
@@ -37,6 +39,7 @@
 
     <TextClock
         style="@style/DateComponent"
+        android:id="@id/date_component_3"
         android:textAllCaps="true"
         android:format12Hour="MMM"
         android:format24Hour="MMM" />

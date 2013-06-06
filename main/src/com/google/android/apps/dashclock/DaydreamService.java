@@ -214,12 +214,14 @@ public class DaydreamService extends DreamService implements
 
         DisplayMetrics displayMetrics = res.getDisplayMetrics();
 
+        int screenWidthDp = (int) (displayMetrics.widthPixels * 1f / displayMetrics.density);
         int screenHeightDp = (int) (displayMetrics.heightPixels * 1f / displayMetrics.density);
 
         // Set up rendering
         SimpleRenderer renderer = new SimpleRenderer(this);
         DashClockRenderer.Options options = new DashClockRenderer.Options();
         options.target = DashClockRenderer.Options.TARGET_DAYDREAM;
+        options.minWidthDp = screenWidthDp;
         options.minHeightDp = screenHeightDp;
         options.newTaskOnClick = true;
         options.onClickListener = this;

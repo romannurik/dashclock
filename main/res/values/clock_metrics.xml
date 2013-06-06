@@ -27,6 +27,10 @@
     <dimen name="clock_margin_offset">10dp</dimen>
     <dimen name="analog_clock_size">74dp</dimen>
 
+    <!-- Mini mode for other layouts -->
+    <dimen name="mini_clock_text_size_large">64dp</dimen>
+    <dimen name="mini_clock_text_size_small">42dp</dimen>
+
     <dimen name="extension_collapsed_text_size_single_line">16dp</dimen>
     <dimen name="extension_collapsed_text_size_two_line">10dp</dimen>
 

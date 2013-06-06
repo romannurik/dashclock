@@ -156,6 +156,9 @@ public abstract class DashClockRenderer {
                             : (clockCentered ? View.INVISIBLE : View.GONE));
 
             int clockLeftMargin = res.getDimensionPixelSize(R.dimen.clock_left_margin);
+            if (!isExpanded && mOptions.target == Options.TARGET_HOME_SCREEN) {
+                clockLeftMargin = 0;
+            }
             vb.setViewPadding(R.id.clock_row, clockCentered ? 0 : clockLeftMargin,
                     0, 0, 0);
         }
@@ -215,7 +218,7 @@ public abstract class DashClockRenderer {
         return vb.getRoot();
     }
 
-    public  void renderClockFace(ViewBuilder vb) {
+    public void renderClockFace(ViewBuilder vb) {
         vb.removeAllViews(R.id.time_container);
         vb.addView(R.id.time_container,
                 vb.inflateChildLayout(
@@ -226,6 +229,18 @@ public abstract class DashClockRenderer {
                 vb.inflateChildLayout(
                         AppearanceConfig.getCurrentDateLayout(mContext),
                         R.id.date_container));
+
+        if (mOptions.minWidthDp < 300) {
+            Resources res = mContext.getResources();
+            int miniTextSizeLargePx = res.getDimensionPixelSize(R.dimen.mini_clock_text_size_large);
+            int miniTextSizeSmallPx = res.getDimensionPixelSize(R.dimen.mini_clock_text_size_small);
+            for (int id : LARGE_TIME_COMPONENT_IDS) {
+                vb.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_PX, miniTextSizeLargePx);
+            }
+            for (int id : SMALL_TIME_COMPONENT_IDS) {
+                vb.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_PX, miniTextSizeSmallPx);
+            }
+        }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         Intent clockIntent = AppChooserPreference.getIntentValue(
@@ -359,6 +374,7 @@ public abstract class DashClockRenderer {
         public static final int TARGET_DAYDREAM = 2;
 
         public int target;
+        public int minWidthDp;
         public int minHeightDp;
 
         // Only used by WidgetRenderer
@@ -373,4 +389,22 @@ public abstract class DashClockRenderer {
     public static interface OnClickListener {
         void onClick();
     }
+
+    private static int[] LARGE_TIME_COMPONENT_IDS = {
+            R.id.large_time_component_1,
+            R.id.large_time_component_2,
+            R.id.large_time_component_3,
+    };
+
+    private static int[] SMALL_TIME_COMPONENT_IDS = {
+            R.id.small_time_component_1,
+            R.id.small_time_component_2,
+            R.id.small_time_component_3,
+    };
+
+    private static int[] DATE_COMPONENT_IDS = {
+            R.id.date_component_1,
+            R.id.date_component_2,
+            R.id.date_component_3,
+    };
 }

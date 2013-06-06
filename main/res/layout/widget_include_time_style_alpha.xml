@@ -22,12 +22,14 @@
 
     <TextClock
         style="@style/TimeComponent"
+        android:id="@id/large_time_component_1"
         android:format12Hour="h"
         android:format24Hour="kk"
         android:fontFamily="sans-serif-light" />
 
     <TextClock
         style="@style/TimeComponent"
+        android:id="@id/large_time_component_2"
         android:alpha="@alpha/secondary_item"
         android:format12Hour="mm"
         android:format24Hour="mm"

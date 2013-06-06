@@ -407,6 +407,7 @@ public class ExtensionHost {
         _createUpdateOperation(DashClockExtension.UPDATE_REASON_SETTINGS_CHANGED);
         _createUpdateOperation(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
         _createUpdateOperation(DashClockExtension.UPDATE_REASON_SCREEN_ON);
+        _createUpdateOperation(DashClockExtension.UPDATE_REASON_MANUAL);
     }
 
     private static void _createUpdateOperation(final int reason) {

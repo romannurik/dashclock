@@ -52,9 +52,12 @@ public class WidgetRenderer extends DashClockRenderer {
             Options options = new Options();
             options.appWidgetId = appWidgetId;
             options.target = Options.TARGET_HOME_SCREEN;
+            options.minWidthDp= Integer.MAX_VALUE;
             options.minHeightDp = Integer.MAX_VALUE;
             Bundle widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
             if (widgetOptions != null) {
+                options.minWidthDp = widgetOptions
+                        .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                 options.minHeightDp = widgetOptions
                         .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
                 options.target = (AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD ==

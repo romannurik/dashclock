@@ -16,6 +16,7 @@
 
 <TextClock
     style="@style/DateComponent"
+    android:id="@id/date_component_1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:fontFamily="sans-serif-condensed"
     android:textStyle="bold"

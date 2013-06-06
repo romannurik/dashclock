@@ -17,5 +17,6 @@
 <TextClock
     style="@style/DateComponent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/date_component_1"
     android:format12Hour="@string/simple_date_format"
     android:format24Hour="@string/simple_date_format" />
