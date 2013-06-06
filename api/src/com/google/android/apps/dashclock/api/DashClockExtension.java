@@ -89,7 +89,7 @@ import android.util.Log;
  *     &lt;intent-filter&gt;
  *         &lt;action android:name="com.google.android.apps.dashclock.Extension" /&gt;
  *     &lt;/intent-filter&gt;
- *     &lt;meta-data android:name="protocolVersion" android:value="1" /&gt;
+ *     &lt;meta-data android:name="protocolVersion" android:value="2" /&gt;
  *     &lt;meta-data android:name="worldReadable" android:value="true" /&gt;
  *     &lt;meta-data android:name="description"
  *         android:value="@string/extension_description" /&gt;
@@ -170,6 +170,14 @@ public abstract class DashClockExtension extends Service {
     public static final int UPDATE_REASON_SCREEN_ON = 5;
 
     /**
+     * Indicates that {@link #onUpdateData(int)} was triggered because the user explicitly requested
+     * that the extension be updated.
+     *
+     * @since v2
+     */
+    public static final int UPDATE_REASON_MANUAL = 6;
+
+    /**
      * The {@link Intent} action representing a DashClock extension. This service should
      * declare an <code>&lt;intent-filter&gt;</code> for this action in order to register with
      * DashClock.
@@ -180,6 +188,8 @@ public abstract class DashClockExtension extends Service {
      * Boolean extra that will be set to true when DashClock starts extension settings activities.
      * Check for this extra in your settings activity if you need to adjust your UI depending on
      * whether or not the user came from DashClock's settings screen.
+     *
+     * @since v2
      */
     public static final String EXTRA_FROM_DASHCLOCK_SETTINGS
             = "com.google.android.apps.dashclock.extra.FROM_DASHCLOCK_SETTINGS";
@@ -193,6 +203,8 @@ public abstract class DashClockExtension extends Service {
 
     /**
      * The protocol version with which the world readability option became available.
+     *
+     * @since v2
      */
     private static final int PROTOCOL_VERSION_WORLD_READABILITY = 2;
 

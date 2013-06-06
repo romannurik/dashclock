@@ -194,6 +194,11 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
                     }
                     return visibleExtensions;
                 }
+
+                @Override
+                public void updateExtensions() {
+                    handleUpdateExtensions(new Intent());
+                }
             };
         }
         return null;

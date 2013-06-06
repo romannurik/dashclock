@@ -62,6 +62,10 @@ public class WeatherExtension extends DashClockExtension {
 
     public static final String STATE_WEATHER_LAST_BACKOFF_MILLIS
             = "state_weather_last_backoff_millis";
+    public static final String STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS
+            = "state_weather_last_update_elapsed_millis";
+
+    private static final int UPDATE_THROTTLE_MILLIS = 10 * 3600000; // At least 10 min b/w updates
 
     private static final long STALE_LOCATION_NANOS = 10l * 60000000000l; // 10 minutes
 
@@ -109,14 +113,23 @@ public class WeatherExtension extends DashClockExtension {
 
     @Override
     protected void onUpdateData(int reason) {
-        LOGD(TAG, "Attempting weather update; reason=" + reason);
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sWeatherUnits = sp.getString(PREF_WEATHER_UNITS, sWeatherUnits);
         sWeatherIntent = AppChooserPreference.getIntentValue(
                 sp.getString(PREF_WEATHER_SHORTCUT, null), DEFAULT_WEATHER_INTENT);
         sManualLocationWoeid = WeatherLocationPreference.getWoeidFromValue(
                 sp.getString(PREF_WEATHER_LOCATION, null));
+
+        long lastUpdateElapsedMillis = sp.getLong(STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS,
+                -UPDATE_THROTTLE_MILLIS);
+        long nowElapsedMillis = SystemClock.elapsedRealtime();
+        if (reason != UPDATE_REASON_INITIAL && reason != UPDATE_REASON_MANUAL &&
+                nowElapsedMillis < lastUpdateElapsedMillis + UPDATE_THROTTLE_MILLIS) {
+            LOGD(TAG, "Throttling weather update attempt.");
+            return;
+        }
+
+        LOGD(TAG, "Attempting weather update; reason=" + reason);
 
         NetworkInfo ni = ((ConnectivityManager) getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -210,6 +223,10 @@ public class WeatherExtension extends DashClockExtension {
             }
             publishWeatherUpdate(weatherData);
             resetAndCancelRetries();
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            sp.edit().putLong(STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS,
+                    SystemClock.elapsedRealtime()).commit();
         } catch (CantGetWeatherException e) {
             publishErrorUpdate(e);
             if (e.isRetryable()) {

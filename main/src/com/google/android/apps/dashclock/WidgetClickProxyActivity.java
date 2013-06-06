@@ -50,9 +50,8 @@ public class WidgetClickProxyActivity extends Activity {
                 extensionUpdateIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
                 extensionUpdateIntent.putExtra(DashClockService.EXTRA_COMPONENT_NAME,
                         getIntent().getStringExtra(EXTRA_UPDATE_EXTENSION));
-                // TODO: new flag for UPDATE_REASON_CLICKED
                 extensionUpdateIntent.putExtra(DashClockService.EXTRA_UPDATE_REASON,
-                        DashClockExtension.UPDATE_REASON_PERIODIC);
+                        DashClockExtension.UPDATE_REASON_MANUAL);
                 startService(extensionUpdateIntent);
             }
 

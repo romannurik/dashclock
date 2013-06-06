@@ -22,4 +22,5 @@ import com.google.android.apps.dashclock.api.VisibleExtension;
 interface IDashClockDataProvider {
     // Gets the visible extension data.
     List<VisibleExtension> getVisibleExtensionData();
+    oneway void updateExtensions();
 }
