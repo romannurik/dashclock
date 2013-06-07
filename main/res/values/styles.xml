@@ -65,13 +65,13 @@
     <style name="ExtensionData.Icon.Collapsed">
         <item name="android:layout_width">@dimen/extension_icon_collapsed_size</item>
         <item name="android:layout_height">@dimen/extension_icon_collapsed_size</item>
-        <item name="android:alpha">@alpha/secondary_item</item>
+        <item name="android:alpha">@fraction/secondary_item</item>
     </style>
 
     <style name="ExtensionData.Text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:alpha">@alpha/secondary_item</item>
+        <item name="android:alpha">@fraction/secondary_item</item>
         <item name="android:textColor">#fff</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textStyle">bold</item>
