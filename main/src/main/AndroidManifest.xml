@@ -1,0 +1,260 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.nurik.roman.dashclock"
+    android:versionCode="1"
+    android:versionName="See version.properties">
+
+    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="17" />
+
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+
+    <!-- Weather permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Gmail permissions -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.gm.permission.READ_CONTENT_PROVIDER" />
+
+    <!-- Calendar permissions -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
+    <!-- Missed calls permissions -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
+    <!-- SMS permissions -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <!-- Next alarm permissions -->
+    <!--<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />-->
+
+    <permission
+        android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
+        android:label="@string/permission_label_read_extension_data"
+        android:description="@string/permission_desc_read_extension_data"
+        android:protectionLevel="normal" />
+
+    <uses-permission android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
+        android:backupAgent="com.google.android.apps.dashclock.BackupAgent"
+        android:restoreAnyVersion="true">
+
+        <receiver android:name="com.google.android.apps.dashclock.WidgetProvider"
+            android:label="@string/widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <service
+            android:name="com.google.android.apps.dashclock.render.WidgetRemoteViewsFactoryService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
+        <service android:name="com.google.android.apps.dashclock.DashClockService"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
+            android:exported="true">
+            <!-- Private Read API -->
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.action.BIND_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
+            android:label="@string/title_configure"
+            android:theme="@style/ConfigurationActivityTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+            <intent-filter android:label="@string/shortcut_label_configure">
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Proxy activity that handles widget clicks. -->
+
+        <activity
+            android:name="com.google.android.apps.dashclock.WidgetClickProxyActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+
+        <receiver android:name="com.google.android.apps.dashclock.ExtensionPackageChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- built-in extensions -->
+
+        <service
+            android:name="com.google.android.apps.dashclock.weather.WeatherExtension"
+            android:label="@string/weather_extension_title"
+            android:icon="@drawable/ic_weather_sunny"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter android:priority="100">
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+
+            <meta-data android:name="protocolVersion"
+                android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="description"
+                android:value="@string/weather_extension_description" />
+            <meta-data android:name="settingsActivity"
+                android:value="com.google.android.apps.dashclock.weather.WeatherSettingsActivity" />
+        </service>
+
+        <receiver android:name="com.google.android.apps.dashclock.weather.WeatherRetryReceiver" />
+
+        <activity android:name="com.google.android.apps.dashclock.weather.WeatherSettingsActivity"
+            android:label="@string/title_weather_settings" />
+
+        <service
+            android:name="com.google.android.apps.dashclock.nextalarm.NextAlarmExtension"
+            android:icon="@drawable/ic_extension_next_alarm"
+            android:label="@string/next_alarm_extension_title"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion"
+                android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="description"
+                android:value="@string/next_alarm_extension_description" />
+        </service>
+
+        <service
+            android:name="com.google.android.apps.dashclock.gmail.GmailExtension"
+            android:icon="@drawable/ic_extension_gmail"
+            android:label="@string/gmail_extension_title"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion"
+                android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="description"
+                android:value="@string/gmail_extension_description" />
+            <meta-data android:name="settingsActivity"
+                android:value="com.google.android.apps.dashclock.gmail.GmailSettingsActivity" />
+        </service>
+
+        <activity android:name="com.google.android.apps.dashclock.gmail.GmailSettingsActivity"
+            android:label="@string/title_gmail_settings" />
+
+        <service
+            android:name="com.google.android.apps.dashclock.calendar.CalendarExtension"
+            android:icon="@drawable/ic_extension_calendar"
+            android:label="@string/calendar_extension_title"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion"
+                android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="description"
+                android:value="@string/calendar_extension_description" />
+            <meta-data android:name="settingsActivity"
+                android:value="com.google.android.apps.dashclock.calendar.CalendarSettingsActivity" />
+        </service>
+
+        <activity android:name="com.google.android.apps.dashclock.calendar.CalendarSettingsActivity"
+            android:label="@string/title_calendar_settings" />
+
+        <service
+            android:name="com.google.android.apps.dashclock.phone.MissedCallsExtension"
+            android:icon="@drawable/ic_extension_missed_calls"
+            android:label="@string/missed_calls_extension_title"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion"
+                android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="description"
+                android:value="@string/missed_calls_extension_description" />
+        </service>
+
+        <service
+            android:name="com.google.android.apps.dashclock.phone.SmsExtension"
+            android:icon="@drawable/ic_extension_sms"
+            android:label="@string/sms_extension_title"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion"
+                android:value="@integer/current_extension_protocol_version" />
+            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="description"
+                android:value="@string/sms_extension_description" />
+        </service>
+
+        <!-- Daydream -->
+
+        <activity
+            android:name="com.google.android.apps.dashclock.configuration.DaydreamProxyActivity"
+            android:theme="@style/ConfigurationActivityTheme" />
+
+        <!--suppress AndroidLintExportedService -->
+        <service
+            android:name="com.google.android.apps.dashclock.DaydreamService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.dream"
+                android:resource="@xml/daydream_info" />
+        </service>
+
+        <!-- For the Android Backup Service -->
+
+        <meta-data android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIa1QlfEeCheCwYdoLcnkacrOnV27ypQaB8qfgLg" />
+
+        <!-- For sending logs as attachments -->
+
+        <provider android:name="com.google.android.apps.dashclock.LogAttachmentProvider"
+            android:authorities="com.google.android.apps.dashclock.logs"
+            android:exported="true" />
+
+    </application>
+
+</manifest>

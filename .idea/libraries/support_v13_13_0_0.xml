@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="support-v13-13.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../lib/android-sdk-current/extras/android/m2repository/com/android/support/support-v13/13.0.0/support-v13-13.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
