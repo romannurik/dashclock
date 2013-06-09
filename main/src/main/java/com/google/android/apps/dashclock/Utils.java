@@ -16,20 +16,13 @@
 
 package com.google.android.apps.dashclock;
 
-import com.google.android.apps.dashclock.api.ExtensionData;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -38,6 +31,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.phone.MissedCallsExtension;
+import com.google.android.apps.dashclock.phone.SmsExtension;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -218,6 +215,23 @@ public class Utils {
             } else {
                 textView.setTextColor(color);
             }
+        }
+    }
+
+    private static Class[] sPhoneOnlyExtensions = {
+            SmsExtension.class,
+            MissedCallsExtension.class,
+    };
+
+    public static void enableDisablePhoneOnlyExtensions(Context context) {
+        PackageManager pm = context.getPackageManager();
+        boolean hasTelephony = pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+
+        for (Class ext : sPhoneOnlyExtensions) {
+            pm.setComponentEnabledSetting(new ComponentName(context, ext), hasTelephony
+                    ? PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
+                    : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
         }
     }
 }

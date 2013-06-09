@@ -19,6 +19,7 @@ package com.google.android.apps.dashclock.configuration;
 import com.google.android.apps.dashclock.DashClockService;
 import com.google.android.apps.dashclock.HelpUtils;
 import com.google.android.apps.dashclock.LogUtils;
+import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 
 import net.nurik.roman.dashclock.BuildConfig;
@@ -83,6 +84,8 @@ public class ConfigurationActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Utils.enableDisablePhoneOnlyExtensions(this);
 
         Intent intent = getIntent();
         if (intent != null) {
