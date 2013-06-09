@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        mavenLocal()
         maven { url 'http://repo1.maven.org/maven2' }
     }
     dependencies {
@@ -12,9 +11,14 @@ project.archivesBaseName = "dashclock"
 
 apply plugin: 'android'
 
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
 dependencies {
     compile 'com.android.support:support-v13:13.0.0'
-//    compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1-SNAPSHOT'
+    compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1-SNAPSHOT-AAR'
     compile project(':api')
 }
 
