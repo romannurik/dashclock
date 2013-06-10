@@ -10,7 +10,6 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
-    //compile files('../api/build/libs/api.jar')
     compile project(':api')
 }
 

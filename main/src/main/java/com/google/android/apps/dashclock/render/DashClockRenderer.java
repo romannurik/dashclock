@@ -300,7 +300,7 @@ public abstract class DashClockRenderer {
 
         vb.setImageViewBitmap(R.id.collapsed_extension_icon,
                 Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
-                        ewd.latestData.icon()));
+                        ewd.latestData.icon(), ewd.latestData.iconUri()));
         vb.setViewContentDescription(R.id.collapsed_extension_icon, ewd.listing.title);
 
         Intent clickIntent = ewd.latestData.clickIntent();
@@ -339,7 +339,7 @@ public abstract class DashClockRenderer {
 
         vb.setImageViewBitmap(R.id.icon,
                 Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
-                        ewd.latestData.icon()));
+                        ewd.latestData.icon(), ewd.latestData.iconUri()));
         String contentDescription = ewd.latestData.contentDescription();
         if (TextUtils.isEmpty(contentDescription)) {
             // No specific content description provided. Just set the minimal extra content

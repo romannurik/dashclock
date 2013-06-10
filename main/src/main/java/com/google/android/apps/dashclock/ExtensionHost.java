@@ -269,6 +269,12 @@ public class ExtensionHost {
             }
 
             @Override
+            public void removeAllWatchContentUris() throws RemoteException {
+                ContentResolver resolver = mContext.getContentResolver();
+                resolver.unregisterContentObserver(conn.contentObserver);
+            }
+
+            @Override
             public void setUpdateWhenScreenOn(boolean updateWhenScreenOn) throws RemoteException {
                 synchronized (mExtensionsToUpdateWhenScreenOn) {
                     if (updateWhenScreenOn) {

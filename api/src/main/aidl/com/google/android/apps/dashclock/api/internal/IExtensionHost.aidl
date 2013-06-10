@@ -33,4 +33,6 @@ interface IExtensionHost {
     oneway void addWatchContentUris(in String[] contentUris);
     oneway void setUpdateWhenScreenOn(boolean updateWhenScreenOn);
     // Protcol version 2 below
+    oneway void removeAllWatchContentUris();
+    // Protcol version 3 below
 }

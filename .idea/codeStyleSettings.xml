@@ -43,6 +43,7 @@
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
         <codeStyleSettings language="JAVA">
+          <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
           <arrangement>
             <groups>
               <group>

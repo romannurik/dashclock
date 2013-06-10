@@ -16,15 +16,15 @@
 
 package com.google.android.apps.dashclock.api;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
@@ -76,6 +76,7 @@ public class ExtensionData implements Parcelable {
 
     private static final String KEY_VISIBLE = "visible";
     private static final String KEY_ICON = "icon";
+    private static final String KEY_ICON_URI = "icon_uri";
     private static final String KEY_STATUS = "status";
     private static final String KEY_EXPANDED_TITLE = "title";
     private static final String KEY_EXPANDED_BODY = "body";
@@ -105,6 +106,7 @@ public class ExtensionData implements Parcelable {
 
     private boolean mVisible = false;
     private int mIcon = 0;
+    private Uri mIconUri = null;
     private String mStatus = null;
     private String mExpandedTitle = null;
     private String mExpandedBody = null;
@@ -132,7 +134,7 @@ public class ExtensionData implements Parcelable {
     }
 
     /**
-     * Returns the ID of the resource within the extension's package that represents this
+     * Returns the ID of the drawable resource within the extension's package that represents this
      * data. Default 0.
      */
     public int icon() {
@@ -140,13 +142,39 @@ public class ExtensionData implements Parcelable {
     }
 
     /**
-     * Sets the ID of the resource within the extension's package that represents this
+     * Sets the ID of the drawable resource within the extension's package that represents this
      * data. The icon should be entirely white, with alpha, and about 48x48 dp. It will be
      * scaled down as needed. If there is no contextual icon representation of the data, simply
-     * use the extension or app icon. Default 0.
+     * use the extension or app icon. If an {@link #iconUri(Uri) iconUri} is provided, it
+     * will take precedence over this value. Default 0.
+     *
+     * @see #iconUri(Uri)
      */
     public ExtensionData icon(int icon) {
         mIcon = icon;
+        return this;
+    }
+
+    /**
+     * Returns the content:// URI of a bitmap representing this data. Default null.
+     *
+     * @since v2
+     */
+    public Uri iconUri() {
+        return mIconUri;
+    }
+
+    /**
+     * Sets the content:// URI of the bitmap representing this data. This takes precedence over
+     * the regular {@link #icon(int) icon resource ID} if set. This resource will be loaded
+     * using {@link android.content.ContentResolver#openFileDescriptor(android.net.Uri, String)} and
+     * {@link android.graphics.BitmapFactory#decodeFileDescriptor(java.io.FileDescriptor)}. See the
+     * {@link #icon(int) icon} method for guidelines on the styling of this bitmap.
+     *
+     * @since v2
+     */
+    public ExtensionData iconUri(Uri iconUri) {
+        mIconUri = iconUri;
         return this;
     }
 
@@ -254,6 +282,7 @@ public class ExtensionData implements Parcelable {
         JSONObject data = new JSONObject();
         data.put(KEY_VISIBLE, mVisible);
         data.put(KEY_ICON, mIcon);
+        data.put(KEY_ICON_URI, (mIconUri == null ? null : mIconUri.toString()));
         data.put(KEY_STATUS, mStatus);
         data.put(KEY_EXPANDED_TITLE, mExpandedTitle);
         data.put(KEY_EXPANDED_BODY, mExpandedBody);
@@ -269,6 +298,8 @@ public class ExtensionData implements Parcelable {
     public void deserialize(JSONObject data) throws JSONException {
         this.mVisible = data.optBoolean(KEY_VISIBLE);
         this.mIcon = data.optInt(KEY_ICON);
+        String iconUriString = data.optString(KEY_ICON_URI);
+        this.mIconUri = TextUtils.isEmpty(iconUriString) ? null : Uri.parse(iconUriString);
         this.mStatus = data.optString(KEY_STATUS);
         this.mExpandedTitle = data.optString(KEY_EXPANDED_TITLE);
         this.mExpandedBody = data.optString(KEY_EXPANDED_BODY);
@@ -286,6 +317,7 @@ public class ExtensionData implements Parcelable {
         Bundle data = new Bundle();
         data.putBoolean(KEY_VISIBLE, mVisible);
         data.putInt(KEY_ICON, mIcon);
+        data.putString(KEY_ICON_URI, (mIconUri == null ? null : mIconUri.toString()));
         data.putString(KEY_STATUS, mStatus);
         data.putString(KEY_EXPANDED_TITLE, mExpandedTitle);
         data.putString(KEY_EXPANDED_BODY, mExpandedBody);
@@ -301,6 +333,8 @@ public class ExtensionData implements Parcelable {
     public void fromBundle(Bundle src) {
         this.mVisible = src.getBoolean(KEY_VISIBLE, true);
         this.mIcon = src.getInt(KEY_ICON);
+        String iconUriString = src.getString(KEY_ICON_URI);
+        this.mIconUri = TextUtils.isEmpty(iconUriString) ? null : Uri.parse(iconUriString);
         this.mStatus = src.getString(KEY_STATUS);
         this.mExpandedTitle = src.getString(KEY_EXPANDED_TITLE);
         this.mExpandedBody = src.getString(KEY_EXPANDED_BODY);
@@ -354,6 +388,8 @@ public class ExtensionData implements Parcelable {
             if (TextUtils.isEmpty(this.mContentDescription)) {
                 this.mContentDescription = null;
             }
+            String iconUriString = in.readString();
+            this.mIconUri = TextUtils.isEmpty(iconUriString) ? null : Uri.parse(iconUriString);
         }
         // Only advance the data position if the parcelable version is >= 2. In v1 of the
         // parcelable, there was an awful bug where the parcelableSize was complete nonsense.
@@ -383,6 +419,7 @@ public class ExtensionData implements Parcelable {
         parcel.writeString((mClickIntent == null) ? "" : mClickIntent.toUri(0));
         // Version 2 below
         parcel.writeString(TextUtils.isEmpty(mContentDescription) ? "" : mContentDescription);
+        parcel.writeString(mIconUri == null ? "" : mIconUri.toString());
         // Go back and write the size
         int parcelableSize = parcel.dataPosition() - startPosition;
         parcel.setDataPosition(sizePosition);
@@ -406,6 +443,7 @@ public class ExtensionData implements Parcelable {
             ExtensionData other = (ExtensionData) o;
             return other.mVisible == mVisible
                     && other.mIcon == mIcon
+                    && objectEquals(other.mIconUri, mIconUri)
                     && TextUtils.equals(other.mStatus, mStatus)
                     && TextUtils.equals(other.mExpandedTitle, mExpandedTitle)
                     && TextUtils.equals(other.mExpandedBody, mExpandedBody)

@@ -26,9 +26,12 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +39,9 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.phone.MissedCallsExtension;
 import com.google.android.apps.dashclock.phone.SmsExtension;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -115,7 +120,12 @@ public class Utils {
         return getDefaultClockIntent(context);
     }
 
-    public static Bitmap loadExtensionIcon(Context context, ComponentName extension, int icon) {
+    public static Bitmap loadExtensionIcon(Context context, ComponentName extension,
+            int icon, Uri iconUri) {
+        if (iconUri != null) {
+            return loadExtensionIconFromUri(context, iconUri);
+        }
+
         if (icon <= 0) {
             return null;
         }
@@ -149,6 +159,42 @@ public class Utils {
 
         } catch (PackageManager.NameNotFoundException e) {
             LOGE(TAG, "Couldn't access extension's package while loading icon data.");
+        }
+
+        return null;
+    }
+
+    public static Bitmap loadExtensionIconFromUri(Context context, Uri iconUri) {
+        try {
+            ParcelFileDescriptor pfd = context.getContentResolver()
+                    .openFileDescriptor(iconUri, "r");
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor(), null, options);
+
+            // Cut down the icon to a smaller size.
+            int sampleSize = 1;
+            while (true) {
+                if (options.outHeight / (sampleSize * 2) > Utils.EXTENSION_ICON_SIZE / 2) {
+                    sampleSize *= 2;
+                } else {
+                    break;
+                }
+            }
+
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = sampleSize;
+
+            return Utils.flattenExtensionIcon(
+                    context,
+                    BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor(), null, options),
+                    0xffffffff);
+
+        } catch (IOException e) {
+            LOGE(TAG, "Couldn't read icon from content URI.", e);
+        } catch (SecurityException e) {
+            LOGE(TAG, "Couldn't read icon from content URI.", e);
         }
 
         return null;

@@ -375,6 +375,21 @@ public abstract class DashClockExtension extends Service {
     }
 
     /**
+     * Requests that the main DashClock app stop watching all content URIs previously registered
+     * with {@link #addWatchContentUris(String[])} for this extension.
+     *
+     * @param uris The URIs to watch.
+     * @since v2
+     */
+    protected final void removeAllWatchContentUris() {
+        try {
+            mHost.removeAllWatchContentUris();
+        } catch (RemoteException e) {
+            Log.e(TAG, "Couldn't stop watching content URIs.", e);
+        }
+    }
+
+    /**
      * Requests that the main DashClock app call (or not call) this extension's
      * {@link #onUpdateData(int)} method when the screen turns on (the phone resumes from idle).
      * This should generally be called in the {@link #onInitialize(boolean)} method. By default,
