@@ -14,7 +14,8 @@
   limitations under the License.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/net.nurik.roman.dashclock">
 
     <com.google.android.apps.dashclock.configuration.ColorPreference
         android:key="pref_daydream_color"
@@ -22,7 +23,10 @@
         android:summary="@string/pref_daydream_color_description"
         android:defaultValue="@android:color/white"
         android:negativeButtonText="@null"
-        android:positiveButtonText="@null" />
+        android:positiveButtonText="@null"
+        app:numColumns="5"
+        app:itemLayout="@layout/grid_item_color"
+        app:choices="@array/daydream_color_choice_values" />
 
     <ListPreference
         android:key="pref_daydream_animation"

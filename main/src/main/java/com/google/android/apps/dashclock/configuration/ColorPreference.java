@@ -29,18 +29,13 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,53 +44,56 @@ import java.util.List;
  * A preference that allows the user to choose an application or shortcut.
  */
 public class ColorPreference extends Preference {
-    private static int[] COLOR_CHOICES = new int[]{
-            0xff33b5e5,
-            0xffaa66cc,
-            0xff99cc00,
-            0xffffbb33,
-            0xffff4444,
-
-            0xff0099cc,
-            0xff9933cc,
-            0xff669900,
-            0xffff8800,
-            0xffcc0000,
-
-            0xffffffff,
-            0xffeeeeee,
-            0xffcccccc,
-            0xff888888,
-    };
-
+    private int[] mColorChoices = {};
     private int mValue = 0;
-    private Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
-    private ImageView mPreviewView;
+    private int mItemLayoutId = R.layout.grid_item_color;
+    private int mNumColumns = 5;
+    private View mPreviewView;
 
     public ColorPreference(Context context) {
         super(context);
-        init();
+        initAttrs(null, 0);
     }
 
     public ColorPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        initAttrs(attrs, 0);
     }
 
     public ColorPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        initAttrs(attrs, defStyle);
     }
 
-    private void init() {
-        setWidgetLayoutResource(R.layout.grid_item_color);
+    private void initAttrs(AttributeSet attrs, int defStyle) {
+        TypedArray a = getContext().getTheme().obtainStyledAttributes(
+                attrs, R.styleable.ColorPreference, defStyle, defStyle);
+
+        try {
+            mItemLayoutId = a.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
+            mNumColumns = a.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
+            int choicesResId = a.getResourceId(R.styleable.ColorPreference_choices,
+                    R.array.default_color_choice_values);
+            if (choicesResId > 0) {
+                String[] choices = a.getResources().getStringArray(choicesResId);
+                mColorChoices = new int[choices.length];
+                for (int i = 0; i < choices.length; i++) {
+                    mColorChoices[i] = Color.parseColor(choices[i]);
+                }
+            }
+
+        } finally {
+            a.recycle();
+        }
+
+        setWidgetLayoutResource(mItemLayoutId);
     }
 
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
-        mPreviewView = (ImageView) view.findViewById(R.id.color_view);
-        setColorImageViewValue(mPreviewView, mValue);
+        mPreviewView = view.findViewById(R.id.color_view);
+        setColorViewValue(mPreviewView, mValue);
     }
 
     public void setValue(int value) {
@@ -179,11 +177,12 @@ public class ColorPreference extends Preference {
             View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
 
             mColorGrid = (GridView) rootView.findViewById(R.id.color_grid);
+            mColorGrid.setNumColumns(mPreference.mNumColumns);
             mColorGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> listView, View view,
                         int position, long itemId) {
-                    mPreference.setValue((Integer) mAdapter.getItem(position));
+                    mPreference.setValue(mAdapter.getItem(position));
                     dismiss();
                 }
             });
@@ -215,7 +214,7 @@ public class ColorPreference extends Preference {
             private int mSelectedColor;
 
             private ColorGridAdapter() {
-                for (int color : COLOR_CHOICES) {
+                for (int color : mPreference.mColorChoices) {
                     mChoices.add(color);
                 }
             }
@@ -226,7 +225,7 @@ public class ColorPreference extends Preference {
             }
 
             @Override
-            public Object getItem(int position) {
+            public Integer getItem(int position) {
                 return mChoices.get(position);
             }
 
@@ -239,12 +238,11 @@ public class ColorPreference extends Preference {
             public View getView(int position, View convertView, ViewGroup container) {
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getActivity())
-                            .inflate(R.layout.grid_item_color, container, false);
+                            .inflate(mPreference.mItemLayoutId, container, false);
                 }
 
-                int color = mChoices.get(position);
-                setColorImageViewValue((ImageView) convertView.findViewById(R.id.color_view),
-                        color);
+                int color = getItem(position);
+                setColorViewValue(convertView.findViewById(R.id.color_view), color);
                 convertView.setBackgroundColor(color == mSelectedColor
                         ? 0x6633b5e5 : 0);
 
@@ -258,28 +256,34 @@ public class ColorPreference extends Preference {
         }
     }
 
-    private static void setColorImageViewValue(ImageView imageView, int color) {
-        Resources res = imageView.getContext().getResources();
+    private static void setColorViewValue(View view, int color) {
+        if (view instanceof ImageView) {
+            ImageView imageView = (ImageView) view;
+            Resources res = imageView.getContext().getResources();
 
-        Drawable currentDrawable = imageView.getDrawable();
-        GradientDrawable colorChoiceDrawable;
-        if (currentDrawable != null && currentDrawable instanceof GradientDrawable) {
-            // Reuse drawable
-            colorChoiceDrawable = (GradientDrawable) currentDrawable;
-        } else {
-            colorChoiceDrawable = new GradientDrawable();
-            colorChoiceDrawable.setShape(GradientDrawable.OVAL);
+            Drawable currentDrawable = imageView.getDrawable();
+            GradientDrawable colorChoiceDrawable;
+            if (currentDrawable != null && currentDrawable instanceof GradientDrawable) {
+                // Reuse drawable
+                colorChoiceDrawable = (GradientDrawable) currentDrawable;
+            } else {
+                colorChoiceDrawable = new GradientDrawable();
+                colorChoiceDrawable.setShape(GradientDrawable.OVAL);
+            }
+
+            // Set stroke to dark version of color
+            int darkenedColor = Color.rgb(
+                    Color.red(color) * 192 / 256,
+                    Color.green(color) * 192 / 256,
+                    Color.blue(color) * 192 / 256);
+
+            colorChoiceDrawable.setColor(color);
+            colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 1, res.getDisplayMetrics()), darkenedColor);
+            imageView.setImageDrawable(colorChoiceDrawable);
+
+        } else if (view instanceof TextView) {
+            ((TextView) view).setTextColor(color);
         }
-
-        // Set stroke to dark version of color
-        int darkenedColor = Color.rgb(
-                Color.red(color) * 192 / 256,
-                Color.green(color) * 192 / 256,
-                Color.blue(color) * 192 / 256);
-
-        colorChoiceDrawable.setColor(color);
-        colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                1, res.getDisplayMetrics()), darkenedColor);
-        imageView.setImageDrawable(colorChoiceDrawable);
     }
 }

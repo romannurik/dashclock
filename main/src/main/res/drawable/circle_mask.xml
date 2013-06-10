@@ -14,16 +14,7 @@
   limitations under the License.
   -->
 
-<resources>
-
-    <declare-styleable name="AppChooserPreference">
-        <attr name="allowUseDefault" format="boolean" />
-    </declare-styleable>
-
-    <declare-styleable name="ColorPreference">
-        <attr name="itemLayout" format="reference" />
-        <attr name="choices" format="reference" />
-        <attr name="numColumns" format="integer" />
-    </declare-styleable>
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#000" />
+</shape>

@@ -21,7 +21,25 @@
             <package name="" withSubpackages="true" static="true" />
           </value>
         </option>
+        <option name="RIGHT_MARGIN" value="100" />
+        <AndroidXmlCodeStyleSettings>
+          <option name="USE_CUSTOM_SETTINGS" value="true" />
+          <option name="LAYOUT_SETTINGS">
+            <value>
+              <option name="WRAP_ATTRIBUTES" value="1" />
+              <option name="INSERT_LINE_BREAK_BEFORE_FIRST_ATTRIBUTE" value="false" />
+            </value>
+          </option>
+          <option name="MANIFEST_SETTINGS">
+            <value>
+              <option name="WRAP_ATTRIBUTES" value="1" />
+              <option name="INSERT_LINE_BREAK_BEFORE_FIRST_ATTRIBUTE" value="false" />
+            </value>
+          </option>
+        </AndroidXmlCodeStyleSettings>
         <XML>
+          <option name="XML_ALIGN_ATTRIBUTES" value="false" />
+          <option name="XML_SPACE_INSIDE_EMPTY_TAG" value="true" />
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
         <codeStyleSettings language="JAVA">
@@ -225,6 +243,11 @@
               </rule>
             </rules>
           </arrangement>
+        </codeStyleSettings>
+        <codeStyleSettings language="XML">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+          </indentOptions>
         </codeStyleSettings>
       </value>
     </option>
