@@ -251,30 +251,24 @@ public class WeatherExtension extends DashClockExtension {
                 : getString(R.string.status_none);
         StringBuilder expandedBody = new StringBuilder();
 
-        String lowHighText = null;
         if (weatherData.low != WeatherData.INVALID_TEMPERATURE
                 && weatherData.high != WeatherData.INVALID_TEMPERATURE) {
-            lowHighText = getString(R.string.weather_low_high_template,
+            expandedBody.append(getString(R.string.weather_low_high_template,
                     getString(R.string.temperature_template, weatherData.low),
-                    getString(R.string.temperature_template, weatherData.high));
+                    getString(R.string.temperature_template, weatherData.high)));
         }
 
-        String laterText = null;
         int conditionIconId = WeatherData.getConditionIconId(weatherData.conditionCode);
         if (WeatherData.getConditionIconId(weatherData.todayForecastConditionCode)
                 == R.drawable.ic_weather_raining) {
             // Show rain if it will rain today.
             conditionIconId = R.drawable.ic_weather_raining;
-            laterText = (lowHighText != null)
-                    ? getString(R.string.forecast_and_low_high_template,
-                    weatherData.forecastText, lowHighText)
-                    : weatherData.forecastText;
-        } else if (lowHighText != null) {
-            laterText = lowHighText;
-        }
 
-        if (laterText != null) {
-            expandedBody.append(getString(R.string.later_forecast_template, laterText));
+            if (expandedBody.length() > 0) {
+                expandedBody.append(", ");
+            }
+            expandedBody.append(
+                    getString(R.string.later_forecast_template, weatherData.forecastText));
         }
 
         if (expandedBody.length() > 0) {
