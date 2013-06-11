@@ -95,9 +95,12 @@ public abstract class DashClockRenderer {
         int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(mContext);
         boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(mContext);
 
+        int minExpandedHeight = res.getDimensionPixelSize(
+                mOptions.target == Options.TARGET_LOCK_SCREEN
+                        ? R.dimen.min_expanded_height_lock_screen
+                        : R.dimen.min_expanded_height);
         boolean isExpanded = (mOptions.minHeightDp
-                >= res.getDimensionPixelSize(R.dimen.min_expanded_height) /
-                res.getDisplayMetrics().density);
+                >= minExpandedHeight / res.getDisplayMetrics().density);
 
         // Step 1. Load the root layout
         vb.loadRootLayout(container, isExpanded

@@ -15,6 +15,11 @@
   -->
 
 <resources>
+    <!--
+        The lock screen has a higher threshold because some devices have
+        a larger collapsed mode.
+    -->
+    <dimen name="min_expanded_height_lock_screen">300dp</dimen>
     <dimen name="min_expanded_height">200dp</dimen>
 
     <dimen name="drag_grip_ridge_size">4dp</dimen>
