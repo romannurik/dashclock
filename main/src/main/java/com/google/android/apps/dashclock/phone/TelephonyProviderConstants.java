@@ -914,6 +914,20 @@ public final class TelephonyProviderConstants {
     }
 
     /**
+     * Helper functions for the "threads" table used by MMS and SMS.
+     * Added by Roman.
+     */
+    public static final class CanonicalAddresses implements CanonicalAddressesColumns {
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(
+                MmsSms.CONTENT_URI, "canonical-addresses");
+        public static final Uri OBSOLETE_THREADS_URI = Uri.withAppendedPath(
+                CONTENT_URI, "obsolete");
+
+        // No one should construct an instance of this class.
+        private CanonicalAddresses() {
+        }
+    }
+    /**
      * Columns for the "canonical_addresses" table used by MMS and
      * SMS."
      */

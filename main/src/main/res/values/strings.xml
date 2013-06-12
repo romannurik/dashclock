@@ -156,6 +156,7 @@
         <item quantity="other">%1$s unread conversations</item>
     </plurals>
     <string name="sms_body_template">From: %1$s</string>
+    <string name="sms_body_all_participants_template">With: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Customize your DashClock</string>

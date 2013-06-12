@@ -53,13 +53,41 @@ public class SmsExtension extends DashClockExtension {
 
     @Override
     protected void onUpdateData(int reason) {
-        Set<Long> unreadThreadIds = null;
+        long lastUnreadThreadId = 0;
+        Set<Long> unreadThreadIds = new HashSet<Long>();
+        Set<String> unreadThreadParticipantNames = new HashSet<String>();
+        boolean showingAllConversationParticipants = false;
+
         Cursor cursor = tryOpenSimpleThreadsCursor();
         if (cursor != null) {
-            unreadThreadIds = new HashSet<Long>();
             while (cursor.moveToNext()) {
                 if (cursor.getInt(SimpleThreadsQuery.READ) == 0) {
-                    unreadThreadIds.add(cursor.getLong(SimpleThreadsQuery._ID));
+                    long threadId = cursor.getLong(SimpleThreadsQuery._ID);
+                    unreadThreadIds.add(threadId);
+                    lastUnreadThreadId = threadId;
+
+                    // Some devices will fail on tryOpenMmsSmsCursor below, so
+                    // store a list of participants on unread threads as a fallback.
+                    String recipientIdsStr = cursor.getString(SimpleThreadsQuery.RECIPIENT_IDS);
+                    if (!TextUtils.isEmpty(recipientIdsStr)) {
+                        String[] recipientIds = TextUtils.split(recipientIdsStr, " ");
+                        for (String recipientId : recipientIds) {
+                            Cursor canonAddrCursor = tryOpenCanonicalAddressCursorById(
+                                    Long.parseLong(recipientId));
+                            if (canonAddrCursor == null) {
+                                continue;
+                            }
+                            if (canonAddrCursor.moveToFirst()) {
+                                String address = canonAddrCursor.getString(
+                                        CanonicalAddressQuery.ADDRESS);
+                                String displayName = getDisplayNameForContact(0, address);
+                                if (!TextUtils.isEmpty(displayName)) {
+                                    unreadThreadParticipantNames.add(displayName);
+                                }
+                            }
+                            canonAddrCursor.close();
+                        }
+                    }
                 }
             }
             cursor.close();
@@ -70,74 +98,55 @@ public class SmsExtension extends DashClockExtension {
         int unreadConversations = 0;
         StringBuilder names = new StringBuilder();
         cursor = tryOpenMmsSmsCursor();
-        if (cursor == null) {
-            LOGE(TAG, "Null conversations cursor, short-circuiting.");
-            return;
+        if (cursor != null) {
+            // Most devices will hit this code path.
+            while (cursor.moveToNext()) {
+                // Get display name. SMS's are easy; MMS's not so much.
+                long id = cursor.getLong(MmsSmsQuery._ID);
+                long contactId = cursor.getLong(MmsSmsQuery.PERSON);
+                String address = cursor.getString(MmsSmsQuery.ADDRESS);
+                long threadId = cursor.getLong(MmsSmsQuery.THREAD_ID);
+                if (unreadThreadIds != null && !unreadThreadIds.contains(threadId)) {
+                    // We have the list of all thread IDs (same as what the messaging app uses), and
+                    // this supposedly unread message's thread isn't in the list. This message is
+                    // likely an orphaned message whose thread was deleted. Not skipping it is
+                    // likely the cause of http://code.google.com/p/dashclock/issues/detail?id=8
+                    LOGD(TAG, "Skipping probably orphaned message " + id + " with thread ID "
+                            + threadId);
+                    continue;
+                }
+
+                ++unreadConversations;
+                lastUnreadThreadId = threadId;
+
+                if (contactId == 0 && TextUtils.isEmpty(address) && id != 0) {
+                    // Try MMS addr query
+                    Cursor addrCursor = tryOpenMmsAddrCursor(id);
+                    if (addrCursor != null) {
+                        if (addrCursor.moveToFirst()) {
+                            contactId = addrCursor.getLong(MmsAddrQuery.CONTACT_ID);
+                            address = addrCursor.getString(MmsAddrQuery.ADDRESS);
+                        }
+                        addrCursor.close();
+                    }
+                }
+
+                String displayName = getDisplayNameForContact(contactId, address);
+
+                if (names.length() > 0) {
+                    names.append(", ");
+                }
+                names.append(displayName);
+            }
+            cursor.close();
+
+        } else {
+            // In case the cursor is null (some Samsung devices like the Galaxy S4), use the
+            // fall back on the list of participants in unread threads.
+            unreadConversations = unreadThreadIds.size();
+            names.append(TextUtils.join(", ", unreadThreadParticipantNames));
+            showingAllConversationParticipants = true;
         }
-
-        long lastUnreadThreadId = 0;
-
-        while (cursor.moveToNext()) {
-            // Get display name. SMS's are easy; MMS's not so much.
-            long id = cursor.getLong(MmsSmsQuery._ID);
-            long contactId = cursor.getLong(MmsSmsQuery.PERSON);
-            String address = cursor.getString(MmsSmsQuery.ADDRESS);
-            long threadId = cursor.getLong(MmsSmsQuery.THREAD_ID);
-            if (unreadThreadIds != null && !unreadThreadIds.contains(threadId)) {
-                // We have the list of all thread IDs (same as what the messaging app uses), and
-                // this supposedly unread message's thread isn't in the list. This message is likely
-                // an orphaned message whose thread was deleted. Not skipping it is likely the
-                // cause of http://code.google.com/p/dashclock/issues/detail?id=8
-                LOGD(TAG, "Skipping probably orphaned message " + id + " with thread ID "
-                        + threadId);
-                continue;
-            }
-
-            ++unreadConversations;
-            lastUnreadThreadId = threadId;
-
-            if (contactId == 0 && TextUtils.isEmpty(address) && id != 0) {
-                // Try MMS addr query
-                Cursor addrCursor = tryOpenMmsAddrCursor(id);
-                if (addrCursor != null) {
-                    if (addrCursor.moveToFirst()) {
-                        contactId = addrCursor.getLong(MmsAddrQuery.CONTACT_ID);
-                        address = addrCursor.getString(MmsAddrQuery.ADDRESS);
-                    }
-                    addrCursor.close();
-                }
-            }
-
-            String displayName = address;
-
-            if (contactId > 0) {
-                Cursor contactCursor = tryOpenContactsCursorById(contactId);
-                if (contactCursor != null) {
-                    if (contactCursor.moveToFirst()) {
-                        displayName = contactCursor.getString(RawContactsQuery.DISPLAY_NAME);
-                    } else {
-                        contactId = 0;
-                    }
-                    contactCursor.close();
-                }
-            }
-
-            if (contactId <= 0) {
-                Cursor contactCursor = tryOpenContactsCursorByAddress(address);
-                if (contactCursor != null) {
-                    if (contactCursor.moveToFirst()) {
-                        displayName = contactCursor.getString(ContactsQuery.DISPLAY_NAME);
-                    }
-                    contactCursor.close();
-                }
-            }
-
-            if (names.length() > 0) {
-                names.append(", ");
-            }
-            names.append(displayName);
-        }
-        cursor.close();
 
         Intent clickIntent;
         if (unreadConversations == 1 && lastUnreadThreadId > 0) {
@@ -157,8 +166,43 @@ public class SmsExtension extends DashClockExtension {
                         getResources().getQuantityString(
                                 R.plurals.sms_title_template, unreadConversations,
                                 unreadConversations))
-                .expandedBody(getString(R.string.sms_body_template, names.toString()))
+                .expandedBody(getString(showingAllConversationParticipants
+                        ? R.string.sms_body_all_participants_template
+                        : R.string.sms_body_template,
+                        names.toString()))
                 .clickIntent(clickIntent));
+    }
+
+    /**
+     * Returns the display name for the contact with the given ID and/or the given address
+     * (phone number). One or both parameters should be provided.
+     */
+    private String getDisplayNameForContact(long contactId, String address) {
+        String displayName = address;
+
+        if (contactId > 0) {
+            Cursor contactCursor = tryOpenContactsCursorById(contactId);
+            if (contactCursor != null) {
+                if (contactCursor.moveToFirst()) {
+                    displayName = contactCursor.getString(RawContactsQuery.DISPLAY_NAME);
+                } else {
+                    contactId = 0;
+                }
+                contactCursor.close();
+            }
+        }
+
+        if (contactId <= 0) {
+            Cursor contactCursor = tryOpenContactsCursorByAddress(address);
+            if (contactCursor != null) {
+                if (contactCursor.moveToFirst()) {
+                    displayName = contactCursor.getString(ContactsQuery.DISPLAY_NAME);
+                }
+                contactCursor.close();
+            }
+        }
+
+        return displayName;
     }
 
     private Cursor tryOpenMmsSmsCursor() {
@@ -201,6 +245,22 @@ public class SmsExtension extends DashClockExtension {
         }
     }
 
+    private Cursor tryOpenCanonicalAddressCursorById(long id) {
+        try {
+            return getContentResolver().query(
+                    TelephonyProviderConstants.CanonicalAddresses.CONTENT_URI.buildUpon()
+                            .build(),
+                    CanonicalAddressQuery.PROJECTION,
+                    TelephonyProviderConstants.CanonicalAddresses._ID + "=?",
+                    new String[]{Long.toString(id)},
+                    null);
+
+        } catch (Exception e) {
+            LOGE(TAG, "Error accessing canonical addresses cursor", e);
+            return null;
+        }
+    }
+
     private Cursor tryOpenMmsAddrCursor(long mmsMsgId) {
         try {
             return getContentResolver().query(
@@ -216,7 +276,7 @@ public class SmsExtension extends DashClockExtension {
         } catch (Exception e) {
             // Catch all exceptions because the SMS provider is crashy
             // From developer console: "SQLiteException: table spam_filter already exists"
-            LOGE(TAG, "Error accessing SMS provider", e);
+            LOGE(TAG, "Error accessing MMS addresses cursor", e);
             return null;
         }
     }
@@ -260,10 +320,22 @@ public class SmsExtension extends DashClockExtension {
         String[] PROJECTION = {
                 TelephonyProviderConstants.Threads._ID,
                 TelephonyProviderConstants.Threads.READ,
+                TelephonyProviderConstants.Threads.RECIPIENT_IDS,
         };
 
         int _ID = 0;
         int READ = 1;
+        int RECIPIENT_IDS = 2;
+    }
+
+    private interface CanonicalAddressQuery {
+        String[] PROJECTION = {
+                TelephonyProviderConstants.CanonicalAddresses._ID,
+                TelephonyProviderConstants.CanonicalAddresses.ADDRESS,
+        };
+
+        int _ID = 0;
+        int ADDRESS = 1;
     }
 
     private interface MmsSmsQuery {
