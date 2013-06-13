@@ -46,22 +46,7 @@ public class SimplePagedTabsHelper {
         mTabContainer = tabContainer;
         mPager = pager;
 
-        pager.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return mTabContentIds.size();
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object o) {
-                return view == o;
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                return mPager.findViewById(mTabContentIds.get(position));
-            }
-        });
+        pager.setAdapter(mAdapter);
         pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -85,12 +70,35 @@ public class SimplePagedTabsHelper {
         mTabPositions.put(tabView, position);
         mTabContainer.addView(tabView);
         mTabContentIds.add(contentViewId);
+        mAdapter.notifyDataSetChanged();
     }
 
     private View.OnClickListener mTabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             mPager.setCurrentItem(mTabPositions.get(view));
+        }
+    };
+
+    private PagerAdapter mAdapter = new PagerAdapter() {
+        @Override
+        public int getCount() {
+            return mTabContentIds.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object o) {
+            return view == o;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return mPager.findViewById(mTabContentIds.get(position));
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            // No-op
         }
     };
 }
