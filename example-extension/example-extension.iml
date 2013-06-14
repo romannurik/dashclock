@@ -68,6 +68,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="api" />
+    <orderEntry type="library" name="dashclock-api" level="project" />
   </component>
 </module>
 

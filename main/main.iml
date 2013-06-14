@@ -70,6 +70,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="api" />
+    <orderEntry type="library" name="dashclock-api" level="project" />
     <orderEntry type="library" name="support-v4-13.0.0" level="project" />
     <orderEntry type="library" name="support-v13-13.0.0" level="project" />
     <orderEntry type="library" name="drag-sort-listview-0.6.1-SNAPSHOT-AAR.aar" level="project" />

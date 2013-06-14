@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dashclock.iml" filepath="$PROJECT_DIR$/dashclock.iml" />
       <module fileurl="file://$PROJECT_DIR$/example-extension/example-extension.iml" filepath="$PROJECT_DIR$/example-extension/example-extension.iml" />
       <module fileurl="file://$PROJECT_DIR$/main/main.iml" filepath="$PROJECT_DIR$/main/main.iml" />
     </modules>
