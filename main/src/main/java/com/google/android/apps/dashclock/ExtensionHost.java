@@ -255,7 +255,7 @@ public class ExtensionHost {
 
             @Override
             public void addWatchContentUris(String[] contentUris) throws RemoteException {
-                if (contentUris != null && contentUris.length > 0) {
+                if (contentUris != null && contentUris.length > 0 && conn.contentObserver != null) {
                     ContentResolver resolver = mContext.getContentResolver();
                     for (String uri : contentUris) {
                         if (TextUtils.isEmpty(uri)) {
