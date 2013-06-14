@@ -41,11 +41,13 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 import static com.google.android.apps.dashclock.LogUtils.LOGW;
+import static com.google.android.apps.dashclock.weather.YahooWeatherApiClient.*;
 
 /**
  * A local weather and forecast extension.
@@ -77,7 +79,6 @@ public class WeatherExtension extends DashClockExtension {
 
     private static String sWeatherUnits = "f";
     private static Intent sWeatherIntent;
-    private static String sManualLocationWoeid = null;
 
     private boolean mOneTimeLocationListenerActive = false;
 
@@ -117,8 +118,8 @@ public class WeatherExtension extends DashClockExtension {
         sWeatherUnits = sp.getString(PREF_WEATHER_UNITS, sWeatherUnits);
         sWeatherIntent = AppChooserPreference.getIntentValue(
                 sp.getString(PREF_WEATHER_SHORTCUT, null), DEFAULT_WEATHER_INTENT);
-        sManualLocationWoeid = WeatherLocationPreference.getWoeidFromValue(
-                sp.getString(PREF_WEATHER_LOCATION, null));
+
+        setWeatherUnits(sWeatherUnits);
 
         long lastUpdateElapsedMillis = sp.getLong(STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS,
                 -UPDATE_THROTTLE_MILLIS);
@@ -135,6 +136,21 @@ public class WeatherExtension extends DashClockExtension {
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()) {
             LOGD(TAG, "No network connection; not attempting to update weather.");
+            return;
+        }
+
+        String manualLocationWoeid = WeatherLocationPreference.getWoeidFromValue(
+                sp.getString(PREF_WEATHER_LOCATION, null));
+        if (!TextUtils.isEmpty(manualLocationWoeid)) {
+            // WOEIDs
+            // Honolulu = 2423945
+            // Paris = 615702
+            // London = 44418
+            // New York = 2459115
+            // San Francisco = 2487956
+            LocationInfo locationInfo = new LocationInfo();
+            locationInfo.woeids = Arrays.asList(manualLocationWoeid);
+            tryPublishWeatherUpdateFromLocationInfo(locationInfo);
             return;
         }
 
@@ -167,7 +183,7 @@ public class WeatherExtension extends DashClockExtension {
                 }
             }, LOCATION_TIMEOUT_MILLIS);
         } else {
-            getWeatherAndPublishUpdate(lastLocation);
+            tryPublishWeatherUpdateFromGeolocation(lastLocation);
         }
     }
 
@@ -184,7 +200,7 @@ public class WeatherExtension extends DashClockExtension {
         public void onLocationChanged(Location location) {
             LOGD(TAG, "Got network location update");
             mTimeoutHandler.removeCallbacksAndMessages(null);
-            getWeatherAndPublishUpdate(location);
+            tryPublishWeatherUpdateFromGeolocation(location);
             disableOneTimeLocationListener();
         }
 
@@ -212,21 +228,21 @@ public class WeatherExtension extends DashClockExtension {
         disableOneTimeLocationListener();
     }
 
-    private void getWeatherAndPublishUpdate(Location location) {
+    private void tryPublishWeatherUpdateFromGeolocation(Location location) {
         try {
-            YahooWeatherApiClient.setWeatherUnits(sWeatherUnits);
-            WeatherData weatherData;
-            if (TextUtils.isEmpty(sManualLocationWoeid)) {
-                weatherData = YahooWeatherApiClient.getWeatherForLocation(location);
-            } else {
-                weatherData = YahooWeatherApiClient.getWeatherForWoeid(sManualLocationWoeid, null);
+            LOGD(TAG, "Using location: " + location.getLatitude() + "," + location.getLongitude());
+            tryPublishWeatherUpdateFromLocationInfo(getLocationInfo(location));
+        } catch (CantGetWeatherException e) {
+            publishErrorUpdate(e);
+            if (e.isRetryable()) {
+                scheduleRetry();
             }
-            publishWeatherUpdate(weatherData);
-            resetAndCancelRetries();
+        }
+    }
 
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-            sp.edit().putLong(STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS,
-                    SystemClock.elapsedRealtime()).commit();
+    private void tryPublishWeatherUpdateFromLocationInfo(LocationInfo locationInfo) {
+        try {
+            publishWeatherUpdate(getWeatherForLocationInfo(locationInfo));
         } catch (CantGetWeatherException e) {
             publishErrorUpdate(e);
             if (e.isRetryable()) {
@@ -285,5 +301,11 @@ public class WeatherExtension extends DashClockExtension {
                         weatherData.conditionText))
                 .icon(conditionIconId)
                 .expandedBody(expandedBody.toString()));
+
+        // Mark that a successful weather update has been pushed
+        resetAndCancelRetries();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putLong(STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS,
+                SystemClock.elapsedRealtime()).commit();
     }
 }

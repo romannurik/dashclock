@@ -20,7 +20,9 @@ import com.google.android.apps.dashclock.configuration.BaseSettingsActivity;
 
 import net.nurik.roman.dashclock.R;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 public class WeatherSettingsActivity extends BaseSettingsActivity {
     @Override
@@ -43,5 +45,14 @@ public class WeatherSettingsActivity extends BaseSettingsActivity {
         bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_UNITS));
         bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_SHORTCUT));
         bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_LOCATION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Clear out the throttle since settings may have changed.
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().remove(WeatherExtension.STATE_WEATHER_LAST_UPDATE_ELAPSED_MILLIS).apply();
     }
 }

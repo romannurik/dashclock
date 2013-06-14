@@ -66,23 +66,13 @@ class YahooWeatherApiClient {
         sWeatherUnits = weatherUnits;
     }
 
-    public static WeatherData getWeatherForLocation(Location location)
+    public static WeatherData getWeatherForLocationInfo(LocationInfo locationInfo)
             throws CantGetWeatherException {
-        LOGD(TAG, "Using location: " + location.getLatitude() + "," + location.getLongitude());
-
-        // Honolulu = 2423945
-        // Paris = 615702
-        // London = 44418
-        // New York = 2459115
-        // San Francisco = 2487956
-        LocationInfo locationInfo = YahooWeatherApiClient.getLocationInfo(location);
-
         // Loop through the woeids (they're in descending precision order) until weather data
         // is found.
         for (String woeid : locationInfo.woeids) {
             LOGD(TAG, "Trying WOEID: " + woeid);
-            WeatherData data = YahooWeatherApiClient.getWeatherForWoeid(woeid,
-                    locationInfo.town);
+            WeatherData data = YahooWeatherApiClient.getWeatherForWoeid(woeid, locationInfo.town);
             if (data != null
                     && data.conditionCode != WeatherData.INVALID_CONDITION
                     && data.temperature != WeatherData.INVALID_TEMPERATURE) {
@@ -189,8 +179,7 @@ class YahooWeatherApiClient {
         }
     }
 
-    private static LocationInfo getLocationInfo(Location location)
-            throws CantGetWeatherException {
+    public static LocationInfo getLocationInfo(Location location) throws CantGetWeatherException {
         LocationInfo li = new LocationInfo();
 
         // first=tagname (admin1, locality3) second=woeid
@@ -417,7 +406,7 @@ class YahooWeatherApiClient {
                 + "?appid=" + YahooWeatherApiConfig.APP_ID;
     }
 
-    private static class LocationInfo {
+    public static class LocationInfo {
         // Sorted by decreasing precision
         // (point of interest, locality3, locality2, locality1, admin3, admin2, admin1, etc.)
         List<String> woeids = new ArrayList<String>();
