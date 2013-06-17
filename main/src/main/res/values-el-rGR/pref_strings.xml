@@ -26,13 +26,13 @@
         <item>100% μαύρο</item>
     </string-array>
     <string name="pref_aggressive_centering_title">Πάντα κεντρικά</string>
-    <string name="pref_aggressive_centering_description">Αυτό μπορεί να έχει ως αποτέλεσμα, την μετατόπιση του ρολογιού, ανάλογα με την κατάσταση του widget</string>
+    <string name="pref_aggressive_centering_description">Αυτό μπορεί να έχει ως αποτέλεσμα την μετατόπιση του ρολογιού, ανάλογα με την κατάσταση του widget</string>
     <string name="pref_hide_settings_title">Απόκρυψη κουμπιού Ρυθμίσεων</string>
-    <string name="pref_hide_settings_description">Απόκρυψη του κουμπιού ρυθμίσεων όταν το widget εκτείνεται κάθετα (μία συντόμευση "Configure DashClock Widget" θα εμφανιστεί στην αρχική οθόνη ως υποκατάστατο)</string>
+    <string name="pref_hide_settings_description">Απόκρυψη του κουμπιού ρυθμίσεων όταν το widget εκτείνεται κάθετα (μία συντόμευση "DashClock Settings" θα εμφανιστεί στην αρχική οθόνη ως υποκατάστατο)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Συντόμευση</string>
-    <string name="pref_shortcut_default">(Default)</string>
+    <string name="pref_shortcut_default">(Προκαθορισμένη)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Μονάδες καιρού</string>
@@ -49,7 +49,7 @@
     </string-array>
     <string name="pref_gmail_accounts_title">Εμφάνιση μη αναγνωσμένων από το λογαριασμό:</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">%1$d από %2$d λογαριασμό επιλέχθηκε</item>
+        <item quantity="one">%1$d από %2$d λογαριασμούς επιλέχθηκε</item>
         <item quantity="other">%1$d από %2$d λογαριασμούς επιλέχθηκαν</item>
     </plurals>
 
@@ -65,7 +65,7 @@
     </string-array>
     <string name="pref_calendar_selected_title">Επιλογή ημερολογίων για εμφάνιση</string>
     <plurals name="pref_calendar_selected_summary_template">
-        <item quantity="one">%1$d από %2$d ημερολόγιο επιλέχθηκε</item>
+        <item quantity="one">%1$d από %2$d ημερολόγια επιλέχθηκε</item>
         <item quantity="other">%1$d από %2$d ημερολόγια επιλέχθηκαν</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Προσαρμογή εμφανιζόμενων ημερολογίων</string>

@@ -21,14 +21,12 @@
     <string name="settings">Nastavenia</string>
     <string name="more_options">Viac možností</string>
 
-    <string name="simple_date_format">E, MMM dd</string>
-
     <!-- Configuration -->
     <string name="shortcut_label_configure">Nastaviť DashClock</string>
     <string name="title_configure">Nastaviť DashClock</string>
     <string name="section_extensions">Rozšírenia</string>
     <string name="section_appearance">Vzhľad</string>
-    <!--<string name="section_daydream">Daydream</string>-->
+    <string name="section_daydream">Šetrič obrazovky</string>
     <string name="section_advanced">Pokročilé</string>
 
     <string name="title_apps">Aplikácie</string>
@@ -42,8 +40,8 @@
     <string name="cancel">Zrušiť</string>
 
     <!-- These strings never appear in release builds; translation is very low priority -->
-    <string name="send_logs">Send debug log</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <string name="send_logs">Poslať záznam ladenia</string>
+    <string name="send_logs_chooser_title">Poslať záznamy pomocou</string>
 
     <string name="prev_date_style">Predchádzajúci formát dátumu</string>
     <string name="prev_time_style">Predchádzajúci formát času</string>
@@ -127,7 +125,7 @@
         <item quantity="other">%1$s minút</item>
     </plurals>
     <string name="today">Dnes</string>
-    <!--<string name="now">Now</string>-->
+    <string name="now">Teraz</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Zmeškané hovory</string>
@@ -140,7 +138,7 @@
         <item quantity="other">%1$s zmeškaných hovorov</item>
     </plurals>
     <string name="missed_calls_body_template">Od: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Neznámy</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Textové správy</string>

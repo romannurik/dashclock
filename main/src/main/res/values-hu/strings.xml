@@ -19,16 +19,16 @@
     <string name="permission_label_read_extension_data">DashClock kiegészítő adat lekérése</string>
 
     <string name="settings">Beállítások</string>
-    <string name="more_options">További opciók</string>
+    <string name="more_options">További beállítások</string>
 
-    <string name="simple_date_format">E, MMM dd</string>
+    <string name="simple_date_format">é, hhh, nn</string>
 
     <!-- Configuration -->
-    <string name="shortcut_label_configure">DashClock Widget beállítása</string>
+    <string name="shortcut_label_configure">DashClock beállítások</string>
     <string name="title_configure">DashClock Widget beállítása</string>
     <string name="section_extensions">Kiegészítők</string>
     <string name="section_appearance">Kinézet</string>
-    <!--<string name="section_daydream">Daydream</string>-->
+    <string name="section_daydream">Álmodozás</string>
     <string name="section_advanced">Beállítások</string>
 
     <string name="title_apps">Alkalmazások</string>
@@ -41,9 +41,8 @@
     <string name="add_extension">Kiegészítő hozzáadása</string>
     <string name="cancel">Mégse</string>
 
-    <!-- These strings never appear in release builds; translation is very low priority -->
-    <string name="send_logs">Send debug log</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <string name="send_logs">Hibajelentés küldése</string>
+    <string name="send_logs_chooser_title">Napló küldése</string>
 
     <string name="prev_date_style">Előző adatstílus</string>
     <string name="prev_time_style">Előző időstílus</string>
@@ -62,7 +61,7 @@
     <string name="about">Névjegy</string>
 
     <string name="about_body"><![CDATA[
-        Copyright 2012-2013 Google Inc. All Rights Reserved.<br>
+        Copyright 2012-2013 Google Inc. Minden jog fenntartva.<br>
         <a href="http://m.google.com/utos">Szolgáltatási feltételek</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
         <a href="http://www.google.com/policies/privacy/">Adatvédelem</a><br><br>
@@ -71,7 +70,7 @@
         <i>Günther Beyer (<a href="http://www.opoloo.com/">Opoloo</a>)</i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
         <i>Carl A. Bauer</i><br><br>
-        Fordította <b><a href="https://plus.google.com/106278794296417431670/posts">Berta Dávid</a></b>
+        Fordította <b><a href="https://plus.google.com/106278794296417431670/">Berta Dávid</a></b>
     ]]></string>
 
     <!-- Weather -->
@@ -120,7 +119,7 @@
         <item quantity="other">%1$s perc</item>
     </plurals>
     <string name="today">Ma</string>
-    <!--<string name="now">Now</string>-->
+    <string name="now">Most</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nem fogadott hívások</string>
@@ -144,6 +143,7 @@
         <item quantity="other">%1$s olvasatlan beszélgetés</item>
     </plurals>
     <string name="sms_body_template">%1$s</string>
+    <string name="sms_body_all_participants_template">Vele: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Alakítsd át a DashClockot!</string>

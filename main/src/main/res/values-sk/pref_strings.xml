@@ -27,8 +27,8 @@
     </string-array>
     <string name="pref_aggressive_centering_title">Vždy centrovať</string>
     <string name="pref_aggressive_centering_description">Môže mať za následok skákanie hodín okolo rôznych widgetov</string>
-    <string name="pref_hide_settings_title">Skryť nastav. tlačidlo</string>
-    <string name="pref_hide_settings_description">Skryť nastav. tlačidlo ak je widget zvislo rozšírený (skratka na domov. obrazovku "Nastaviť DashClock" je dostupná ako alternatíva)</string>
+    <string name="pref_hide_settings_title">Skryť tlačidlo nastavenia</string>
+    <string name="pref_hide_settings_description">Skryť tlačidlo nastavenia, ak je miniaplikácia zvislo rozšírená (skratka na domov. obrazovku "Nastaviť DashClock" je dostupná ako alternatíva)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Skratka</string>
@@ -77,6 +77,16 @@
     <string name="pref_calendar_show_all_day_description">Zahrnúť všetky celodenné udalosti (napr. narodeniny)</string>
 
     <!-- Daydream preferences -->
-    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
-    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
+    <string name="pref_daydream_color_title">Farba pozadia</string>
+    <string name="pref_daydream_color_description">Farba textu a ikôn v režime šetriča obrazovky</string>
+    <string name="pref_daydream_night_mode_title">Nočný režim</string>
+    <string name="pref_daydream_night_mode_description">Veľmi matný displej (pre tmavé miestnosti)</string>
+    <string name="pref_daydream_animation_title">Animácia</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>Kyvadlo (predvolené)</item>
+        <item>Posúvanie</item>
+        <item>Blednutie</item>
+        <item>Žiadna (môže dôjsť k poškodeniu obrazovky)</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">Systémové nastavenia šetriča obrazovky</string>
 </resources>

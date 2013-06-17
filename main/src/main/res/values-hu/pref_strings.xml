@@ -40,9 +40,13 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
+    <string name="pref_weather_location_title">Helyszín</string>
+    <string name="pref_weather_location_query_hint">Helyszín keresése</string>
+    <string name="pref_weather_location_automatic">Automatikus</string>
+    <string name="pref_weather_location_automatic_description">Jelenlegi helyzeted alapján.</string>
 
     <!-- Gmail -->
-    <string name="pref_gmail_label_title">Olvasatlan levelek mappája</string>
+    <string name="pref_gmail_label_title">Olvasatlan levelek címkéje</string>
     <string-array name="pref_gmail_label_display_names">
         <item>Beérkező</item>
         <item>Fontos</item>
@@ -75,6 +79,16 @@
     <string name="pref_calendar_show_all_day_description">Születésnapok és más egész napos események mutatása</string>
 
     <!-- Daydream preferences -->
-    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
-    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
+    <string name="pref_daydream_color_title">Előtér színe</string>
+    <string name="pref_daydream_color_description">A szöveg és az ikonok színe álmodozás módban</string>
+    <string name="pref_daydream_night_mode_title">Éjszakai mód</string>
+    <string name="pref_daydream_night_mode_description">Nagyon halvány megjelenítés (sötét szobában)</string>
+    <string name="pref_daydream_animation_title">Animáció</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>Inga (alapértelmezett)</item>
+        <item>Csúszás</item>
+        <item>Elhalványulás</item>
+        <item>Egyik sem (kár keletkezhet a kijelzőn)</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">Álmodozás beállításai</string>
 </resources>

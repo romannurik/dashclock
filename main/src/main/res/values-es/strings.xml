@@ -28,7 +28,7 @@
     <string name="title_configure">Configurar DashClock Widget</string>
     <string name="section_extensions">Extensiones</string>
     <string name="section_appearance">Apariencia</string>
-    <!--<string name="section_daydream">Daydream</string>-->
+    <string name="section_daydream">Daydream</string>
     <string name="section_advanced">Avanzado</string>
 
     <string name="title_apps">Aplicaciones</string>
@@ -41,9 +41,8 @@
     <string name="add_extension">Agregar extensión</string>
     <string name="cancel">Cancelar</string>
 
-    <!-- These strings never appear in release builds; translation is very low priority -->
-    <string name="send_logs">Send debug log</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <string name="send_logs">Enviar informe de fallo</string>
+    <string name="send_logs_chooser_title">Enviar informe de uso</string>
 
     <string name="prev_date_style">Estilo de fecha anterior</string>
     <string name="prev_time_style">Estilo de hora anterior</string>
@@ -99,7 +98,7 @@
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Próxima alarma</string>
     <string name="next_alarm_extension_description">
-        Muestra información acerca de la próxima alarma programada, si esta existe.
+        Muestra información acerca de la próxima alarma programada, si existe.
     </string>
     <string name="next_alarm">Próxima alarma</string>
 
