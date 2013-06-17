@@ -196,6 +196,8 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     if (mCallbacks.canDismiss(mDownPosition)) {
                         mVelocityTracker = VelocityTracker.obtain();
                         mVelocityTracker.addMovement(motionEvent);
+                    } else {
+                        mDownView = null;
                     }
                 }
                 view.onTouchEvent(motionEvent);
