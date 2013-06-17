@@ -28,7 +28,7 @@
     <string name="title_configure">Configura il widget DashClock</string>
     <string name="section_extensions">Estensioni</string>
     <string name="section_appearance">Aspetto</string>
-    <!--<string name="section_daydream">Daydream</string>-->
+    <string name="section_daydream">Daydream</string>
     <string name="section_advanced">Avanzate</string>
 
     <string name="title_apps">Applicazioni</string>
@@ -54,7 +54,7 @@
     <string name="incompatible_extension_title">Estensione non compatibile</string>
     <string name="incompatible_extension_message_search_play_template"><![CDATA[L\'estensione
         <b>%1$s</b> non è compatibile con questa versione di DashClock.
-        Cerco un\'aggiornamento dell\'estensione su Google Play?]]></string>
+        Cerco un aggiornamento dell\'estensione su Google Play?]]></string>
     <string name="search_play">Cerca su Google Play</string>
 
     <!-- About -->
@@ -122,9 +122,10 @@
     </plurals>
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s min</item>
+        <item quantity="one">%1$s min</item>
     </plurals>
     <string name="today">Oggi</string>
-    <!--<string name="now">Now</string>-->
+    <string name="now">Adesso</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Chiamate perse</string>

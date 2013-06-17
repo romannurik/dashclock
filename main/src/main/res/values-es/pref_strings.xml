@@ -40,7 +40,11 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
-
+    <string name="pref_weather_location_title">Localización</string>
+    <string name="pref_weather_location_query_hint">Encontrar una localización</string>
+    <string name="pref_weather_location_automatic">Automatico</string>
+    <string name="pref_weather_location_automatic_description">Basado en tu localización actual.</string>
+	
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Mostrar no leídos por etiqueta</string>
     <string-array name="pref_gmail_label_display_names">
@@ -76,5 +80,15 @@
 
     <!-- Daydream preferences -->
     <string name="pref_daydream_color_title">Color de fondo</string>
+    <string name="pref_daydream_color_description">The color of text and icons in Daydream mode</string>
+    <string name="pref_daydream_night_mode_title">Modo noche</string>
+    <string name="pref_daydream_night_mode_description">Pantalla muy oscura (para habitaciones con poca luz)</string>
+    <string name="pref_daydream_animation_title">Animación</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>Pendulo (Por defecto)</item>
+        <item>Deslizar</item>
+        <item>Esfumar</item>
+        <item>Nada (Puede dañar la pantalla)</item>
+    </string-array>
     <string name="pref_daydream_system_settings_title">Ajustes del sistema de Daydream</string>
 </resources>

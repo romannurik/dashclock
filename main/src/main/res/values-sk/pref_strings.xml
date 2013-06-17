@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Skratka pre hodiny</string>
-    <string name="pref_homescreen_background_opacity_title">Pozadie widgetu na domov. obrazovke</string>
+    <string name="pref_homescreen_background_opacity_title">Pozadie widgetu na domovskej obrazovke</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Plne transparentné</item>
         <item>25% čierne</item>
@@ -40,6 +40,10 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
+    <string name="pref_weather_location_title">Poloha</string>
+    <string name="pref_weather_location_query_hint">Nájsť polohu</string>
+    <string name="pref_weather_location_automatic">Automaticky</string>
+    <string name="pref_weather_location_automatic_description">Na základe vašej aktuálnej polohy.</string>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Zobraziť počet neprečít. e-mailov na štítku</string>
@@ -50,9 +54,9 @@
 
     <string name="pref_gmail_accounts_title">Zobraziť počet neprečít. e-mailov pre účty</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">vybraný %1$d účet z %2$d</item>
-        <item quantity="few">vybrané %1$d účty z %2$d</item>
-        <item quantity="other">vybraných %1$d účtov z %2$d</item>
+        <item quantity="one">Vybraný %1$d účet z %2$d</item>
+        <item quantity="few">Vybrané %1$d účty z %2$d</item>
+        <item quantity="other">Vybraných %1$d účtov z %2$d</item>
     </plurals>
 
     <!-- Calendar -->
@@ -67,9 +71,9 @@
     </string-array>
     <string name="pref_calendar_selected_title">Zobraziť kalendár</string>
     <plurals name="pref_calendar_selected_summary_template">
-        <item quantity="one">vybraný %1$d kalendár z %2$d</item>
-        <item quantity="few">vybrané %1$d kalendáre z %2$d</item>
-        <item quantity="other">vybraných %1$d kalendárov z %2$d</item>
+        <item quantity="one">Vybraný %1$d kalendár z %2$d</item>
+        <item quantity="few">Vybrané %1$d kalendáre z %2$d</item>
+        <item quantity="other">Vybraných %1$d kalendárov z %2$d</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Vlastná viditeľnosť kalendára</string>
     <string name="pref_calendar_custom_visibility_description">Ak nie je označené, zobrazí všetky viditeľné kalendáre v aplikácii Kalendár</string>
@@ -78,7 +82,7 @@
 
     <!-- Daydream preferences -->
     <string name="pref_daydream_color_title">Farba pozadia</string>
-    <string name="pref_daydream_color_description">Farba textu a ikôn v režime šetriča obrazovky</string>
+    <string name="pref_daydream_color_description">Farba textu a ikon v režime šetriča obrazovky</string>
     <string name="pref_daydream_night_mode_title">Nočný režim</string>
     <string name="pref_daydream_night_mode_description">Veľmi matný displej (pre tmavé miestnosti)</string>
     <string name="pref_daydream_animation_title">Animácia</string>

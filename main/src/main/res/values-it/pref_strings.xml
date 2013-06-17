@@ -40,6 +40,10 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
+    <string name="pref_weather_location_title">Luogo</string>
+    <string name="pref_weather_location_query_hint">Trova un luogo</string>
+    <string name="pref_weather_location_automatic">Automatico</string>
+    <string name="pref_weather_location_automatic_description">Basato sulla tua posizione attuale.</string>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Visualizza messaggi non letti per l\'etichetta</string>
@@ -67,7 +71,7 @@
     <string name="pref_calendar_selected_title">Seleziona i calendari da visualizzare</string>
     <plurals name="pref_calendar_selected_summary_template">
         <item quantity="one">%1$d calendario selezionato di %2$d</item>
-        <item quantity="other">%1$d calendarii selezionati di %2$d</item>
+        <item quantity="other">%1$d calendari selezionati di %2$d</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Personalizza visibilità dei calendari</string>
     <string name="pref_calendar_custom_visibility_description">Se non selezionata, visualizza tutti i calendari nell\'app Calendario</string>
@@ -75,6 +79,16 @@
     <string name="pref_calendar_show_all_day_description">Includi gli eventi di durata "Tutto il giorno", ad esempio i compleanni</string>
 
     <!-- Daydream preferences -->
-    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
-    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
+    <string name="pref_daydream_color_title">Colore principale</string>
+    <string name="pref_daydream_color_description">Colore di testo ed icone in modalità Daydream</string>
+    <string name="pref_daydream_night_mode_title">Modalità notte</string>
+    <string name="pref_daydream_night_mode_description">Luminosità molto ridotta (per stanze scure)</string>
+    <string name="pref_daydream_animation_title">Animazione</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>Pendolo (default)</item>
+        <item>Scorrimento</item>
+        <item>Dissolvenza</item>
+        <item>Nessuna (può danneggiare lo schermo)</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">Impostazioni Daydream di sistema</string>
 </resources>

@@ -40,6 +40,10 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
+    <string name="pref_weather_location_title">지역</string>
+    <string name="pref_weather_location_query_hint">지역 찾기</string>
+    <string name="pref_weather_location_automatic">자동</string>
+    <string name="pref_weather_location_automatic_description">현재 위치의 날씨를 표시합니다.</string>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">다음 라벨에 대해 메일 개수 표시</string>
@@ -75,6 +79,16 @@
     <string name="pref_calendar_show_all_day_description">생일과 같은 \'종일\' 이벤트를 포함하여 표시합니다</string>
 
     <!-- Daydream preferences -->
-    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
-    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
+    <string name="pref_daydream_color_title">전경색</string>
+    <string name="pref_daydream_color_description">화면 보호기 모드에서의 글자와 아이콘의 색을 결정합니다</string>
+    <string name="pref_daydream_night_mode_title">야간 모드</string>
+    <string name="pref_daydream_night_mode_description">디스플레이를 아주 어둡게 하기(어두운 장소용)</string>
+    <string name="pref_daydream_animation_title">애니메이션</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>그네 (기본)</item>
+        <item>슬라이드</item>
+        <item>페이드</item>
+        <item>없음 (화면 손상이 생길 수 있음)</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">시스템의 화면 보호기 설정</string>
 </resources>

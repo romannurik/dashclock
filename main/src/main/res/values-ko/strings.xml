@@ -24,11 +24,11 @@
     <string name="simple_date_format">E, MMM dd</string>
 
     <!-- Configuration -->
-    <string name="shortcut_label_configure">DashClock 위젯 구성</string>
-    <string name="title_configure">DashClock 위젯 구성</string>
+    <string name="shortcut_label_configure">DashClock 위젯 설정</string>
+    <string name="title_configure">DashClock 위젯 설정</string>
     <string name="section_extensions">확장 프로그램</string>
     <string name="section_appearance">외관</string>
-    <!--<string name="section_daydream">Daydream</string>-->
+    <string name="section_daydream">화면 보호기</string>
     <string name="section_advanced">고급</string>
 
     <string name="title_apps">애플리케이션</string>
@@ -42,8 +42,8 @@
     <string name="cancel">취소</string>
 
     <!-- These strings never appear in release builds; translation is very low priority -->
-    <string name="send_logs">Send debug log</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <string name="send_logs">디버그 로그 보내기</string>
+    <string name="send_logs_chooser_title">다음을 이용하여 로그 보내기</string>
 
     <string name="prev_date_style">이전 날짜 스타일</string>
     <string name="prev_time_style">이전 시간 스타일</string>
@@ -122,7 +122,7 @@
         <item quantity="other">%1$s분</item>
     </plurals>
     <string name="today">오늘</string>
-    <!--<string name="now">Now</string>-->
+    <string name="now">지금</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">부재중 전화</string>
@@ -134,7 +134,7 @@
         <item quantity="other">%1$s개 부재중 전화</item>
     </plurals>
     <string name="missed_calls_body_template">발신자: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">알 수 없음</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">메시지</string>
@@ -146,6 +146,7 @@
         <item quantity="other">%1$s개 읽지 않음</item>
     </plurals>
     <string name="sms_body_template">발신자: %1$s</string>
+    <string name="sms_body_all_participants_template">참여자: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">DashClock 꾸미기</string>
