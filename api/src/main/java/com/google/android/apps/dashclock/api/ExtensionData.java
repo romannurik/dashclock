@@ -158,7 +158,7 @@ public class ExtensionData implements Parcelable {
     /**
      * Returns the content:// URI of a bitmap representing this data. Default null.
      *
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     public Uri iconUri() {
         return mIconUri;
@@ -171,7 +171,7 @@ public class ExtensionData implements Parcelable {
      * {@link android.graphics.BitmapFactory#decodeFileDescriptor(java.io.FileDescriptor)}. See the
      * {@link #icon(int) icon} method for guidelines on the styling of this bitmap.
      *
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     public ExtensionData iconUri(Uri iconUri) {
         mIconUri = iconUri;
@@ -256,7 +256,7 @@ public class ExtensionData implements Parcelable {
     /**
      * Returns the content description for this data, used for accessibility purposes.
      *
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     public String contentDescription() {
         return mContentDescription;
@@ -268,7 +268,7 @@ public class ExtensionData implements Parcelable {
      * purposes.
      *
      * @see android.view.View#setContentDescription(CharSequence)
-     * @since v2
+     * @since Protocol Version 2 (API v2.x)
      */
     public ExtensionData contentDescription(String contentDescription) {
         mContentDescription = contentDescription;

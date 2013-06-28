@@ -173,7 +173,7 @@ public abstract class DashClockExtension extends Service {
      * Indicates that {@link #onUpdateData(int)} was triggered because the user explicitly requested
      * that the extension be updated.
      *
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     public static final int UPDATE_REASON_MANUAL = 6;
 
@@ -189,7 +189,7 @@ public abstract class DashClockExtension extends Service {
      * Check for this extra in your settings activity if you need to adjust your UI depending on
      * whether or not the user came from DashClock's settings screen.
      *
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     public static final String EXTRA_FROM_DASHCLOCK_SETTINGS
             = "com.google.android.apps.dashclock.extra.FROM_DASHCLOCK_SETTINGS";
@@ -204,7 +204,7 @@ public abstract class DashClockExtension extends Service {
     /**
      * The protocol version with which the world readability option became available.
      *
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     private static final int PROTOCOL_VERSION_WORLD_READABILITY = 2;
 
@@ -379,7 +379,7 @@ public abstract class DashClockExtension extends Service {
      * with {@link #addWatchContentUris(String[])} for this extension.
      *
      * @param uris The URIs to watch.
-     * @since v2
+     * @since Protocol Version 2 (API r2.x)
      */
     protected final void removeAllWatchContentUris() {
         try {

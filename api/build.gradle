@@ -57,6 +57,17 @@ task javadoc(overwrite: true, dependsOn: 'jar') << {
     proc.waitFor()
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    baseName = jar.baseName
+    from sourceSets.main.allSource
+    from fileTree('src/main/aidl').include('**/I*.aidl')
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 dependencies {
     compile files("${android.sdk}/platforms/${android.target}/android.jar")
 }
