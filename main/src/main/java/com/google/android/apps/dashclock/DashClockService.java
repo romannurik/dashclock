@@ -27,6 +27,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
@@ -76,6 +77,11 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
      */
     public static final String ACTION_BIND_DASHCLOCK_SERVICE
             = "com.google.android.apps.dashclock.action.BIND_SERVICE";
+
+    /**
+     * The maximum duration for the wakelock.
+     */
+    private static final long UPDATE_WAKELOCK_TIMEOUT_MILLIS = 30 * 1000;
 
     private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;
@@ -159,17 +165,25 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         int reason = intent.getIntExtra(EXTRA_UPDATE_REASON,
                 DashClockExtension.UPDATE_REASON_UNKNOWN);
 
-        // Either update all extensions, or only the requested one.
-        String updateExtension = intent.getStringExtra(EXTRA_COMPONENT_NAME);
-        if (!TextUtils.isEmpty(updateExtension)) {
-            ComponentName cn = ComponentName.unflattenFromString(updateExtension);
-            mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
-                    ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS, reason);
-        } else {
-            for (ComponentName cn : mExtensionManager.getActiveExtensionNames()) {
+        PowerManager pwm = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock lock = pwm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+        lock.acquire(UPDATE_WAKELOCK_TIMEOUT_MILLIS);
+
+        try {
+            // Either update all extensions, or only the requested one.
+            String updateExtension = intent.getStringExtra(EXTRA_COMPONENT_NAME);
+            if (!TextUtils.isEmpty(updateExtension)) {
+                ComponentName cn = ComponentName.unflattenFromString(updateExtension);
                 mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
                         ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS, reason);
+            } else {
+                for (ComponentName cn : mExtensionManager.getActiveExtensionNames()) {
+                    mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
+                            ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS, reason);
+                }
             }
+        } finally {
+            lock.release();
         }
     }
 
@@ -197,6 +211,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
                 @Override
                 public void updateExtensions() {
+                    // TODO: provide an update reason (currently UNKNOWN)
                     handleUpdateExtensions(new Intent());
                 }
             };

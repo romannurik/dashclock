@@ -90,24 +90,14 @@ public class DaydreamService extends DreamService implements
     private boolean mAttached;
     private boolean mNeedsRelayout;
     private boolean mMovingLeft;
-
-    @Override
-    public void onDreamingStarted() {
-        super.onDreamingStarted();
-        mExtensionManager = ExtensionManager.getInstance(this);
-        mExtensionManager.addOnChangeListener(this);
-    }
-
-    @Override
-    public void onDreamingStopped() {
-        super.onDreamingStopped();
-        mExtensionManager.removeOnChangeListener(this);
-        mExtensionManager = null;
-    }
+    private boolean mManuallyAwoken;
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
+        mExtensionManager = ExtensionManager.getInstance(this);
+        mExtensionManager.addOnChangeListener(this);
+
         mAttached = true;
         setInteractive(true);
         setFullscreen(true);
@@ -136,6 +126,8 @@ public class DaydreamService extends DreamService implements
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        mExtensionManager.removeOnChangeListener(this);
+        mExtensionManager = null;
         mHandler.removeCallbacksAndMessages(null);
         mAttached = false;
     }
@@ -171,7 +163,7 @@ public class DaydreamService extends DreamService implements
     }
 
     private void renderDaydream(final boolean restartAnimation) {
-        if (!mAttached) {
+        if (!mAttached || mExtensionManager == null) {
             return;
         }
 
@@ -192,6 +184,7 @@ public class DaydreamService extends DreamService implements
         rootContainer.setRootLayoutListener(new RootLayout.RootLayoutListener() {
             @Override
             public void onAwake() {
+                mManuallyAwoken = true;
                 setFullscreen(false);
                 mHandler.removeCallbacks(mCycleRunnable);
                 mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS);
@@ -203,7 +196,14 @@ public class DaydreamService extends DreamService implements
                         .translationX(0f)
                         .translationY(0f)
                         .setDuration(res.getInteger(android.R.integer.config_shortAnimTime));
-                mSingleCycleAnimator.cancel();
+                if (mSingleCycleAnimator != null) {
+                    mSingleCycleAnimator.cancel();
+                }
+            }
+
+            @Override
+            public boolean isAwake() {
+                return mManuallyAwoken;
             }
 
             @Override
@@ -238,7 +238,7 @@ public class DaydreamService extends DreamService implements
         mExtensionsContainer = (ViewGroup) findViewById(R.id.extensions_container);
         mExtensionsContainer.removeAllViews();
         List<ExtensionWithData> visibleExtensions
-                = ExtensionManager.getInstance(this).getVisibleExtensionsWithData();
+                = mExtensionManager.getVisibleExtensionsWithData();
         for (ExtensionWithData ewd : visibleExtensions) {
             mExtensionsContainer.addView(
                     (View) renderer.renderExpandedExtension(mExtensionsContainer, null, ewd));
@@ -270,8 +270,6 @@ public class DaydreamService extends DreamService implements
      * Post-layout render code.
      */
     public void postLayoutRender(boolean restartAnimation) {
-        Resources res = getResources();
-
         // Adjust the ScrollView
         ExposedScrollView scrollView = (ExposedScrollView) findViewById(R.id.extensions_scroller);
         int maxScroll = scrollView.computeVerticalScrollRange() - scrollView.getHeight();
@@ -335,6 +333,7 @@ public class DaydreamService extends DreamService implements
     public Runnable mCycleRunnable = new Runnable() {
         @Override
         public void run() {
+            mManuallyAwoken = false;
             float outAlpha = 1f;
             if ((mAnimation & ANIMATION_HAS_FADE) != 0) {
                 outAlpha = 0f;
@@ -364,6 +363,7 @@ public class DaydreamService extends DreamService implements
      */
     public static class RootLayout extends FrameLayout {
         private RootLayoutListener mRootLayoutListener;
+        private boolean mCancelCurrentEvent;
 
         public RootLayout(Context context) {
             super(context);
@@ -380,16 +380,18 @@ public class DaydreamService extends DreamService implements
         @Override
         public boolean onInterceptTouchEvent(MotionEvent ev) {
             switch (ev.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (mRootLayoutListener != null) {
-                        mRootLayoutListener.onAwake();
-                    }
-                    break;
-
                 // ACTION_UP doesn't seem to reliably get called. Otherwise
                 // should postDelayed on ACTION_UP instead of ACTION_DOWN.
+                case MotionEvent.ACTION_DOWN:
+                    if (mRootLayoutListener != null && !mRootLayoutListener.isAwake()) {
+                        mCancelCurrentEvent = true;
+                        mRootLayoutListener.onAwake();
+                    } else {
+                        mCancelCurrentEvent = false;
+                    }
+                    break;
             }
-            return false;
+            return mCancelCurrentEvent;
         }
 
         public void setRootLayoutListener(RootLayoutListener rootLayoutListener) {
@@ -407,6 +409,7 @@ public class DaydreamService extends DreamService implements
         public static interface RootLayoutListener {
             void onAwake();
             void onSizeChanged(int width, int height);
+            boolean isAwake();
         }
     }
 
