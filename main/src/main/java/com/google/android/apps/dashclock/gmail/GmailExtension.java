@@ -28,7 +28,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.content.IntentCompat;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -40,6 +42,7 @@ import java.util.Set;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
+import static com.google.android.apps.dashclock.LogUtils.LOGW;
 
 /**
  * Gmail unread count extension.
@@ -53,6 +56,7 @@ public class GmailExtension extends DashClockExtension {
     private static final String ACCOUNT_TYPE_GOOGLE = "com.google";
 
     private static final String SECTIONED_INBOX_CANONICAL_NAME_PREFIX = "^sq_ig_i_";
+    private static final String SECTIONED_INBOX_CANONICAL_NAME_PERSONAL = "^sq_ig_i_personal";
 
     //private static final String[] FEATURES_MAIL = {"service_mail"};
 
@@ -105,6 +109,7 @@ public class GmailExtension extends DashClockExtension {
 
         int unread = 0;
         List<Pair<String, Integer>> unreadPerAccount = new ArrayList<Pair<String, Integer>>();
+        String lastUnreadLabelUri = null;
 
         for (String account : selectedAccounts) {
             Cursor cursor = tryOpenLabelsCursor(account);
@@ -123,10 +128,17 @@ public class GmailExtension extends DashClockExtension {
                 String thisCanonicalName = cursor.getString(LabelsQuery.CANONICAL_NAME);
                 if (labelCanonical.equals(thisCanonicalName)) {
                     accountUnread = thisUnread;
+                    if (thisUnread > 0) {
+                        lastUnreadLabelUri = cursor.getString(LabelsQuery.URI);
+                    }
                     break;
                 } else if (!TextUtils.isEmpty(thisCanonicalName)
                         && thisCanonicalName.startsWith(SECTIONED_INBOX_CANONICAL_NAME_PREFIX)) {
                     accountUnread += thisUnread;
+                    if (thisUnread > 0
+                            && SECTIONED_INBOX_CANONICAL_NAME_PERSONAL.equals(thisCanonicalName)) {
+                        lastUnreadLabelUri = cursor.getString(LabelsQuery.URI);
+                    }
                 }
             }
 
@@ -150,6 +162,25 @@ public class GmailExtension extends DashClockExtension {
             body.append(pair.first).append(" (").append(pair.second).append(")");
         }
 
+        Intent clickIntent = null;
+        if (lastUnreadLabelUri != null) {
+            try {
+                clickIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(lastUnreadLabelUri));
+                if (getPackageManager().resolveActivity(clickIntent, 0) == null) {
+                    throw new IllegalStateException("Gmail can't open this label directly.");
+                }
+            } catch (Exception e) {
+                LOGW(TAG, "Can't open Gmail label directly.", e);
+                clickIntent = null;
+            }
+        }
+
+        if (clickIntent == null) {
+            clickIntent = new Intent(Intent.ACTION_MAIN)
+                    .setPackage("com.google.android.gm")
+                    .addCategory(Intent.CATEGORY_LAUNCHER);
+        }
+
         publishUpdate(new ExtensionData()
                 .visible(unread > 0)
                 .status(Integer.toString(unread))
@@ -157,9 +188,7 @@ public class GmailExtension extends DashClockExtension {
                         R.plurals.gmail_title_template, unread, unread))
                 .icon(R.drawable.ic_extension_gmail)
                 .expandedBody(body.toString())
-                .clickIntent(new Intent(Intent.ACTION_MAIN)
-                        .setPackage("com.google.android.gm")
-                        .addCategory(Intent.CATEGORY_LAUNCHER)));
+                .clickIntent(clickIntent));
     }
 
     private Cursor tryOpenLabelsCursor(String account) {
