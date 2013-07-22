@@ -32,6 +32,8 @@
         <item>75</item>
         <item>100</item>
     </string-array>
+    <string name="pref_homescreen_foreground_color_title">Home screen widget foreground</string>
+    <string name="pref_homescreen_foreground_color_description">The color of text and icons for home screen widget(s)</string>
     <string name="pref_aggressive_centering_title">Always center</string>
     <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
     <string name="pref_hide_settings_title">Hide settings button</string>

@@ -35,6 +35,7 @@ public interface ViewBuilder {
     void setViewBackgroundColor(int viewId, int color);
     void setTextViewText(int viewId, CharSequence text);
     void setTextViewTextSize(int viewId, int unit, float size);
+    void setTextViewColor(int viewId, int color);
     void setTextViewSingleLine(int viewId, boolean singleLine);
     void setTextViewMaxLines(int viewId, int maxLines);
     void setImageViewBitmap(int viewId, Bitmap bitmap);

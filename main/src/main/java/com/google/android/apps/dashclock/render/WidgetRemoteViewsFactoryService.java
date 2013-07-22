@@ -21,6 +21,7 @@ import com.google.android.apps.dashclock.ExtensionManager;
 import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.WidgetClickProxyActivity;
 import com.google.android.apps.dashclock.WidgetProvider;
+import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 
 import net.nurik.roman.dashclock.R;
 
@@ -42,6 +43,9 @@ import java.util.List;
  * {@link android.widget.Adapter} for expanded DashClock extensions.
  */
 public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
+    public static String EXTRA_TARGET
+            = "com.google.android.apps.dashclock.extra.TARGET";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,7 +53,8 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new WidgetRemoveViewsFactory(this);
+        int target = intent.getIntExtra(EXTRA_TARGET, DashClockRenderer.Options.TARGET_HOME_SCREEN);
+        return new WidgetRemoveViewsFactory(this, target);
     }
 
     /**
@@ -59,14 +64,16 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
     class WidgetRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory,
             ExtensionManager.OnChangeListener {
 
-        private Handler mHandler  = new Handler();
+        private Handler mHandler = new Handler();
         private Context mContext;
         private ExtensionManager mExtensionManager;
         private List<ExtensionManager.ExtensionWithData>
                 mVisibleExtensions = new ArrayList<ExtensionManager.ExtensionWithData>();
+        private int mTarget;
 
-        public WidgetRemoveViewsFactory(Context context) {
+        public WidgetRemoveViewsFactory(Context context, int target) {
             mContext = context;
+            mTarget = target;
             mExtensionManager = ExtensionManager.getInstance(context);
             mExtensionManager.addOnChangeListener(this);
             onExtensionsChanged();
@@ -133,7 +140,10 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
             }
 
             WidgetRenderer renderer = new WidgetRenderer(mContext);
-            renderer.setOptions(new DashClockRenderer.Options());
+            DashClockRenderer.Options options = new DashClockRenderer.Options();
+            options.target = mTarget;
+            options.foregroundColor = AppearanceConfig.getForegroundColor(mTarget, mContext);
+            renderer.setOptions(options);
             ExtensionManager.ExtensionWithData ewd = getItemAtProtected(position);
             return (RemoteViews) renderer.renderExpandedExtension(null, null, ewd);
         }

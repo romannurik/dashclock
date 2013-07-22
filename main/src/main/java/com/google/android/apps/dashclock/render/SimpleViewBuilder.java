@@ -59,42 +59,74 @@ public class SimpleViewBuilder implements ViewBuilder {
 
     @Override
     public void setImageViewBitmap(int viewId, Bitmap bitmap) {
-        ((ImageView) mRootView.findViewById(viewId)).setImageBitmap(bitmap);
+        try {
+            ((ImageView) mRootView.findViewById(viewId)).setImageBitmap(bitmap);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setViewContentDescription(int viewId, String contentDescription) {
-        mRootView.findViewById(viewId).setContentDescription(contentDescription);
+        try {
+            mRootView.findViewById(viewId).setContentDescription(contentDescription);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setTextViewText(int viewId, CharSequence text) {
-        ((TextView) mRootView.findViewById(viewId)).setText(text);
+        try {
+            ((TextView) mRootView.findViewById(viewId)).setText(text);
+        } catch (NullPointerException ignored) {
+        }
+    }
+
+    @Override
+    public void setTextViewColor(int viewId, int color) {
+        try {
+            ((TextView) mRootView.findViewById(viewId)).setTextColor(color);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setTextViewMaxLines(int viewId, int maxLines) {
-        ((TextView) mRootView.findViewById(viewId)).setMaxLines(maxLines);
+        try {
+            ((TextView) mRootView.findViewById(viewId)).setMaxLines(maxLines);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setTextViewSingleLine(int viewId, boolean singleLine) {
-        ((TextView) mRootView.findViewById(viewId)).setSingleLine(singleLine);
+        try {
+            ((TextView) mRootView.findViewById(viewId)).setSingleLine(singleLine);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setTextViewTextSize(int viewId, int unit, float size) {
-        ((TextView) mRootView.findViewById(viewId)).setTextSize(unit, size);
+        try {
+            ((TextView) mRootView.findViewById(viewId)).setTextSize(unit, size);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setLinearLayoutGravity(int viewId, int gravity) {
-        ((LinearLayout) mRootView.findViewById(viewId)).setGravity(gravity);
+        try {
+            ((LinearLayout) mRootView.findViewById(viewId)).setGravity(gravity);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setViewPadding(int viewId, int left, int top, int right, int bottom) {
-        mRootView.findViewById(viewId).setPadding(left, top, right, bottom);
+        try {
+            mRootView.findViewById(viewId).setPadding(left, top, right, bottom);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
@@ -109,48 +141,57 @@ public class SimpleViewBuilder implements ViewBuilder {
 
     @Override
     public void setViewVisibility(int viewId, int visibility) {
-        View v = mRootView.findViewById(viewId);
-        if (v != null) {
-            v.setVisibility(visibility);
+        try {
+            mRootView.findViewById(viewId).setVisibility(visibility);
+        } catch (NullPointerException ignored) {
         }
     }
 
     @Override
     public void setViewBackgroundColor(int viewId, int color) {
-        mRootView.findViewById(viewId).setBackgroundColor(color);
+        try {
+            mRootView.findViewById(viewId).setBackgroundColor(color);
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setViewClickIntent(final int viewId, final Intent clickIntent) {
-        if (mCallbacks != null) {
-            mCallbacks.onModifyClickIntent(clickIntent);
-        }
-
-        mRootView.findViewById(viewId).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mContext.startActivity(clickIntent);
-                mCallbacks.onClickIntentCalled(viewId);
+        try {
+            if (mCallbacks != null) {
+                mCallbacks.onModifyClickIntent(clickIntent);
             }
-        });
+
+            mRootView.findViewById(viewId).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(clickIntent);
+                    mCallbacks.onClickIntentCalled(viewId);
+                }
+            });
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override
     public void setViewClickFillInIntent(final int viewId, final Intent fillIntent) {
-        View targetView = mRootView.findViewById(viewId);
-        targetView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mCallbacks == null) {
-                    return;
-                }
+        try {
+            View targetView = mRootView.findViewById(viewId);
+            targetView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mCallbacks == null) {
+                        return;
+                    }
 
-                Intent intent = mCallbacks.onGetClickIntentTemplate();
-                intent.fillIn(fillIntent, 0);
-                mContext.startActivity(intent);
-                mCallbacks.onClickIntentCalled(viewId);
-            }
-        });
+                    Intent intent = mCallbacks.onGetClickIntentTemplate();
+                    intent.fillIn(fillIntent, 0);
+                    mContext.startActivity(intent);
+                    mCallbacks.onClickIntentCalled(viewId);
+                }
+            });
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -40,6 +41,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
+import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 import com.google.android.apps.dashclock.render.DashClockRenderer;
 import com.google.android.apps.dashclock.render.SimpleRenderer;
 import com.google.android.apps.dashclock.render.SimpleViewBuilder;
@@ -60,8 +62,6 @@ public class DaydreamService extends DreamService implements
     public static final String PREF_DAYDREAM_COLOR = "pref_daydream_color";
     public static final String PREF_DAYDREAM_NIGHT_MODE = "pref_daydream_night_mode";
     public static final String PREF_DAYDREAM_ANIMATION = "pref_daydream_animation";
-
-    private static final int DEFAULT_FOREGROUND_COLOR = 0xffffffff;
 
     private static final int ANIMATION_HAS_ROTATE = 0x1;
     private static final int ANIMATION_HAS_SLIDE = 0x2;
@@ -104,7 +104,8 @@ public class DaydreamService extends DreamService implements
 
         // Read preferences
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        mForegroundColor = sp.getInt(PREF_DAYDREAM_COLOR, DEFAULT_FOREGROUND_COLOR);
+        mForegroundColor = sp.getInt(PREF_DAYDREAM_COLOR,
+                AppearanceConfig.DEFAULT_WIDGET_FOREGROUND_COLOR);
 
         String animation = sp.getString(PREF_DAYDREAM_ANIMATION, "");
         if ("none".equals(animation)) {
@@ -221,6 +222,7 @@ public class DaydreamService extends DreamService implements
         SimpleRenderer renderer = new SimpleRenderer(this);
         DashClockRenderer.Options options = new DashClockRenderer.Options();
         options.target = DashClockRenderer.Options.TARGET_DAYDREAM;
+        options.foregroundColor = Color.WHITE;
         options.minWidthDp = screenWidthDp;
         options.minHeightDp = screenHeightDp;
         options.newTaskOnClick = true;

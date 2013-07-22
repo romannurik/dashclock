@@ -94,6 +94,11 @@ public class WidgetViewBuilder implements ViewBuilder {
     }
 
     @Override
+    public void setTextViewColor(int viewId, int color) {
+        mRemoteViews.setTextColor(viewId, color);
+    }
+
+    @Override
     public void setTextViewMaxLines(int viewId, int maxLines) {
         mRemoteViews.setInt(viewId, "setMaxLines", maxLines);
     }

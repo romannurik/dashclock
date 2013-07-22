@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
@@ -93,6 +94,23 @@ public class Utils {
         return flattenExtensionIcon(new BitmapDrawable(context.getResources(), baseIcon), color);
     }
 
+    public static Bitmap recolorBitmap(BitmapDrawable drawable, int color) {
+        if (drawable == null) {
+            return null;
+        }
+
+        Bitmap outBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(outBitmap);
+        drawable.setBounds(0, 0, outBitmap.getWidth(), outBitmap.getHeight());
+        drawable.setColorFilter(color,
+                PorterDuff.Mode.SRC_IN);
+        drawable.draw(canvas);
+        drawable.setColorFilter(null);
+        drawable.setCallback(null); // free up any references
+        return outBitmap;
+    }
+
     public static Intent getDefaultClockIntent(Context context) {
         PackageManager pm = context.getPackageManager();
         for (String packageName : CLOCK_PACKAGES) {
@@ -121,7 +139,7 @@ public class Utils {
     }
 
     public static Bitmap loadExtensionIcon(Context context, ComponentName extension,
-            int icon, Uri iconUri) {
+            int icon, Uri iconUri, int color) {
         if (iconUri != null) {
             return loadExtensionIconFromUri(context, iconUri);
         }
@@ -155,7 +173,7 @@ public class Utils {
             return Utils.flattenExtensionIcon(
                     context,
                     BitmapFactory.decodeResource(packageRes, icon, options),
-                    0xffffffff);
+                    color);
 
         } catch (PackageManager.NameNotFoundException e) {
             LOGE(TAG, "Couldn't access extension's package while loading icon data.");

@@ -32,6 +32,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -50,14 +52,14 @@ public abstract class DashClockRenderer {
     private static final String TAG = LogUtils.makeLogTag(DashClockRenderer.class);
 
     private static final int MAX_COLLAPSED_EXTENSIONS = 3;
+    private static final int MIN_NORMAL_FONTSIZE_WIDTH_DP = 300;
 
     public static final String PREF_CLOCK_SHORTCUT = "pref_clock_shortcut";
-    public static final String PREF_HIDE_SETTINGS = "pref_hide_settings";
 
     protected Context mContext;
+    protected ExtensionManager mExtensionManager;
 
     protected Options mOptions;
-    protected ExtensionManager mExtensionManager;
 
     protected DashClockRenderer(Context context) {
         mContext = context;
@@ -83,15 +85,12 @@ public abstract class DashClockRenderer {
             ++visibleExtensions;
         }
 
-        // Load some settings
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-        boolean hideSettings = sp.getBoolean(PREF_HIDE_SETTINGS, false);
-
         // Determine if we're on a tablet or not (lock screen widgets can't be collapsed on
         // tablets).
         boolean isTablet = res.getConfiguration().smallestScreenWidthDp >= 600;
 
         // Pull high-level user-defined appearance options.
+        boolean hideSettings = AppearanceConfig.isSettingsButtonHidden(mContext);
         int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(mContext);
         boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(mContext);
 
@@ -119,6 +118,10 @@ public abstract class DashClockRenderer {
 
         // Step 3. Draw the basic clock face
         renderClockFace(vb);
+        vb.setImageViewBitmap(R.id.widget_divider,
+                Utils.recolorBitmap(
+                        (BitmapDrawable) res.getDrawable(R.drawable.widget_divider),
+                        mOptions.foregroundColor));
 
         // Step 4. Align the clock face and settings button (if shown)
         boolean isPortrait = res.getConfiguration().orientation
@@ -173,6 +176,10 @@ public abstract class DashClockRenderer {
                     new Intent(mContext, ConfigurationActivity.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                     | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS));
+            vb.setImageViewBitmap(R.id.settings_button,
+                    Utils.recolorBitmap(
+                            (BitmapDrawable) res.getDrawable(R.drawable.ic_widget_action_settings),
+                            mOptions.foregroundColor));
         }
 
         // Step 6. Render the extensions (collapsed or expanded)
@@ -215,6 +222,10 @@ public abstract class DashClockRenderer {
                         vb.inflateChildLayout(
                                 R.layout.widget_include_collapsed_ellipsis,
                                 R.id.collapsed_extensions_container));
+                vb.setImageViewBitmap(R.id.collapsed_extension_ellipsis,
+                        Utils.recolorBitmap((BitmapDrawable)
+                                res.getDrawable(R.drawable.collapsed_extension_ellipsis),
+                                mOptions.foregroundColor));
             }
         }
 
@@ -233,7 +244,7 @@ public abstract class DashClockRenderer {
                         AppearanceConfig.getCurrentDateLayout(mContext),
                         R.id.date_container));
 
-        if (mOptions.minWidthDp < 300) {
+        if (mOptions.minWidthDp < MIN_NORMAL_FONTSIZE_WIDTH_DP) {
             Resources res = mContext.getResources();
             int miniTextSizeLargePx = res.getDimensionPixelSize(R.dimen.mini_clock_text_size_large);
             int miniTextSizeSmallPx = res.getDimensionPixelSize(R.dimen.mini_clock_text_size_small);
@@ -243,6 +254,16 @@ public abstract class DashClockRenderer {
             for (int id : SMALL_TIME_COMPONENT_IDS) {
                 vb.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_PX, miniTextSizeSmallPx);
             }
+        }
+
+        for (int id : LARGE_TIME_COMPONENT_IDS) {
+            vb.setTextViewColor(id, mOptions.foregroundColor);
+        }
+        for (int id : SMALL_TIME_COMPONENT_IDS) {
+            vb.setTextViewColor(id, mOptions.foregroundColor);
+        }
+        for (int id : DATE_COMPONENT_IDS) {
+            vb.setTextViewColor(id, mOptions.foregroundColor);
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -283,8 +304,8 @@ public abstract class DashClockRenderer {
                     extensionCollapsedTextSizeSingleLine);
         }
 
-        vb.setTextViewText(R.id.collapsed_extension_text,
-                status.toUpperCase(Locale.getDefault()));
+        vb.setTextViewText(R.id.collapsed_extension_text, status.toUpperCase(Locale.getDefault()));
+        vb.setTextViewColor(R.id.collapsed_extension_text, mOptions.foregroundColor);
 
         String statusContentDescription = ewd.latestData.contentDescription();
         if (TextUtils.isEmpty(statusContentDescription)) {
@@ -303,7 +324,7 @@ public abstract class DashClockRenderer {
 
         vb.setImageViewBitmap(R.id.collapsed_extension_icon,
                 Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
-                        ewd.latestData.icon(), ewd.latestData.iconUri()));
+                        ewd.latestData.icon(), ewd.latestData.iconUri(), mOptions.foregroundColor));
         vb.setViewContentDescription(R.id.collapsed_extension_icon, ewd.listing.title);
 
         Intent clickIntent = ewd.latestData.clickIntent();
@@ -334,15 +355,17 @@ public abstract class DashClockRenderer {
         }
 
         vb.setTextViewText(R.id.text1, Utils.expandedTitleOrStatus(ewd.latestData));
+        vb.setTextViewColor(R.id.text1, mOptions.foregroundColor);
 
         String expandedBody = ewd.latestData.expandedBody();
         vb.setViewVisibility(R.id.text2, TextUtils.isEmpty(expandedBody)
                 ? View.GONE : View.VISIBLE);
         vb.setTextViewText(R.id.text2, ewd.latestData.expandedBody());
+        vb.setTextViewColor(R.id.text2, mOptions.foregroundColor);
 
         vb.setImageViewBitmap(R.id.icon,
                 Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
-                        ewd.latestData.icon(), ewd.latestData.iconUri()));
+                        ewd.latestData.icon(), ewd.latestData.iconUri(), mOptions.foregroundColor));
         String contentDescription = ewd.latestData.contentDescription();
         if (TextUtils.isEmpty(contentDescription)) {
             // No specific content description provided. Just set the minimal extra content
@@ -379,6 +402,7 @@ public abstract class DashClockRenderer {
         public int target;
         public int minWidthDp;
         public int minHeightDp;
+        public int foregroundColor = AppearanceConfig.DEFAULT_WIDGET_FOREGROUND_COLOR;
 
         // Only used by WidgetRenderer
         public int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID; // optional

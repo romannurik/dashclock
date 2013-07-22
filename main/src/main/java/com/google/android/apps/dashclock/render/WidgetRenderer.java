@@ -27,6 +27,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import com.google.android.apps.dashclock.configuration.AppearanceConfig;
+
 /**
  * Class in charge of rendering DashClock to {@link android.widget.RemoteViews},
  * along with {@link WidgetRemoteViewsFactoryService}.
@@ -64,6 +66,7 @@ public class WidgetRenderer extends DashClockRenderer {
                         widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY))
                         ? Options.TARGET_LOCK_SCREEN : Options.TARGET_HOME_SCREEN;
             }
+            options.foregroundColor = AppearanceConfig.getForegroundColor(options.target, context);
 
             renderer.setOptions(options);
             appWidgetManager.updateAppWidget(appWidgetId,
@@ -83,6 +86,8 @@ public class WidgetRenderer extends DashClockRenderer {
         if (mOptions.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             remoteAdapterIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     mOptions.appWidgetId);
+            remoteAdapterIntent.putExtra(WidgetRemoteViewsFactoryService.EXTRA_TARGET,
+                    mOptions.target);
         }
 
         // TODO: is this setData call really necessary?

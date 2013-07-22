@@ -17,7 +17,10 @@
 package com.google.android.apps.dashclock.configuration;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
+
+import com.google.android.apps.dashclock.render.DashClockRenderer;
 
 /**
  * Helper class for working with DashClock appearance settings.
@@ -29,8 +32,12 @@ public class AppearanceConfig {
     static final String PREF_STYLE_TIME = "pref_style_time";
     static final String PREF_STYLE_DATE = "pref_style_date";
 
+    static final String PREF_HIDE_SETTINGS = "pref_hide_settings";
+    static final String PREF_HOMESCREEN_FOREGROUND_COLOR = "pref_homescreen_foreground_color";
     static final String PREF_HOMESCREEN_BACKGROUND_OPACITY = "pref_homescreen_background_opacity";
     static final String PREF_AGGRESSIVE_CENTERING = "pref_aggressive_centering";
+
+    public static final int DEFAULT_WIDGET_FOREGROUND_COLOR = Color.WHITE;
 
     static String[] TIME_STYLE_NAMES = new String[]{
             "default",
@@ -65,6 +72,19 @@ public class AppearanceConfig {
         return context.getResources().getIdentifier(
                 "widget_include_" + component + "_style_" + name,
                 "layout", context.getPackageName());
+    }
+
+    public static int getForegroundColor(int target, Context context) {
+        if (target == DashClockRenderer.Options.TARGET_HOME_SCREEN) {
+            return PreferenceManager.getDefaultSharedPreferences(context)
+                    .getInt(PREF_HOMESCREEN_FOREGROUND_COLOR, Color.WHITE);
+        }
+        return DEFAULT_WIDGET_FOREGROUND_COLOR;
+    }
+
+    public static boolean isSettingsButtonHidden(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_HIDE_SETTINGS, false);
     }
 
     public static boolean isAggressiveCenteringEnabled(Context context) {
