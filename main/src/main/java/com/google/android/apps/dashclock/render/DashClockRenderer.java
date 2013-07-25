@@ -248,12 +248,18 @@ public abstract class DashClockRenderer {
             Resources res = mContext.getResources();
             int miniTextSizeLargePx = res.getDimensionPixelSize(R.dimen.mini_clock_text_size_large);
             int miniTextSizeSmallPx = res.getDimensionPixelSize(R.dimen.mini_clock_text_size_small);
+            int miniDateTextSizePx = res.getDimensionPixelSize(R.dimen.mini_clock_date_text_size);
             for (int id : LARGE_TIME_COMPONENT_IDS) {
                 vb.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_PX, miniTextSizeLargePx);
             }
             for (int id : SMALL_TIME_COMPONENT_IDS) {
                 vb.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_PX, miniTextSizeSmallPx);
             }
+            for (int id : DATE_COMPONENT_IDS) {
+                vb.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_PX, miniDateTextSizePx);
+            }
+            int miniDatePaddingPx = res.getDimensionPixelSize(R.dimen.mini_clock_date_top_padding);
+            vb.setViewPadding(R.id.date_container, 0, miniDatePaddingPx, 0, 0);
         }
 
         for (int id : LARGE_TIME_COMPONENT_IDS) {
