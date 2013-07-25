@@ -17,21 +17,21 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:13.0.0'
+    compile 'com.android.support:support-v13:18.0.0'
     compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1-SNAPSHOT-AAR'
     compile project(':api')
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    compileSdkVersion 18
+    buildToolsVersion "18.0.0"
 
     def Properties versionProps = new Properties()
     versionProps.load(new FileInputStream(file('version.properties')))
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 17
+        targetSdkVersion 18
 
         versionName versionProps['name']
         versionCode versionProps['code'].toInteger()
