@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.gradle.api.artifacts.maven.MavenDeployment
 
+apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'java'
+
 jar.baseName = 'dashclock-api'
+group = 'com.google.android.apps.dashclock'
+version = '2.0'
 
 def Properties props = new Properties()
 props.load(new FileInputStream(file('../local.properties')))
@@ -24,6 +30,11 @@ def android = [
         sdk: props["sdk.dir"],
         target: 'android-18'
 ]
+
+allprojects { ext."signing.keyId" = props["signing.keyId"] }
+allprojects { ext."signing.password" = props["signing.password"] }
+allprojects { ext."signing.secretKeyRingFile" = props["signing.secretKeyRingFile"] }
+
 
 task compileAidl << {
     FileTree aidls = fileTree('src/main/aidl').include('**/I*.aidl')
@@ -57,6 +68,12 @@ task javadoc(overwrite: true, dependsOn: 'jar') << {
     proc.waitFor()
 }
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    baseName = jar.baseName
+    from 'build/javadoc'
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     baseName = jar.baseName
@@ -65,9 +82,70 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 artifacts {
+    archives jar
     archives sourcesJar
+    archives javadocJar
 }
 
 dependencies {
     compile files("${android.sdk}/platforms/${android.target}/android.jar")
+}
+
+// http://jedicoder.blogspot.com/2011/11/automated-gradle-project-deployment-to.html
+
+def sonatypeRepositoryUrl
+def isDevBuild
+def isReleaseBuild
+
+if (hasProperty("release")) {
+    isReleaseBuild = true
+    sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+} else {
+    isDevBuild = true
+    version += "-SNAPSHOT"
+    sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: sonatypeRepositoryUrl) {
+                authentication(userName: props["sonatypeUsername"], password: props["sonatypePassword"])
+            }
+
+            pom.project {
+               name 'DashClock API'
+               packaging 'jar'
+               description 'The DashClock API allows you to extend DashClock with custom extensions'
+               url 'http://dashclock.com/api'
+
+               scm {
+                   url 'https://code.google.com/p/dashclock/source/browse'
+                   connection 'scm:git:https://code.google.com/p/dashclock/'
+                   developerConnection 'scm:git:https://code.google.com/p/dashclock/'
+               }
+
+               licenses {
+                   license {
+                       name 'The Apache Software License, Version 2.0'
+                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                       distribution 'repo'
+                   }
+               }
+
+               developers {
+                   developer {
+                       id 'romannurik'
+                       name 'Roman Nurik'
+                   }
+               }
+           }
+        }
+    }
 }
