@@ -51,6 +51,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import static com.google.android.apps.dashclock.LogUtils.LOGD;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 
 /**
@@ -100,6 +101,8 @@ public class ExtensionHost {
 
         mChangeListener.onExtensionsChanged();
         mExtensionManager.cleanupExtensions();
+
+        LOGD(TAG, "ExtensionHost initialized.");
     }
 
     public void destroy() {
@@ -148,6 +151,8 @@ public class ExtensionHost {
     }
 
     private Connection createConnection(final ComponentName cn, final boolean isReconnect) {
+        LOGD(TAG, "createConnection for " + cn + "; isReconnect=" + isReconnect);
+
         final Connection conn = new Connection();
         conn.componentName = cn;
         conn.contentObserver = new ContentObserver(mClientThreadHandler) {

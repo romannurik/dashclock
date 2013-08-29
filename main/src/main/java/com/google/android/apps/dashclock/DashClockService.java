@@ -91,6 +91,8 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     @Override
     public void onCreate() {
         super.onCreate();
+        LOGD(TAG, "onCreate");
+
         mExtensionManager = ExtensionManager.getInstance(this);
         mExtensionManager.addOnChangeListener(this);
         mExtensionHost = new ExtensionHost(this);
@@ -99,6 +101,8 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LOGD(TAG, "onDestroy");
+
         mUpdateHandler.removeCallbacksAndMessages(null);
         mExtensionManager.removeOnChangeListener(this);
         mExtensionHost.destroy();
@@ -106,6 +110,8 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LOGD(TAG, "onStartCommand: " + (intent != null ? intent.toString() : "no intent"));
+
         if (intent != null) {
             String action = intent.getAction();
             if (ACTION_UPDATE_WIDGETS.equals(action)) {
