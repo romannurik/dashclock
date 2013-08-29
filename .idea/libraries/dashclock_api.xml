@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="dashclock-api">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/api/build/libs/dashclock-api.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -15,8 +15,12 @@ out/
 build/
 .gradle/
 
+# Project files
+*.iml
+.idea
+# .idea/workspace.xml
+
 # Local configuration file (sdk path, etc)
-.idea/workspace.xml
 local.properties
 keystore.properties
 
