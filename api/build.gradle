@@ -21,7 +21,7 @@ apply plugin: 'java'
 
 jar.baseName = 'dashclock-api'
 group = 'com.google.android.apps.dashclock'
-version = '2.0'
+version = '2.0.0'
 
 def Properties props = new Properties()
 props.load(new FileInputStream(file('../local.properties')))
@@ -60,12 +60,8 @@ sourceSets {
     }
 }
 
-task javadoc(overwrite: true, dependsOn: 'jar') << {
-    def shell = ("./javadoc-scripts/generate_javadoc.sh")
-    def proc = shell.execute()
-    proc.in.eachLine {line -> println line}
-    proc.err.eachLine {line -> println 'stderr: ' + line}
-    proc.waitFor()
+task javadoc(type: Exec, overwrite: true, dependsOn: 'jar') {
+    commandLine './javadoc-scripts/generate_javadoc.sh'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -92,19 +88,7 @@ dependencies {
 }
 
 // http://jedicoder.blogspot.com/2011/11/automated-gradle-project-deployment-to.html
-
-def sonatypeRepositoryUrl
-def isDevBuild
-def isReleaseBuild
-
-if (hasProperty("release")) {
-    isReleaseBuild = true
-    sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-} else {
-    isDevBuild = true
-    version += "-SNAPSHOT"
-    sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-}
+// TODO: switch to http://www.gradle.org/docs/current/userguide/publishing_maven.html
 
 signing {
     sign configurations.archives
@@ -115,7 +99,11 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: sonatypeRepositoryUrl) {
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: props["sonatypeUsername"], password: props["sonatypePassword"])
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
                 authentication(userName: props["sonatypeUsername"], password: props["sonatypePassword"])
             }
 
