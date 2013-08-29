@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
 
 import java.util.List;
@@ -31,7 +32,7 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
  * a cleanup of extensions (in case one was uninstalled), or a data update request to an extension
  * if it was updated (its package was replaced).
  */
-public class ExtensionPackageChangeReceiver extends BroadcastReceiver {
+public class ExtensionPackageChangeReceiver extends WakefulBroadcastReceiver {
     private static final String TAG = LogUtils.makeLogTag(ExtensionPackageChangeReceiver.class);
 
     @Override
@@ -42,7 +43,7 @@ public class ExtensionPackageChangeReceiver extends BroadcastReceiver {
 
             Intent widgetUpdateIntent = new Intent(context, DashClockService.class);
             widgetUpdateIntent.setAction(DashClockService.ACTION_UPDATE_WIDGETS);
-            context.startService(widgetUpdateIntent);
+            startWakefulService(context, widgetUpdateIntent);
         }
 
         // If this is a replacement or change in the package, update all active extensions from
@@ -58,12 +59,13 @@ public class ExtensionPackageChangeReceiver extends BroadcastReceiver {
             List<ComponentName> activeExtensions = extensionManager.getActiveExtensionNames();
             for (ComponentName cn : activeExtensions) {
                 if (packageName.equals(cn.getPackageName())) {
+                    LOGD(TAG, "Package for extension " + cn + " changed; asking it for an update.");
                     Intent extensionUpdateIntent = new Intent(context, DashClockService.class);
                     extensionUpdateIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
                     // TODO: UPDATE_REASON_PACKAGE_CHANGED
                     extensionUpdateIntent.putExtra(DashClockService.EXTRA_COMPONENT_NAME,
                             cn.flattenToShortString());
-                    context.startService(extensionUpdateIntent);
+                    startWakefulService(context, extensionUpdateIntent);
                 }
             }
         }
