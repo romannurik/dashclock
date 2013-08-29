@@ -208,8 +208,9 @@ public class ExtensionManager {
         }
 
         if (saveAndNotify) {
+            LOGD(TAG, "List of active extensions has changed.");
             saveActiveExtensionList();
-            notifyOnChangeListeners();
+            notifyOnChangeListeners(null);
         }
     }
 
@@ -223,7 +224,7 @@ public class ExtensionManager {
         if (ewd != null && !ExtensionData.equals(ewd.latestData, data)) {
             ewd.latestData = data;
             serializeExtensionData(ewd.listing.componentName, data);
-            notifyOnChangeListeners();
+            notifyOnChangeListeners(ewd.listing.componentName);
             return true;
         }
         return false;
@@ -335,19 +336,23 @@ public class ExtensionManager {
         mOnChangeListeners.remove(onChangeListener);
     }
 
-    private void notifyOnChangeListeners() {
+    private void notifyOnChangeListeners(final ComponentName sourceExtension) {
         mMainThreadHandler.post(new Runnable() {
             @Override
             public void run() {
                 for (OnChangeListener listener : mOnChangeListeners) {
-                    listener.onExtensionsChanged();
+                    listener.onExtensionsChanged(sourceExtension);
                 }
             }
         });
     }
 
     public static interface OnChangeListener {
-        void onExtensionsChanged();
+        /**
+         * @param sourceExtension null if not related to any specific extension (e.g. list of
+         *                        extensions has changed).
+         */
+        void onExtensionsChanged(ComponentName sourceExtension);
     }
 
     public static class ExtensionWithData {

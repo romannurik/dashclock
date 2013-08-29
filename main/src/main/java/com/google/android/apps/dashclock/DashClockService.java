@@ -24,11 +24,9 @@ import com.google.android.apps.dashclock.render.WidgetRenderer;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.PowerManager;
-import android.os.RemoteException;
+import android.os.*;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
 
@@ -87,8 +85,6 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;
 
-    private Handler mUpdateHandler = new Handler();
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -130,15 +126,18 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     }
 
     @Override
-    public void onExtensionsChanged() {
-        mUpdateHandler.removeCallbacks(mExtensionsChangedRunnable);
-        mUpdateHandler.postDelayed(mExtensionsChangedRunnable,
+    public void onExtensionsChanged(ComponentName sourceExtension) {
+        mUpdateHandler.removeCallbacksAndMessages(null);
+        mUpdateHandler.sendMessageDelayed(
+                mUpdateHandler.obtainMessage(0, sourceExtension),
                 ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
     }
 
-    private Runnable mExtensionsChangedRunnable = new Runnable() {
+    private Handler mUpdateHandler = new Handler() {
         @Override
-        public void run() {
+        public void handleMessage(Message msg) {
+            LOGD(TAG, "onExtensionsChanged from "
+                    + (msg.obj != null ? "extension " + msg.obj : "DashClock"));
             sendBroadcast(new Intent(ACTION_EXTENSIONS_CHANGED));
             handleUpdateWidgets(new Intent());
         }

@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -141,7 +142,7 @@ public class DaydreamService extends DreamService implements
     }
 
     @Override
-    public void onExtensionsChanged() {
+    public void onExtensionsChanged(ComponentName sourceExtension) {
         mHandler.removeCallbacks(mHandleExtensionsChanged);
         mHandler.postDelayed(mHandleExtensionsChanged,
                 ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);

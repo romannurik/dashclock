@@ -413,7 +413,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
     }
 
     @Override
-    public void onExtensionsChanged() {
+    public void onExtensionsChanged(ComponentName sourceExtension) {
         repopulateAvailableExtensions();
     }
 

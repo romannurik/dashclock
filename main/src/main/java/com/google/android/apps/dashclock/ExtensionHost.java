@@ -99,7 +99,7 @@ public class ExtensionHost {
         mAsyncLooper = thread.getLooper();
         mAsyncHandler = new Handler(mAsyncLooper);
 
-        mChangeListener.onExtensionsChanged();
+        mChangeListener.onExtensionsChanged(null);
         mExtensionManager.cleanupExtensions();
 
         LOGD(TAG, "ExtensionHost initialized.");
@@ -255,6 +255,7 @@ public class ExtensionHost {
                 }
 
                 // TODO: this needs to be thread-safe
+                LOGD(TAG, "publishUpdate received for extension " + conn.componentName);
                 mExtensionManager.updateExtensionData(conn.componentName, data);
             }
 
@@ -319,7 +320,14 @@ public class ExtensionHost {
     private ExtensionManager.OnChangeListener mChangeListener
             = new ExtensionManager.OnChangeListener() {
         @Override
-        public void onExtensionsChanged() {
+        public void onExtensionsChanged(ComponentName sourceExtension) {
+            if (sourceExtension != null) {
+                // If the extension change is a result of a single extension, don't do anything,
+                // since we're only interested in events triggered by the system overall (e.g.
+                // extensions added or removed).
+                return;
+            }
+            LOGD(TAG, "onExtensionsChanged; calling establishAndDestroyConnections.");
             establishAndDestroyConnections(mExtensionManager.getActiveExtensionNames());
         }
     };

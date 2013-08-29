@@ -16,11 +16,7 @@
 
 package com.google.android.apps.dashclock.render;
 
-import com.google.android.apps.dashclock.ExtensionHost;
-import com.google.android.apps.dashclock.ExtensionManager;
-import com.google.android.apps.dashclock.Utils;
-import com.google.android.apps.dashclock.WidgetClickProxyActivity;
-import com.google.android.apps.dashclock.WidgetProvider;
+import com.google.android.apps.dashclock.*;
 import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 
 import net.nurik.roman.dashclock.R;
@@ -38,11 +34,15 @@ import android.widget.RemoteViewsService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.android.apps.dashclock.LogUtils.LOGD;
+
 /**
  * This is the service that provides the factory to be bound to the collection. Basically the
  * {@link android.widget.Adapter} for expanded DashClock extensions.
  */
 public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
+    private static final String TAG = LogUtils.makeLogTag(WidgetRemoteViewsFactoryService.class);
+
     public static String EXTRA_TARGET
             = "com.google.android.apps.dashclock.extra.TARGET";
 
@@ -53,6 +53,7 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        LOGD(TAG, "Instantiating a remote views factory.");
         int target = intent.getIntExtra(EXTRA_TARGET, DashClockRenderer.Options.TARGET_HOME_SCREEN);
         return new WidgetRemoveViewsFactory(this, target);
     }
@@ -76,11 +77,11 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
             mTarget = target;
             mExtensionManager = ExtensionManager.getInstance(context);
             mExtensionManager.addOnChangeListener(this);
-            onExtensionsChanged();
+            onExtensionsChanged(null);
         }
 
         @Override
-        public void onExtensionsChanged() {
+        public void onExtensionsChanged(ComponentName sourceExtension) {
             mHandler.removeCallbacks(mHandleExtensionsChanged);
             mHandler.postDelayed(mHandleExtensionsChanged,
                     ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
@@ -89,6 +90,7 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
         private Runnable mHandleExtensionsChanged = new Runnable() {
             @Override
             public void run() {
+                LOGD(TAG, "mHandleExtensionsChanged in WidgetRemoteViewsFactory.");
                 mVisibleExtensions = mExtensionManager.getVisibleExtensionsWithData();
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
