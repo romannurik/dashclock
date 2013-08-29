@@ -190,43 +190,57 @@ public abstract class DashClockRenderer {
         if (isExpanded) {
             // Expanded style
             final Intent onClickTemplateIntent = WidgetClickProxyActivity.getTemplate(mContext);
-            builderSetExpandedExtensionsAdapter(vb, R.id.expanded_extensions,
+            builderSetExpandedExtensionsAdapter(vb, R.id.expanded_extensions, false,
                     onClickTemplateIntent);
 
         } else {
             // Collapsed style
             vb.setViewVisibility(R.id.collapsed_extensions_container,
                     activeExtensions > 0 ? View.VISIBLE : View.GONE);
-
-            boolean ellipsisVisible = false;
             vb.removeAllViews(R.id.collapsed_extensions_container);
-            int slotIndex = 0;
-            for (ExtensionWithData ewd : extensions) {
-                if (!ewd.latestData.visible()) {
-                    continue;
+
+            // Disabled because list view can't wrap content horizontally, which breaks centering.
+//            if (mOptions.target != Options.TARGET_LOCK_SCREEN) {
+//                // On anything but the lock screen, support vertical scrolling in collapsed mode
+//                vb.addView(R.id.collapsed_extensions_container,
+//                        vb.inflateChildLayout(R.layout.widget_include_collapsed_list,
+//                                R.id.collapsed_extensions_container));
+//
+//                final Intent onClickTemplateIntent = WidgetClickProxyActivity.getTemplate(mContext);
+//                builderSetExpandedExtensionsAdapter(vb, R.id.expanded_extensions, true,
+//                        onClickTemplateIntent);
+//
+//            } else {
+                // On the lock screen, no vertical scrolling.
+                boolean ellipsisVisible = false;
+                int slotIndex = 0;
+                for (ExtensionWithData ewd : extensions) {
+                    if (!ewd.latestData.visible()) {
+                        continue;
+                    }
+
+                    if (slotIndex >= MAX_COLLAPSED_EXTENSIONS) {
+                        ellipsisVisible = true;
+                        break;
+                    }
+
+                    vb.addView(R.id.collapsed_extensions_container,
+                            renderCollapsedExtension(null, null, false, ewd));
+
+                    ++slotIndex;
                 }
 
-                if (slotIndex >= MAX_COLLAPSED_EXTENSIONS) {
-                    ellipsisVisible = true;
-                    break;
+                if (ellipsisVisible) {
+                    vb.addView(R.id.collapsed_extensions_container,
+                            vb.inflateChildLayout(
+                                    R.layout.widget_include_collapsed_ellipsis,
+                                    R.id.collapsed_extensions_container));
+                    vb.setImageViewBitmap(R.id.collapsed_extension_ellipsis,
+                            Utils.recolorBitmap((BitmapDrawable)
+                                    res.getDrawable(R.drawable.collapsed_extension_ellipsis),
+                                    mOptions.foregroundColor));
                 }
-
-                vb.addView(R.id.collapsed_extensions_container,
-                        renderCollapsedExtension(null, ewd));
-
-                ++slotIndex;
-            }
-
-            if (ellipsisVisible) {
-                vb.addView(R.id.collapsed_extensions_container,
-                        vb.inflateChildLayout(
-                                R.layout.widget_include_collapsed_ellipsis,
-                                R.id.collapsed_extensions_container));
-                vb.setImageViewBitmap(R.id.collapsed_extension_ellipsis,
-                        Utils.recolorBitmap((BitmapDrawable)
-                                res.getDrawable(R.drawable.collapsed_extension_ellipsis),
-                                mOptions.foregroundColor));
-            }
+//            }
         }
 
         return vb.getRoot();
@@ -281,9 +295,16 @@ public abstract class DashClockRenderer {
         }
     }
 
-    public Object renderCollapsedExtension(Object container, ExtensionWithData ewd) {
+    public Object renderCollapsedExtension(Object container, Object convertRoot, boolean inList,
+            ExtensionWithData ewd) {
         ViewBuilder vb = onCreateViewBuilder();
-        vb.loadRootLayout(container, R.layout.widget_include_collapsed_extension);
+        if (convertRoot != null) {
+            vb.useRoot(convertRoot);
+        } else {
+            vb.loadRootLayout(container, inList
+                    ? R.layout.widget_include_collapsed_extension
+                    : R.layout.widget_include_collapsed_extension_interactive);
+        }
 
         Resources res = mContext.getResources();
         int extensionCollapsedTextSizeSingleLine = res
@@ -335,18 +356,23 @@ public abstract class DashClockRenderer {
 
         Intent clickIntent = ewd.latestData.clickIntent();
         if (clickIntent != null) {
-            vb.setViewClickIntent(R.id.collapsed_extension_target,
-                    WidgetClickProxyActivity.wrap(mContext, clickIntent,
-                            ewd.listing.componentName));
+            if (inList) {
+                vb.setViewClickFillInIntent(R.id.collapsed_extension_target,
+                        WidgetClickProxyActivity.getFillIntent(clickIntent,
+                                ewd.listing.componentName));
+            } else {
+                vb.setViewClickIntent(R.id.collapsed_extension_target,
+                        WidgetClickProxyActivity.wrap(mContext, clickIntent,
+                                ewd.listing.componentName));
+            }
         }
 
         return vb.getRoot();
     }
 
-    public Object renderExpandedExtension(Object container, Object convertRoot,
+    public Object renderExpandedExtension(Object container, Object convertRoot, boolean inList,
             ExtensionWithData ewd) {
         ViewBuilder vb = onCreateViewBuilder();
-
         if (convertRoot != null) {
             vb.useRoot(convertRoot);
         } else {
@@ -387,9 +413,16 @@ public abstract class DashClockRenderer {
 
         Intent clickIntent = ewd.latestData.clickIntent();
         if (clickIntent != null) {
-            vb.setViewClickFillInIntent(R.id.list_item,
-                    WidgetClickProxyActivity.getFillIntent(clickIntent,
-                            ewd.listing.componentName));
+            if (inList) {
+                vb.setViewClickFillInIntent(R.id.list_item,
+                        WidgetClickProxyActivity.getFillIntent(clickIntent,
+                                ewd.listing.componentName));
+
+            } else {
+                vb.setViewClickIntent(R.id.list_item,
+                        WidgetClickProxyActivity.wrap(mContext, clickIntent,
+                                ewd.listing.componentName));
+            }
         }
 
         return vb.getRoot();
@@ -398,7 +431,7 @@ public abstract class DashClockRenderer {
     protected abstract ViewBuilder onCreateViewBuilder();
 
     protected abstract void builderSetExpandedExtensionsAdapter(ViewBuilder builder,
-            int viewId, Intent onClickTemplateIntent);
+            int viewId, boolean mini, Intent onClickTemplateIntent);
 
     public static class Options {
         public static final int TARGET_HOME_SCREEN = 0;

@@ -43,8 +43,9 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
 public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
     private static final String TAG = LogUtils.makeLogTag(WidgetRemoteViewsFactoryService.class);
 
-    public static String EXTRA_TARGET
-            = "com.google.android.apps.dashclock.extra.TARGET";
+    public static String EXTRA_TARGET = "com.google.android.apps.dashclock.extra.TARGET";
+
+    public static String EXTRA_IS_MINI = "com.google.android.apps.dashclock.extra.IS_MINI";
 
     @Override
     public void onCreate() {
@@ -55,7 +56,8 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         LOGD(TAG, "Instantiating a remote views factory.");
         int target = intent.getIntExtra(EXTRA_TARGET, DashClockRenderer.Options.TARGET_HOME_SCREEN);
-        return new WidgetRemoveViewsFactory(this, target);
+        boolean isMini = intent.getBooleanExtra(EXTRA_IS_MINI, false);
+        return new WidgetRemoveViewsFactory(this, target, isMini);
     }
 
     /**
@@ -68,10 +70,12 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
         private List<ExtensionManager.ExtensionWithData>
                 mVisibleExtensions = new ArrayList<ExtensionManager.ExtensionWithData>();
         private int mTarget;
+        private boolean mIsMini;
 
-        public WidgetRemoveViewsFactory(Context context, int target) {
+        public WidgetRemoveViewsFactory(Context context, int target, boolean isMini) {
             mContext = context;
             mTarget = target;
+            mIsMini = isMini;
             mExtensionManager = ExtensionManager.getInstance(context);
         }
 
@@ -119,7 +123,9 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
             options.foregroundColor = AppearanceConfig.getForegroundColor(mTarget, mContext);
             renderer.setOptions(options);
             ExtensionManager.ExtensionWithData ewd = getItemAtProtected(position);
-            return (RemoteViews) renderer.renderExpandedExtension(null, null, ewd);
+            return (RemoteViews) (mIsMini
+                    ? renderer.renderCollapsedExtension(null, null, true, ewd)
+                    : renderer.renderExpandedExtension(null, null, true, ewd));
         }
 
         public RemoteViews getLoadingView() {

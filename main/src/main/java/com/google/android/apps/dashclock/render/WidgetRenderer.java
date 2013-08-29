@@ -91,13 +91,15 @@ public class WidgetRenderer extends DashClockRenderer {
 
     @Override
     protected void builderSetExpandedExtensionsAdapter(ViewBuilder vb, int viewId,
-            Intent clickTemplateIntent) {
+            boolean mini, Intent clickTemplateIntent) {
         Intent remoteAdapterIntent = new Intent(mContext, WidgetRemoteViewsFactoryService.class);
         if (mOptions.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             remoteAdapterIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     mOptions.appWidgetId);
             remoteAdapterIntent.putExtra(WidgetRemoteViewsFactoryService.EXTRA_TARGET,
                     mOptions.target);
+            remoteAdapterIntent.putExtra(WidgetRemoteViewsFactoryService.EXTRA_IS_MINI,
+                    mini);
         }
 
         // TODO: is this setData call really necessary?

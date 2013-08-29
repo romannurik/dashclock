@@ -40,7 +40,7 @@ public class SimpleRenderer extends DashClockRenderer implements SimpleViewBuild
 
     @Override
     protected void builderSetExpandedExtensionsAdapter(ViewBuilder builder,
-            int viewId, Intent clickTemplateIntent) {
+            int viewId, boolean mini, Intent clickTemplateIntent) {
         View root = (View) builder.getRoot();
 
         // TODO: create a copy of the options object with the clickIntentTemplate set.

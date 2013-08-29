@@ -249,7 +249,8 @@ public class DaydreamService extends DreamService implements
                 = mExtensionManager.getVisibleExtensionsWithData();
         for (ExtensionWithData ewd : visibleExtensions) {
             mExtensionsContainer.addView(
-                    (View) renderer.renderExpandedExtension(mExtensionsContainer, null, ewd));
+                    (View) renderer.renderExpandedExtension(mExtensionsContainer, null, false,
+                            ewd));
         }
 
         if (mDaydreamContainer.getHeight() == 0 || mNeedsRelayout) {
