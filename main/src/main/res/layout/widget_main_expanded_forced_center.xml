@@ -65,6 +65,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:listSelector="@android:color/transparent"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="@dimen/list_fading_edge_length"
             android:divider="@null" />
 
     </LinearLayout>

@@ -46,6 +46,7 @@ import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 import com.google.android.apps.dashclock.render.DashClockRenderer;
 import com.google.android.apps.dashclock.render.SimpleRenderer;
 import com.google.android.apps.dashclock.render.SimpleViewBuilder;
+import com.google.android.apps.dashclock.ui.EdgeEffectUtil;
 
 import net.nurik.roman.dashclock.R;
 
@@ -162,6 +163,10 @@ public class DaydreamService extends DreamService implements
 
         mHandler.removeCallbacks(mCycleRunnable);
         mHandler.postDelayed(mCycleRunnable, CYCLE_INTERVAL_MILLIS - FADE_MILLIS);
+
+        EdgeEffectUtil.tryChangeEdgeEffects(
+                (ScrollView) findViewById(R.id.extensions_scroller),
+                mForegroundColor);
     }
 
     private void renderDaydream(final boolean restartAnimation) {
