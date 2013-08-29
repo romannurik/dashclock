@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -120,6 +121,9 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
             } else if (ACTION_UPDATE_EXTENSIONS.equals(action)) {
                 handleUpdateExtensions(intent);
             }
+
+            // If started by a wakeful broadcast receiver, release the wake lock it acquired.
+            WakefulBroadcastReceiver.completeWakefulIntent(intent);
         }
 
         return START_STICKY;
