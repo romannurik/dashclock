@@ -140,6 +140,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
                     + (msg.obj != null ? "extension " + msg.obj : "DashClock"));
             sendBroadcast(new Intent(ACTION_EXTENSIONS_CHANGED));
             handleUpdateWidgets(new Intent());
+            WidgetRenderer.notifyDataSetChanged(DashClockService.this);
         }
     };
 

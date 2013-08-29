@@ -62,10 +62,7 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
      * This is the factory that will provide data to the collection widget. Behaves pretty much like
      * an {@link android.widget.Adapter}.
      */
-    class WidgetRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory,
-            ExtensionManager.OnChangeListener {
-
-        private Handler mHandler = new Handler();
+    class WidgetRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
         private ExtensionManager mExtensionManager;
         private List<ExtensionManager.ExtensionWithData>
@@ -76,41 +73,16 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
             mContext = context;
             mTarget = target;
             mExtensionManager = ExtensionManager.getInstance(context);
-            mExtensionManager.addOnChangeListener(this);
-            onExtensionsChanged(null);
         }
-
-        @Override
-        public void onExtensionsChanged(ComponentName sourceExtension) {
-            mHandler.removeCallbacks(mHandleExtensionsChanged);
-            mHandler.postDelayed(mHandleExtensionsChanged,
-                    ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
-        }
-
-        private Runnable mHandleExtensionsChanged = new Runnable() {
-            @Override
-            public void run() {
-                LOGD(TAG, "mHandleExtensionsChanged in WidgetRemoteViewsFactory.");
-                mVisibleExtensions = mExtensionManager.getVisibleExtensionsWithData();
-
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
-                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
-                        new ComponentName(mContext, WidgetProvider.class));
-                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
-                        R.id.expanded_extensions);
-            }
-        };
 
         public void onCreate() {
-            // Since we reload the cursor in onDataSetChanged() which gets called immediately after
-            // onCreate(), we do nothing here.
         }
 
         public void onDestroy() {
-            mExtensionManager.removeOnChangeListener(this);
         }
 
         public void onDataSetChanged() {
+            mVisibleExtensions = mExtensionManager.getVisibleExtensionsWithData();
         }
 
         public int getViewTypeCount() {

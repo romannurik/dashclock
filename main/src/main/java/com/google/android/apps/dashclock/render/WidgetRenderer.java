@@ -21,12 +21,14 @@ import net.nurik.roman.dashclock.R;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import com.google.android.apps.dashclock.WidgetProvider;
 import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 
 /**
@@ -77,6 +79,14 @@ public class WidgetRenderer extends DashClockRenderer {
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,
                     R.id.expanded_extensions);
         }
+    }
+
+    public static void notifyDataSetChanged(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, WidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
+                R.id.expanded_extensions);
     }
 
     @Override
