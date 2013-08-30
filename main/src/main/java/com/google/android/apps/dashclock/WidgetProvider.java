@@ -39,12 +39,8 @@ public class WidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        // Update extensions
-        Intent extensionUpdateIntent = new Intent(context, DashClockService.class);
-        extensionUpdateIntent.setAction(DashClockService.ACTION_UPDATE_EXTENSIONS);
-        extensionUpdateIntent.putExtra(DashClockService.EXTRA_UPDATE_REASON,
-                DashClockExtension.UPDATE_REASON_PERIODIC);
-        context.startService(extensionUpdateIntent);
+        // Update extensions and ensure the periodic refresh is set up.
+        PeriodicExtensionRefreshReceiver.updateExtensionsAndEnsurePeriodicRefresh(context);
 
         // Update widgets
         for (final int appWidgetId : appWidgetIds) {

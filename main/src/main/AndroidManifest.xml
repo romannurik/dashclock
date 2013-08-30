@@ -91,6 +91,9 @@
             </intent-filter>
         </service>
 
+        <receiver android:name="com.google.android.apps.dashclock.PeriodicExtensionRefreshReceiver"
+            android:exported="false" />
+
         <activity
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
             android:label="@string/title_configure"

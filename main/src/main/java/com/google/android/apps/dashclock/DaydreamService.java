@@ -100,6 +100,9 @@ public class DaydreamService extends DreamService implements
         mExtensionManager = ExtensionManager.getInstance(this);
         mExtensionManager.addOnChangeListener(this);
 
+        // Update extensions and ensure the periodic refresh is set up.
+        PeriodicExtensionRefreshReceiver.updateExtensionsAndEnsurePeriodicRefresh(this);
+
         mAttached = true;
         setInteractive(true);
         setFullscreen(true);
