@@ -88,8 +88,6 @@ public abstract class DashClockRenderer {
         // tablets).
         boolean isTablet = res.getConfiguration().smallestScreenWidthDp >= 600;
 
-        // Pull high-level user-defined appearance options.
-        boolean hideSettings = AppearanceConfig.isSettingsButtonHidden(mContext);
         int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(mContext);
 
         int minExpandedHeight = res.getDimensionPixelSize(
@@ -113,14 +111,18 @@ public abstract class DashClockRenderer {
                         ? View.GONE : View.VISIBLE);
 
         // Step 3. Draw the basic clock face
+        boolean hideSettings = false;
         boolean hideClock =
                 (mOptions.target == Options.TARGET_HOME_SCREEN
                         && AppearanceConfig.isClockHiddenOnHomeScreen(mContext))
                 || (mOptions.target == Options.TARGET_LOCK_SCREEN
                         && AppearanceConfig.isClockHiddenOnLockScreen(mContext));
         vb.setViewVisibility(R.id.clock_target, hideClock ? View.GONE : View.VISIBLE);
-        if (!hideClock) {
+        if (hideClock) {
+            hideSettings = true;
+        } else {
             renderClockFace(vb);
+            hideSettings = AppearanceConfig.isSettingsButtonHidden(mContext);
         }
 
         // Step 4. Align the clock face and settings button (if shown)
