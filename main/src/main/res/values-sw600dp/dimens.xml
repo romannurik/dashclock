@@ -15,19 +15,6 @@
   -->
 
 <resources>
-
-    <declare-styleable name="AppChooserPreference">
-        <attr name="allowUseDefault" format="boolean" />
-    </declare-styleable>
-
-    <declare-styleable name="ColorPreference">
-        <attr name="itemLayout" format="reference" />
-        <attr name="choices" format="reference" />
-        <attr name="numColumns" format="integer" />
-    </declare-styleable>
-
-    <declare-styleable name="ConfigurationTheme">
-        <attr name="isDialog" format="boolean" />
-    </declare-styleable>
-
+    <dimen name="configure_dialog_width">480dp</dimen>
+    <dimen name="configure_dialog_max_height">600dp</dimen>
 </resources>

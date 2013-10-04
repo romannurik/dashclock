@@ -33,32 +33,23 @@
             android:orientation="horizontal"
             android:baselineAligned="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <ImageView android:id="@+id/settings_button_center_displacement"
                 android:layout_width="48dp"
-                android:layout_height="1dp"
-                android:visibility="gone" />
+                android:layout_height="1dp" />
 
             <include layout="@layout/widget_include_clock" />
 
             <ImageButton android:id="@+id/settings_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
                 android:src="@drawable/ic_widget_action_settings"
                 android:contentDescription="@string/settings"
                 android:background="?android:selectableItemBackground" />
 
         </LinearLayout>
-
-        <ImageView android:id="@+id/widget_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/widget_divider" />
 
         <ListView android:id="@+id/expanded_extensions"
             android:layout_width="match_parent"

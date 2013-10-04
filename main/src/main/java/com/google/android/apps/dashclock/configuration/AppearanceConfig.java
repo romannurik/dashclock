@@ -33,9 +33,12 @@ public class AppearanceConfig {
     static final String PREF_STYLE_DATE = "pref_style_date";
 
     static final String PREF_HIDE_SETTINGS = "pref_hide_settings";
+
     static final String PREF_HOMESCREEN_FOREGROUND_COLOR = "pref_homescreen_foreground_color";
     static final String PREF_HOMESCREEN_BACKGROUND_OPACITY = "pref_homescreen_background_opacity";
-    static final String PREF_AGGRESSIVE_CENTERING = "pref_aggressive_centering";
+    static final String PREF_HOMESCREEN_HIDE_CLOCK = "pref_homescreen_hide_clock";
+
+    static final String PREF_LOCKSCREEN_HIDE_CLOCK = "pref_lockscreen_hide_clock";
 
     public static final int DEFAULT_WIDGET_FOREGROUND_COLOR = Color.WHITE;
 
@@ -87,9 +90,14 @@ public class AppearanceConfig {
                 .getBoolean(PREF_HIDE_SETTINGS, false);
     }
 
-    public static boolean isAggressiveCenteringEnabled(Context context) {
+    public static boolean isClockHiddenOnHomeScreen(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(PREF_AGGRESSIVE_CENTERING, false);
+                .getBoolean(PREF_HOMESCREEN_HIDE_CLOCK, false);
+    }
+
+    public static boolean isClockHiddenOnLockScreen(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_LOCKSCREEN_HIDE_CLOCK, false);
     }
 
     public static int getHomescreenBackgroundColor(Context context) {

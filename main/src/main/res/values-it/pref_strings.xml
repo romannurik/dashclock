@@ -25,8 +25,6 @@
         <item>Nero 75%</item>
         <item>Nero 100%</item>
     </string-array>
-    <string name="pref_aggressive_centering_title">Sempre centrato</string>
-    <string name="pref_aggressive_centering_description">Può provocare movimenti casuali dell\'orologio in diversi stati del widget</string>
     <string name="pref_hide_settings_title">Nascondi pulsante impostazioni</string>
     <string name="pref_hide_settings_description">Nascondi il pulsante delle impostazioni quando il widget è espanso in verticale (in alternativa c\'è la scorciatoia per la home screen \"Configura il widget DashClock\")</string>
 

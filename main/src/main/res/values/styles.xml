@@ -101,7 +101,23 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="ConfigurationActivityTheme" parent="android:Theme.Holo.Light.DialogWhenLarge.NoActionBar">
+    <style name="Configuration.Theme.Base" parent="android:Theme.Holo.Light">
+        <item name="isDialog">false</item>
+    </style>
+
+    <style name="Configuration.Theme" parent="Configuration.Theme.Base">
+        <item name="android:actionBarStyle">@style/Configuration.ActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@android:style/Widget.Holo.ActionButton.Overflow</item>
+        <item name="android:actionBarItemBackground">@drawable/configure_ab_item_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+         <!--<item name="android:actionBarWidgetTheme">@android:style/Theme.Holo</item>-->
+    </style>
+
+    <style name="Configuration.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_background</item>
+        <item name="android:displayOptions">disableHome|showCustom</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

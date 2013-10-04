@@ -16,18 +16,12 @@
 
 <resources>
 
-    <declare-styleable name="AppChooserPreference">
-        <attr name="allowUseDefault" format="boolean" />
-    </declare-styleable>
-
-    <declare-styleable name="ColorPreference">
-        <attr name="itemLayout" format="reference" />
-        <attr name="choices" format="reference" />
-        <attr name="numColumns" format="integer" />
-    </declare-styleable>
-
-    <declare-styleable name="ConfigurationTheme">
-        <attr name="isDialog" format="boolean" />
-    </declare-styleable>
+    <style name="Configuration.Theme.Base" parent="android:Theme.Holo.Light.Dialog">
+        <item name="isDialog">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
 </resources>

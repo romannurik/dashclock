@@ -32,7 +32,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -92,7 +91,6 @@ public abstract class DashClockRenderer {
         // Pull high-level user-defined appearance options.
         boolean hideSettings = AppearanceConfig.isSettingsButtonHidden(mContext);
         int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(mContext);
-        boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(mContext);
 
         int minExpandedHeight = res.getDimensionPixelSize(
                 mOptions.target == Options.TARGET_LOCK_SCREEN
@@ -103,12 +101,10 @@ public abstract class DashClockRenderer {
 
         // Step 1. Load the root layout
         vb.loadRootLayout(container, isExpanded
-                ? (aggressiveCentering
-                        ? R.layout.widget_main_expanded_forced_center
-                        : R.layout.widget_main_expanded)
-                : (aggressiveCentering
-                        ? R.layout.widget_main_collapsed_forced_center
-                        : R.layout.widget_main_collapsed));
+                ? R.layout.widget_main_expanded
+                : (mOptions.target == Options.TARGET_LOCK_SCREEN)
+                        ? R.layout.widget_main_collapsed_lockscreen
+                        : R.layout.widget_main_collapsed);
 
         // Step 2. Configure the shade, if it should exist
         vb.setViewBackgroundColor(R.id.shade, shadeColor);
@@ -117,57 +113,21 @@ public abstract class DashClockRenderer {
                         ? View.GONE : View.VISIBLE);
 
         // Step 3. Draw the basic clock face
-        renderClockFace(vb);
-        vb.setImageViewBitmap(R.id.widget_divider,
-                Utils.recolorBitmap(
-                        (BitmapDrawable) res.getDrawable(R.drawable.widget_divider),
-                        mOptions.foregroundColor));
+        boolean hideClock =
+                (mOptions.target == Options.TARGET_HOME_SCREEN
+                        && AppearanceConfig.isClockHiddenOnHomeScreen(mContext))
+                || (mOptions.target == Options.TARGET_LOCK_SCREEN
+                        && AppearanceConfig.isClockHiddenOnLockScreen(mContext));
+        vb.setViewVisibility(R.id.clock_target, hideClock ? View.GONE : View.VISIBLE);
+        if (!hideClock) {
+            renderClockFace(vb);
+        }
 
         // Step 4. Align the clock face and settings button (if shown)
-        boolean isPortrait = res.getConfiguration().orientation
-                == Configuration.ORIENTATION_PORTRAIT;
 
-        if (aggressiveCentering) {
-            // Forced/aggressive centering rules
-            vb.setViewVisibility(R.id.settings_button_center_displacement,
-                    hideSettings ? View.GONE : View.VISIBLE);
-            vb.setViewPadding(R.id.clock_row, 0, 0, 0, 0);
-            vb.setLinearLayoutGravity(R.id.clock_target, Gravity.CENTER_HORIZONTAL);
-
-        } else {
-            // Normal centering rules
-            boolean forceCentered = isTablet && isPortrait
-                    && mOptions.target != Options.TARGET_HOME_SCREEN;
-
-            int clockInnerGravity = Gravity.CENTER_HORIZONTAL;
-            if (activeExtensions > 0 && !forceCentered) {
-                // Extensions are visible, don't center clock
-                if (mOptions.target == Options.TARGET_LOCK_SCREEN) {
-                    // lock screen doesn't look at expanded state; the UI should
-                    // not jitter across expanded/collapsed states for lock screen
-                    clockInnerGravity = isTablet ? Gravity.LEFT : Gravity.RIGHT;
-                } else {
-                    // home screen
-                    clockInnerGravity = (isExpanded && isTablet) ? Gravity.LEFT : Gravity.RIGHT;
-                }
-            }
-            vb.setLinearLayoutGravity(R.id.clock_target, clockInnerGravity);
-
-            boolean clockCentered = activeExtensions == 0 || forceCentered; // left otherwise
-            vb.setLinearLayoutGravity(R.id.clock_row,
-                    clockCentered ? Gravity.CENTER_HORIZONTAL : Gravity.LEFT);
-            vb.setViewVisibility(R.id.settings_button_center_displacement,
-                    hideSettings
-                            ? View.GONE
-                            : (clockCentered ? View.INVISIBLE : View.GONE));
-
-            int clockLeftMargin = res.getDimensionPixelSize(R.dimen.clock_left_margin);
-            if (!isExpanded && mOptions.target == Options.TARGET_HOME_SCREEN) {
-                clockLeftMargin = 0;
-            }
-            vb.setViewPadding(R.id.clock_row, clockCentered ? 0 : clockLeftMargin,
-                    0, 0, 0);
-        }
+        // Conditionally displace the settings button to keep the clock centered.
+        vb.setViewVisibility(R.id.settings_button_center_displacement,
+                hideSettings ? View.GONE : View.VISIBLE);
 
         // Settings button
         if (isExpanded) {
@@ -183,10 +143,6 @@ public abstract class DashClockRenderer {
         }
 
         // Step 6. Render the extensions (collapsed or expanded)
-
-        vb.setViewVisibility(R.id.widget_divider,
-                (visibleExtensions > 0) ? View.VISIBLE : View.GONE);
-
         if (isExpanded) {
             // Expanded style
             final Intent onClickTemplateIntent = WidgetClickProxyActivity.getTemplate(mContext);

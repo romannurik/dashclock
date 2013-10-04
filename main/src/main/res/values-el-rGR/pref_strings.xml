@@ -25,8 +25,6 @@
         <item>75% μαύρο</item>
         <item>100% μαύρο</item>
     </string-array>
-    <string name="pref_aggressive_centering_title">Πάντα κεντρικά</string>
-    <string name="pref_aggressive_centering_description">Αυτό μπορεί να έχει ως αποτέλεσμα την μετατόπιση του ρολογιού, ανάλογα με την κατάσταση του widget</string>
     <string name="pref_hide_settings_title">Απόκρυψη κουμπιού Ρυθμίσεων</string>
     <string name="pref_hide_settings_description">Απόκρυψη του κουμπιού ρυθμίσεων όταν το widget εκτείνεται κάθετα (μία συντόμευση "DashClock Settings" θα εμφανιστεί στην αρχική οθόνη ως υποκατάστατο)</string>
 

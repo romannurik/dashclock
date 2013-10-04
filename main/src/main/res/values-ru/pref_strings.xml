@@ -25,8 +25,6 @@
         <item>75%</item>
         <item>100%</item>
     </string-array>
-    <string name="pref_aggressive_centering_title">Всегда по центру</string>
-    <string name="pref_aggressive_centering_description">Может спровоцировать смещение часов для разных состояний виджета</string>
     <string name="pref_hide_settings_title">Скрыть кнопку настроек</string>
     <string name="pref_hide_settings_description">Скрыть кнопку настроек когда виджет вертикально развёрнут (в качестве альтернативы доступен виджет настроек DashClock)</string>
 

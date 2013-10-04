@@ -17,6 +17,10 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Clock shortcut</string>
+    <string name="pref_background_title">Background</string>
+    <string name="pref_foreground_color_title">Foreground color</string>
+    <string name="pref_homescreen_title">Home screen widget</string>
+    <string name="pref_lockscreen_title">Lock screen widget</string>
     <string name="pref_homescreen_background_opacity_title">Home screen widget background</string>
     <string-array name="pref_homescreen_background_opacity_display_names">
         <item>Fully transparent</item>
@@ -34,10 +38,10 @@
     </string-array>
     <string name="pref_homescreen_foreground_color_title">Home screen widget foreground</string>
     <string name="pref_homescreen_foreground_color_description">The color of text and icons for home screen widget(s)</string>
-    <string name="pref_aggressive_centering_title">Always center</string>
-    <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
     <string name="pref_hide_settings_title">Hide settings button</string>
     <string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a \"DashClock Settings\" home screen shortcut is available as an alternative)</string>
+    <string name="pref_hide_clock_title">Hide clock</string>
+    <string name="pref_hide_clock_description">Hide the clock and only show extensions</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Shortcut</string>

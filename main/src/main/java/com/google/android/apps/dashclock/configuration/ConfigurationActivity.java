@@ -16,6 +16,29 @@
 
 package com.google.android.apps.dashclock.configuration;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.PopupMenu;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.google.android.apps.dashclock.DashClockService;
 import com.google.android.apps.dashclock.HelpUtils;
 import com.google.android.apps.dashclock.LogUtils;
@@ -24,24 +47,6 @@ import com.google.android.apps.dashclock.api.DashClockExtension;
 
 import net.nurik.roman.dashclock.BuildConfig;
 import net.nurik.roman.dashclock.R;
-
-import android.app.Activity;
-import android.app.Fragment;
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.PopupMenu;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 
@@ -83,6 +88,8 @@ public class ConfigurationActivity extends Activity {
     private boolean mBackgroundCleared = false;
 
     public void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        setupFauxDialog();
         super.onCreate(savedInstanceState);
 
         Utils.enableDisablePhoneOnlyExtensions(this);
@@ -120,6 +127,26 @@ public class ConfigurationActivity extends Activity {
         setupActionBar();
     }
 
+    private void setupFauxDialog() {
+        // Check if this should be a dialog
+        TypedValue tv = new TypedValue();
+        if (!getTheme().resolveAttribute(R.attr.isDialog, tv, true) || tv.data == 0) {
+            return;
+        }
+
+        // Should be a dialog; set up the window parameters.
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.width = getResources().getDimensionPixelSize(R.dimen.configure_dialog_width);
+        params.height = Math.min(
+                getResources().getDimensionPixelSize(R.dimen.configure_dialog_max_height),
+                dm.heightPixels * 3 / 4);
+        params.alpha = 1.0f;
+        params.dimAmount = 0.5f;
+        getWindow().setAttributes(params);
+    }
+
     public int getStartSection() {
         return mStartSection;
     }
@@ -131,8 +158,9 @@ public class ConfigurationActivity extends Activity {
     }
 
     public void setTranslucentActionBar(boolean translucentActionBar) {
-        findViewById(R.id.actionbar_container).setBackgroundResource(translucentActionBar
-                ? R.drawable.ab_background_translucent : R.drawable.ab_background);
+        Drawable backgroundDrawable = getResources().getDrawable(translucentActionBar
+                        ? R.drawable.ab_background_translucent : R.drawable.ab_background);
+        getActionBar().setBackgroundDrawable(backgroundDrawable);
         showWallpaper();
     }
 
@@ -143,19 +171,15 @@ public class ConfigurationActivity extends Activity {
             // appearance configuration fragment). Upon user interaction (i.e. once we know the
             // activity transition has finished), clear the background so that the system wallpaper
             // can be seen when the appearance configuration fragment is shown.
-            findViewById(R.id.container).setBackground(null);
+            findViewById(R.id.content_container).setBackground(null);
             mBackgroundCleared = true;
         }
     }
 
     private void setupActionBar() {
-        final Context darkThemeContext = new ContextThemeWrapper(this, android.R.style.Theme_Holo);
-        final LayoutInflater inflater = (LayoutInflater) darkThemeContext
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        final ViewGroup actionBarContainer = (ViewGroup) findViewById(R.id.actionbar_container);
-        inflater.inflate(R.layout.include_configure_actionbar, actionBarContainer, true);
-
-        actionBarContainer.findViewById(R.id.actionbar_done).setOnClickListener(
+        final LayoutInflater inflater = getLayoutInflater();
+        View navContainerView = inflater.inflate(R.layout.include_configure_actionbar_nav, null);
+        navContainerView.findViewById(R.id.actionbar_done).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -169,25 +193,7 @@ public class ConfigurationActivity extends Activity {
                     }
                 });
 
-        actionBarContainer.findViewById(R.id.action_overflow).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        PopupMenu actionOverflowMenu = new PopupMenu(darkThemeContext, view);
-                        actionOverflowMenu.inflate(R.menu.configure_overflow);
-                        //noinspection PointlessBooleanExpression,ConstantConditions
-                        if (!BuildConfig.DEBUG) {
-                            MenuItem sendLogsItem = actionOverflowMenu.getMenu()
-                                    .findItem(R.id.action_send_logs);
-                            if (sendLogsItem != null) {
-                                sendLogsItem.setVisible(false);
-                            }
-                        }
-                        actionOverflowMenu.show();
-                        actionOverflowMenu.setOnMenuItemClickListener(mActionOverflowClickListener);
-                    }
-                });
-        Spinner sectionSpinner = (Spinner) actionBarContainer.findViewById(R.id.section_spinner);
+        Spinner sectionSpinner = (Spinner) navContainerView.findViewById(R.id.section_spinner);
         sectionSpinner.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
@@ -248,32 +254,47 @@ public class ConfigurationActivity extends Activity {
         });
 
         sectionSpinner.setSelection(mStartSection);
+
+        getActionBar().setCustomView(navContainerView);
     }
 
-    private PopupMenu.OnMenuItemClickListener mActionOverflowClickListener
-            = new PopupMenu.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.action_get_more_extensions:
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
-                                    + "&c=apps"))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    return true;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.configure_overflow, menu);
+        return true;
+    }
 
-                case R.id.action_send_logs:
-                    LogUtils.sendDebugLog(ConfigurationActivity.this);
-                    return true;
-
-                case R.id.action_about:
-                    HelpUtils.showAboutDialog(
-                            ConfigurationActivity.this);
-                    return true;
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!BuildConfig.DEBUG) {
+            MenuItem sendLogsItem = menu.findItem(R.id.action_send_logs);
+            if (sendLogsItem != null) {
+                sendLogsItem.setVisible(false);
             }
-            return false;
         }
-    };
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_get_more_extensions:
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
+                                + "&c=apps"))
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                return true;
+
+            case R.id.action_send_logs:
+                LogUtils.sendDebugLog(ConfigurationActivity.this);
+                return true;
+
+            case R.id.action_about:
+                HelpUtils.showAboutDialog(ConfigurationActivity.this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onStop() {

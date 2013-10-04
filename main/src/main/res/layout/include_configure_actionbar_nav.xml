@@ -14,31 +14,19 @@
   limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    android:divider="@drawable/list_divider_holo_dark"
+    android:dividerPadding="12dp">
 
     <include layout="@layout/include_configure_actionbar_done" />
-
-    <View android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/list_divider_holo_dark" />
 
     <Spinner android:id="@+id/section_spinner"
         android:background="@drawable/configure_ab_spinner_background"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
-    <Space android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-    <ImageButton android:id="@+id/action_overflow"
-        style="?android:actionButtonStyle"
-        android:background="@drawable/configure_ab_item_background"
-        android:src="@drawable/ic_action_overflow"
-        android:contentDescription="@string/more_options"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
-
-</merge>
+</LinearLayout>

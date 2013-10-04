@@ -97,7 +97,7 @@
         <activity
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
             android:label="@string/title_configure"
-            android:theme="@style/ConfigurationActivityTheme"
+            android:theme="@style/Configuration.Theme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -238,7 +238,7 @@
 
         <activity
             android:name="com.google.android.apps.dashclock.configuration.DaydreamProxyActivity"
-            android:theme="@style/ConfigurationActivityTheme" />
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <!--suppress AndroidLintExportedService -->
         <service
