@@ -23,8 +23,8 @@
         android:layout_height="@dimen/analog_clock_size"
         android:paddingBottom="@dimen/clock_margin_offset"
         android:layout_marginBottom="@dimen/clock_margin_offset"
-        android:dial="@drawable/analog2_dial"
-        android:hand_hour="@drawable/analog2_hour"
-        android:hand_minute="@drawable/analog2_minute" />
+        android:dial="@drawable/analog1_black_dial"
+        android:hand_hour="@drawable/analog1_black_hour"
+        android:hand_minute="@drawable/analog1_black_minute" />
 
 </FrameLayout>

@@ -24,7 +24,6 @@
     <string name="simple_date_format">E, MMM dd</string>
 
     <!-- Configuration -->
-    <string name="shortcut_label_configure">DashClock 위젯 설정</string>
     <string name="title_configure">DashClock 위젯 설정</string>
     <string name="section_extensions">확장 프로그램</string>
     <string name="section_appearance">외관</string>

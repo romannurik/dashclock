@@ -24,7 +24,6 @@
     <string name="simple_date_format">E, MMM dd</string>
 
     <!-- Configuration -->
-    <string name="shortcut_label_configure">Configure DashClock Widget</string>
     <string name="title_configure">Configure DashClock Widget</string>
     <string name="section_extensions">Extensões</string>
     <string name="section_appearance">Aparência</string>

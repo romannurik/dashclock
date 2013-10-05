@@ -22,17 +22,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
+import android.widget.AnalogClock;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,9 +44,10 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.phone.MissedCallsExtension;
 import com.google.android.apps.dashclock.phone.SmsExtension;
 
-import java.io.FileDescriptor;
+import net.nurik.roman.dashclock.R;
+
 import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -73,6 +78,122 @@ public class Utils {
         return conn;
     }
 
+    public static Bitmap recolorBitmap(Drawable drawable, int color) {
+        if (drawable == null) {
+            return null;
+        }
+
+        Bitmap outBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(outBitmap);
+        drawable.setBounds(0, 0, outBitmap.getWidth(), outBitmap.getHeight());
+        drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        drawable.draw(canvas);
+        drawable.setColorFilter(null);
+        drawable.setCallback(null); // free up any references
+        return outBitmap;
+    }
+
+    public static Drawable makeRecoloredDrawable(Context context, BitmapDrawable drawable,
+            int color, boolean withStates) {
+        Bitmap recoloredBitmap = recolorBitmap(drawable, color);
+        BitmapDrawable recoloredDrawable = new BitmapDrawable(
+                context.getResources(), recoloredBitmap);
+
+        if (!withStates) {
+            return recoloredDrawable;
+        }
+
+        StateListDrawable stateDrawable = new StateListDrawable();
+        stateDrawable.addState(new int[]{android.R.attr.state_pressed}, drawable);
+        stateDrawable.addState(new int[]{android.R.attr.state_focused}, drawable);
+        stateDrawable.addState(new int[]{}, recoloredDrawable);
+        return stateDrawable;
+    }
+
+    public static void traverseAndRecolor(View root, int color, boolean withStates,
+            boolean setClickableItemBackgrounds) {
+        Context context = root.getContext();
+
+        if (setClickableItemBackgrounds && root.isClickable()) {
+            StateListDrawable selectableItemBackground = new StateListDrawable();
+            selectableItemBackground.addState(new int[]{android.R.attr.state_pressed},
+                    new ColorDrawable((color & 0xffffff) | 0x33000000));
+            selectableItemBackground.addState(new int[]{android.R.attr.state_focused},
+                    new ColorDrawable((color & 0xffffff) | 0x44000000));
+            selectableItemBackground.addState(new int[]{}, null);
+            root.setBackground(selectableItemBackground);
+        }
+
+        if (root instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) root;
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                traverseAndRecolor(parent.getChildAt(i), color, withStates,
+                        setClickableItemBackgrounds);
+            }
+
+        } else if (root instanceof ImageView) {
+            ImageView imageView = (ImageView) root;
+            Drawable sourceDrawable = imageView.getDrawable();
+            if (withStates && sourceDrawable != null && sourceDrawable instanceof BitmapDrawable) {
+                imageView.setImageDrawable(makeRecoloredDrawable(context,
+                        (BitmapDrawable) sourceDrawable, color, true));
+            } else {
+                imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            }
+
+        } else if (root instanceof TextView) {
+            TextView textView = (TextView) root;
+            if (withStates) {
+                int sourceColor = textView.getCurrentTextColor();
+                ColorStateList colorStateList = new ColorStateList(new int[][]{
+                        new int[]{android.R.attr.state_pressed},
+                        new int[]{android.R.attr.state_focused},
+                        new int[]{}
+                }, new int[]{
+                        sourceColor,
+                        sourceColor,
+                        color
+                });
+                textView.setTextColor(colorStateList);
+            } else {
+                textView.setTextColor(color);
+            }
+
+        } else if (root instanceof AnalogClock) {
+            AnalogClock analogClock = (AnalogClock) root;
+            try {
+                Field hourHandField = AnalogClock.class.getDeclaredField("mHourHand");
+                hourHandField.setAccessible(true);
+                Field minuteHandField = AnalogClock.class.getDeclaredField("mMinuteHand");
+                minuteHandField.setAccessible(true);
+                Field dialField = AnalogClock.class.getDeclaredField("mDial");
+                dialField.setAccessible(true);
+                BitmapDrawable hourHand = (BitmapDrawable) hourHandField.get(analogClock);
+                if (hourHand != null) {
+                    Drawable d = makeRecoloredDrawable(context, hourHand, color, withStates);
+                    d.setCallback(analogClock);
+                    hourHandField.set(analogClock, d);
+                }
+                BitmapDrawable minuteHand = (BitmapDrawable) minuteHandField.get(analogClock);
+                if (minuteHand != null) {
+                    Drawable d = makeRecoloredDrawable(context, minuteHand, color, withStates);
+                    d.setCallback(analogClock);
+                    minuteHandField.set(analogClock, d);
+                }
+                BitmapDrawable dial = (BitmapDrawable) dialField.get(analogClock);
+                if (dial != null) {
+                    Drawable d = makeRecoloredDrawable(context, dial, color, withStates);
+                    d.setCallback(analogClock);
+                    dialField.set(analogClock, d);
+                }
+            } catch (NoSuchFieldException ignored) {
+            } catch (IllegalAccessException ignored) {
+            } catch (ClassCastException ignored) {
+            } // TODO: catch all exceptions?
+        }
+    }
+
     public static Bitmap flattenExtensionIcon(Drawable baseIcon, int color) {
         if (baseIcon == null) {
             return null;
@@ -82,8 +203,7 @@ public class Utils {
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outBitmap);
         baseIcon.setBounds(0, 0, EXTENSION_ICON_SIZE, EXTENSION_ICON_SIZE);
-        baseIcon.setColorFilter(color,
-                PorterDuff.Mode.SRC_IN);
+        baseIcon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         baseIcon.draw(canvas);
         baseIcon.setColorFilter(null);
         baseIcon.setCallback(null); // free up any references
@@ -92,50 +212,6 @@ public class Utils {
 
     public static Bitmap flattenExtensionIcon(Context context, Bitmap baseIcon, int color) {
         return flattenExtensionIcon(new BitmapDrawable(context.getResources(), baseIcon), color);
-    }
-
-    public static Bitmap recolorBitmap(BitmapDrawable drawable, int color) {
-        if (drawable == null) {
-            return null;
-        }
-
-        Bitmap outBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(outBitmap);
-        drawable.setBounds(0, 0, outBitmap.getWidth(), outBitmap.getHeight());
-        drawable.setColorFilter(color,
-                PorterDuff.Mode.SRC_IN);
-        drawable.draw(canvas);
-        drawable.setColorFilter(null);
-        drawable.setCallback(null); // free up any references
-        return outBitmap;
-    }
-
-    public static Intent getDefaultClockIntent(Context context) {
-        PackageManager pm = context.getPackageManager();
-        for (String packageName : CLOCK_PACKAGES) {
-            try {
-                pm.getPackageInfo(packageName, 0);
-                return pm.getLaunchIntentForPackage(packageName);
-            } catch (PackageManager.NameNotFoundException ignored) {
-            }
-        }
-        return null;
-    }
-
-    public static Intent getDefaultAlarmsIntent(Context context) {
-        // TODO: consider using AlarmClock.ACTION_SET_ALARM, although it requires a permission
-        PackageManager pm = context.getPackageManager();
-        for (String packageName : CLOCK_PACKAGES) {
-            try {
-                ComponentName cn = new ComponentName(packageName,
-                        "com.android.deskclock.AlarmClock");
-                pm.getActivityInfo(cn, 0);
-                return Intent.makeMainActivity(cn);
-            } catch (PackageManager.NameNotFoundException ignored) {
-            }
-        }
-        return getDefaultClockIntent(context);
     }
 
     public static Bitmap loadExtensionIcon(Context context, ComponentName extension,
@@ -218,6 +294,33 @@ public class Utils {
         return null;
     }
 
+    public static Intent getDefaultClockIntent(Context context) {
+        PackageManager pm = context.getPackageManager();
+        for (String packageName : CLOCK_PACKAGES) {
+            try {
+                pm.getPackageInfo(packageName, 0);
+                return pm.getLaunchIntentForPackage(packageName);
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
+        }
+        return null;
+    }
+
+    public static Intent getDefaultAlarmsIntent(Context context) {
+        // TODO: consider using AlarmClock.ACTION_SET_ALARM, although it requires a permission
+        PackageManager pm = context.getPackageManager();
+        for (String packageName : CLOCK_PACKAGES) {
+            try {
+                ComponentName cn = new ComponentName(packageName,
+                        "com.android.deskclock.AlarmClock");
+                pm.getActivityInfo(cn, 0);
+                return Intent.makeMainActivity(cn);
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
+        }
+        return getDefaultClockIntent(context);
+    }
+
     public static String expandedTitleOrStatus(ExtensionData data) {
         String expandedTitle = data.expandedTitle();
         if (TextUtils.isEmpty(expandedTitle)) {
@@ -227,59 +330,6 @@ public class Utils {
             }
         }
         return expandedTitle;
-    }
-
-    public static void traverseAndRecolor(View root, int color, boolean withStates) {
-        if (root instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) root;
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                traverseAndRecolor(parent.getChildAt(i), color, withStates);
-            }
-
-        } else if (root instanceof ImageView) {
-            ImageView imageView = (ImageView) root;
-            Drawable sourceDrawable = imageView.getDrawable();
-            if (withStates && sourceDrawable != null && sourceDrawable instanceof BitmapDrawable) {
-                BitmapDrawable sourceBitmapDrawable = (BitmapDrawable) sourceDrawable;
-
-                Bitmap newBitmap = Bitmap.createBitmap(sourceBitmapDrawable.getBitmap());
-                Canvas newCanvas = new Canvas(newBitmap);
-                Paint paint = new Paint();
-                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
-                paint.setColor(color);
-                newCanvas.drawRect(0, 0, newBitmap.getWidth(), newBitmap.getHeight(), paint);
-                BitmapDrawable recoloredDrawable = new BitmapDrawable(
-                        root.getContext().getResources(), newBitmap);
-
-                StateListDrawable stateDrawable = new StateListDrawable();
-                stateDrawable.addState(new int[]{android.R.attr.state_pressed},
-                        sourceDrawable);
-                stateDrawable.addState(new int[]{android.R.attr.state_focused},
-                        sourceDrawable);
-                stateDrawable.addState(new int[]{}, recoloredDrawable);
-                imageView.setImageDrawable(stateDrawable);
-            } else {
-                imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-            }
-
-        } else if (root instanceof TextView) {
-            TextView textView = (TextView) root;
-            if (withStates) {
-                int sourceColor = textView.getCurrentTextColor();
-                ColorStateList colorStateList = new ColorStateList(new int[][]{
-                        new int[]{android.R.attr.state_pressed},
-                        new int[]{android.R.attr.state_focused},
-                        new int[]{}
-                }, new int[]{
-                        sourceColor,
-                        sourceColor,
-                        color
-                });
-                textView.setTextColor(colorStateList);
-            } else {
-                textView.setTextColor(color);
-            }
-        }
     }
 
     private static Class[] sPhoneOnlyExtensions = {

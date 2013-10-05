@@ -21,7 +21,11 @@ import com.google.android.apps.dashclock.render.DashClockRenderer;
 import net.nurik.roman.dashclock.R;
 
 import android.app.backup.BackupManager;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
@@ -41,12 +45,22 @@ public class ConfigureAdvancedFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Fast-forward new values based on deprecated preferences.
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        if (!sp.contains(AppearanceConfig.PREF_SETTINGS_BUTTON)
+                && sp.getBoolean(AppearanceConfig.PREF_HIDE_SETTINGS, false)) {
+            sp.edit().putString(AppearanceConfig.PREF_SETTINGS_BUTTON,
+                    AppearanceConfig.PREF_SETTINGS_BUTTON_HIDDEN).apply();
+        }
+
         // Add 'advanced' preferences.
         addPreferencesFromResource(R.xml.pref_advanced);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
+        BaseSettingsActivity.bindPreferenceSummaryToValue(
+                findPreference(AppearanceConfig.PREF_SETTINGS_BUTTON));
         BaseSettingsActivity.bindPreferenceSummaryToValue(
                 findPreference(DashClockRenderer.PREF_CLOCK_SHORTCUT));
         BaseSettingsActivity.bindPreferenceSummaryToValue(
@@ -74,7 +88,22 @@ public class ConfigureAdvancedFragment extends PreferenceFragment
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         new BackupManager(getActivity()).dataChanged();
+
+        // Potentially enable/disable the launcher activity if the settings button
+        // preference has changed.
+        if (isAdded() && AppearanceConfig.PREF_SETTINGS_BUTTON.equals(key)) {
+            boolean enableLauncher = AppearanceConfig.PREF_SETTINGS_BUTTON_IN_LAUNCHER.equals(
+                    sp.getString(AppearanceConfig.PREF_SETTINGS_BUTTON, null));
+            getActivity().getPackageManager().setComponentEnabledSetting(
+                    new ComponentName(
+                            getActivity().getPackageName(),
+                            ConfigurationActivity.LAUNCHER_ACTIVITY_NAME),
+                    enableLauncher
+                            ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                            : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+        }
     }
 }

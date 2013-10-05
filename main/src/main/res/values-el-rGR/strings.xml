@@ -24,7 +24,6 @@
     <string name="simple_date_format">E, MMM dd</string>
 
     <!-- Configuration -->
-    <string name="shortcut_label_configure">Ρύθμιση DashClock Widget</string>
     <string name="title_configure">Ρύθμιση DashClock Widget</string>
     <string name="section_extensions">Επεκτάσεις</string>
     <string name="section_appearance">Εμφάνιση</string>

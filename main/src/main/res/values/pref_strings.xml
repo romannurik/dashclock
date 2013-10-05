@@ -38,8 +38,19 @@
     </string-array>
     <string name="pref_homescreen_foreground_color_title">Home screen widget foreground</string>
     <string name="pref_homescreen_foreground_color_description">The color of text and icons for home screen widget(s)</string>
-    <string name="pref_hide_settings_title">Hide settings button</string>
-    <string name="pref_hide_settings_description">Hide the configuration button when the widget is vertically expanded (a \"DashClock Settings\" home screen shortcut is available as an alternative)</string>
+    <string name="pref_settings_button_title">Settings button</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>Hidden</item>
+        <item>In expanded widget</item>
+        <item>In app launcher</item>
+    </string-array>
+    <string-array name="pref_settings_button_values" translatable="false">
+        <item>hidden</item>
+        <item>inwidget</item>
+        <item>inlauncher</item>
+    </string-array>
+    <string name="pref_show_app_launcher_icon_title">Show app icon</string>
+    <string name="pref_show_app_launcher_icon_description">Show DashClock Settings in the launcher</string>
     <string name="pref_hide_clock_title">Hide clock</string>
     <string name="pref_hide_clock_description">Hide the clock and only show extensions</string>
 

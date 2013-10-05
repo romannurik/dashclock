@@ -28,6 +28,7 @@
 
     <!-- Basic permissions -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Weather permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -98,15 +99,26 @@
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
             android:label="@string/title_configure"
             android:theme="@style/Configuration.Theme"
+            android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-            <intent-filter android:label="@string/shortcut_label_configure">
+            <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity-alias
+            android:name="com.google.android.apps.dashclock.configuration.ConfigurationLauncherActivity"
+            android:targetActivity="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- Proxy activity that handles widget clicks. -->
 

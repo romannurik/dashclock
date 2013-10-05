@@ -17,6 +17,7 @@
 package com.google.android.apps.dashclock.configuration;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 
@@ -32,7 +33,12 @@ public class AppearanceConfig {
     static final String PREF_STYLE_TIME = "pref_style_time";
     static final String PREF_STYLE_DATE = "pref_style_date";
 
-    static final String PREF_HIDE_SETTINGS = "pref_hide_settings";
+    static final String PREF_HIDE_SETTINGS = "pref_hide_settings"; // deprecated
+    static final String PREF_SETTINGS_BUTTON = "pref_settings_button";
+
+    static final String PREF_SETTINGS_BUTTON_HIDDEN = "hidden";
+    static final String PREF_SETTINGS_BUTTON_IN_WIDGET = "inwidget";
+    static final String PREF_SETTINGS_BUTTON_IN_LAUNCHER = "inlauncher";
 
     static final String PREF_HOMESCREEN_FOREGROUND_COLOR = "pref_homescreen_foreground_color";
     static final String PREF_HOMESCREEN_BACKGROUND_OPACITY = "pref_homescreen_background_opacity";
@@ -59,9 +65,16 @@ public class AppearanceConfig {
             "condensed_bold",
     };
 
-    public static int getCurrentTimeLayout(Context context) {
+    public static int getCurrentTimeLayout(Context context, int foregroundColor) {
         String currentTimeStyleName = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_STYLE_TIME, TIME_STYLE_NAMES[0]);
+        if (currentTimeStyleName.contains("analog")) {
+            if (foregroundColor == Color.BLACK) {
+                currentTimeStyleName += "_black";
+            } else {
+                currentTimeStyleName += "_white";
+            }
+        }
         return getLayoutByStyleName(context, COMPONENT_TIME, currentTimeStyleName);
     }
 
@@ -86,8 +99,14 @@ public class AppearanceConfig {
     }
 
     public static boolean isSettingsButtonHidden(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(PREF_HIDE_SETTINGS, false);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String pref = sp.getString(PREF_SETTINGS_BUTTON, null);
+        if (pref == null) {
+            // Check older preference
+            return sp.getBoolean(PREF_HIDE_SETTINGS, false);
+        }
+
+        return !PREF_SETTINGS_BUTTON_IN_WIDGET.equals(pref);
     }
 
     public static boolean isClockHiddenOnHomeScreen(Context context) {

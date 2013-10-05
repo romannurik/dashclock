@@ -22,7 +22,6 @@
     <string name="more_options">Viac možností</string>
 
     <!-- Configuration -->
-    <string name="shortcut_label_configure">Nastaviť DashClock</string>
     <string name="title_configure">Nastaviť DashClock</string>
     <string name="section_extensions">Rozšírenia</string>
     <string name="section_appearance">Vzhľad</string>

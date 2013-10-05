@@ -242,7 +242,7 @@ public class DaydreamService extends DreamService implements
         // Render the clock face
         SimpleViewBuilder vb = renderer.createSimpleViewBuilder();
         vb.useRoot(mDaydreamContainer);
-        renderer.renderClockFace(vb);
+        renderer.renderClockFace(vb, options.foregroundColor);
         vb.setLinearLayoutGravity(R.id.clock_target, Gravity.CENTER_HORIZONTAL);
 
         // Render extensions
@@ -293,7 +293,7 @@ public class DaydreamService extends DreamService implements
         }
 
         // Recolor widget
-        Utils.traverseAndRecolor(mDaydreamContainer, mForegroundColor, true);
+        Utils.traverseAndRecolor(mDaydreamContainer, mForegroundColor, true, true);
 
         if (restartAnimation) {
             int x = 0;

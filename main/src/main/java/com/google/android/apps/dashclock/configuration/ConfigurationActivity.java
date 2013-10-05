@@ -19,8 +19,8 @@ package com.google.android.apps.dashclock.configuration;
 import android.app.Activity;
 import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,7 +35,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -56,6 +55,9 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
  */
 public class ConfigurationActivity extends Activity {
     private static final String TAG = LogUtils.makeLogTag(ConfigurationActivity.class);
+
+    public static final String LAUNCHER_ACTIVITY_NAME =
+            "com.google.android.apps.dashclock.configuration.ConfigurationLauncherActivity";
 
     public static final String EXTRA_START_SECTION =
             "com.google.android.apps.dashclock.configuration.extra.START_SECTION";
@@ -101,13 +103,12 @@ public class ConfigurationActivity extends Activity {
                 icon.packageName = getPackageName();
                 icon.resourceName = getResources().getResourceName(R.drawable.ic_launcher);
                 setResult(RESULT_OK, new Intent()
-                        .putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                                getString(R.string.shortcut_label_configure))
+                        .putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.title_configure))
                         .putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon)
                         .putExtra(Intent.EXTRA_SHORTCUT_INTENT,
-                                new Intent(this, ConfigurationActivity.class)));
+                                Intent.makeMainActivity(
+                                        new ComponentName(this, ConfigurationActivity.class))));
                 finish();
-                return;
             }
 
             mStartSection = intent.getIntExtra(EXTRA_START_SECTION, 0);

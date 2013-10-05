@@ -29,6 +29,13 @@
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:color="#2333" />
+    <!--
+    <View
+        android:id="@+id/drag_handle"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/drag_grip" />
+    -->
     <!-- TODO: accessibility for dragging and removing -->
 
     <LinearLayout android:layout_width="match_parent"

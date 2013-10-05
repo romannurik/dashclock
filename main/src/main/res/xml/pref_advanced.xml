@@ -22,11 +22,14 @@
         android:title="@string/pref_clock_shortcut_title"
         app:allowUseDefault="true" />
 
-    <CheckBoxPreference
-        android:key="pref_hide_settings"
-        android:title="@string/pref_hide_settings_title"
-        android:summary="@string/pref_hide_settings_description"
-        android:defaultValue="false" />
+    <ListPreference
+        android:key="pref_settings_button"
+        android:entryValues="@array/pref_settings_button_values"
+        android:entries="@array/pref_settings_button_display_names"
+        android:title="@string/pref_settings_button_title"
+        android:defaultValue="inwidget"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
 
     <PreferenceCategory android:title="@string/pref_homescreen_title">
         <ListPreference

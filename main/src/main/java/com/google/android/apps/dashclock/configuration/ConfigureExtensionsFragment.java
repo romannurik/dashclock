@@ -44,6 +44,7 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -359,8 +360,10 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
         @Override
         public View onCreateFloatView(int position) {
+            Vibrator v = (Vibrator) ConfigureExtensionsFragment.this.mListView
+                    .getContext().getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(10);
             mPos = position;
-
             return mSelectedExtensionsAdapter.getView(position, null, mListView);
         }
 

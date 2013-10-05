@@ -153,9 +153,13 @@ public class ConfigureAppearanceFragment extends Fragment {
                 FrameLayout wrapper = new FrameLayout(getActivity());
                 ViewPager.LayoutParams wrapperLp = new ViewPager.LayoutParams();
                 wrapper.setLayoutParams(wrapperLp);
+                String styleName = styleNames[position];
+                if (styleName.contains("analog")) {
+                    styleName += "_white";
+                }
                 View v = inflater.inflate(
                         AppearanceConfig.getLayoutByStyleName(
-                                getActivity(), styleComponent, styleNames[position]),
+                                getActivity(), styleComponent, styleName),
                         container, false);
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
