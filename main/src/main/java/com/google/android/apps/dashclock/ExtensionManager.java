@@ -16,13 +16,6 @@
 
 package com.google.android.apps.dashclock;
 
-import com.google.android.apps.dashclock.api.DashClockExtension;
-import com.google.android.apps.dashclock.api.ExtensionData;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import android.app.backup.BackupManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -36,6 +29,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+
+import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.gmail.GmailExtension;
+import com.google.android.apps.dashclock.nextalarm.NextAlarmExtension;
+import com.google.android.apps.dashclock.weather.WeatherExtension;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +59,12 @@ public class ExtensionManager {
     private static final String TAG = LogUtils.makeLogTag(ExtensionManager.class);
 
     private static final String PREF_ACTIVE_EXTENSIONS = "active_extensions";
+
+    private static final Class[] DEFAULT_EXTENSIONS = {
+            WeatherExtension.class,
+            GmailExtension.class,
+            NextAlarmExtension.class,
+    };
 
     private final Context mApplicationContext;
 
@@ -123,7 +132,12 @@ public class ExtensionManager {
 
     private void loadActiveExtensionList() {
         List<ComponentName> activeExtensions = new ArrayList<ComponentName>();
-        String extensions = mDefaultPreferences.getString(PREF_ACTIVE_EXTENSIONS, "");
+        String extensions;
+        if (mDefaultPreferences.contains(PREF_ACTIVE_EXTENSIONS)) {
+            extensions = mDefaultPreferences.getString(PREF_ACTIVE_EXTENSIONS, "");
+        } else {
+            extensions = createDefaultExtensionList();
+        }
         String[] componentNameStrings = extensions.split(",");
         for (String componentNameString : componentNameStrings) {
             if (TextUtils.isEmpty(componentNameString)) {
@@ -132,6 +146,19 @@ public class ExtensionManager {
             activeExtensions.add(ComponentName.unflattenFromString(componentNameString));
         }
         setActiveExtensions(activeExtensions, false);
+    }
+
+    private String createDefaultExtensionList() {
+        StringBuilder sb = new StringBuilder();
+
+        for (Class cls : DEFAULT_EXTENSIONS) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(new ComponentName(mApplicationContext, cls).flattenToString());
+        }
+
+        return sb.toString();
     }
 
     private void saveActiveExtensionList() {

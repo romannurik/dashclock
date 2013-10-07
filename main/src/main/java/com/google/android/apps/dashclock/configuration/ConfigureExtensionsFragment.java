@@ -16,17 +16,6 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import com.google.android.apps.dashclock.ExtensionHost;
-import com.google.android.apps.dashclock.ExtensionManager;
-import com.google.android.apps.dashclock.Utils;
-import com.google.android.apps.dashclock.api.DashClockExtension;
-import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
-
-import com.mobeta.android.dslv.DragSortController;
-import com.mobeta.android.dslv.DragSortListView;
-
-import net.nurik.roman.dashclock.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -59,6 +48,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.google.android.apps.dashclock.ExtensionHost;
+import com.google.android.apps.dashclock.ExtensionManager;
+import com.google.android.apps.dashclock.Utils;
+import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
+
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
+
+import net.nurik.roman.dashclock.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
