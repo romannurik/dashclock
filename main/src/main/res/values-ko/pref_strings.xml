@@ -25,6 +25,8 @@
         <item>75% 검정</item>
         <item>100% 검정</item>
     </string-array>
+    <string name="pref_aggressive_centering_title">항상 가운데에 표시</string>
+    <string name="pref_aggressive_centering_description">설정 체크시 위젯의 상황에 따라 시계 위치가 이동할 수 있습니다</string>
     <string name="pref_hide_settings_title">설정 버튼 숨기기</string>
     <string name="pref_hide_settings_description">위젯이 확장되었을 때 보이는 설정 버튼을 숨깁니다 (설정 버튼을 숨긴 경우에도 "DashClock 위젯 구성" 홈 화면 바로가기를 통해 DashClock을 설정할 수 있습니다)</string>
 

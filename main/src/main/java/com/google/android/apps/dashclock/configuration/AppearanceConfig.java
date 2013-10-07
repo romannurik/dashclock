@@ -35,6 +35,7 @@ public class AppearanceConfig {
 
     static final String PREF_HIDE_SETTINGS = "pref_hide_settings"; // deprecated
     static final String PREF_SETTINGS_BUTTON = "pref_settings_button";
+    static final String PREF_AGGRESSIVE_CENTERING = "pref_aggressive_centering";
 
     static final String PREF_SETTINGS_BUTTON_HIDDEN = "hidden";
     static final String PREF_SETTINGS_BUTTON_IN_WIDGET = "inwidget";
@@ -112,6 +113,11 @@ public class AppearanceConfig {
     public static boolean isClockHiddenOnHomeScreen(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_HOMESCREEN_HIDE_CLOCK, false);
+    }
+
+    public static boolean isAggressiveCenteringEnabled(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_AGGRESSIVE_CENTERING, true);
     }
 
     public static boolean isClockHiddenOnLockScreen(Context context) {

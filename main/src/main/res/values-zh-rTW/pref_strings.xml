@@ -25,6 +25,8 @@
         <item>25%透明</item>
         <item>不透明</item>
     </string-array>
+    <string name="pref_aggressive_centering_title">永遠置中</string>
+    <string name="pref_aggressive_centering_description">是否強制時鐘內容永遠置中</string>
     <string name="pref_hide_settings_title">隱藏設定按鈕</string>
     <string name="pref_hide_settings_description">當豎直展開時鐘時，隱藏設置按鈕。(取而代之，可以在主屏幕的Configure DashClock Widget捷徑進入設定。)</string>
 

@@ -25,6 +25,8 @@
         <item>75% noir</item>
         <item>100% noir</item>
     </string-array>
+    <string name="pref_aggressive_centering_title">Toujours centré</string>
+    <string name="pref_aggressive_centering_description">Peut provoquer une instabilité dans l\'affichage de l\'horloge dans différents états du widget</string>
     <string name="pref_hide_settings_title">Masquer le bouton de configuration</string>
     <string name="pref_hide_settings_description">Masque le bouton de configuration lorsque le widget est développé verticalement (Un raccourci "Configurer DashClock Widget" est disponible en tant qu\'alternative)</string>
 
