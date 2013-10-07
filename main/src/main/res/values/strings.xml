@@ -110,6 +110,7 @@
         Displays information about the next scheduled alarm, if you have one set.
     </string>
     <string name="next_alarm">Next alarm</string>
+    <string name="title_next_alarm_settings">Next Alarm Extension Settings</string>
 
     <!-- Calendar -->
     <string name="calendar_extension_title">Calendar appointment</string>

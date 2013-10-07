@@ -20,9 +20,14 @@ import com.google.android.apps.dashclock.LogUtils;
 import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
 import net.nurik.roman.dashclock.R;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 
@@ -34,6 +39,9 @@ import java.util.regex.Pattern;
  */
 public class NextAlarmExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(NextAlarmExtension.class);
+
+    public static final String PREF_ALARM_SHORTCUT = "pref_alarm_shortcut";
+
     private static Pattern sDigitPattern = Pattern.compile("\\s[0-9]");
 
     @Override
@@ -57,10 +65,18 @@ public class NextAlarmExtension extends DashClockExtension {
                         + nextAlarm.substring(m.start() + 1); // +1 to skip whitespace
             }
         }
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Intent alarmIntent = AppChooserPreference.getIntentValue(
+                sp.getString(PREF_ALARM_SHORTCUT, null), null);
+        if (alarmIntent == null) {
+            alarmIntent = Utils.getDefaultAlarmsIntent(this);
+        }
+
         publishUpdate(new ExtensionData()
                 .visible(!TextUtils.isEmpty(nextAlarm))
                 .icon(R.drawable.ic_extension_next_alarm)
                 .status(nextAlarm)
-                .clickIntent(Utils.getDefaultAlarmsIntent(this)));
+                .clickIntent(alarmIntent));
     }
 }

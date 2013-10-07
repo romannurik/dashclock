@@ -174,7 +174,12 @@
             <meta-data android:name="worldReadable" android:value="true" />
             <meta-data android:name="description"
                 android:value="@string/next_alarm_extension_description" />
+            <meta-data android:name="settingsActivity"
+                android:value="com.google.android.apps.dashclock.nextalarm.NextAlarmSettingsActivity" />
         </service>
+
+        <activity android:name="com.google.android.apps.dashclock.nextalarm.NextAlarmSettingsActivity"
+            android:label="@string/title_next_alarm_settings" />
 
         <service
             android:name="com.google.android.apps.dashclock.gmail.GmailExtension"
