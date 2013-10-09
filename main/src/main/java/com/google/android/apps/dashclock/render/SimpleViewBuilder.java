@@ -16,10 +16,12 @@
 
 package com.google.android.apps.dashclock.render;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +29,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.apps.dashclock.LogUtils;
+
+import static com.google.android.apps.dashclock.LogUtils.LOGE;
+
 /**
  * {@link ViewBuilder} implementation for standard framework views.
  */
 public class SimpleViewBuilder implements ViewBuilder {
+    private static final String TAG = LogUtils.makeLogTag(SimpleViewBuilder.class);
+
     private Context mContext;
     private View mRootView;
     private Callbacks mCallbacks;
@@ -184,10 +192,16 @@ public class SimpleViewBuilder implements ViewBuilder {
                         return;
                     }
 
-                    Intent intent = mCallbacks.onGetClickIntentTemplate();
-                    intent.fillIn(fillIntent, 0);
-                    mContext.startActivity(intent);
-                    mCallbacks.onClickIntentCalled(viewId);
+                    try {
+                        Intent intent = mCallbacks.onGetClickIntentTemplate();
+                        intent.fillIn(fillIntent, 0);
+                        mContext.startActivity(intent);
+                        mCallbacks.onClickIntentCalled(viewId);
+                    } catch (SecurityException e) {
+                        LOGE(TAG, "Can't click extension.", e);
+                    } catch (ActivityNotFoundException e) {
+                        LOGE(TAG, "Can't click extension.", e);
+                    }
                 }
             });
         } catch (NullPointerException ignored) {

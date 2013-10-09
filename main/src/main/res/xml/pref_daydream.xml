@@ -45,6 +45,7 @@
 
     <Preference
         android:persistent="false"
+        android:key="pref_daydream_system_settings"
         android:title="@string/pref_daydream_system_settings_title">
         <intent android:action="android.settings.DREAM_SETTINGS" />
     </Preference>

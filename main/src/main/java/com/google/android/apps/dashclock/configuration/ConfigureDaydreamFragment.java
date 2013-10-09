@@ -19,8 +19,10 @@ package com.google.android.apps.dashclock.configuration;
 import net.nurik.roman.dashclock.R;
 
 import android.app.backup.BackupManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,8 @@ import com.google.android.apps.dashclock.DaydreamService;
  */
 public class ConfigureDaydreamFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String PREF_DAYDREAM_SYSTEM_SETTINGS = "pref_daydream_system_settings";
+
     public ConfigureDaydreamFragment() {
     }
 
@@ -49,6 +53,22 @@ public class ConfigureDaydreamFragment extends PreferenceFragment
         // to reflect the new value, per the Android Design guidelines.
         BaseSettingsActivity.bindPreferenceSummaryToValue(
                 findPreference(DaydreamService.PREF_DAYDREAM_ANIMATION));
+
+        // Hide Daydream settings if the activity doesn't exist.
+        hidePreferenceIfTroublesomeIntent(PREF_DAYDREAM_SYSTEM_SETTINGS);
+    }
+
+    private void hidePreferenceIfTroublesomeIntent(String key) {
+        Preference pref = findPreference(key);
+        if (pref == null) {
+            return;
+        }
+
+        Intent intent = pref.getIntent();
+        if (intent != null
+                && getActivity().getPackageManager().resolveActivity(intent, 0) == null) {
+            getPreferenceScreen().removePreference(pref);
+        }
     }
 
     @Override
