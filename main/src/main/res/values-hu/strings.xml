@@ -21,7 +21,7 @@
     <string name="settings">Beállítások</string>
     <string name="more_options">További beállítások</string>
 
-    <string name="simple_date_format">é, hhh, nn</string>
+    <string name="simple_date_format">E, MMM dd</string>
 
     <!-- Configuration -->
     <string name="title_configure">DashClock Widget beállítása</string>
