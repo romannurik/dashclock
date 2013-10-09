@@ -148,10 +148,6 @@ public class ConfigurationActivity extends Activity {
         getWindow().setAttributes(params);
     }
 
-    public int getStartSection() {
-        return mStartSection;
-    }
-
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
@@ -233,10 +229,17 @@ public class ConfigurationActivity extends Activity {
                 return convertView;
             }
         });
+
         sectionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> spinner, View view, int position, long id) {
                 Class<? extends Fragment> fragmentClass = SECTION_FRAGMENTS[position];
+                Fragment currentFragment = getFragmentManager().findFragmentById(
+                        R.id.content_container);
+                if (currentFragment != null && fragmentClass.equals(currentFragment.getClass())) {
+                    return;
+                }
+
                 try {
                     Fragment newFragment = fragmentClass.newInstance();
                     getFragmentManager().beginTransaction()

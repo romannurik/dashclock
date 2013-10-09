@@ -42,17 +42,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:divider="?android:dividerVertical"
-        android:showDividers="middle"
-        android:dividerPadding="12dp">
+        android:baselineAligned="false">
 
         <RelativeLayout android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:paddingEnd="16dp"
             android:layout_gravity="center_vertical">
 
             <!--suppress AndroidLintContentDescription -->
@@ -85,11 +81,12 @@
 
         </RelativeLayout>
 
-        <ImageButton android:id="@+id/settings_button"
-            android:layout_width="56dp"
+        <ImageButton android:id="@+id/overflow_button"
+            android:layout_width="48dp"
             android:layout_height="match_parent"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_list_settings"
+            android:src="@drawable/configure_item_overflow_default"
+            android:scaleType="fitXY"
             android:contentDescription="@string/settings" />
 
     </LinearLayout>

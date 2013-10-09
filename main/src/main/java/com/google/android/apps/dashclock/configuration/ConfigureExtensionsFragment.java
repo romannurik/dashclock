@@ -54,6 +54,7 @@ import com.google.android.apps.dashclock.ExtensionManager;
 import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
+import com.google.android.apps.dashclock.ui.UndoBarController;
 
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
@@ -77,7 +78,8 @@ import static com.google.android.apps.dashclock.ExtensionManager.ExtensionListin
  */
 public class ConfigureExtensionsFragment extends Fragment implements
         ExtensionManager.OnChangeListener,
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener,
+        UndoBarController.UndoListener {
     private static final String SAVE_KEY_SELECTED_EXTENSIONS = "selected_extensions";
 
     private ExtensionManager mExtensionManager;
@@ -96,7 +98,10 @@ public class ConfigureExtensionsFragment extends Fragment implements
             repopulateAvailableExtensions();
         }
     };
+
     private DragSortListView mListView;
+    private SwipeDismissListViewTouchListener mSwipeDismissTouchListener;
+    private UndoBarController mUndoBarController;
 
     public ConfigureExtensionsFragment() {
     }
@@ -152,30 +157,34 @@ public class ConfigureExtensionsFragment extends Fragment implements
                 mSelectedExtensionsAdapter.notifyDataSetChanged();
             }
         });
-        final SwipeDismissListViewTouchListener swipeDismissTouchListener =
-                new SwipeDismissListViewTouchListener(
-                        mListView,
-                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                            public boolean canDismiss(int position) {
-                                return position < mSelectedExtensionsAdapter.getCount() - 1;
-                            }
+        mSwipeDismissTouchListener = new SwipeDismissListViewTouchListener(
+                mListView,
+                new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                    public boolean canDismiss(int position) {
+                        return position < mSelectedExtensionsAdapter.getCount() - 1;
+                    }
 
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    mSelectedExtensions.remove(position);
-                                }
-                                repopulateAvailableExtensions();
-                                mSelectedExtensionsAdapter.notifyDataSetChanged();
-                            }
-                        });
+                    public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                        showRemoveUndoBar(reverseSortedPositions);
+                        for (int position : reverseSortedPositions) {
+                            mSelectedExtensions.remove(position);
+                        }
+                        repopulateAvailableExtensions();
+                        mSelectedExtensionsAdapter.notifyDataSetChanged();
+                    }
+                });
         mListView.setOnItemClickListener(this);
-        mListView.setOnScrollListener(swipeDismissTouchListener.makeScrollListener());
+        mListView.setOnScrollListener(mSwipeDismissTouchListener.makeScrollListener());
         mListView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    mUndoBarController.hideUndoBar(false);
+                }
+
                 return dragSortController.onTouch(view, motionEvent)
                         || (!dragSortController.isDragging()
-                        && swipeDismissTouchListener.onTouch(view, motionEvent));
+                        && mSwipeDismissTouchListener.onTouch(view, motionEvent));
 
             }
         });
@@ -189,6 +198,9 @@ public class ConfigureExtensionsFragment extends Fragment implements
                         showAddExtensionMenu(view);
                     }
                 });
+
+        mUndoBarController = new UndoBarController(rootView.findViewById(R.id.undobar), this);
+        mUndoBarController.onRestoreInstanceState(savedInstanceState);
 
         return rootView;
     }
@@ -214,6 +226,9 @@ public class ConfigureExtensionsFragment extends Fragment implements
             selectedExtensions.add(cn.flattenToString());
         }
         outState.putStringArrayList(SAVE_KEY_SELECTED_EXTENSIONS, selectedExtensions);
+        if (mUndoBarController != null) {
+            mUndoBarController.onSaveInstanceState(outState);
+        }
     }
 
     private void repopulateAvailableExtensions() {
@@ -420,6 +435,50 @@ public class ConfigureExtensionsFragment extends Fragment implements
         repopulateAvailableExtensions();
     }
 
+    private void showRemoveUndoBar(int[] reverseSortedPositions) {
+        String undoString;
+        if (reverseSortedPositions.length == 1) {
+            ExtensionListing listing = mExtensionListings.get(
+                    mSelectedExtensions.get(reverseSortedPositions[0]));
+            undoString = getString(R.string.extension_removed_template,
+                    (listing != null) ? listing.title : "??");
+        } else {
+            undoString = getString(R.string.extensions_removed_template,
+                    reverseSortedPositions.length);
+        }
+
+        ComponentName[] extensions = new ComponentName[reverseSortedPositions.length];
+        for (int i = 0; i < reverseSortedPositions.length; i++) {
+            extensions[i] = mSelectedExtensions.get(reverseSortedPositions[i]);
+        }
+
+        Bundle undoBundle = new Bundle();
+        undoBundle.putIntArray("positions", reverseSortedPositions);
+        undoBundle.putParcelableArray("extensions", extensions);
+        mUndoBarController.showUndoBar(
+                false,
+                undoString,
+                undoBundle);
+    }
+
+    @Override
+    public void onUndo(Bundle token) {
+        if (token == null) {
+            return;
+        }
+
+        // Perform the undo
+        int[] reverseSortedPositions = token.getIntArray("positions");
+        ComponentName[] extensions = (ComponentName[]) token.getParcelableArray("extensions");
+
+        for (int i = 0; i < reverseSortedPositions.length; i++) {
+            mSelectedExtensions.add(reverseSortedPositions[i], extensions[i]);
+        }
+
+        repopulateAvailableExtensions();
+        mSelectedExtensionsAdapter.notifyDataSetChanged();
+    }
+
     public class ExtensionListAdapter extends BaseAdapter {
         private static final int VIEW_TYPE_ITEM = 0;
         private static final int VIEW_TYPE_ADD = 1;
@@ -473,7 +532,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             switch (getItemViewType(position)) {
                 case VIEW_TYPE_ADD: {
                     if (convertView == null) {
@@ -495,35 +554,33 @@ public class ConfigureExtensionsFragment extends Fragment implements
                     TextView descriptionView = (TextView) convertView
                             .findViewById(android.R.id.text2);
                     ImageView iconView = (ImageView) convertView.findViewById(android.R.id.icon1);
-                    View settingsButton = convertView.findViewById(R.id.settings_button);
+                    View overflowButton = convertView.findViewById(R.id.overflow_button);
 
                     final ExtensionListing listing = mExtensionListings.get(cn);
                     if (listing == null || TextUtils.isEmpty(listing.title)) {
                         iconView.setImageBitmap(null);
                         titleView.setText(cn.flattenToShortString());
                         descriptionView.setVisibility(View.GONE);
-                        settingsButton.setVisibility(View.GONE);
+                        overflowButton.setVisibility(View.GONE);
                     } else {
                         iconView.setImageDrawable(listing.icon);
                         titleView.setText(listing.title);
                         descriptionView.setVisibility(
                                 TextUtils.isEmpty(listing.description) ? View.GONE : View.VISIBLE);
                         descriptionView.setText(listing.description);
-                        settingsButton.setVisibility(
-                                listing.settingsActivity == null ? View.GONE : View.VISIBLE);
-                        settingsButton.setOnClickListener(new View.OnClickListener() {
+                        overflowButton.setVisibility(View.VISIBLE);
+                        overflowButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                try {
-                                    startActivity(new Intent()
-                                            .setComponent(listing.settingsActivity)
-                                            .putExtra(DashClockExtension
-                                                    .EXTRA_FROM_DASHCLOCK_SETTINGS, true));
-                                } catch (ActivityNotFoundException e) {
-                                    // TODO: show error to user
-                                } catch (SecurityException e) {
-                                    // TODO: show error to user
+                                mUndoBarController.hideUndoBar(false);
+                                PopupMenu menu = new PopupMenu(view.getContext(), view);
+                                menu.inflate(R.menu.configure_item_overflow);
+                                if (listing.settingsActivity == null) {
+                                    menu.getMenu().findItem(R.id.action_settings).setVisible(false);
                                 }
+                                menu.setOnMenuItemClickListener(
+                                        new OverflowItemClickListener(position));
+                                menu.show();
                             }
                         });
                     }
@@ -532,6 +589,47 @@ public class ConfigureExtensionsFragment extends Fragment implements
             }
 
             return null;
+        }
+
+        private class OverflowItemClickListener implements PopupMenu.OnMenuItemClickListener {
+            private int mPosition;
+
+            public OverflowItemClickListener(int position) {
+                mPosition = position;
+            }
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (mPosition > getCount()) {
+                    return false;
+                }
+
+                switch (item.getItemId()) {
+                    case R.id.action_remove:
+                        mSwipeDismissTouchListener.dismiss(mPosition);
+                        return true;
+
+                    case R.id.action_settings:
+                        ComponentName cn = (ComponentName) getItem(mPosition);
+                        ExtensionListing listing = mExtensionListings.get(cn);
+                        if (listing == null) {
+                            return false;
+                        }
+
+                        try {
+                            startActivity(new Intent()
+                                    .setComponent(listing.settingsActivity)
+                                    .putExtra(DashClockExtension
+                                            .EXTRA_FROM_DASHCLOCK_SETTINGS, true));
+                        } catch (ActivityNotFoundException e) {
+                            // TODO: show error to user
+                        } catch (SecurityException e) {
+                            // TODO: show error to user
+                        }
+                        return true;
+                }
+                return false;
+            }
         }
     }
 

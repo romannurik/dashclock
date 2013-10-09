@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// THIS IS A BETA! I DON'T RECOMMEND USING IT IN PRODUCTION CODE JUST YET
-
 package com.google.android.apps.dashclock.ui;
 
 import android.animation.Animator;
@@ -159,6 +157,14 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
         };
     }
 
+    /**
+     * Manually cause the item at the given position to be dismissed (trigger the dismiss
+     * animation).
+     */
+    public void dismiss(int position) {
+        dismiss(getViewForPosition(position), position, true);
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (mViewWidth < 2) {
@@ -228,19 +234,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                 }
                 if (dismiss) {
                     // dismiss
-                    final View downView = mDownView; // mDownView gets null'd before animation ends
-                    final int downPosition = mDownPosition;
-                    ++mDismissAnimationRefCount;
-                    mDownView.animate()
-                            .translationX(dismissRight ? mViewWidth : -mViewWidth)
-                            .alpha(0)
-                            .setDuration(mAnimationTime)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    performDismiss(downView, downPosition);
-                                }
-                            });
+                    dismiss(mDownView, mDownPosition, dismissRight);
                 } else {
                     // cancel
                     mDownView.animate()
@@ -280,7 +274,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 
                 if (mSwiping) {
                     mDownView.setTranslationX(deltaX);
-                    mDownView.setAlpha(Math.max(0f, Math.min(1f,
+                    mDownView.setAlpha(Math.max(0.15f, Math.min(1f,
                             1f - 2f * Math.abs(deltaX) / mViewWidth)));
                     return true;
                 }
@@ -288,6 +282,35 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
             }
         }
         return false;
+    }
+
+    private void dismiss(final View view, final int position, boolean dismissRight) {
+        ++mDismissAnimationRefCount;
+        if (view == null) {
+            // No view, shortcut to calling onDismiss to let it deal with adapter
+            // updates and all that.
+            mCallbacks.onDismiss(mListView, new int[] { position });
+            return;
+        }
+
+        view.animate()
+                .translationX(dismissRight ? mViewWidth : -mViewWidth)
+                .alpha(0)
+                .setDuration(mAnimationTime)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        performDismiss(view, position);
+                    }
+                });
+    }
+
+    private View getViewForPosition(int position) {
+        int index = position
+                - (mListView.getFirstVisiblePosition() - mListView.getHeaderViewsCount());
+        return (index >= 0 && index < mListView.getChildCount())
+                ? mListView.getChildAt(index)
+                : null;
     }
 
     class PendingDismissData implements Comparable<PendingDismissData> {

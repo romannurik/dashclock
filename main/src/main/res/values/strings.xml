@@ -44,6 +44,11 @@
     <string name="done">Done</string>
     <string name="add_extension">Add an extension</string>
     <string name="cancel">Cancel</string>
+    <string name="remove">Remove</string>
+
+    <string name="undo">Undo</string>
+    <string name="extension_removed_template">\'%1$s\' removed.</string>
+    <string name="extensions_removed_template">%1%d extensions removed.</string>
 
     <!-- These strings never appear in release builds; translation is very low priority -->
     <string name="send_logs">Send debug log</string>
