@@ -40,10 +40,10 @@
     <PreferenceCategory android:title="@string/pref_homescreen_title">
         <ListPreference
             android:key="pref_homescreen_background_opacity"
-            android:entryValues="@array/pref_homescreen_background_opacity_values"
-            android:entries="@array/pref_homescreen_background_opacity_display_names"
+            android:entryValues="@array/pref_background_opacity_values"
+            android:entries="@array/pref_background_opacity_display_names"
             android:title="@string/pref_background_title"
-            android:dialogTitle="@string/pref_homescreen_background_opacity_title"
+            android:dialogTitle="@string/pref_background_opacity_title"
             android:defaultValue="50"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null" />
@@ -51,14 +51,14 @@
         <com.google.android.apps.dashclock.configuration.ColorPreference
             android:key="pref_homescreen_foreground_color"
             android:title="@string/pref_foreground_color_title"
-            android:dialogTitle="@string/pref_homescreen_foreground_color_title"
-            android:summary="@string/pref_homescreen_foreground_color_description"
+            android:dialogTitle="@string/pref_foreground_color_title"
+            android:summary="@string/pref_foreground_color_description"
             android:defaultValue="@android:color/white"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
             app:numColumns="5"
-            app:itemLayout="@layout/grid_item_color"
-            app:choices="@array/homescreen_color_choice_values" />
+            app:itemLayout="@layout/pref_layout_color"
+            app:choices="@array/widget_color_choice_values" />
 
         <CheckBoxPreference
             android:key="pref_homescreen_hide_clock"
@@ -69,6 +69,28 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_lockscreen_title">
+        <ListPreference
+            android:key="pref_lockscreen_background_opacity"
+            android:entryValues="@array/pref_background_opacity_values"
+            android:entries="@array/pref_background_opacity_display_names"
+            android:title="@string/pref_background_title"
+            android:dialogTitle="@string/pref_background_opacity_title"
+            android:defaultValue="0"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
+        <com.google.android.apps.dashclock.configuration.ColorPreference
+            android:key="pref_lockscreen_foreground_color"
+            android:title="@string/pref_foreground_color_title"
+            android:dialogTitle="@string/pref_foreground_color_title"
+            android:summary="@string/pref_foreground_color_description"
+            android:defaultValue="@android:color/white"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            app:numColumns="5"
+            app:itemLayout="@layout/pref_layout_color"
+            app:choices="@array/widget_color_choice_values" />
+
         <CheckBoxPreference
             android:key="pref_lockscreen_hide_clock"
             android:title="@string/pref_hide_clock_title"

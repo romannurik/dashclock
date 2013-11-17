@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Atalho do relógio</string>
-    <string name="pref_homescreen_background_opacity_title">Fundo do widget na Tela inicial</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Transparência completa</item>
-        <item>25% escuro</item>
-        <item>50% escuro</item>
-        <item>75% escuro</item>
-        <item>100% escuro</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Sempre centralizado</string>
     <string name="pref_aggressive_centering_description">Pode fazer com que o relógio fique um pouco fora da área do widget</string>
     <string name="pref_hide_settings_title">Ocultar o botão de Configuração</string>

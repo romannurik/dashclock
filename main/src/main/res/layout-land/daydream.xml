@@ -40,6 +40,8 @@
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="@dimen/list_fading_edge_length"
             android:scrollbars="none">
 
             <LinearLayout android:id="@+id/extensions_container"

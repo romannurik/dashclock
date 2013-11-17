@@ -81,7 +81,8 @@ public abstract class DashClockRenderer {
         // tablets).
         boolean isTablet = res.getConfiguration().smallestScreenWidthDp >= 600;
 
-        int shadeColor = AppearanceConfig.getHomescreenBackgroundColor(mContext);
+        int shadeColor = AppearanceConfig.getBackgroundColor(mContext, mOptions.target);
+
         boolean aggressiveCentering = AppearanceConfig.isAggressiveCenteringEnabled(mContext);
 
         int minExpandedHeight = res.getDimensionPixelSize(
@@ -105,9 +106,7 @@ public abstract class DashClockRenderer {
 
         // Step 2. Configure the shade, if it should exist
         vb.setViewBackgroundColor(R.id.shade, shadeColor);
-        vb.setViewVisibility(R.id.shade,
-                (mOptions.target != Options.TARGET_HOME_SCREEN || shadeColor == 0)
-                        ? View.GONE : View.VISIBLE);
+        vb.setViewVisibility(R.id.shade, shadeColor == 0 ? View.GONE : View.VISIBLE);
 
         // Step 3. Draw the basic clock face
         boolean hideSettings;

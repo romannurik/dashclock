@@ -66,9 +66,6 @@ public class ConfigureAppearanceFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_configure_appearance, container, false);
 
-        rootView.findViewById(R.id.container).setBackgroundColor(
-                AppearanceConfig.getHomescreenBackgroundColor(getActivity()));
-
         mCurrentStyleNames.put(
                 AppearanceConfig.PREF_STYLE_TIME,
                 sp.getString(AppearanceConfig.PREF_STYLE_TIME,

@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Zástupce hodin</string>
-    <string name="pref_homescreen_background_opacity_title">Pozadí widgetu</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Úplně průhledné</item>
-        <item>25% černé</item>
-        <item>50% černé</item>
-        <item>75% černé</item>
-        <item>100% černé</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Vždy uprostřed</string>
     <string name="pref_aggressive_centering_description">Může způsobit poskakování pro některé hodnoty widgetu</string>
     <string name="pref_hide_settings_title">Schovat tlačítko nastavení</string>

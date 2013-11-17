@@ -17,4 +17,7 @@
 <resources>
     <dimen name="configure_dialog_width">480dp</dimen>
     <dimen name="configure_dialog_max_height">600dp</dimen>
+
+    <dimen name="color_grid_item_size">64dp</dimen>
+    <dimen name="color_grid_circle_size">48dp</dimen>
 </resources>

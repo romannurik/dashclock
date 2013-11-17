@@ -21,13 +21,8 @@ import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 
 import net.nurik.roman.dashclock.R;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -120,7 +115,7 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
             WidgetRenderer renderer = new WidgetRenderer(mContext);
             DashClockRenderer.Options options = new DashClockRenderer.Options();
             options.target = mTarget;
-            options.foregroundColor = AppearanceConfig.getForegroundColor(mTarget, mContext);
+            options.foregroundColor = AppearanceConfig.getForegroundColor(mContext, mTarget);
             renderer.setOptions(options);
             ExtensionManager.ExtensionWithData ewd = getItemAtProtected(position);
             return (RemoteViews) (mIsMini

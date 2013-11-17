@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Skratka pre hodiny</string>
-    <string name="pref_homescreen_background_opacity_title">Pozadie widgetu na domovskej obrazovke</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Plne transparentné</item>
-        <item>25% čierne</item>
-        <item>50% čierne</item>
-        <item>75% čierne</item>
-        <item>100% čierne</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Vždy centrovať</string>
     <string name="pref_aggressive_centering_description">Môže mať za následok skákanie hodín okolo rôznych widgetov</string>
     <string name="pref_hide_settings_title">Skryť tlačidlo nastavenia</string>

@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Scorciatoia orologio</string>
-    <string name="pref_homescreen_background_opacity_title">Sfondo del widget nella home</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Trasparente</item>
-        <item>Nero 25%</item>
-        <item>Nero 50%</item>
-        <item>Nero 75%</item>
-        <item>Nero 100%</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Sempre centrato</string>
     <string name="pref_aggressive_centering_description">Può provocare movimenti casuali dell\'orologio in diversi stati del widget</string>
     <string name="pref_hide_settings_title">Nascondi pulsante impostazioni</string>

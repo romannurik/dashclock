@@ -21,23 +21,22 @@
     <string name="pref_foreground_color_title">Foreground color</string>
     <string name="pref_homescreen_title">Home screen widget</string>
     <string name="pref_lockscreen_title">Lock screen widget</string>
-    <string name="pref_homescreen_background_opacity_title">Home screen widget background</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
+    <string name="pref_background_opacity_title">Background visibility</string>
+    <string-array name="pref_background_opacity_display_names">
         <item>Fully transparent</item>
-        <item>25% black</item>
-        <item>50% black</item>
-        <item>75% black</item>
-        <item>100% black</item>
+        <item>25% visible</item>
+        <item>50% visible</item>
+        <item>75% visible</item>
+        <item>Fully opaque</item>
     </string-array>
-    <string-array name="pref_homescreen_background_opacity_values" translatable="false">
+    <string-array name="pref_background_opacity_values" translatable="false">
         <item>0</item>
         <item>25</item>
         <item>50</item>
         <item>75</item>
         <item>100</item>
     </string-array>
-    <string name="pref_homescreen_foreground_color_title">Home screen widget foreground</string>
-    <string name="pref_homescreen_foreground_color_description">The color of text and icons for home screen widget(s)</string>
+    <string name="pref_foreground_color_description">The color of text and icons</string>
     <string name="pref_aggressive_centering_title">Always center</string>
     <string name="pref_aggressive_centering_description">Can result in the clock jumping around for different widget states</string>
     <string name="pref_settings_button_title">Settings button</string>

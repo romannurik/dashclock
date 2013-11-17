@@ -19,7 +19,7 @@
     android:versionCode="1"
     android:versionName="See version.properties">
 
-    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="18" />
+    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="19" />
 
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <uses-feature android:name="android.hardware.location" android:required="false" />

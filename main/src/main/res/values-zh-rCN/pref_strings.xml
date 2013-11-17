@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">时钟快捷方式</string>
-    <string name="pref_homescreen_background_opacity_title">小部件背景</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>完全透明</item>
-        <item>75%透明</item>
-        <item>50%透明</item>
-        <item>25%透明</item>
-        <item>不透明</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">永远居中</string>
     <string name="pref_aggressive_centering_description">是否强制时钟内容永远居中</string>
     <string name="pref_hide_settings_title">隐藏设置按钮</string>

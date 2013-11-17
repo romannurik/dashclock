@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Klok-snelkoppeling</string>
-    <string name="pref_homescreen_background_opacity_title">Startscherm widgetachtergrond</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Volledig transparant</item>
-        <item>25% zwart</item>
-        <item>50% zwart</item>
-        <item>75% zwart</item>
-        <item>100% zwart</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Altijd centreren</string>
     <string name="pref_aggressive_centering_description">Kan erin resulteren dat de klok bij verschillende widget stadia verspringt</string>
     <string name="pref_hide_settings_title">Verberg instellingenknop</string>

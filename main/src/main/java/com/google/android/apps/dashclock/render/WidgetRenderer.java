@@ -68,7 +68,7 @@ public class WidgetRenderer extends DashClockRenderer {
                         widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY))
                         ? Options.TARGET_LOCK_SCREEN : Options.TARGET_HOME_SCREEN;
             }
-            options.foregroundColor = AppearanceConfig.getForegroundColor(options.target, context);
+            options.foregroundColor = AppearanceConfig.getForegroundColor(context, options.target);
 
             renderer.setOptions(options);
             appWidgetManager.updateAppWidget(appWidgetId,

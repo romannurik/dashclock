@@ -78,13 +78,26 @@ public class Utils {
         return conn;
     }
 
+    private static final int BRIGHTNESS_THRESHOLD = 150;
+
+    public static boolean isColorDark(int color) {
+        return ((30 * Color.red(color) +
+                59 * Color.green(color) +
+                11 * Color.blue(color)) / 100) <= BRIGHTNESS_THRESHOLD;
+    }
+
     public static Bitmap recolorBitmap(Drawable drawable, int color) {
         if (drawable == null) {
             return null;
         }
 
-        Bitmap outBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        if (width <= 0 || height <= 0) {
+            return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        }
+
+        Bitmap outBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outBitmap);
         drawable.setBounds(0, 0, outBitmap.getWidth(), outBitmap.getHeight());
         drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);

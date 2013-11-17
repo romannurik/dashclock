@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Aplikacja zegara</string>
-    <string name="pref_homescreen_background_opacity_title">Tło widgetu na ekranie głównym</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Przeźroczyste</item>
-        <item>25% czarne</item>
-        <item>50% czarne</item>
-        <item>75% czarne</item>
-        <item>100% czarne</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany</string>
     <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widgetu</string>
     <string name="pref_hide_settings_title">Ukryj przycisk ustawień</string>

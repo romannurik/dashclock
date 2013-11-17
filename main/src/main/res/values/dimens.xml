@@ -26,4 +26,9 @@
     <dimen name="drag_grip_ridge_gap">2dp</dimen>
 
     <dimen name="list_fading_edge_length">8dp</dimen>
+
+    <dimen name="color_grid_item_size">48dp</dimen>
+    <dimen name="color_grid_circle_size">36dp</dimen>
+    <dimen name="color_grid_extra_padding">32dp</dimen>
+
 </resources>

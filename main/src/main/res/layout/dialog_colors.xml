@@ -14,14 +14,9 @@
   limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/color_grid"
+    android:padding="16dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp">
-
-    <GridView android:id="@+id/color_grid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:stretchMode="columnWidth" />
-
-</FrameLayout>
+    android:orientation="horizontal" />

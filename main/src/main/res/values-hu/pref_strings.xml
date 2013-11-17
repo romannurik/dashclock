@@ -17,14 +17,6 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Óra parancsikonja</string>
-    <string name="pref_homescreen_background_opacity_title">Kezdőképernyős widget háttére</string>
-    <string-array name="pref_homescreen_background_opacity_display_names">
-        <item>Teljesen átlátszó</item>
-        <item>25% fekete</item>
-        <item>50% fekete</item>
-        <item>75% fekete</item>
-        <item>Teljesen fekete</item>
-    </string-array>
     <string name="pref_aggressive_centering_title">Mindig középen</string>
     <string name="pref_aggressive_centering_description">Az óra mindig középen legyen</string>
     <string name="pref_hide_settings_title">Beállítások gomb elrejtése</string>

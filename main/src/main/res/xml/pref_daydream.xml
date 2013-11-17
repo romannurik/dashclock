@@ -25,7 +25,7 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         app:numColumns="5"
-        app:itemLayout="@layout/grid_item_color"
+        app:itemLayout="@layout/pref_layout_color"
         app:choices="@array/daydream_color_choice_values" />
 
     <ListPreference

@@ -14,15 +14,7 @@
   limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/color_grid_item_size"
-    android:layout_height="@dimen/color_grid_item_size"
-    android:background="?android:selectableItemBackground">
-
-    <ImageView
-        android:id="@+id/color_view"
-        android:layout_width="@dimen/color_grid_circle_size"
-        android:layout_height="@dimen/color_grid_circle_size"
-        android:layout_gravity="center"
-        android:scaleType="fitXY" />
-</FrameLayout>
+<resources>
+    <dimen name="color_grid_item_size">56dp</dimen>
+    <dimen name="color_grid_circle_size">40dp</dimen>
+</resources>

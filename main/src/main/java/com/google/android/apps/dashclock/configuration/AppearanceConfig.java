@@ -45,6 +45,8 @@ public class AppearanceConfig {
     static final String PREF_HOMESCREEN_BACKGROUND_OPACITY = "pref_homescreen_background_opacity";
     static final String PREF_HOMESCREEN_HIDE_CLOCK = "pref_homescreen_hide_clock";
 
+    static final String PREF_LOCKSCREEN_FOREGROUND_COLOR = "pref_lockscreen_foreground_color";
+    static final String PREF_LOCKSCREEN_BACKGROUND_OPACITY = "pref_lockscreen_background_opacity";
     static final String PREF_LOCKSCREEN_HIDE_CLOCK = "pref_lockscreen_hide_clock";
 
     public static final int DEFAULT_WIDGET_FOREGROUND_COLOR = Color.WHITE;
@@ -91,14 +93,6 @@ public class AppearanceConfig {
                 "layout", context.getPackageName());
     }
 
-    public static int getForegroundColor(int target, Context context) {
-        if (target == DashClockRenderer.Options.TARGET_HOME_SCREEN) {
-            return PreferenceManager.getDefaultSharedPreferences(context)
-                    .getInt(PREF_HOMESCREEN_FOREGROUND_COLOR, Color.WHITE);
-        }
-        return DEFAULT_WIDGET_FOREGROUND_COLOR;
-    }
-
     public static boolean isSettingsButtonHidden(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String pref = sp.getString(PREF_SETTINGS_BUTTON, null);
@@ -125,18 +119,32 @@ public class AppearanceConfig {
                 .getBoolean(PREF_LOCKSCREEN_HIDE_CLOCK, false);
     }
 
-    public static int getHomescreenBackgroundColor(Context context) {
-        int opacity = 50;
+    public static int getForegroundColor(Context context, int target) {
+        if (target == DashClockRenderer.Options.TARGET_HOME_SCREEN) {
+            return PreferenceManager.getDefaultSharedPreferences(context)
+                    .getInt(PREF_HOMESCREEN_FOREGROUND_COLOR, Color.WHITE);
+        } else if (target == DashClockRenderer.Options.TARGET_LOCK_SCREEN) {
+            return PreferenceManager.getDefaultSharedPreferences(context)
+                    .getInt(PREF_LOCKSCREEN_FOREGROUND_COLOR, Color.WHITE);
+        }
+        return DEFAULT_WIDGET_FOREGROUND_COLOR;
+    }
+
+    public static int getBackgroundColor(Context context, int target) {
+        int foregroundColor = getForegroundColor(context, target);
+        int opacity = 0;
         try {
-            opacity = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
-                    .getString(PREF_HOMESCREEN_BACKGROUND_OPACITY, "50"));
+            if (target == DashClockRenderer.Options.TARGET_HOME_SCREEN) {
+                opacity = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
+                        .getString(PREF_HOMESCREEN_BACKGROUND_OPACITY, "50"));
+            } else if (target == DashClockRenderer.Options.TARGET_LOCK_SCREEN) {
+                opacity = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
+                        .getString(PREF_LOCKSCREEN_BACKGROUND_OPACITY, "0"));
+            }
         } catch (NumberFormatException ignored) {
         }
 
-        if (opacity == 100) {
-            return 0xff000000;
-        } else {
-            return (opacity * 256 / 100) << 24;
-        }
+        int backgroundColor = (foregroundColor == Color.WHITE) ? Color.BLACK : Color.WHITE;
+        return (backgroundColor & 0xffffff) | ((opacity * 255 / 100) << 24);
     }
 }
