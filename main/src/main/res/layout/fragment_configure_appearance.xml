@@ -15,6 +15,7 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:background="#8000"
     android:layout_width="match_parent"
@@ -48,8 +49,8 @@
             android:id="@+id/pager_time_position_strip"
             android:layout_width="200dp"
             android:layout_height="3dp"
-            android:background="#3fff"
-            android:color="#33b5e5"
+            app:backgroundColor="#3fff"
+            app:indicatorColor="#fff"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="16dp" />
 
@@ -57,8 +58,8 @@
             android:id="@+id/pager_date_position_strip"
             android:layout_width="200dp"
             android:layout_height="3dp"
-            android:background="#3fff"
-            android:color="#33b5e5"
+            app:backgroundColor="#3fff"
+            app:indicatorColor="#fff"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="16dp" />
 

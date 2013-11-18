@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -39,6 +40,7 @@ public class DragGripView extends View {
     private int mColor = 0x33333333;
 
     private Paint mRidgePaint;
+    private RectF mTempRectF = new RectF();
 
     private float mRidgeSize;
     private float mRidgeGap;
@@ -110,12 +112,12 @@ public class DragGripView extends View {
 
         for (int y = 0; y < vertRidges; y++) {
             for (int x = 0; x < HORIZ_RIDGES; x++) {
-                canvas.drawRect(
+                mTempRectF.set(
                         drawLeft + x * (mRidgeSize + mRidgeGap),
                         drawTop + y * (mRidgeSize + mRidgeGap),
                         drawLeft + x * (mRidgeSize + mRidgeGap) + mRidgeSize,
-                        drawTop + y * (mRidgeSize + mRidgeGap) + mRidgeSize,
-                        mRidgePaint);
+                        drawTop + y * (mRidgeSize + mRidgeGap) + mRidgeSize);
+                canvas.drawOval(mTempRectF, mRidgePaint);
             }
         }
     }

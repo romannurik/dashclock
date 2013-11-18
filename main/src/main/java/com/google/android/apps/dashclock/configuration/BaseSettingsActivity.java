@@ -46,6 +46,11 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
     }
 
     @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return false;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             // TODO: if the previous activity on the stack isn't a ConfigurationActivity,

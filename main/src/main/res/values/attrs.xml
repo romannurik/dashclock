@@ -16,6 +16,11 @@
 
 <resources>
 
+    <declare-styleable name="PagerPositionStrip">
+        <attr name="backgroundColor" format="color" />
+        <attr name="indicatorColor" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="AppChooserPreference">
         <attr name="allowUseDefault" format="boolean" />
     </declare-styleable>

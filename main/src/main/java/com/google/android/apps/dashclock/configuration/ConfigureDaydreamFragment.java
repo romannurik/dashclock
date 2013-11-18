@@ -16,8 +16,6 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import net.nurik.roman.dashclock.R;
-
 import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.apps.dashclock.DaydreamService;
+
+import net.nurik.roman.dashclock.R;
 
 /**
  * Fragment for allowing the user to configure daydream settings, shown within a {@link

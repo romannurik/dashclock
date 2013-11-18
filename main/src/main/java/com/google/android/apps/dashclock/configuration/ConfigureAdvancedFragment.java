@@ -16,14 +16,8 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import com.google.android.apps.dashclock.render.DashClockRenderer;
-
-import net.nurik.roman.dashclock.R;
-
 import android.app.backup.BackupManager;
-import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -31,6 +25,10 @@ import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.apps.dashclock.render.DashClockRenderer;
+
+import net.nurik.roman.dashclock.R;
 
 /**
  * Fragment for allowing the user to configure advanced widget settings, shown within a {@link

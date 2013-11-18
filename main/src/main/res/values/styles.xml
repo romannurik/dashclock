@@ -107,7 +107,7 @@
 
     <style name="Configuration.Theme" parent="Configuration.Theme.Base">
         <item name="android:actionBarStyle">@style/Configuration.ActionBar</item>
-        <item name="android:actionOverflowButtonStyle">@android:style/Widget.Holo.ActionButton.Overflow</item>
+        <item name="android:actionOverflowButtonStyle">@style/Configuration.ActionButton.Overflow</item>
         <item name="android:actionBarItemBackground">@drawable/configure_ab_item_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowShowWallpaper">true</item>
@@ -121,6 +121,10 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Configuration.ActionButton.Overflow" parent="android:Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_overflow</item>
     </style>
 
     <!-- Undo bar -->

@@ -66,6 +66,11 @@ public class ExampleSettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(ExampleExtension.PREF_NAME));
     }
 
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return false;
+    }
+
     /**
      * A preference value change listener that updates the preference's summary to reflect its new
      * value.
