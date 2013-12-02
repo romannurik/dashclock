@@ -16,14 +16,8 @@
 
 package com.google.android.apps.dashclock.weather;
 
-import com.google.android.apps.dashclock.LogUtils;
-import com.google.android.apps.dashclock.api.DashClockExtension;
-import com.google.android.apps.dashclock.api.ExtensionData;
-import com.google.android.apps.dashclock.configuration.AppChooserPreference;
-
-import net.nurik.roman.dashclock.R;
-
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,9 +31,21 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+
+import com.google.android.apps.dashclock.LogUtils;
+import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.configuration.AppChooserPreference;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationRequest;
+
+import net.nurik.roman.dashclock.R;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -47,13 +53,21 @@ import java.util.Locale;
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
 import static com.google.android.apps.dashclock.LogUtils.LOGW;
-import static com.google.android.apps.dashclock.weather.YahooWeatherApiClient.*;
+import static com.google.android.apps.dashclock.weather.YahooWeatherApiClient.LocationInfo;
+import static com.google.android.apps.dashclock.weather.YahooWeatherApiClient.getLocationInfo;
+import static com.google.android.apps.dashclock.weather.YahooWeatherApiClient.getWeatherForLocationInfo;
+import static com.google.android.apps.dashclock.weather.YahooWeatherApiClient.setWeatherUnits;
+import static com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import static com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 
 /**
  * A local weather and forecast extension.
  */
 public class WeatherExtension extends DashClockExtension {
     private static final String TAG = LogUtils.makeLogTag(WeatherExtension.class);
+
+    public static final String ACTION_RECEIVED_LOCATION
+            = "com.google.android.apps.dashclock.action.RECEIVED_LOCATION";
 
     public static final String PREF_WEATHER_UNITS = "pref_weather_units";
     public static final String PREF_WEATHER_SHORTCUT = "pref_weather_shortcut";
@@ -76,12 +90,13 @@ public class WeatherExtension extends DashClockExtension {
     private static final int LOCATION_TIMEOUT_MILLIS = 60000; // 60 sec timeout for location attempt
 
     private static final Criteria sLocationCriteria;
+    private LocationClient mPlayServicesLocationClient;
 
     private static String sWeatherUnits = "f";
     private static Intent sWeatherIntent;
 
+    private Handler mServiceThreadHandler;
     private boolean mOneTimeLocationListenerActive = false;
-
     private Handler mTimeoutHandler = new Handler();
 
     static {
@@ -113,7 +128,17 @@ public class WeatherExtension extends DashClockExtension {
     }
 
     @Override
+    protected void onInitialize(boolean isReconnect) {
+        super.onInitialize(isReconnect);
+    }
+
+    @Override
     protected void onUpdateData(int reason) {
+        if (mServiceThreadHandler == null) {
+            // Get handle to background thread
+            mServiceThreadHandler = new Handler(Looper.myLooper());
+        }
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sWeatherUnits = sp.getString(PREF_WEATHER_UNITS, sWeatherUnits);
         sWeatherIntent = AppChooserPreference.getIntentValue(
@@ -154,6 +179,112 @@ public class WeatherExtension extends DashClockExtension {
             return;
         }
 
+        // Get the user's location, then get the weather for that location.
+        tryGooglePlayServicesGetLocationAndPublishWeatherUpdate(new Runnable() {
+            @Override
+            public void run() {
+                // If there was an error with Play Services, try LocationManager
+                tryLocationManagerGetLocationAndPublishWeatherUpdate();
+            }
+        });
+    }
+
+    private void tryGooglePlayServicesGetLocationAndPublishWeatherUpdate(
+            final Runnable errorRunnable) {
+        int playServicesResult = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (playServicesResult != ConnectionResult.SUCCESS) {
+            LOGW(TAG, "Google Play Services was unavailable (code " + playServicesResult + ").");
+            if (errorRunnable != null) {
+                errorRunnable.run();
+            }
+            return;
+        }
+
+        if (mPlayServicesLocationClient != null) {
+            // Already trying to obtain a location. Don't call error runnable since this isn't
+            // an error.
+            return;
+        }
+
+        LOGD(TAG, "Getting location using Google Play Services.");
+        mPlayServicesLocationClient = new LocationClient(this, new ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle bundle) {
+                if (mServiceThreadHandler == null) {
+                    LOGW(TAG, "Service thread handler empty; can't use Play Services location.");
+                    mPlayServicesLocationClient.disconnect();
+                    mPlayServicesLocationClient = null;
+                    if (errorRunnable != null) {
+                        errorRunnable.run();
+                    }
+                    return;
+                }
+
+                mServiceThreadHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onHasLocation();
+                    }
+                });
+            }
+
+            private void onHasLocation() {
+                final Location lastLocation = mPlayServicesLocationClient.getLastLocation();
+                if (lastLocation == null || (SystemClock.elapsedRealtimeNanos()
+                        - lastLocation.getElapsedRealtimeNanos()) >= STALE_LOCATION_NANOS) {
+                    LOGW(TAG, "Stale or missing last-known location; requesting single location "
+                            + "update.");
+                    LocationRequest request = LocationRequest.create()
+                            .setExpirationDuration(LOCATION_TIMEOUT_MILLIS - 1000)
+                            .setFastestInterval(0)
+                            .setInterval(0)
+                            .setNumUpdates(1)
+                            .setSmallestDisplacement(0)
+                            .setPriority(LocationRequest.PRIORITY_LOW_POWER);
+                    mPlayServicesLocationClient.requestLocationUpdates(request,
+                            PendingIntent.getService(WeatherExtension.this, 0,
+                                    new Intent(WeatherExtension.this, WeatherExtension.class)
+                                            .setAction(ACTION_RECEIVED_LOCATION),
+                                    PendingIntent.FLAG_UPDATE_CURRENT));
+
+                    // Schedule a retry if timing out. When the location request expires, updates
+                    // will simply stop, and we won't get any notification of this, so handle it
+                    // separately.
+                    mTimeoutHandler.removeCallbacksAndMessages(null);
+                    mTimeoutHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LOGE(TAG, "Play Services location request timed out.");
+                            disableOneTimeLocationListener();
+                            scheduleRetry();
+                        }
+                    }, LOCATION_TIMEOUT_MILLIS);
+                } else {
+                    tryPublishWeatherUpdateFromGeolocation(lastLocation);
+                }
+
+                mPlayServicesLocationClient.disconnect();
+                mPlayServicesLocationClient = null;
+            }
+
+            @Override
+            public void onDisconnected() {
+                mPlayServicesLocationClient = null;
+            }
+        }, new OnConnectionFailedListener() {
+            @Override
+            public void onConnectionFailed(ConnectionResult connectionResult) {
+                mPlayServicesLocationClient = null;
+                if (errorRunnable != null) {
+                    errorRunnable.run();
+                }
+            }
+        });
+        mPlayServicesLocationClient.connect();
+    }
+
+    private void tryLocationManagerGetLocationAndPublishWeatherUpdate() {
+        LOGD(TAG, "Getting location using LocationManager");
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         String provider = lm.getBestProvider(sLocationCriteria, true);
         if (TextUtils.isEmpty(provider)) {
@@ -177,7 +308,7 @@ public class WeatherExtension extends DashClockExtension {
             mTimeoutHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    LOGE(TAG, "Location request timed out.");
+                    LOGE(TAG, "LocationManager location request timed out.");
                     disableOneTimeLocationListener();
                     scheduleRetry();
                 }
@@ -223,8 +354,38 @@ public class WeatherExtension extends DashClockExtension {
     };
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && ACTION_RECEIVED_LOCATION.equals(intent.getAction())) {
+            if (mServiceThreadHandler == null) {
+                LOGW(TAG, "Can't process location update because onUpdateData hasn't been called "
+                        + "on this service instance.");
+            }
+
+            // A location update request succeeded; try publishing weather from here.
+            final Location location = intent.getParcelableExtra(
+                    LocationClient.KEY_LOCATION_CHANGED);
+            if (location != null) {
+                LOGD(TAG, "Got a Play Services location update; trying weather update.");
+                mTimeoutHandler.removeCallbacksAndMessages(null);
+                mServiceThreadHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tryPublishWeatherUpdateFromGeolocation(location);
+                    }
+                });
+            }
+            stopSelf(startId);
+        }
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mPlayServicesLocationClient != null) {
+            mPlayServicesLocationClient.disconnect();
+        }
         disableOneTimeLocationListener();
     }
 

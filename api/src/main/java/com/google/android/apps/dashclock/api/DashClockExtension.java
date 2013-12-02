@@ -319,7 +319,7 @@ public abstract class DashClockExtension extends Service {
      * Called when a connection with the main DashClock app has been established or re-established
      * after a previous one was lost. In this latter case, the parameter <code>isReconnect</code>
      * will be true. Override this method to perform basic extension initialization before calls
-     * to {@link #onUpdateData(int)} are made.
+     * to {@link #onUpdateData(int)} are made. This method is called on the main thread.
      *
      * @param isReconnect Whether or not this call is being made after a connection was dropped and
      *                    a new connection has been established.
@@ -332,7 +332,8 @@ public abstract class DashClockExtension extends Service {
      * information to show to the user. Implementations can choose to do nothing, or more commonly,
      * provide an update using the {@link #publishUpdate(ExtensionData)} method. Note that doing
      * nothing doesn't clear existing data. To clear any existing data, call
-     * {@link #publishUpdate(ExtensionData)} with <code>null</code> data.
+     * {@link #publishUpdate(ExtensionData)} with <code>null</code> data. This method is called
+     * on a background thread.
      *
      * @param reason The reason for the update. See {@link #UPDATE_REASON_PERIODIC} and related
      *               constants for more details.

@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     compile 'com.android.support:support-v13:18.0.0'
+    compile 'com.google.android.gms:play-services:4.0.30'
     compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1-SNAPSHOT-AAR'
     compile project(':api')
 }

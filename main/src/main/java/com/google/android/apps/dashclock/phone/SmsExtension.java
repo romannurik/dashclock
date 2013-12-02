@@ -22,10 +22,14 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import net.nurik.roman.dashclock.R;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
+import android.provider.Telephony;
 import android.text.TextUtils;
 
 import java.util.HashSet;
@@ -148,14 +152,26 @@ public class SmsExtension extends DashClockExtension {
             showingAllConversationParticipants = true;
         }
 
-        Intent clickIntent;
+        PackageManager pm = getPackageManager();
+        Intent clickIntent = null;
         if (unreadConversations == 1 && lastUnreadThreadId > 0) {
             clickIntent = new Intent(Intent.ACTION_VIEW,
                     TelephonyProviderConstants.MmsSms.CONTENT_CONVERSATIONS_URI.buildUpon()
                             .appendPath(Long.toString(lastUnreadThreadId)).build());
-        } else {
+        }
+
+        // If the default SMS app doesn't support ACTION_VIEW on the conversation URI,
+        // or if there are multiple unread conversations, try opening the app landing screen
+        // by implicit intent.
+        if (clickIntent == null || pm.resolveActivity(clickIntent, 0) == null) {
             clickIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN,
                     Intent.CATEGORY_APP_MESSAGING);
+
+            // If the default SMS app doesn't support CATEGORY_APP_MESSAGING, try KitKat's
+            // new API to get the default package (if the API is available).
+            if (pm.resolveActivity(clickIntent, 0) == null) {
+                clickIntent = tryGetKitKatDefaultSmsActivity();
+            }
         }
 
         publishUpdate(new ExtensionData()
@@ -171,6 +187,22 @@ public class SmsExtension extends DashClockExtension {
                         : R.string.sms_body_template,
                         names.toString()))
                 .clickIntent(clickIntent));
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private Intent tryGetKitKatDefaultSmsActivity() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            String smsPackage = Telephony.Sms.getDefaultSmsPackage(this);
+            if (TextUtils.isEmpty(smsPackage)) {
+                return null;
+            }
+
+            return new Intent()
+                    .setAction(Intent.ACTION_MAIN)
+                    .addCategory(Intent.CATEGORY_LAUNCHER)
+                    .setPackage(smsPackage);
+        }
+        return null;
     }
 
     /**
