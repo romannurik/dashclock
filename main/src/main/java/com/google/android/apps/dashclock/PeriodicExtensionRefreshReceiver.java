@@ -26,6 +26,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
+import static com.google.android.apps.dashclock.Utils.MINUTES_MILLIS;
 
 /**
  * A broadcast receiver in charge of scheduling DashClock extension refreshes. This was
@@ -37,8 +38,6 @@ public class PeriodicExtensionRefreshReceiver extends WakefulBroadcastReceiver {
 
     private static final String ACTION_PERIODIC_ALARM
             = "com.google.android.apps.dashclock.action.PERIODIC_ALARM";
-
-    private static final long FIFTEEN_MINUTES_MILLIS = 15 * 60 * 1000;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -79,7 +78,7 @@ public class PeriodicExtensionRefreshReceiver extends WakefulBroadcastReceiver {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         am.cancel(pi);
         am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + FIFTEEN_MINUTES_MILLIS,
+                SystemClock.elapsedRealtime() + 15 * MINUTES_MILLIS,
                 AlarmManager.INTERVAL_HALF_HOUR,
                 pi);
     }

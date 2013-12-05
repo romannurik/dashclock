@@ -61,6 +61,11 @@ public class Utils {
 
     private static final String USER_AGENT = "DashClock/0.0";
 
+    public static final int SECONDS_MILLIS = 1000;
+    public static final int MINUTES_MILLIS = 60 * SECONDS_MILLIS;
+    public static final int HOURS_MILLIS = 60 * MINUTES_MILLIS;
+    public static final long NANOS_PER_MILLIS = 1000000l;
+
     public static final int EXTENSION_ICON_SIZE = 128;
 
     private static final String[] CLOCK_PACKAGES = new String[] {

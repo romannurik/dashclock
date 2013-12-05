@@ -53,6 +53,7 @@ import net.nurik.roman.dashclock.R;
 import java.util.List;
 
 import static com.google.android.apps.dashclock.ExtensionManager.ExtensionWithData;
+import static com.google.android.apps.dashclock.Utils.SECONDS_MILLIS;
 
 /**
  * Daydream for DashClock.
@@ -74,8 +75,8 @@ public class DaydreamService extends DreamService implements
     private static final int ANIMATION_SLIDE = ANIMATION_FADE | ANIMATION_HAS_SLIDE;
     private static final int ANIMATION_PENDULUM = ANIMATION_SLIDE | ANIMATION_HAS_ROTATE;
 
-    private static final int CYCLE_INTERVAL_MILLIS = 20000;
-    private static final int FADE_MILLIS = 5000;
+    private static final int CYCLE_INTERVAL_MILLIS = 20 * SECONDS_MILLIS;
+    private static final int FADE_MILLIS = 5 * SECONDS_MILLIS;
     private static final int TRAVEL_ROTATE_DEGREES = 3;
     private static final float SCALE_WHEN_MOVING = 0.85f;
 

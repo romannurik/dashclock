@@ -88,6 +88,7 @@ class YahooWeatherApiClient {
             throws CantGetWeatherException {
         HttpURLConnection connection = null;
         try {
+            // TODO: proper http library
             connection = Utils.openUrlConnection(buildWeatherQueryUrl(woeid));
             XmlPullParser xpp = sXmlPullParserFactory.newPullParser();
             xpp.setInput(new InputStreamReader(connection.getInputStream()));

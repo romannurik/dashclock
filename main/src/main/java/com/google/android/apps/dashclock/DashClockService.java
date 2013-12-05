@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
+import static com.google.android.apps.dashclock.Utils.SECONDS_MILLIS;
 
 /**
  * The primary service for DashClock. This service is in charge of updating widget UI (see {@link
@@ -80,7 +81,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     /**
      * The maximum duration for the wakelock.
      */
-    private static final long UPDATE_WAKELOCK_TIMEOUT_MILLIS = 30 * 1000;
+    private static final long UPDATE_WAKELOCK_TIMEOUT_MILLIS = 30 * SECONDS_MILLIS;
 
     private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;

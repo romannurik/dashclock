@@ -17,6 +17,7 @@
 package com.google.android.apps.dashclock.calendar;
 
 import com.google.android.apps.dashclock.LogUtils;
+import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -43,6 +44,8 @@ import java.util.TimeZone;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 import static com.google.android.apps.dashclock.LogUtils.LOGE;
+import static com.google.android.apps.dashclock.Utils.HOURS_MILLIS;
+import static com.google.android.apps.dashclock.Utils.MINUTES_MILLIS;
 
 /**
  * Calendar "upcoming appointment" extension.
@@ -57,11 +60,8 @@ public class CalendarExtension extends DashClockExtension {
 
     private static final String SQL_TAUTOLOGY = "1=1";
 
-    private static final long MINUTE_MILLIS = 60 * 1000;
-    private static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
-
     // Show events happening "now" if they started under 5 minutes ago
-    public static final long NOW_BUFFER_TIME_MILLIS = 5 * MINUTE_MILLIS;
+    public static final long NOW_BUFFER_TIME_MILLIS = 5 * MINUTES_MILLIS;
 
     private static final int DEFAULT_LOOK_AHEAD_HOURS = 6;
     private int mLookAheadHours = DEFAULT_LOOK_AHEAD_HOURS;
@@ -216,7 +216,7 @@ public class CalendarExtension extends DashClockExtension {
         Calendar nextEventCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         nextEventCalendar.setTimeInMillis(nextTimestamp);
 
-        int minutesUntilNextAppointment = (int) (timeUntilNextAppointent / MINUTE_MILLIS);
+        int minutesUntilNextAppointment = (int) (timeUntilNextAppointent / MINUTES_MILLIS);
 
         String untilString;
         if (allDay) {
@@ -267,7 +267,7 @@ public class CalendarExtension extends DashClockExtension {
             expandedTimeFormat.setLength(0);
             expandedTime = getString(R.string.now);
         } else {
-            if (timeUntilNextAppointent > 24 * HOUR_MILLIS) {
+            if (timeUntilNextAppointent > 24 * HOURS_MILLIS) {
                 expandedTimeFormat.append("EEEE, ");
             }
 
@@ -291,7 +291,7 @@ public class CalendarExtension extends DashClockExtension {
 
         publishUpdate(new ExtensionData()
                 .visible(allDay || (timeUntilNextAppointent >= -NOW_BUFFER_TIME_MILLIS
-                        && timeUntilNextAppointent <= mLookAheadHours * HOUR_MILLIS))
+                        && timeUntilNextAppointent <= mLookAheadHours * HOURS_MILLIS))
                 .icon(R.drawable.ic_extension_calendar)
                 .status(untilString)
                 .expandedTitle(eventTitle)
@@ -333,7 +333,7 @@ public class CalendarExtension extends DashClockExtension {
             return getContentResolver().query(
                     CalendarContract.Instances.CONTENT_URI.buildUpon()
                             .appendPath(Long.toString(now - NOW_BUFFER_TIME_MILLIS))
-                            .appendPath(Long.toString(now + mLookAheadHours * HOUR_MILLIS))
+                            .appendPath(Long.toString(now + mLookAheadHours * HOURS_MILLIS))
                             .build(),
                     EventsQuery.PROJECTION,
                     allDaySelection + " AND "
