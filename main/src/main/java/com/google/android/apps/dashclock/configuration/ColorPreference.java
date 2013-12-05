@@ -16,8 +16,6 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import net.nurik.roman.dashclock.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -32,16 +30,17 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.apps.dashclock.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.nurik.roman.dashclock.R;
 
 /**
  * A preference that allows the user to choose an application or shortcut.
@@ -232,14 +231,17 @@ public class ColorPreference extends Preference {
                 return;
             }
 
+            final Resources res = mColorGrid.getContext().getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+
+            // Can't use Integer.MAX_VALUE here (weird issue observed otherwise on 4.2)
             mColorGrid.measure(
-                    View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE, View.MeasureSpec.AT_MOST),
-                    View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE, View.MeasureSpec.AT_MOST));
+                    View.MeasureSpec.makeMeasureSpec(dm.widthPixels, View.MeasureSpec.AT_MOST),
+                    View.MeasureSpec.makeMeasureSpec(dm.heightPixels, View.MeasureSpec.AT_MOST));
             int width = mColorGrid.getMeasuredWidth();
             int height = mColorGrid.getMeasuredHeight();
 
-            int extraPadding = mColorGrid.getContext().getResources().getDimensionPixelSize(
-                    R.dimen.color_grid_extra_padding);
+            int extraPadding = res.getDimensionPixelSize(R.dimen.color_grid_extra_padding);
 
             width += extraPadding;
             height += extraPadding;
