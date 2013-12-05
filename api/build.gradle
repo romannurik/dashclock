@@ -39,7 +39,8 @@ allprojects { ext."signing.secretKeyRingFile" = props["signing.secretKeyRingFile
 task compileAidl << {
     FileTree aidls = fileTree('src/main/aidl').include('**/I*.aidl')
     aidls.each {File aidl ->
-        def shell = ("aidl -p${android.sdk}/platforms/${android.target}/framework.aidl "
+        def shell = ("${android.sdk}/build-tools/${rootProject.ext.buildToolsVersion}/aidl "
+                    + "-p${android.sdk}/platforms/${android.target}/framework.aidl "
                     + "-I${file('src/main/aidl')} "
                     + "-o${file('build/source/aidl/debug')} "
                     + "${aidl.absolutePath}")
