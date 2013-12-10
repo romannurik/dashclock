@@ -25,7 +25,7 @@
         <item>75% czarne</item>
         <item>100% czarne</item>
     </string-array>
-    <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany<string>
+    <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany</string>
     <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widżetu</string>
 
     <!-- Universal settings preferences -->
