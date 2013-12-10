@@ -17,10 +17,31 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Scorciatoia orologio</string>
+    <string name="pref_background_title">Sfondo</string>
+    <string name="pref_foreground_color_title">Colore principale</string>
+    <string name="pref_homescreen_title">Widget home screen</string>
+    <string name="pref_lockscreen_title">Widget lock screen</string>
+    <string name="pref_background_opacity_title">Visibilità sfondo</string>
+    <string-array name="pref_background_opacity_display_names">
+        <item>Completamente trasparente</item>
+        <item>Visibile al 25%</item>
+        <item>Visibile al 50%</item>
+        <item>Visibile al 75%</item>
+        <item>Completamente opaco</item>
+    </string-array>
+    <string name="pref_foreground_color_description">Il colore del testo e delle icone</string>
     <string name="pref_aggressive_centering_title">Sempre centrato</string>
     <string name="pref_aggressive_centering_description">Può provocare movimenti casuali dell\'orologio in diversi stati del widget</string>
-    <string name="pref_hide_settings_title">Nascondi pulsante impostazioni</string>
-    <string name="pref_hide_settings_description">Nascondi il pulsante delle impostazioni quando il widget è espanso in verticale (in alternativa c\'è la scorciatoia per la home screen \"Configura il widget DashClock\")</string>
+    <string name="pref_settings_button_title">Pulsante impostazioni</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>Nascosto</item>
+        <item>Nel widget espanso</item>
+        <item>Nel launcher delle app</item>
+    </string-array>
+    <string name="pref_show_app_launcher_icon_title">Visualizza icona dell\'app</string>
+    <string name="pref_show_app_launcher_icon_description">Visualizza "Configura il widget DashClock" nel launcher</string>
+    <string name="pref_hide_clock_title">Nascondi orologio</string>
+    <string name="pref_hide_clock_description">Nasconde l\'orologio e visualizza solo le estensioni</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Scorciatoia</string>

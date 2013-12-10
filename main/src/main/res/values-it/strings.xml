@@ -21,7 +21,7 @@
     <string name="settings">Impostazioni</string>
     <string name="more_options">Altre opzioni</string>
 
-    <string name="simple_date_format">E, MMM dd</string>
+    <string name="simple_date_format">E dd MMM</string>
 
     <!-- Configuration -->
     <string name="title_configure">Configura il widget DashClock</string>
@@ -39,6 +39,10 @@
     <string name="done">Fatto</string>
     <string name="add_extension">Aggiungi un\'estensione</string>
     <string name="cancel">Annulla</string>
+
+    <string name="undo">Annulla</string>
+    <string name="extension_removed_template">\'%1$s\' rimossa.</string>
+    <string name="extensions_removed_template">%1%d estensioni rimosse.</string>
 
     <!-- These strings never appear in release builds; translation is very low priority -->
     <string name="send_logs">Invia log di debug</string>
@@ -103,6 +107,7 @@
         Visualizza informazioni sulla prossima sveglia impostata, se ne hai di attive.
     </string>
     <string name="next_alarm">Prossima sveglia</string>
+    <string name="title_next_alarm_settings">Impostazioni estensione Prossima Sveglia</string>
 
     <!-- Calendar -->
     <string name="calendar_extension_title">Appuntamenti in Calendario</string>
@@ -139,7 +144,7 @@
     <string name="missed_calls_unknown">Sconosciuto</string>
 
     <!-- SMS + MMS -->
-    <string name="sms_extension_title">SMS</string>
+    <string name="sms_extension_title">Messaggi di testo</string>
     <string name="sms_extension_description">
         Visualizza il numero di conversazioni SMS ed MMS non lette, assieme ai nomi dei mittenti.
     </string>
@@ -148,6 +153,7 @@
         <item quantity="other">%1$s conversazioni non lette</item>
     </plurals>
     <string name="sms_body_template">Da: %1$s</string>
+    <string name="sms_body_all_participants_template">Con: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Personalizza il tuo DashClock</string>
