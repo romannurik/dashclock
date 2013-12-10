@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Συντόμευση Ρολογιού</string>
     <string name="pref_aggressive_centering_title">Πάντα κεντρικά</string>
     <string name="pref_aggressive_centering_description">Αυτό μπορεί να έχει ως αποτέλεσμα την μετατόπιση του ρολογιού, ανάλογα με την κατάσταση του widget</string>
-    <string name="pref_hide_settings_title">Απόκρυψη κουμπιού Ρυθμίσεων</string>
-    <string name="pref_hide_settings_description">Απόκρυψη του κουμπιού ρυθμίσεων όταν το widget εκτείνεται κάθετα (μία συντόμευση "DashClock Settings" θα εμφανιστεί στην αρχική οθόνη ως υποκατάστατο)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Συντόμευση</string>

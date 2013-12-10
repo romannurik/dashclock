@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Aplikacja zegara</string>
     <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany</string>
     <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widgetu</string>
-    <string name="pref_hide_settings_title">Ukryj przycisk ustawień</string>
-    <string name="pref_hide_settings_description">Ukryj przycisk ustawień, kiedy widget jest rozwinięty (możesz wtedy dodać do ekranu skrót "konfiguracja widgetu DashClock")</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Skrót</string>

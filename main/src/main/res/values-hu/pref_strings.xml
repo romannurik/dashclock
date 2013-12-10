@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Óra parancsikonja</string>
     <string name="pref_aggressive_centering_title">Mindig középen</string>
     <string name="pref_aggressive_centering_description">Az óra mindig középen legyen</string>
-    <string name="pref_hide_settings_title">Beállítások gomb elrejtése</string>
-    <string name="pref_hide_settings_description">Beállítások gomb elrejtése függőleges widgetnél (alternatívaként a "DashClock beállítások" parancsikont lehet használni)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Parancsikon</string>

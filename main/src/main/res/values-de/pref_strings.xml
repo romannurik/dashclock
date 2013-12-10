@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Uhr Verknüpfung</string>
     <string name="pref_aggressive_centering_title">Immer mittig halten</string>
     <string name="pref_aggressive_centering_description">Kann in unvorhersehbarem Verschieben des Widgets enden</string>
-    <string name="pref_hide_settings_title">Verberge die Einstellungsschaltfläche</string>
-    <string name="pref_hide_settings_description">Verbirgt die Einstellungen wenn das Widget in voller Größe angezeigt wird (Die Einstellunen können alternativ über ein Homescreen Widget erreicht werden).</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Verknüpfung</string>

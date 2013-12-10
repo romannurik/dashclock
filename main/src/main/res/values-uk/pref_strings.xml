@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Посилання годиника</string>
     <string name="pref_aggressive_centering_title">Завжди по центру</string>
     <string name="pref_aggressive_centering_description">Може спровокувати зсув годиника для різних станів віджета</string>
-    <string name="pref_hide_settings_title">Сховати кнопку налаштувань</string>
-    <string name="pref_hide_settings_description">Сховати кнопку налаштувань коли віджет розгортнутий вертикально (в якості альтернативи доступний віджет налаштувань DashClock)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Посилання</string>

@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Klok-snelkoppeling</string>
     <string name="pref_aggressive_centering_title">Altijd centreren</string>
     <string name="pref_aggressive_centering_description">Kan erin resulteren dat de klok bij verschillende widget stadia verspringt</string>
-    <string name="pref_hide_settings_title">Verberg instellingenknop</string>
-    <string name="pref_hide_settings_description">Verbergt de instellingenknop op het moment dat de widget verticaal uitgeklapt is (een \"DashClock-widget aanpassen\" snelkoppeling voor het startscherm is beschikbaar als alternatief)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Snelkoppeling</string>

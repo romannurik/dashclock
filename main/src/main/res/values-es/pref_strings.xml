@@ -19,8 +19,6 @@
     <string name="pref_clock_shortcut_title">Acceso directo al reloj</string>
     <string name="pref_aggressive_centering_title">Centrar siempre</string>
     <string name="pref_aggressive_centering_description">Puede hacer que el reloj cambie de posición en base a los estados del widget</string>
-    <string name="pref_hide_settings_title">Esconder el botón de configuración</string>
-    <string name="pref_hide_settings_description">Esconde el botón de configuración cuando el widget está expandido verticalmente (Un atajo en el escritorio bajo el nombre de \"Configurar DashClock Widget\" se ofrece como alternativa)</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Acceso directo</string>

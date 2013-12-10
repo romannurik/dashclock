@@ -38,8 +38,6 @@
         <item>Nel widget espanso</item>
         <item>Nel launcher delle app</item>
     </string-array>
-    <string name="pref_show_app_launcher_icon_title">Visualizza icona dell\'app</string>
-    <string name="pref_show_app_launcher_icon_description">Visualizza "Configura il widget DashClock" nel launcher</string>
     <string name="pref_hide_clock_title">Nascondi orologio</string>
     <string name="pref_hide_clock_description">Nasconde l\'orologio e visualizza solo le estensioni</string>
 
