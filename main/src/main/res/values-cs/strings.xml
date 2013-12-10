@@ -126,7 +126,7 @@
         <item quantity="other">%1$s minut</item>
     </plurals>
     <string name="today">Dnes</string>
-    <!--<string name="now">Now</string>-->
+    <string name="now">Nyní</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nepřijaté hovory</string>
