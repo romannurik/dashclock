@@ -15,8 +15,8 @@
   -->
 
 <resources>
-    <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
-    <string name="permission_label_read_extension_data">Request DashClock extension data</string>
+    <string name="permission_desc_read_extension_data">Pozwala na żadanie danych rozszerzeniu DashClock</string>
+    <string name="permission_label_read_extension_data">Prośba o dane rozszerzenia DashClock</string>
 
     <string name="settings">Ustawienia</string>
     <string name="more_options">Więcej opcji</string>
@@ -24,25 +24,30 @@
     <string name="simple_date_format">E, MMM dd</string>
 
     <!-- Configuration -->
-    <string name="title_configure">Konfiguracja widgetu</string>
+    <string name="title_configure">Ustawienia DashClock</string>
     <string name="section_extensions">Rozszerzenia</string>
     <string name="section_appearance">Wygląd</string>
-    <!--<string name="section_daydream">Daydream</string>-->
+    <string name="section_daydream">Daydream</string>
     <string name="section_advanced">Zaawansowane</string>
 
-    <string name="title_apps">Programy</string>
+    <string name="title_apps">Aplikacje</string>
     <string name="title_shortcuts">Skróty</string>
 
     <string name="get_more_extensions">Pobierz więcej rozszerzeń</string>
-    <string name="add_another_extension">Dodaj więcej</string>
+    <string name="add_another_extension">Dodaj kolejne rozszerzenie</string>
     <string name="more_extensions">Więcej rozszerzeń</string>
     <string name="done">Gotowe</string>
     <string name="add_extension">Dodaj rozszerzenie</string>
     <string name="cancel">Anuluj</string>
+    <string name="remove">Usuń</string>
+
+    <string name="undo">Cofnij</string>
+    <string name="extension_removed_template">\'%1$s\' usunięty.</string>
+    <string name="extensions_removed_template">%1%d rozszerzeń usuniętych.</string>
 
     <!-- These strings never appear in release builds; translation is very low priority -->
-    <string name="send_logs">Send debug log</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <string name="send_logs">Wyślij dziennik debugowania</string>
+    <string name="send_logs_chooser_title">Wyślij dzienniki używania</string>
 
     <string name="prev_date_style">Poprzedni styl daty</string>
     <string name="prev_time_style">Poprzedni styl zegara</string>
@@ -65,7 +70,7 @@
         <a href="http://m.google.com/utos">Warunki korzystania</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
         <a href="http://www.google.com/policies/privacy/">Polityka prywatności</a><br><br>
-        Podziękowania za udostępnienie narzędzi:<br><br>
+        Podziękowania za udostepnienie narzędzi:<br><br>
         <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
         <i>autorstwa Günther Beyer z <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
@@ -74,49 +79,53 @@
 
     <!-- Weather -->
     <string name="weather_extension_title">Pogoda</string>
-    <string name="weather_extension_description">Wyświetla aktualną pogodę w miejscu, w którym się znajdujesz. Zawiera temperaturę i warunki panujące na zewnątrz. Informacje dostarcza Yahoo! Weather.    </string>
-    <string name="title_weather_settings">Ustawienia pogody</string>
+    <string name="weather_extension_description">
+        Wyświetla aktualną pogodę w miejscu, w którym się znajdujesz. 
+        Zawiera temperaturę i warunki panujące na zewnątrz. Informacje dostarcza Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">Ustawienia rozszerzenia pogody</string>
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Później: %1$s</string>
-    <string name="no_weather_data">Brak dostępnych danych pogody</string>
-    <string name="no_location_data">Nie udało się określić Twojego położenia</string>
+    <string name="no_weather_data">Brak danych pogodowych</string>
+    <string name="no_location_data">Nie można ustalić twojej lokalizacji</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail</string>
     <string name="gmail_extension_description">
         Wyświetla nieprzeczytane wiadomości ze skrzynki odebranych bądź priorytetów.
     </string>
-    <string name="title_gmail_settings">Ustawienia Gmail</string>
+    <string name="title_gmail_settings">Ustawienia rozszerzenia Gmail</string>
     <plurals name="gmail_title_template">
-        <item quantity="other">%1$d nieprzeczytanych</item>
+        <item quantity="other">Nieprzeczytane: %1$d</item>
     </plurals>
 
     <!-- Next alarm -->
     <string name="next_alarm_extension_title">Następny alarm</string>
     <string name="next_alarm_extension_description">
-        Wyświetla informację o następnym alarmie jeśli ustawiony.
+        Wyświetla informacje o następnym zaplanowanym alarmie, jeśli masz ustawiony.
     </string>
     <string name="next_alarm">Następny alarm</string>
+    <string name="title_next_alarm_settings">Ustawienia rozszerzenia Następny alarm</string>
 
     <!-- Calendar -->
     <string name="calendar_extension_title">Wydarzenie kalendarza</string>
     <string name="calendar_extension_description">
-        Wyświetla informację o następnym wydarzeniu kalendarza, jeśli zbliża się jego ustawiony czas.
+        Wyświetla informację o następnym wydarzeniu z kalendarza, jeśli zbliża się jego ustawiony czas.
     </string>
-    <string name="title_calendar_settings">Ustawienia kalendarza</string>
+    <string name="title_calendar_settings">Ustawienia rozszerzenia Kalendarza</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s dzień</item>
         <item quantity="other">%1$s dni</item>
     </plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="one">%1$s godzina</item>
+        <item quantity="one">%1$s godz.</item>
         <item quantity="other">%1$s godzin</item>
     </plurals>
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s min</item>
     </plurals>
     <string name="today">Dzisiaj</string>
-    <!--<string name="now">Now</string>-->
+    <string name="now">Teraz</string>
 
     <!-- Missed calls -->
     <string name="missed_calls_extension_title">Nieodebrane połączenia</string>
@@ -124,20 +133,11 @@
         Wyświetla ilość nieodebranych połączeń oraz nazwę kontaktu, który próbował się dodzwonić.
     </string>
     <plurals name="missed_calls_title_template">
-        <item quantity="one">%1$s nieodebrane</item>
-		<!--
-			##############################
-			MESSAGE
-			
-		In Polish, you say "nieodebranych" since 5 (1-4 - nieodebrane, 5-... - nieodebranych) 
-		
-			MESSAGE
-			##############################
-		-->
-        <item quantity="other">%1$s nieodebranych</item>
+        <item quantity="one">Nieodebrane: %1$s</item>
+        <item quantity="other">Nieodebranych: %1$s</item>
     </plurals>
     <string name="missed_calls_body_template">Od: %1$s</string>
-    <!--<string name="missed_calls_unknown">Unknown</string>-->
+    <string name="missed_calls_unknown">Nieznany</string>
 
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Wiadomości tekstowe</string>
@@ -145,16 +145,18 @@
         Wyświetla ilość nieprzeczytanych SMS i MMS jak i nadawcę.
     </string>
     <plurals name="sms_title_template">
-        <item quantity="one">%1$s nieprzeczytana wiadomość</item>
-        <item quantity="other">%1$s nieprzeczytane wiadomości</item>
+        <item quantity="one">Nieprzeczytane: %1$s</item>
+        <item quantity="other">Nieprzeczytanych: %1$s</item>
     </plurals>
     <string name="sms_body_template">Od: %1$s</string>
+    <string name="sms_body_all_participants_template">Z: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Dostosuj DashClock</string>
-    <string name="welcome_description">Chcesz wyświetlać tylko aktualny czas i datę? Zaznacz powyższe pole i gotowe! Ale może chciałbyś dostosować DashClock używając kilku <i>rozszerzeń</i>?
-        \n\n<b>Rozszerzenia</b> pozwalają wyświetlić przydatne dla Ciebie informacje w jednym widgecie.
-        Wypróbuj je dodając kilka, przekonaj się sam.
+    <string name="welcome_description">Chcesz wyświetlać tylko aktualny czas i datę? Zaznacz powyższe pole i gotowe! 
+        Ale może chciałbyś dostosować DashClock używając kilku <i>rozszerzeń</i>?
+        \n\n<b>Rozszerzenia</b> pokazują ci istotne i aktualne informacje wewnątrz DashClock!
+        Wypróbuj je, dodając kilka rozszerzeń poniżej.
     </string>
 
 </resources>

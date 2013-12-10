@@ -42,7 +42,7 @@
 
     <!-- These strings never appear in release builds; translation is very low priority -->
     <string name="send_logs">Enviar log de debug</string>
-    <string name="send_logs_chooser_title">Send logs using</string>
+    <string name="send_logs_chooser_title">Enviar log utilizando</string>
 
     <string name="prev_date_style">Estilo de Data anterior</string>
     <string name="prev_time_style">Estilo de Hora anterior</string>
@@ -67,9 +67,9 @@
         <a href="http://www.google.com/policies/privacy/">Privacy Policy</a><br><br>
         Muito obrigado a estas ferramentas de código aberto:<br><br>
         <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
-        <i>by Günther Beyer do <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
+        <i>por Günther Beyer do <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
-        <i>by Carl A. Bauer</i>
+        <i>por Carl A. Bauer</i>
     ]]></string>
 
     <!-- Weather -->
@@ -81,13 +81,13 @@
     <string name="title_weather_settings">Configurações da Extensão de Clima</string>
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Cedo: %1$s</string>
-    <string name="no_weather_data">Informações de tempo indisponível</string>
-    <string name="no_location_data">Sua localização não poder ser determinada</string>
+    <string name="no_weather_data">Informações de tempo indisponíveis</string>
+    <string name="no_location_data">Sua localização não pôde ser determinada</string>
 
     <!-- Gmail -->
     <string name="gmail_extension_title">Gmail não lidas</string>
     <string name="gmail_extension_description">
-        Exibe quantos emails não lidas existe na sua Caixa de entrada ou na Caixa Prioritáira.
+        Exibe quantos emails não lidos existem na sua Caixa de entrada ou na Caixa prioritária.
     </string>
     <string name="title_gmail_settings">Configuração da extensão do Gmail</string>
     <plurals name="gmail_title_template">
@@ -113,8 +113,8 @@
         <item quantity="other">%1$s dias</item>
     </plurals>
     <plurals name="calendar_template_hours">
-        <item quantity="one">%1$s hr</item>
-        <item quantity="other">%1$s hrs</item>
+        <!--<item quantity="one">%1$s hr</item>-->
+        <item quantity="other">%1$s h</item>
     </plurals>
     <plurals name="calendar_template_mins">
         <item quantity="other">%1$s min</item>
@@ -137,7 +137,7 @@
     <!-- SMS + MMS -->
     <string name="sms_extension_title">Mensagens de Texto</string>
     <string name="sms_extension_description">
-        Exibe as mensagens de texto(SMS e MMS) não lidas, juntamente com o nome dos remetentes.
+        Exibe as mensagens de texto (SMS e MMS) não lidas, juntamente com o nome dos remetentes.
     </string>
     <plurals name="sms_title_template">
         <item quantity="one">%1$s mensagem não lida</item>
@@ -148,10 +148,10 @@
     <!-- Welcome strings -->
     <string name="welcome_title">Personalize seu DashClock</string>
     <string name="welcome_description">Gostaria de ver somente a hora e data atual? Então
-        clique no botão no canto superior e está pronto! Mas porquê não personalizar mais o seu DashClock com algumas
+        clique no botão no canto superior e está pronto! Mas por que não personalizar mais o seu DashClock com algumas
         <i>extensões</i>?
-        \n\n<b>Extensões</b> mostram para você informações relevantes para você, e isso dentro do DashClock!
-        Tente elas adicionando algumas delas logo abaixo.
+        \n\n<b>Extensões</b> mostram informações relevantes para você, e isso dentro do DashClock!
+        Tente-as adicionando algumas delas logo abaixo.
     </string>
 
 </resources>

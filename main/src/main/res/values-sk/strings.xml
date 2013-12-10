@@ -15,21 +15,21 @@
   -->
 
 <resources>
-    <string name="permission_desc_read_extension_data">Povoľuje požadovanie dát DashClock rozšírenia</string>
-    <string name="permission_label_read_extension_data">Požaduje dáta DashClock rozšírenia</string>
+    <string name="permission_desc_read_extension_data">Povoľuje požadovanie dát DashClock rozšírenia.</string>
+    <string name="permission_label_read_extension_data">požadovanie dát DashClock rozšírenia</string>
 
     <string name="settings">Nastavenia</string>
     <string name="more_options">Viac možností</string>
 
     <!-- Configuration -->
-    <string name="title_configure">Nastaviť DashClock</string>
+    <string name="title_configure">Nastavenia DashClock</string>
     <string name="section_extensions">Rozšírenia</string>
     <string name="section_appearance">Vzhľad</string>
     <string name="section_daydream">Šetrič obrazovky</string>
     <string name="section_advanced">Pokročilé</string>
 
     <string name="title_apps">Aplikácie</string>
-    <string name="title_shortcuts">Skratky</string>
+    <string name="title_shortcuts">Odkazy</string>
 
     <string name="get_more_extensions">Získať viac rozšírení</string>
     <string name="add_another_extension">Pridať ďalšie rozšírenie</string>
@@ -37,6 +37,11 @@
     <string name="done">Hotovo</string>
     <string name="add_extension">Pridať rozšírenie</string>
     <string name="cancel">Zrušiť</string>
+    <string name="remove">Odstrániť</string>
+
+    <string name="undo">Naspäť</string>
+    <string name="extension_removed_template">Rozšírenie \'%1$s\' bolo odstránené.</string>
+    <string name="extensions_removed_template">Počet odstránených rozšírení: %1%d.</string>
 
     <!-- These strings never appear in release builds; translation is very low priority -->
     <string name="send_logs">Poslať záznam ladenia</string>
@@ -51,20 +56,20 @@
     <string name="incompatible_extension_title">Nekompatibilné rozšírenie</string>
     <string name="incompatible_extension_message_search_play_template"><![CDATA[Rozšírenie
         <b>%1$s</b> nie je kompatibilné s touto verziou DashClocku.
-        Hľadať aktualizáciu rozšírenia na Google Play?]]></string>
-    <string name="search_play">Hľadať na Google Play</string>
+        Vyhľadať aktualizáciu rozšírenia v Google Play?]]></string>
+    <string name="search_play">Vyhľadať v Google Play</string>
 
     <!-- About -->
     <string name="close">Zavrieť</string>
     <string name="about">O aplikácii</string>
 
     <string name="about_body"><![CDATA[
-        Copyright 2012-2013 Google Inc. All Rights Reserved.<br>
+        Autorské práva 2012-2013 Google Inc. Všetky práva vyhradené.<br>
         <a href="http://m.google.com/utos">Podmienky služby</a>
         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-        <a href="http://www.google.com/policies/privacy/">Zásady ochrany osobných údajov</a><br><br>
-        Veľká vďaka za nástroje s otvoreným zdrojovým kódom:<br><br>
-        <b><a href="http://www.androidicons.com/">Android Developer Ikony</a></b><br>
+        <a href="http://www.google.com/policies/privacy/">Ochrana osobných údajov</a><br><br>
+        Veľká vďaka za tieto nástroje:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a></b><br>
         <i>od Günther Beyer z <a href="http://www.opoloo.com/">Opoloo</a></i><br><br>
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
         <i>od Carl A. Bauer</i>
@@ -76,7 +81,7 @@
         Zobrazí najnovšie informácie okolo Vás a to vrátane aktuálnej teploty,
 		podmienok a predpovedi počasia. Dáta sú získavané zo služby Yahoo! Weather.
     </string>
-    <string name="title_weather_settings">Nastavenie rozšírenia s počasím</string>
+    <string name="title_weather_settings">Nastavenia rozšírenia: Počasie</string>
     <string name="temperature_template">%1$s°</string>
     <string name="later_forecast_template">Neskôr: %1$s</string>
     <string name="no_weather_data">Žiadne údaje o počasí k dispozícii</string>
@@ -87,7 +92,7 @@
     <string name="gmail_extension_description">
         Zobrazí počet neprečítaných e-mailov prioritnej alebo doručenej pošty v službe Gmail.
     </string>
-    <string name="title_gmail_settings">Nastavenie Gmail rozšírenia</string>
+    <string name="title_gmail_settings">Nastavenia rozšírenia: Gmail</string>
     <plurals name="gmail_title_template">
         <item quantity="one">%1$s neprečítaný e-mail</item>
         <item quantity="few">%1$s neprečítané e-maily</item>
@@ -100,6 +105,7 @@
         Zobrazí informácie o nasledujúcom budíku, ak je nastavený.
     </string>
     <string name="next_alarm">Nasledujúci budík</string>
+    <string name="title_next_alarm_settings">Nastavenia rozšírenia: Nasledujúci budík</string>
 
     <!-- Calendar -->
     <string name="calendar_extension_title">Schôdzka v kalendári</string>
@@ -107,7 +113,7 @@
         Zobrazí informácie o nasledujúcej schôdzke v kalendári, ak je 
 		naplánovaná v najbližších hodinách/týždni.
     </string>
-    <string name="title_calendar_settings">Nastavenie kalendár rozšírenia</string>
+    <string name="title_calendar_settings">Nastavenia rozšírenia: Kalendár</string>
     <plurals name="calendar_template_days">
         <item quantity="one">%1$s deň</item>
         <item quantity="few">%1$s dni</item>
@@ -150,14 +156,15 @@
         <item quantity="other">%1$s neprečítaných konverzácií</item>
     </plurals>
     <string name="sms_body_template">Od: %1$s</string>
+    <string name="sms_body_all_participants_template">S: %1$s</string>
 
     <!-- Welcome strings -->
     <string name="welcome_title">Prispôsobenie DashClocku</string>
-    <string name="welcome_description">Chcete len vidieť aktuálny dátum a čas? 
-	    Potom stlačte zaškrt. tlačidlo hore a hotovo! Ale prečo si neprispôsobiť
+    <string name="welcome_description">Chcete len vidieť aktuálny dátum a čas?
+	    Potom stlačte zaškrtávacie tlačidlo hore a hotovo! Ale prečo si neprispôsobiť
 		DashClock s niekoľkými<i>rozšíreniami</i>?
-        \n\n<b>Rozšírenia</b> zobrazujú relevantné a včasné informácie v DashClock
-		Widgetu! Vyskúšajte ich pridaním niekoľkých rozšírení nižšie. 
+        \n\n<b>Rozšírenia</b> zobrazujú relevantné a včasné informácie v DashClocku!
+		Vyskúšajte ich pridaním niekoľkých rozšírení nižšie. 
     </string>
 
 </resources>

@@ -17,9 +17,32 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Skratka pre hodiny</string>
+    <string name="pref_background_title">Pozadie</string>
+    <string name="pref_foreground_color_title">Farba popredia</string>
+    <string name="pref_homescreen_title">Miniaplikácia na domovskej obrazovke</string>
+    <string name="pref_lockscreen_title">Miniaplikácia na uzamykacej obrazovke</string>
+    <string name="pref_background_opacity_title">Viditeľnosť pozadia</string>
+    <string-array name="pref_background_opacity_display_names">
+        <item>Úplne priehľadné</item>
+        <item>25% viditeľne</item>
+        <item>50% viditeľne</item>
+        <item>75% viditeľne</item>
+        <item>Úplne nepriehľadné</item>
+    </string-array>
+    <string name="pref_foreground_color_description">Farba textu a ikon</string>
     <string name="pref_aggressive_centering_title">Vždy centrovať</string>
-    <string name="pref_aggressive_centering_description">Môže mať za následok skákanie hodín okolo rôznych widgetov</string>
-
+    <string name="pref_aggressive_centering_description">Môže mať za následok skákanie hodín okolo rôznych miniaplikácií</string>
+    <string name="pref_settings_button_title">Tlačidlo nastavenia</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>Skryté</item>
+        <item>V rozšírenej miniaplikácii</item>
+        <item>V spúšťači aplikácií</item>
+    </string-array>
+    <string name="pref_show_app_launcher_icon_title">Zobraziť ikonu aplikácie</string>
+    <string name="pref_show_app_launcher_icon_description">Zobraziť Nastavenia DashClock v spúšťači</string>
+	<string name="pref_hide_clock_title">Skryť hodiny</string>
+	<string name="pref_hide_clock_description">Skryť hodiny a zobraziť len rozšírenia</string>
+	
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Skratka</string>
     <string name="pref_shortcut_default">(Predvolené)</string>
@@ -33,16 +56,16 @@
     <string name="pref_weather_location_title">Poloha</string>
     <string name="pref_weather_location_query_hint">Nájsť polohu</string>
     <string name="pref_weather_location_automatic">Automaticky</string>
-    <string name="pref_weather_location_automatic_description">Na základe vašej aktuálnej polohy.</string>
+    <string name="pref_weather_location_automatic_description">Na základe Vašej aktuálnej polohy.</string>
 
     <!-- Gmail -->
-    <string name="pref_gmail_label_title">Zobraziť počet neprečít. e-mailov na štítku</string>
+    <string name="pref_gmail_label_title">Zobraziť počet neprečítaných e-mailov na štítku</string>
     <string-array name="pref_gmail_label_display_names">
         <item>Doručená pošta</item>
         <item>Prioritná pošta</item>
     </string-array>
 
-    <string name="pref_gmail_accounts_title">Zobraziť počet neprečít. e-mailov pre účty</string>
+    <string name="pref_gmail_accounts_title">Zobraziť počet neprečítaných e-mailov pre účty</string>
     <plurals name="pref_gmail_accounts_summary_template">
         <item quantity="one">Vybraný %1$d účet z %2$d</item>
         <item quantity="few">Vybrané %1$d účty z %2$d</item>
@@ -66,12 +89,12 @@
         <item quantity="other">Vybraných %1$d kalendárov z %2$d</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Vlastná viditeľnosť kalendára</string>
-    <string name="pref_calendar_custom_visibility_description">Ak nie je označené, zobrazí všetky viditeľné kalendáre v aplikácii Kalendár</string>
+    <string name="pref_calendar_custom_visibility_description">Ak nie je povolené, zobrazí všetky viditeľné kalendáre v aplikácii Kalendár</string>
     <string name="pref_calendar_show_all_day_title">Zobraziť celodenné udalosti</string>
     <string name="pref_calendar_show_all_day_description">Zahrnúť všetky celodenné udalosti (napr. narodeniny)</string>
 
     <!-- Daydream preferences -->
-    <string name="pref_daydream_color_title">Farba pozadia</string>
+    <string name="pref_daydream_color_title">Farba popredia</string>
     <string name="pref_daydream_color_description">Farba textu a ikon v režime šetriča obrazovky</string>
     <string name="pref_daydream_night_mode_title">Nočný režim</string>
     <string name="pref_daydream_night_mode_description">Veľmi matný displej (pre tmavé miestnosti)</string>

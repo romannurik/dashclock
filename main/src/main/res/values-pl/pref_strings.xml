@@ -16,13 +16,21 @@
 
 <resources>
     <!-- Advanced widget preferences -->
-    <string name="pref_clock_shortcut_title">Aplikacja zegara</string>
-    <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany</string>
-    <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widgetu</string>
+    <string name="pref_clock_shortcut_title">Skróty Zegara</string>
+    <string name="pref_homescreen_background_opacity_title">Tło widżetu na ekranie głównym</string>
+    <string-array name="pref_homescreen_background_opacity_display_names">
+        <item>Przeźroczyste</item>
+        <item>25% czarne</item>
+        <item>50% czarne</item>
+        <item>75% czarne</item>
+        <item>100% czarne</item>
+    </string-array>
+    <string name="pref_aggressive_centering_title">Zawsze wyśrodkowany<string>
+    <string name="pref_aggressive_centering_description">Może spowodować przeskakiwanie zegara w zależności od stanu widżetu</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Skrót</string>
-    <string name="pref_shortcut_default">(Domyślny)</string>
+    <string name="pref_shortcut_default">(Domyślne)</string>
 
     <!-- Weather -->
     <string name="pref_weather_units_title">Jednostki temperatury</string>
@@ -32,7 +40,7 @@
     </string-array>
 
     <!-- Gmail -->
-    <string name="pref_gmail_label_title">Pokaż nieprzeczytane dla skrzynki</string>
+    <string name="pref_gmail_label_title">Pokaż nieprzeczytane dla etykiety</string>
     <string-array name="pref_gmail_label_display_names">
         <item>Odebrane</item>
         <item>Priorytety</item>
