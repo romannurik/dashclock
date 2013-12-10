@@ -365,15 +365,13 @@ public class WeatherExtension extends DashClockExtension {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_RECEIVED_LOCATION.equals(intent.getAction())) {
+            final Location location = intent.getParcelableExtra(
+                    LocationClient.KEY_LOCATION_CHANGED);
             if (mServiceThreadHandler == null) {
                 LOGW(TAG, "Can't process location update because onUpdateData hasn't been called "
                         + "on this service instance.");
-            }
-
-            // A location update request succeeded; try publishing weather from here.
-            final Location location = intent.getParcelableExtra(
-                    LocationClient.KEY_LOCATION_CHANGED);
-            if (location != null) {
+            } else if (location != null) {
+                // A location update request succeeded; try publishing weather from here.
                 LOGD(TAG, "Got a Play Services location update; trying weather update.");
                 mTimeoutHandler.removeCallbacksAndMessages(null);
                 mServiceThreadHandler.post(new Runnable() {
@@ -383,6 +381,7 @@ public class WeatherExtension extends DashClockExtension {
                     }
                 });
             }
+
             stopSelf(startId);
         }
 
