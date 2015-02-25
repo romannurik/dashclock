@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.google.android.apps.dashclock.LogUtils;
@@ -117,6 +118,15 @@ public class SimpleViewBuilder implements ViewBuilder {
     public void setTextViewTextSize(int viewId, int unit, float size) {
         try {
             ((TextView) mRootView.findViewById(viewId)).setTextSize(unit, size);
+        } catch (NullPointerException ignored) {
+        }
+    }
+
+    @Override
+    public void setTextClockFormat(int viewId, CharSequence format) {
+        try {
+            ((TextClock) mRootView.findViewById(viewId)).setFormat12Hour(format);
+            ((TextClock) mRootView.findViewById(viewId)).setFormat24Hour(format);
         } catch (NullPointerException ignored) {
         }
     }

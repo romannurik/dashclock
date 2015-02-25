@@ -36,6 +36,9 @@ import com.google.android.apps.dashclock.gmail.GmailExtension;
 import com.google.android.apps.dashclock.nextalarm.NextAlarmExtension;
 import com.google.android.apps.dashclock.weather.WeatherExtension;
 
+import net.nurik.roman.dashclock.BuildConfig;
+import net.nurik.roman.dashclock.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -289,6 +292,48 @@ public class ExtensionManager {
     }
 
     public List<ExtensionWithData> getActiveExtensionsWithData() {
+        if (BuildConfig.DEBUG) {
+            if (mDefaultPreferences.getBoolean("demomode", false)) {
+                ArrayList<ExtensionWithData> ewds = new ArrayList<ExtensionWithData>();
+                ExtensionWithData ewd;
+
+                ewd = new ExtensionWithData();
+                ewd.listing = new ExtensionListing();
+                ewd.listing.componentName = new ComponentName(
+                        mApplicationContext, WeatherExtension.class);
+                ewd.latestData = new ExtensionData()
+                        .visible(true)
+                        .status("72°")
+                        .expandedTitle("72°F — Sunny")
+                        .expandedBody("70° – 75°\nNew York, NY")
+                        .icon(R.drawable.ic_weather_sunny);
+                ewds.add(ewd);
+
+                ewd = new ExtensionWithData();
+                ewd.listing = new ExtensionListing();
+                ewd.listing.componentName = new ComponentName(
+                        mApplicationContext, GmailExtension.class);
+                ewd.latestData = new ExtensionData()
+                        .visible(true)
+                        .status("3")
+                        .expandedTitle("3 unread")
+                        .expandedBody("john.smith@gmail.com (2)\njohn@example.com (1)")
+                        .icon(R.drawable.ic_extension_gmail);
+                ewds.add(ewd);
+
+                ewd = new ExtensionWithData();
+                ewd.listing = new ExtensionListing();
+                ewd.listing.componentName = new ComponentName(
+                        mApplicationContext, NextAlarmExtension.class);
+                ewd.latestData = new ExtensionData()
+                        .visible(true)
+                        .status("Sat\n9:00 AM")
+                        .expandedTitle("Sat 9:00 AM")
+                        .icon(R.drawable.ic_extension_next_alarm);
+                ewds.add(ewd);
+                return ewds;
+            }
+        }
         ArrayList<ExtensionWithData> activeExtensions;
         synchronized (mActiveExtensions) {
             activeExtensions = new ArrayList<ExtensionWithData>(mActiveExtensions);
@@ -297,6 +342,11 @@ public class ExtensionManager {
     }
 
     public List<ExtensionWithData> getVisibleExtensionsWithData() {
+        if (BuildConfig.DEBUG) {
+            if (mDefaultPreferences.getBoolean("demomode", false)) {
+                return getActiveExtensionsWithData();
+            }
+        }
         ArrayList<ExtensionWithData> visibleExtensions = new ArrayList<ExtensionWithData>();
         synchronized (mActiveExtensions) {
             for (ExtensionManager.ExtensionWithData ewd : mActiveExtensions) {

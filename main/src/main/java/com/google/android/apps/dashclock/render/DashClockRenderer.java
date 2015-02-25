@@ -24,6 +24,7 @@ import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 import com.google.android.apps.dashclock.configuration.ConfigurationActivity;
 
+import net.nurik.roman.dashclock.BuildConfig;
 import net.nurik.roman.dashclock.R;
 
 import android.appwidget.AppWidgetManager;
@@ -243,6 +244,7 @@ public abstract class DashClockRenderer {
     }
 
     public void renderClockFace(ViewBuilder vb, int foregroundColor) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         vb.removeAllViews(R.id.time_container);
         vb.addView(R.id.time_container,
                 vb.inflateChildLayout(
@@ -253,6 +255,12 @@ public abstract class DashClockRenderer {
                 vb.inflateChildLayout(
                         AppearanceConfig.getCurrentDateLayout(mContext),
                         R.id.date_container));
+        if (BuildConfig.DEBUG) {
+            if (sp.getBoolean("demomode", false)) {
+                vb.setTextClockFormat(R.id.large_time_component_1, "10:08");
+                vb.setTextClockFormat(R.id.date_component_1, "FRI, OCT 05");
+            }
+        }
 
         if (mOptions.minWidthDp < MIN_NORMAL_FONTSIZE_WIDTH_DP) {
             Resources res = mContext.getResources();
@@ -282,7 +290,6 @@ public abstract class DashClockRenderer {
             vb.setTextViewColor(id, mOptions.foregroundColor);
         }
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         Intent clockIntent = AppChooserPreference.getIntentValue(
                 sp.getString(PREF_CLOCK_SHORTCUT, null),
                 Utils.getDefaultClockIntent(mContext));

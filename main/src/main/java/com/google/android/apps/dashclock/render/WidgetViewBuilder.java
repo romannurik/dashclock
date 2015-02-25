@@ -114,6 +114,12 @@ public class WidgetViewBuilder implements ViewBuilder {
     }
 
     @Override
+    public void setTextClockFormat(int viewId, CharSequence format) {
+        mRemoteViews.setCharSequence(viewId, "setFormat12Hour", format);
+        mRemoteViews.setCharSequence(viewId, "setFormat24Hour", format);
+    }
+
+    @Override
     public void setViewClickIntent(int viewId, Intent clickIntent) {
         mRemoteViews.setOnClickPendingIntent(viewId,
                 PendingIntent.getActivity(mContext, 0,

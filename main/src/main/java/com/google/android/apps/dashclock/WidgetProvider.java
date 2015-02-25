@@ -24,6 +24,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import net.nurik.roman.dashclock.BuildConfig;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 
@@ -88,5 +91,18 @@ public class WidgetProvider extends AppWidgetProvider {
         } else {
             LOGD(TAG, "Widget deleted, " + remainingIds.length + " remaining.");
         }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (BuildConfig.DEBUG) {
+            if (intent != null && "demomode".equals(intent.getAction())) {
+                PreferenceManager.getDefaultSharedPreferences(context)
+                        .edit()
+                        .putBoolean("demomode", intent.getBooleanExtra("on", false))
+                        .commit();
+            }
+        }
+        super.onReceive(context, intent);
     }
 }

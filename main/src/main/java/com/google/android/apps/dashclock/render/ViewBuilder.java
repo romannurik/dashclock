@@ -38,6 +38,7 @@ public interface ViewBuilder {
     void setTextViewColor(int viewId, int color);
     void setTextViewSingleLine(int viewId, boolean singleLine);
     void setTextViewMaxLines(int viewId, int maxLines);
+    void setTextClockFormat(int viewId, CharSequence format);
     void setImageViewBitmap(int viewId, Bitmap bitmap);
     void setLinearLayoutGravity(int viewId, int gravity);
     void addView(int viewId, Object child);
