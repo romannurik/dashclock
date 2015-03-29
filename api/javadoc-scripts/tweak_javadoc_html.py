@@ -43,7 +43,7 @@ def main():
       fp.write(html)
       fp.close()
 
-  shutil.copy('index.html', root)
+  shutil.copy('index.html', os.path.join(path, 'index.html'))
 
 
 def process(toroot, html):

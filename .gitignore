@@ -13,6 +13,7 @@ bin/
 gen/
 out/
 build/
+build-aidl/
 .gradle/
 
 # Project files

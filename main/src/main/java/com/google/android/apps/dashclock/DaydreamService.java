@@ -150,7 +150,7 @@ public class DaydreamService extends DreamService implements
     public void onExtensionsChanged(ComponentName sourceExtension) {
         mHandler.removeCallbacks(mHandleExtensionsChanged);
         mHandler.postDelayed(mHandleExtensionsChanged,
-                ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
+                DashClockService.UPDATE_COLLAPSE_TIME_MILLIS);
     }
 
     private Runnable mHandleExtensionsChanged = new Runnable() {

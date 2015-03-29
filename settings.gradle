@@ -1,1 +1,1 @@
-include ':api', ':example-extension', ':main'
+include ':api', ':example-extension', ':example-host', ':main'

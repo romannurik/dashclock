@@ -111,11 +111,11 @@ public class ExtensionHost {
             mContext.unregisterReceiver(mScreenOnReceiver);
             mScreenOnReceiverRegistered = false;
         }
-        establishAndDestroyConnections(new ArrayList<ComponentName>());
+        establishAndDestroyConnections(new HashSet<ComponentName>());
         mAsyncLooper.quit();
     }
 
-    private void establishAndDestroyConnections(List<ComponentName> newExtensionNames) {
+    private void establishAndDestroyConnections(Set<ComponentName> newExtensionNames) {
         // Get the list of active extensions
         Set<ComponentName> activeSet = new HashSet<ComponentName>();
         activeSet.addAll(newExtensionNames);

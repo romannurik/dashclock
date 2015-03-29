@@ -101,7 +101,7 @@ public class ConfigurationActivity extends Activity {
             if (Intent.ACTION_CREATE_SHORTCUT.equals(intent.getAction())) {
                 Intent.ShortcutIconResource icon = new Intent.ShortcutIconResource();
                 icon.packageName = getPackageName();
-                icon.resourceName = getResources().getResourceName(R.drawable.ic_launcher);
+                icon.resourceName = getResources().getResourceName(R.mipmap.ic_launcher);
                 setResult(RESULT_OK, new Intent()
                         .putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.title_configure))
                         .putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon)

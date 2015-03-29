@@ -17,9 +17,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.nurik.roman.dashclock"
     android:versionCode="1"
-    android:versionName="See version.properties">
-
-    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="19" />
+    android:versionName="See version.properties"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <uses-feature android:name="android.hardware.location" android:required="false" />
@@ -59,11 +58,12 @@
         android:protectionLevel="normal" />
 
     <uses-permission android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" />
+    <uses-permission android:name="com.google.android.apps.dashclock.permission.BIND_DATA_CONSUMER" />
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
         android:backupAgent="com.google.android.apps.dashclock.BackupAgent"
         android:restoreAnyVersion="true">
@@ -85,15 +85,7 @@
 
         <service android:name="com.google.android.apps.dashclock.DashClockService"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
-            android:exported="true">
-            <!-- Private Read API -->
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.action.BIND_SERVICE" />
-            </intent-filter>
-        </service>
-
-        <receiver android:name="com.google.android.apps.dashclock.PeriodicExtensionRefreshReceiver"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
@@ -126,15 +118,6 @@
             android:name="com.google.android.apps.dashclock.WidgetClickProxyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
-
-        <receiver android:name="com.google.android.apps.dashclock.ExtensionPackageChangeReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_CHANGED" />
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
 
         <!-- built-in extensions -->
 
@@ -285,6 +268,23 @@
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.apps.dashclock.ExtensionSettingActivityProxy"
+            android:exported="false"/>
+
+        <receiver android:name="com.google.android.apps.dashclock.ExtensionPackageChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.google.android.apps.dashclock.PeriodicExtensionRefreshReceiver"
+            android:exported="false" />
 
     </application>
 

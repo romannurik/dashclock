@@ -16,30 +16,45 @@
 
 package com.google.android.apps.dashclock;
 
-import com.google.android.apps.dashclock.api.DashClockExtension;
-import com.google.android.apps.dashclock.api.IDashClockDataProvider;
-import com.google.android.apps.dashclock.api.VisibleExtension;
-import com.google.android.apps.dashclock.render.WidgetRenderer;
-
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.*;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Binder;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteCallbackList;
+import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
 
+import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.DashClockHost;
+import com.google.android.apps.dashclock.api.DashClockSignature;
+import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.internal.IDataConsumerHost;
+import com.google.android.apps.dashclock.api.internal.IDataConsumerHostCallback;
+import com.google.android.apps.dashclock.render.WidgetRenderer;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
-import static com.google.android.apps.dashclock.Utils.SECONDS_MILLIS;
 
 /**
  * The primary service for DashClock. This service is in charge of updating widget UI (see {@link
- * #ACTION_UPDATE_WIDGETS}) and updating extension data via an internal instance of {@link
- * ExtensionHost} (see {@link #ACTION_UPDATE_EXTENSIONS}).
+ * #ACTION_UPDATE_WIDGETS}) and updating extension data (see {@link #ACTION_UPDATE_EXTENSIONS}).
  */
 public class DashClockService extends Service implements ExtensionManager.OnChangeListener {
     private static final String TAG = LogUtils.makeLogTag(DashClockService.class);
@@ -66,6 +81,12 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
             "com.google.android.apps.dashclock.extra.UPDATE_REASON";
 
     /**
+     * Related to the Read API.
+     */
+    protected static final String ACTION_EXTENSION_UPDATE_REQUESTED =
+            "com.google.android.apps.dashclock.action.EXTENSION_UPDATE_REQUESTED";
+
+    /**
      * Broadcast intent action that's triggered when the set of visible extensions or their
      * data change.
      */
@@ -73,18 +94,17 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
             "com.google.android.apps.dashclock.action.EXTENSIONS_CHANGED";
 
     /**
-     * Private Read API
+     * The amount of time to wait after something has changed before recognizing it as an individual
+     * event. Any changes within this time window will be collapsed, and will further delay the
+     * handling of the event.
      */
-    public static final String ACTION_BIND_DASHCLOCK_SERVICE
-            = "com.google.android.apps.dashclock.action.BIND_SERVICE";
+    public static final int UPDATE_COLLAPSE_TIME_MILLIS = 500;
 
-    /**
-     * The maximum duration for the wakelock.
-     */
-    private static final long UPDATE_WAKELOCK_TIMEOUT_MILLIS = 30 * SECONDS_MILLIS;
-
-    private ExtensionManager mExtensionManager;
     private ExtensionHost mExtensionHost;
+    private ExtensionManager mExtensionManager;
+    private CallbackList mCallbacks;
+    private Map<IBinder, CallbackData> mRegisteredCallbacks;
+    private Handler mHandler = new Handler();
 
     @Override
     public void onCreate() {
@@ -93,7 +113,20 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
         mExtensionManager = ExtensionManager.getInstance(this);
         mExtensionManager.addOnChangeListener(this);
+
+        // Initialize the extensions components (host and manager)
+        mCallbacks = new CallbackList();
+        mRegisteredCallbacks = new HashMap<>();
+        mExtensionManager = ExtensionManager.getInstance(this);
+        mExtensionManager.addOnChangeListener(this);
         mExtensionHost = new ExtensionHost(this);
+
+        IntentFilter filter = new IntentFilter(ACTION_EXTENSION_UPDATE_REQUESTED);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mExtensionEventsReceiver, filter);
+
+        // Start a periodic refresh of all the extensions
+        // FIXME: only do this if there are any active extensions
+        PeriodicExtensionRefreshReceiver.updateExtensionsAndEnsurePeriodicRefresh(this);
     }
 
     @Override
@@ -101,9 +134,14 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         super.onDestroy();
         LOGD(TAG, "onDestroy");
 
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mExtensionEventsReceiver);
+        PeriodicExtensionRefreshReceiver.cancelPeriodicRefresh(this);
+
+        mExtensionHost.destroy();
+        mCallbacks.kill();
+
         mUpdateHandler.removeCallbacksAndMessages(null);
         mExtensionManager.removeOnChangeListener(this);
-        mExtensionHost.destroy();
     }
 
     @Override
@@ -124,14 +162,6 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         }
 
         return START_STICKY;
-    }
-
-    @Override
-    public void onExtensionsChanged(ComponentName sourceExtension) {
-        mUpdateHandler.removeCallbacksAndMessages(null);
-        mUpdateHandler.sendMessageDelayed(
-                mUpdateHandler.obtainMessage(0, sourceExtension),
-                ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS);
     }
 
     private Handler mUpdateHandler = new Handler() {
@@ -175,58 +205,347 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     private void handleUpdateExtensions(Intent intent) {
         int reason = intent.getIntExtra(EXTRA_UPDATE_REASON,
                 DashClockExtension.UPDATE_REASON_UNKNOWN);
+        String updateExtension = intent.getStringExtra(EXTRA_COMPONENT_NAME);
 
-        PowerManager pwm = (PowerManager) getSystemService(POWER_SERVICE);
-        PowerManager.WakeLock lock = pwm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-        lock.acquire(UPDATE_WAKELOCK_TIMEOUT_MILLIS);
+        LOGD(TAG, String.format("handleUpdateExtensions [action=%s, reason=%d, extension=%s]",
+                intent.getAction(), reason, updateExtension == null ? "" : updateExtension));
 
-        try {
-            // Either update all extensions, or only the requested one.
-            String updateExtension = intent.getStringExtra(EXTRA_COMPONENT_NAME);
-            if (!TextUtils.isEmpty(updateExtension)) {
-                ComponentName cn = ComponentName.unflattenFromString(updateExtension);
+        // Either update all extensions, or only the requested one.
+        if (!TextUtils.isEmpty(updateExtension)) {
+            ComponentName cn = ComponentName.unflattenFromString(updateExtension);
+            mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
+                    ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS, reason);
+        } else {
+            for (ComponentName cn : mExtensionManager.getActiveExtensionNames()) {
                 mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
                         ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS, reason);
-            } else {
-                for (ComponentName cn : mExtensionManager.getActiveExtensionNames()) {
-                    mExtensionHost.execute(cn, ExtensionHost.UPDATE_OPERATIONS.get(reason),
-                            ExtensionHost.UPDATE_COLLAPSE_TIME_MILLIS, reason);
-                }
             }
-        } finally {
-            lock.release();
+        }
+    }
+
+    /*
+     * Read API
+     */
+
+    private static class CallbackData {
+        int mUid;
+        String mPackage;
+        boolean mHasDashClockSignature;
+        List<ComponentName> mExtensions;
+    }
+
+    private IDataConsumerHost.Stub mBinder = new IDataConsumerHost.Stub() {
+        @Override
+        public void listenTo(final List<ComponentName> extensions,
+                             final IDataConsumerHostCallback cb) throws RemoteException {
+            if (cb == null) {
+                throw new NullPointerException("Callback must not be null");
+            }
+            enforceCallingPermission(DashClockHost.BIND_DATA_CONSUMER_PERMISSION);
+
+            final int callingUid = Binder.getCallingUid();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    CallbackData data = createCallbackData(callingUid);
+                    data.mExtensions = extensions;
+                    mCallbacks.update(cb, data);
+                }
+            });
+        }
+
+        @Override
+        public void showExtensionSettings(ComponentName extension,
+                                          final IDataConsumerHostCallback cb) throws RemoteException {
+            // Check that callback was registered and that extension was enabled
+            enforceEnabledExtensionForCallback(cb, extension);
+
+            // Make sure we know about the passed in extension
+            ExtensionListing info = findExtensionInfo(extension);
+            if (info == null) {
+                throw new NullPointerException("ExtensionInfo doesn't exists");
+            }
+            if (info.settingsActivity() == null) {
+                // Nothing to show
+                return;
+            }
+
+            // Start the proxy activity
+            Intent i = new Intent(DashClockService.this, ExtensionSettingActivityProxy.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra(EXTRA_COMPONENT_NAME, info.componentName().flattenToString());
+            i.putExtra(ExtensionSettingActivityProxy.EXTRA_SETTINGS_ACTIVITY,
+                    info.settingsActivity().flattenToString());
+            startActivity(i);
+        }
+
+        @Override
+        public void requestExtensionUpdate(List<ComponentName> extensions,
+                                           final IDataConsumerHostCallback cb) throws RemoteException {
+            enforceRegisteredCallingCallback(cb);
+            internalRequestUpdateData(cb, extensions);
+        }
+
+        @Override
+        public List<ExtensionListing> getAvailableExtensions() throws RemoteException {
+            return mExtensionManager.getAvailableExtensions();
+        }
+    };
+
+    private class CallbackList extends RemoteCallbackList<IDataConsumerHostCallback> {
+        public void update(IDataConsumerHostCallback cb, CallbackData data) {
+            final IBinder binder = cb.asBinder();
+            if (data.mExtensions == null || data.mExtensions.isEmpty()) {
+                if (mRegisteredCallbacks.containsKey(binder)) {
+                    unregister(cb);
+                    mRegisteredCallbacks.remove(binder);
+                }
+            } else {
+                boolean isNewCallback = false;
+                if (!mRegisteredCallbacks.containsKey(binder)) {
+                    isNewCallback = true;
+                    register(cb);
+                }
+
+                // Notify callback of data for extensions that it newly registered
+                List<ComponentName> prevExtensions = isNewCallback
+                        ? new ArrayList<ComponentName>()
+                        : mRegisteredCallbacks.get(binder).mExtensions;
+                Map<ComponentName, ExtensionManager.ExtensionWithData> availableData =
+                        determineDataForAlreadyActiveExtensions(data.mExtensions, prevExtensions);
+
+                try {
+                    for (ComponentName cn : availableData.keySet()) {
+                        ExtensionManager.ExtensionWithData e = availableData.get(cn);
+                        // Do not leak data if extension expressly denied access
+                        // to non-dashclock apps
+                        if (e != null && e.latestData != null &&
+                                (e.listing.worldReadable() || (!e.listing.worldReadable()
+                                        && data.mHasDashClockSignature))) {
+                            cb.notifyUpdate(e.listing.componentName(), e.latestData);
+                        } else {
+                            final ExtensionData notData = new ExtensionData();
+                            cb.notifyUpdate(cn, notData);
+                        }
+                    }
+                } catch (RemoteException e) {
+                    // ignored, cb is dead anyway
+                }
+                mRegisteredCallbacks.put(binder, data);
+            }
+
+            recalculateActiveExtensions();
+        }
+
+        @Override
+        public void onCallbackDied(IDataConsumerHostCallback cb) {
+            super.onCallbackDied(cb);
+            mRegisteredCallbacks.remove(cb.asBinder());
+            recalculateActiveExtensions();
         }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        if (ACTION_BIND_DASHCLOCK_SERVICE.equals(intent.getAction())) {
-            // Private Read API
-            return new IDashClockDataProvider.Stub() {
-                @Override
-                public List<VisibleExtension> getVisibleExtensionData() throws RemoteException {
-                    List<VisibleExtension> visibleExtensions = new ArrayList<VisibleExtension>();
-                    for (ExtensionManager.ExtensionWithData extension :
-                            mExtensionManager.getVisibleExtensionsWithData()) {
-                        if (!extension.listing.worldReadable) {
-                            // Enforce permissions. This private 'read API' only exposes
-                            // data from world-readable extensions.
-                            continue;
-                        }
-                        visibleExtensions.add(new VisibleExtension()
-                                .data(extension.latestData)
-                                .componentName(extension.listing.componentName));
-                    }
-                    return visibleExtensions;
-                }
+        return mBinder;
+    }
 
-                @Override
-                public void updateExtensions() {
-                    // TODO: provide an update reason (currently UNKNOWN)
-                    handleUpdateExtensions(new Intent());
+    @Override
+    public void onExtensionsChanged(ComponentName sourceExtension) {
+        LOGD(TAG, "onExtensionsChanged: source = " + sourceExtension);
+
+        mUpdateHandler.removeCallbacksAndMessages(null);
+        mUpdateHandler.sendMessageDelayed(
+                mUpdateHandler.obtainMessage(0, sourceExtension),
+                UPDATE_COLLAPSE_TIME_MILLIS);
+
+        if (sourceExtension == null) {
+            broadcastExtensionListChange(mExtensionManager.getAvailableExtensions());
+        } else {
+            ExtensionManager.ExtensionWithData data = mExtensionManager.getExtensionWithData(sourceExtension);
+            if (data != null && data.latestData != null) {
+                broadcastDataChange(sourceExtension, data);
+            }
+        }
+    }
+
+    private void broadcastExtensionListChange(List<ExtensionListing> extensions) {
+        int count = mCallbacks.beginBroadcast();
+        for (int i = 0; i < count; i++) {
+            try {
+                mCallbacks.getBroadcastItem(i).notifyAvailableExtensionChanged(extensions);
+            } catch (RemoteException e) {
+                // ignored
+            }
+        }
+        mCallbacks.finishBroadcast();
+    }
+
+    private void broadcastDataChange(ComponentName source, ExtensionManager.ExtensionWithData ewd) {
+        int count = mCallbacks.beginBroadcast();
+        for (int i = 0; i < count; i++) {
+            try {
+                IDataConsumerHostCallback cb = mCallbacks.getBroadcastItem(i);
+                CallbackData cbData = mRegisteredCallbacks.get(cb.asBinder());
+                List<ComponentName> extension = cbData.mExtensions;
+                if (extension != null && extension.contains(source)) {
+                    // Do not leak data if extension expressly denied access
+                    // to non-dashclock apps
+                    if (ewd.listing.worldReadable() || (!ewd.listing.worldReadable()
+                            && cbData.mHasDashClockSignature)) {
+                        cb.notifyUpdate(source, ewd.latestData);
+                    }
                 }
-            };
+            } catch (RemoteException e) {
+                // ignored
+            }
+        }
+        mCallbacks.finishBroadcast();
+    }
+
+    private Map<ComponentName, ExtensionManager.ExtensionWithData> determineDataForAlreadyActiveExtensions(
+            List<ComponentName> extensions, List<ComponentName> excludedExtensions) {
+        Map<ComponentName, ExtensionManager.ExtensionWithData> result = new HashMap<>();
+        HashMap<ComponentName, ExtensionManager.ExtensionWithData> map = new HashMap<>();
+        for (ExtensionManager.ExtensionWithData e : mExtensionManager.getActiveExtensionsWithData()) {
+            if (e.latestData != null) {
+                map.put(e.listing.componentName(), e);
+            }
+        }
+        for (ComponentName extension : extensions) {
+            if (excludedExtensions != null && excludedExtensions.contains(extension)) {
+                continue;
+            }
+            result.put(extension, map.get(extension));
+        }
+        return result;
+    }
+
+
+    private void recalculateActiveExtensions() {
+        HashSet<ComponentName> extensions = new HashSet<>();
+        for (CallbackData entry : mRegisteredCallbacks.values()) {
+            for (ComponentName extension : entry.mExtensions) {
+                if (extension != null) {
+                    extensions.add(extension);
+                }
+            }
+        }
+        LOGD(TAG, "recalculateActiveExtensions: determined list = " + extensions);
+        mExtensionManager.setActiveExtensions(extensions);
+    }
+
+    private ExtensionListing findExtensionInfo(ComponentName extension) {
+        for (ExtensionListing info : mExtensionManager.getAvailableExtensions()) {
+            if (extension.equals(info.componentName())) {
+                return info;
+            }
         }
         return null;
     }
+
+    private void enforceRegisteredCallingCallback(IDataConsumerHostCallback cb) {
+        if (cb == null || !mRegisteredCallbacks.containsKey(cb.asBinder())) {
+            throw new SecurityException("Caller should provide a registered callback.");
+        }
+    }
+
+    private void enforceEnabledExtensionForCallback(IDataConsumerHostCallback cb,
+                                                    ComponentName extension) {
+        enforceRegisteredCallingCallback(cb);
+        List<ComponentName> extensions = mRegisteredCallbacks.get(cb.asBinder()).mExtensions;
+        for (ComponentName ext : extensions) {
+            if (ext.equals(extension)) {
+                return;
+            }
+        }
+        throw new SecurityException("Extension is not enabled for caller.");
+    }
+
+    private void enforceCallingPermission(String permission) throws SecurityException {
+        // We need to check that any of the packages of the caller has
+        // the request permission
+        final PackageManager pm = getPackageManager();
+        try {
+            String[] packages = pm.getPackagesForUid(Binder.getCallingUid());
+            if (packages != null) {
+                for (String pkg : packages) {
+                    PackageInfo pi = pm.getPackageInfo(pkg, PackageManager.GET_PERMISSIONS);
+                    if (pi.requestedPermissions != null) {
+                        for (String requestedPermission : pi.requestedPermissions) {
+                            if (requestedPermission.equals(permission)) {
+                                // The caller has the request permission
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException ex) {
+            // Ignore. Package wasn't found
+        }
+        throw new SecurityException("Caller doesn't have the request permission \""
+                + permission + "\"");
+    }
+
+    private CallbackData createCallbackData(int uid) {
+        boolean hasDashClockSignature = false;
+        String packageName = null;
+        PackageManager pm = getPackageManager();
+        String[] packages = pm.getPackagesForUid(uid);
+        if (packages != null && packages.length > 0) {
+            try {
+                PackageInfo pi = pm.getPackageInfo(packages[0],
+                        PackageManager.GET_SIGNATURES);
+                packageName = pi.packageName;
+                if (pi.signatures != null
+                        && pi.signatures.length == 1
+                        && DashClockSignature.SIGNATURE.equals(pi.signatures[0])) {
+                    hasDashClockSignature = true;
+                }
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
+        }
+
+
+        CallbackData data = new CallbackData();
+        data.mUid = uid;
+        data.mPackage = packageName;
+        data.mHasDashClockSignature = hasDashClockSignature;
+        return data;
+    }
+
+    private void internalRequestUpdateData(final IDataConsumerHostCallback cb,
+                                           List<ComponentName> extensions) {
+        // Recover the updatable extensions for this caller
+        List<ComponentName> updatableExtensions = new ArrayList<>();
+        List<ComponentName> registeredExtensions =
+                mRegisteredCallbacks.get(cb.asBinder()).mExtensions;
+        if (extensions == null) {
+            updatableExtensions.addAll(registeredExtensions);
+        } else {
+            for (ComponentName extension : extensions) {
+                if (registeredExtensions.contains(extension)) {
+                    updatableExtensions.add(extension);
+                }
+            }
+        }
+
+        // Request an update of all the extensions in the list
+        final LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+        for (ComponentName updatableExtension: updatableExtensions) {
+            Intent intent = new Intent(ACTION_EXTENSION_UPDATE_REQUESTED);
+            intent.putExtra(EXTRA_COMPONENT_NAME, updatableExtension.flattenToString());
+            intent.putExtra(EXTRA_UPDATE_REASON, DashClockExtension.UPDATE_REASON_MANUAL);
+            lbm.sendBroadcast(intent);
+        }
+    }
+    private final BroadcastReceiver mExtensionEventsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_EXTENSION_UPDATE_REQUESTED.equals(intent.getAction())) {
+                handleUpdateExtensions(intent);
+            }
+        }
+    };
 }

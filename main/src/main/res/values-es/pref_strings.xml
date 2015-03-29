@@ -17,8 +17,29 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Acceso directo al reloj</string>
+    <string name="pref_background_title">Color de fondo</string>
+    <string name="pref_foreground_color_title">Color de primer plano</string>
+    <string name="pref_homescreen_title">Widget de pantalla de inicio</string>
+    <string name="pref_lockscreen_title">Widget de pantalla de bloqueo</string>
+    <string name="pref_background_opacity_title">Visibilidad del color de fondo</string>
+    <string-array name="pref_background_opacity_display_names">
+        <item>Completamente transparente</item>
+        <item>25% visible</item>
+        <item>50% visible</item>
+        <item>75% visible</item>
+        <item>Completamente opaco</item>
+    </string-array>
+    <string name="pref_foreground_color_description">El color del texto e iconos</string>
     <string name="pref_aggressive_centering_title">Centrar siempre</string>
     <string name="pref_aggressive_centering_description">Puede hacer que el reloj cambie de posición en base a los estados del widget</string>
+    <string name="pref_settings_button_title">Botón de ajustes</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>Oculto</item>
+        <item>En el widget expandido</item>
+        <item>En acceso directo de la aplicación</item>
+    </string-array>
+    <string name="pref_hide_clock_title">Ocultar reloj</string>
+    <string name="pref_hide_clock_description">Ocultar el reloj y solo mostrar las extensiones</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Acceso directo</string>

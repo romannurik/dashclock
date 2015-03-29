@@ -90,7 +90,7 @@ public class WidgetRemoteViewsFactoryService extends RemoteViewsService {
 
         public long getItemId(int position) {
             ExtensionManager.ExtensionWithData ewd = getItemAtProtected(position);
-            return (ewd != null) ? ewd.listing.componentName.hashCode() : 0;
+            return (ewd != null) ? ewd.listing.componentName().hashCode() : 0;
         }
 
         public boolean hasStableIds() {

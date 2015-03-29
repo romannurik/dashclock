@@ -1,0 +1,47 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.dashclock.examplehost">
+    
+    <uses-permission android:name="com.google.android.apps.dashclock.permission.BIND_DATA_CONSUMER" />
+
+    <application android:label="@string/app_name"
+        android:icon="@drawable/ic_host_example"
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
+        android:allowBackup="true">
+
+        <activity android:name=".ExampleHostActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <meta-data android:name="protocolVersion" android:value="1" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".ExampleHostActivity$MultiplexerPackageChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

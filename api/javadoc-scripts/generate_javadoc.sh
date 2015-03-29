@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PLATFORM=android-17
+PLATFORM=android-21
 OUT_PATH=../build/javadoc
 
 cd `dirname $0`

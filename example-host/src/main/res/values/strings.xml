@@ -1,0 +1,36 @@
+<!--
+  Copyright 2014 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">DashClock Extension Host Sample</string>
+    <string name="data_invalid">No data available</string>
+    <string name="refresh_all">Refresh all</string>
+
+    <!-- The dialog displayed when DashClock isn't installed -->
+    <string name="multiplexer_dialog_install_title">Get DashClock</string>
+    <string name="multiplexer_dialog_install_message">Because of security policy changes in newer versions of Android, DashClock must be installed to allow 3rd party apps to access the available DashClock extensions and their data.</string>
+    <string name="multiplexer_dialog_install_positive_button">Install it</string>
+    <!-- The dialog displayed when DashClock is installed, but doesn't implement a multiplexer service -->
+    <string name="multiplexer_dialog_upgrade_title">Upgrade DashClock</string>
+    <string name="multiplexer_dialog_upgrade_message">Because of security policy changes in newer versions of Android, DashClock must be updated to the latest version to allow 3rd party apps to access the available DashClock extensions and their data.</string>
+    <string name="multiplexer_dialog_upgrade_positive_button">Upgrade</string>
+    <!-- The dialog displayed when DashClock is installed, but doesn't implement a multiplexer service -->
+    <string name="multiplexer_dialog_other_title">DashClock extensions</string>
+    <string name="multiplexer_dialog_other_message">Because of security policy changes in newer versions of Android, DashClock must be installed/upgraded to allow 3rd party apps to access the available DashClock extensions and their data.\n\nUnfortunately the following apps are preventing its installation:<xliff:g id="apps">%1$s</xliff:g>\n\nPlease uninstall or upgrade them before continuing.</string>
+
+    <!-- The message displayed when something is wrong accessing the PlayStore -->
+    <string name="multiplexer_dialog_failed">Unable to access the Play store, please try again later.</string>
+</resources>

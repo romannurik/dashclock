@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Google Inc.
+ * Copyright 2014 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,4 @@
 
 package com.google.android.apps.dashclock.api;
 
-import com.google.android.apps.dashclock.api.VisibleExtension;
-
-// Private API for now.
-interface IDashClockDataProvider {
-    // Gets the visible extension data.
-    List<VisibleExtension> getVisibleExtensionData();
-    oneway void updateExtensions();
-}
+parcelable ExtensionListing;

@@ -82,4 +82,16 @@ public class PeriodicExtensionRefreshReceiver extends WakefulBroadcastReceiver {
                 AlarmManager.INTERVAL_HALF_HOUR,
                 pi);
     }
+
+    /**
+     * Cancels the refresh schedule if one isn't set already.
+     */
+    protected static void cancelPeriodicRefresh(final Context context) {
+        final AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0,
+                new Intent(context, PeriodicExtensionRefreshReceiver.class)
+                        .setAction(ACTION_PERIODIC_ALARM),
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        am.cancel(pi);
+    }
 }

@@ -49,10 +49,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.google.android.apps.dashclock.ExtensionHost;
 import com.google.android.apps.dashclock.ExtensionManager;
 import com.google.android.apps.dashclock.Utils;
-import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.ExtensionListing;
 import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
 import com.google.android.apps.dashclock.ui.UndoBarController;
 
@@ -70,8 +69,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.google.android.apps.dashclock.ExtensionManager.ExtensionListing;
-
 /**
  * Fragment for allowing the user to configure active extensions, shown within a {@link
  * ConfigurationActivity}.
@@ -87,8 +84,10 @@ public class ConfigureExtensionsFragment extends Fragment implements
     private List<ComponentName> mSelectedExtensions = new ArrayList<ComponentName>();
     private ExtensionListAdapter mSelectedExtensionsAdapter;
 
-    private Map<ComponentName, ExtensionManager.ExtensionListing> mExtensionListings
-            = new HashMap<ComponentName, ExtensionManager.ExtensionListing>();
+    private Map<ComponentName, ExtensionListing> mExtensionListings
+            = new HashMap<ComponentName, ExtensionListing>();
+    private Map<ComponentName, BitmapDrawable> mExtensionIcons =
+            new HashMap<ComponentName, BitmapDrawable>();
     private List<ComponentName> mAvailableExtensions = new ArrayList<ComponentName>();
     private PopupMenu mAddExtensionPopupMenu;
 
@@ -115,7 +114,8 @@ public class ConfigureExtensionsFragment extends Fragment implements
         mExtensionManager.addOnChangeListener(this);
 
         if (savedInstanceState == null) {
-            mSelectedExtensions = mExtensionManager.getActiveExtensionNames();
+            // TODO: should load in the correct order
+            mSelectedExtensions = new ArrayList<>(mExtensionManager.getActiveExtensionNames());
         } else {
             List<String> selected = savedInstanceState
                     .getStringArrayList(SAVE_KEY_SELECTED_EXTENSIONS);
@@ -147,7 +147,8 @@ public class ConfigureExtensionsFragment extends Fragment implements
         mListView.setAdapter(mSelectedExtensionsAdapter);
         mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
-        final DragSortController dragSortController = new ConfigurationDragSortController();
+        final ConfigurationDragSortController dragSortController =
+                new ConfigurationDragSortController();
         mListView.setFloatViewManager(dragSortController);
         mListView.setDropListener(new DragSortListView.DropListener() {
             @Override
@@ -155,6 +156,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                 ComponentName name = mSelectedExtensions.remove(from);
                 mSelectedExtensions.add(to, name);
                 mSelectedExtensionsAdapter.notifyDataSetChanged();
+                mExtensionManager.setActiveExtensions(mSelectedExtensions);
             }
         });
         mSwipeDismissTouchListener = new SwipeDismissListViewTouchListener(
@@ -171,6 +173,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                         }
                         repopulateAvailableExtensions();
                         mSelectedExtensionsAdapter.notifyDataSetChanged();
+                        mExtensionManager.setActiveExtensions(mSelectedExtensions);
                     }
                 });
         mListView.setOnItemClickListener(this);
@@ -236,33 +239,31 @@ public class ConfigureExtensionsFragment extends Fragment implements
         selectedExtensions.addAll(mSelectedExtensions);
         boolean selectedExtensionsDirty = false;
 
-        for (ExtensionListing listing : mExtensionListings.values()) {
-            if (listing.icon != null) {
-                //listing.icon.recycle();
-                // TODO: recycling causes crashes with the ListView :-(
-                listing.icon = null;
-            }
-        }
-
         mExtensionListings.clear();
         mAvailableExtensions.clear();
 
         Resources res = getResources();
 
         for (ExtensionListing listing : mExtensionManager.getAvailableExtensions()) {
-            mExtensionListings.put(listing.componentName, listing);
+            ComponentName extension = listing.componentName();
+            mExtensionListings.put(listing.componentName(), listing);
+            ExtensionListing previousListing = mExtensionListings.put(extension, listing);
 
-            if (listing.icon != null) {
-                Bitmap icon = Utils.flattenExtensionIcon(listing.icon,
-                        res.getColor(R.color.extension_list_item_color));
-                listing.icon = (icon != null) ? new BitmapDrawable(res, icon) : null;
+            if (listing.icon() != 0) {
+                Bitmap icon = Utils.loadExtensionIcon(getActivity(), extension,
+                        listing.icon(), null, res.getColor(R.color.extension_list_item_color));
+                mExtensionIcons.put(extension, new BitmapDrawable(res, icon));
             }
 
-            if (selectedExtensions.contains(listing.componentName)) {
-                if (!ExtensionHost.supportsProtocolVersion(listing.protocolVersion)) {
+            if (selectedExtensions.contains(listing.componentName())) {
+                if (previousListing == null) {
+                    // Extension was newly detected
+                    selectedExtensionsDirty = true;
+                }
+                if (!listing.compatible()) {
                     // If the extension is selected and its protocol isn't supported,
                     // then make it available but remove it from the selection.
-                    mSelectedExtensions.remove(listing.componentName);
+                    mSelectedExtensions.remove(listing.componentName());
                     selectedExtensionsDirty = true;
                 } else {
                     // If it's selected and supported, don't add it to the list of available
@@ -271,7 +272,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                 }
             }
 
-            mAvailableExtensions.add(listing.componentName);
+            mAvailableExtensions.add(listing.componentName());
         }
 
         Collections.sort(mAvailableExtensions, new Comparator<ComponentName>() {
@@ -279,12 +280,13 @@ public class ConfigureExtensionsFragment extends Fragment implements
             public int compare(ComponentName cn1, ComponentName cn2) {
                 ExtensionListing listing1 = mExtensionListings.get(cn1);
                 ExtensionListing listing2 = mExtensionListings.get(cn2);
-                return listing1.title.compareToIgnoreCase(listing2.title);
+                return listing1.title().compareToIgnoreCase(listing2.title());
             }
         });
 
         if (selectedExtensionsDirty && mSelectedExtensionsAdapter != null) {
             mSelectedExtensionsAdapter.notifyDataSetChanged();
+            mExtensionManager.setActiveExtensions(mSelectedExtensions);
         }
 
         if (mAddExtensionPopupMenu != null) {
@@ -310,13 +312,12 @@ public class ConfigureExtensionsFragment extends Fragment implements
         for (int i = 0; i < mAvailableExtensions.size(); i++) {
             ComponentName cn = mAvailableExtensions.get(i);
             ExtensionListing listing = mExtensionListings.get(cn);
-            String label = (listing == null) ? null : listing.title;
+            String label = (listing == null) ? null : listing.title();
             if (TextUtils.isEmpty(label)) {
                 label = cn.flattenToShortString();
             }
 
-            if (listing != null
-                    && !ExtensionHost.supportsProtocolVersion(listing.protocolVersion)) {
+            if (listing != null && !listing.compatible()) {
                 label = getString(R.string.incompatible_extension_menu_template, label);
             }
 
@@ -330,12 +331,10 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
                 ComponentName cn = mAvailableExtensions.get(menuItem.getItemId());
                 ExtensionListing extensionListing = mExtensionListings.get(cn);
-                if (extensionListing == null
-                        || !ExtensionHost.supportsProtocolVersion(
-                        extensionListing.protocolVersion)) {
+                if (extensionListing == null || !extensionListing.compatible()) {
                     String title = cn.getShortClassName();
                     if (extensionListing != null) {
-                        title = extensionListing.title;
+                        title = extensionListing.title();
                     }
                     CantAddExtensionDialog
                             .createInstance(cn.getPackageName(), title)
@@ -356,11 +355,35 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
     private class ConfigurationDragSortController extends DragSortController {
         private int mPos;
+        private boolean mDragging;
 
         public ConfigurationDragSortController() {
             super(ConfigureExtensionsFragment.this.mListView, R.id.drag_handle,
                     DragSortController.ON_DOWN, 0);
             setRemoveEnabled(false);
+            mDragging = false;
+        }
+
+        public boolean isDragging() {
+            return mDragging;
+        }
+
+        @Override
+        public boolean startDrag(int position, int deltaX, int deltaY) {
+            mDragging = super.startDrag(position, deltaX, deltaY);
+            return mDragging;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent ev) {
+            boolean ret = super.onTouch(v, ev);
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    mDragging = false;
+                    break;
+            }
+            return ret;
         }
 
         @Override
@@ -441,7 +464,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
             ExtensionListing listing = mExtensionListings.get(
                     mSelectedExtensions.get(reverseSortedPositions[0]));
             undoString = getString(R.string.extension_removed_template,
-                    (listing != null) ? listing.title : "??");
+                    (listing != null) ? listing.title() : "??");
         } else {
             undoString = getString(R.string.extensions_removed_template,
                     reverseSortedPositions.length);
@@ -557,17 +580,17 @@ public class ConfigureExtensionsFragment extends Fragment implements
                     View overflowButton = convertView.findViewById(R.id.overflow_button);
 
                     final ExtensionListing listing = mExtensionListings.get(cn);
-                    if (listing == null || TextUtils.isEmpty(listing.title)) {
+                    if (listing == null || TextUtils.isEmpty(listing.title())) {
                         iconView.setImageBitmap(null);
                         titleView.setText(cn.flattenToShortString());
                         descriptionView.setVisibility(View.GONE);
                         overflowButton.setVisibility(View.GONE);
                     } else {
-                        iconView.setImageDrawable(listing.icon);
-                        titleView.setText(listing.title);
+                        iconView.setImageDrawable(mExtensionIcons.get(listing.componentName()));
+                        titleView.setText(listing.title());
                         descriptionView.setVisibility(
-                                TextUtils.isEmpty(listing.description) ? View.GONE : View.VISIBLE);
-                        descriptionView.setText(listing.description);
+                                TextUtils.isEmpty(listing.description()) ? View.GONE : View.VISIBLE);
+                        descriptionView.setText(listing.description());
                         overflowButton.setVisibility(View.VISIBLE);
                         overflowButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -575,7 +598,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                                 mUndoBarController.hideUndoBar(false);
                                 PopupMenu menu = new PopupMenu(view.getContext(), view);
                                 menu.inflate(R.menu.configure_item_overflow);
-                                if (listing.settingsActivity == null) {
+                                if (listing.settingsActivity() == null) {
                                     menu.getMenu().findItem(R.id.action_settings).setVisible(false);
                                 }
                                 menu.setOnMenuItemClickListener(
@@ -616,14 +639,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                             return false;
                         }
 
-                        try {
-                            startActivity(new Intent()
-                                    .setComponent(listing.settingsActivity)
-                                    .putExtra(DashClockExtension
-                                            .EXTRA_FROM_DASHCLOCK_SETTINGS, true));
-                        } catch (ActivityNotFoundException e) {
-                            // TODO: show error to user
-                        } catch (SecurityException e) {
+                        if (!mExtensionManager.startSettingsActivityForExtension(listing)) {
                             // TODO: show error to user
                         }
                         return true;

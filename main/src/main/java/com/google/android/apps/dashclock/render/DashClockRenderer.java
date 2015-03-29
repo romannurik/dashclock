@@ -353,20 +353,20 @@ public abstract class DashClockRenderer {
         vb.setViewContentDescription(R.id.collapsed_extension_text, statusContentDescription);
 
         vb.setImageViewBitmap(R.id.collapsed_extension_icon,
-                Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
+                Utils.loadExtensionIcon(mContext, ewd.listing.componentName(),
                         ewd.latestData.icon(), ewd.latestData.iconUri(), mOptions.foregroundColor));
-        vb.setViewContentDescription(R.id.collapsed_extension_icon, ewd.listing.title);
+        vb.setViewContentDescription(R.id.collapsed_extension_icon, ewd.listing.title());
 
         Intent clickIntent = ewd.latestData.clickIntent();
         if (clickIntent != null) {
             if (inList) {
                 vb.setViewClickFillInIntent(R.id.collapsed_extension_target,
                         WidgetClickProxyActivity.getFillIntent(clickIntent,
-                                ewd.listing.componentName));
+                                ewd.listing.componentName()));
             } else {
                 vb.setViewClickIntent(R.id.collapsed_extension_target,
                         WidgetClickProxyActivity.wrap(mContext, clickIntent,
-                                ewd.listing.componentName));
+                                ewd.listing.componentName()));
             }
         }
 
@@ -399,17 +399,17 @@ public abstract class DashClockRenderer {
         vb.setTextViewColor(R.id.text2, mOptions.foregroundColor);
 
         vb.setImageViewBitmap(R.id.icon,
-                Utils.loadExtensionIcon(mContext, ewd.listing.componentName,
+                Utils.loadExtensionIcon(mContext, ewd.listing.componentName(),
                         ewd.latestData.icon(), ewd.latestData.iconUri(), mOptions.foregroundColor));
         String contentDescription = ewd.latestData.contentDescription();
         if (TextUtils.isEmpty(contentDescription)) {
             // No specific content description provided. Just set the minimal extra content
             // description for the icon.
-            vb.setViewContentDescription(R.id.icon, ewd.listing.title);
+            vb.setViewContentDescription(R.id.icon, ewd.listing.title());
         } else {
             // Content description for the entire row provided. Use it!
             vb.setViewContentDescription(R.id.list_item,
-                    ewd.listing.title + ". " + contentDescription);
+                    ewd.listing.title() + ". " + contentDescription);
             vb.setViewContentDescription(R.id.text1, "."); // silence title
             vb.setViewContentDescription(R.id.text2, "."); // silence body
         }
@@ -419,12 +419,12 @@ public abstract class DashClockRenderer {
             if (inList) {
                 vb.setViewClickFillInIntent(R.id.list_item,
                         WidgetClickProxyActivity.getFillIntent(clickIntent,
-                                ewd.listing.componentName));
+                                ewd.listing.componentName()));
 
             } else {
                 vb.setViewClickIntent(R.id.list_item,
                         WidgetClickProxyActivity.wrap(mContext, clickIntent,
-                                ewd.listing.componentName));
+                                ewd.listing.componentName()));
             }
         }
 

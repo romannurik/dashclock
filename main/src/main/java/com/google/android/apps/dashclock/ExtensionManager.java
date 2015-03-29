@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,13 +30,12 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.DashClockHost;
 import com.google.android.apps.dashclock.api.ExtensionData;
+import com.google.android.apps.dashclock.api.ExtensionListing;
 import com.google.android.apps.dashclock.gmail.GmailExtension;
 import com.google.android.apps.dashclock.nextalarm.NextAlarmExtension;
 import com.google.android.apps.dashclock.weather.WeatherExtension;
-
-import net.nurik.roman.dashclock.BuildConfig;
-import net.nurik.roman.dashclock.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,9 +56,23 @@ import static com.google.android.apps.dashclock.LogUtils.LOGW;
  * A singleton class in charge of extension registration, activation (change in user-specified
  * 'active' extensions), and data caching.
  */
-public class ExtensionManager {
+// TODO: Why does ExtensionManager extend DashClockHost?
+public class ExtensionManager extends DashClockHost {
     private static final String TAG = LogUtils.makeLogTag(ExtensionManager.class);
 
+    private final Context mApplicationContext;
+
+    // TODO: Should only be one mActiveExtensions!
+    private List<ComponentName> mActiveExtensions2;
+    private final Set<ExtensionWithData> mActiveExtensions = new HashSet<>();
+
+    private Map<ComponentName, ExtensionWithData> mExtensionInfoMap = new HashMap<>();
+    private List<OnChangeListener> mOnChangeListeners = new ArrayList<>();
+
+    private SharedPreferences mValuesPreferences;
+    private Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
+
+    private static ExtensionManager sInstance;
     private static final String PREF_ACTIVE_EXTENSIONS = "active_extensions";
 
     private static final Class[] DEFAULT_EXTENSIONS = {
@@ -69,18 +81,15 @@ public class ExtensionManager {
             NextAlarmExtension.class,
     };
 
-    private final Context mApplicationContext;
-
-    private final List<ExtensionWithData> mActiveExtensions = new ArrayList<ExtensionWithData>();
-    private Map<ComponentName, ExtensionWithData> mExtensionInfoMap
-            = new HashMap<ComponentName, ExtensionWithData>();
-    private List<OnChangeListener> mOnChangeListeners = new ArrayList<OnChangeListener>();
-
     private SharedPreferences mDefaultPreferences;
-    private SharedPreferences mValuesPreferences;
-    private Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
 
-    private static ExtensionManager sInstance;
+    private ExtensionManager(Context context) {
+        super(context);
+        mApplicationContext = context.getApplicationContext();
+        mValuesPreferences = mApplicationContext.getSharedPreferences("extension_data", 0);
+        mDefaultPreferences = PreferenceManager.getDefaultSharedPreferences(mApplicationContext);
+        loadActiveExtensionList();
+    }
 
     public static ExtensionManager getInstance(Context context) {
         if (sInstance == null) {
@@ -90,35 +99,28 @@ public class ExtensionManager {
         return sInstance;
     }
 
-    private ExtensionManager(Context context) {
-        mApplicationContext = context.getApplicationContext();
-        mDefaultPreferences = PreferenceManager.getDefaultSharedPreferences(mApplicationContext);
-        mValuesPreferences = mApplicationContext.getSharedPreferences("extension_data", 0);
-        loadActiveExtensionList();
-    }
-
     /**
      * De-activates active extensions that are unsupported or are no longer installed.
      */
     public boolean cleanupExtensions() {
-        Set<ComponentName> availableExtensions = new HashSet<ComponentName>();
-        for (ExtensionListing listing : getAvailableExtensions()) {
+        Set<ComponentName> availableExtensions = new HashSet<>();
+        for (ExtensionListing info : getAvailableExtensions()) {
             // Ensure the extension protocol version is supported. If it isn't, don't allow its use.
-            if (!ExtensionHost.supportsProtocolVersion(listing.protocolVersion)) {
-                LOGW(TAG, "Extension '" + listing.title + "' using unsupported protocol version "
-                        + listing.protocolVersion + ".");
+            if (!info.compatible()) {
+                LOGW(TAG, "Extension '" + info.title() + "' using unsupported protocol version "
+                        + info.protocolVersion() + ".");
                 continue;
             }
-            availableExtensions.add(listing.componentName);
+            availableExtensions.add(info.componentName());
         }
 
         boolean cleanupRequired = false;
-        ArrayList<ComponentName> newActiveExtensions = new ArrayList<ComponentName>();
+        Set<ComponentName> newActiveExtensions = new HashSet<>();
 
         synchronized (mActiveExtensions) {
             for (ExtensionWithData ewd : mActiveExtensions) {
-                if (availableExtensions.contains(ewd.listing.componentName)) {
-                    newActiveExtensions.add(ewd.listing.componentName);
+                if (availableExtensions.contains(ewd.listing.componentName())) {
+                    newActiveExtensions.add(ewd.listing.componentName());
                 } else {
                     cleanupRequired = true;
                 }
@@ -133,103 +135,49 @@ public class ExtensionManager {
         return false;
     }
 
-    private void loadActiveExtensionList() {
-        List<ComponentName> activeExtensions = new ArrayList<ComponentName>();
-        String extensions;
-        if (mDefaultPreferences.contains(PREF_ACTIVE_EXTENSIONS)) {
-            extensions = mDefaultPreferences.getString(PREF_ACTIVE_EXTENSIONS, "");
-        } else {
-            extensions = createDefaultExtensionList();
-        }
-        String[] componentNameStrings = extensions.split(",");
-        for (String componentNameString : componentNameStrings) {
-            if (TextUtils.isEmpty(componentNameString)) {
-                continue;
-            }
-            activeExtensions.add(ComponentName.unflattenFromString(componentNameString));
-        }
-        setActiveExtensions(activeExtensions, false);
-    }
-
-    private String createDefaultExtensionList() {
-        StringBuilder sb = new StringBuilder();
-
-        for (Class cls : DEFAULT_EXTENSIONS) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(new ComponentName(mApplicationContext, cls).flattenToString());
-        }
-
-        return sb.toString();
-    }
-
-    private void saveActiveExtensionList() {
-        StringBuilder sb = new StringBuilder();
-
-        synchronized (mActiveExtensions) {
-            for (ExtensionWithData ci : mActiveExtensions) {
-                if (sb.length() > 0) {
-                    sb.append(",");
-                }
-                sb.append(ci.listing.componentName.flattenToString());
-            }
-        }
-
-        mDefaultPreferences.edit()
-                .putString(PREF_ACTIVE_EXTENSIONS, sb.toString())
-                .commit();
-        new BackupManager(mApplicationContext).dataChanged();
-    }
-
     /**
      * Replaces the set of active extensions with the given list.
      */
-    public void setActiveExtensions(List<ComponentName> extensions) {
-        setActiveExtensions(extensions, true);
-    }
-
-    private void setActiveExtensions(List<ComponentName> extensionNames, boolean saveAndNotify) {
-        Map<ComponentName, ExtensionListing> listings
-                = new HashMap<ComponentName, ExtensionListing>();
-        for (ExtensionListing listing : getAvailableExtensions()) {
-            listings.put(listing.componentName, listing);
+    public void setActiveExtensions(Set<ComponentName> extensions) {
+        Map<ComponentName, ExtensionListing> infos = new HashMap<>();
+        for (ExtensionListing info : getAvailableExtensions()) {
+            infos.put(info.componentName(), info);
         }
 
-        List<ComponentName> activeExtensionNames = getActiveExtensionNames();
-        if (activeExtensionNames.equals(extensionNames)) {
+        Set<ComponentName> activeExtensionNames = getActiveExtensionNames();
+        if (activeExtensionNames.equals(extensions)) {
             LOGD(TAG, "No change to list of active extensions.");
             return;
         }
 
         // Clear cached data for any no-longer-active extensions.
         for (ComponentName cn : activeExtensionNames) {
-            if (!extensionNames.contains(cn)) {
+            if (!extensions.contains(cn)) {
                 destroyExtensionData(cn);
             }
         }
 
         // Set the new list of active extensions, loading cached data if necessary.
-        List<ExtensionWithData> newActiveExtensions = new ArrayList<ExtensionWithData>();
+        List<ExtensionWithData> newActiveExtensions = new ArrayList<>();
 
-        for (ComponentName cn : extensionNames) {
+        for (ComponentName cn : extensions) {
             if (mExtensionInfoMap.containsKey(cn)) {
                 newActiveExtensions.add(mExtensionInfoMap.get(cn));
             } else {
                 ExtensionWithData ewd = new ExtensionWithData();
-                ewd.listing = listings.get(cn);
+                ewd.listing = infos.get(cn);
                 if (ewd.listing == null) {
                     ewd.listing = new ExtensionListing();
-                    ewd.listing.componentName = cn;
+                    ewd.listing.componentName(cn);
                 }
-                ewd.latestData = deserializeExtensionData(ewd.listing.componentName);
+                ewd.latestData = deserializeExtensionData(ewd.listing.componentName());
                 newActiveExtensions.add(ewd);
             }
         }
 
         mExtensionInfoMap.clear();
         for (ExtensionWithData ewd : newActiveExtensions) {
-            mExtensionInfoMap.put(ewd.listing.componentName, ewd);
+            mExtensionInfoMap.put(ewd.listing.componentName(), ewd);
         }
 
         synchronized (mActiveExtensions) {
@@ -237,11 +185,8 @@ public class ExtensionManager {
             mActiveExtensions.addAll(newActiveExtensions);
         }
 
-        if (saveAndNotify) {
-            LOGD(TAG, "List of active extensions has changed.");
-            saveActiveExtensionList();
-            notifyOnChangeListeners(null);
-        }
+        LOGD(TAG, "List of active extensions has changed.");
+        notifyOnChangeListeners(null);
     }
 
     /**
@@ -253,8 +198,8 @@ public class ExtensionManager {
         ExtensionWithData ewd = mExtensionInfoMap.get(cn);
         if (ewd != null && !ExtensionData.equals(ewd.latestData, data)) {
             ewd.latestData = data;
-            serializeExtensionData(ewd.listing.componentName, data);
-            notifyOnChangeListeners(ewd.listing.componentName);
+            serializeExtensionData(ewd.listing.componentName(), data);
+            notifyOnChangeListeners(ewd.listing.componentName());
             return true;
         }
         return false;
@@ -291,77 +236,36 @@ public class ExtensionManager {
                 .commit();
     }
 
+    public ExtensionWithData getExtensionWithData(ComponentName extension) {
+        return mExtensionInfoMap.get(extension);
+    }
+
     public List<ExtensionWithData> getActiveExtensionsWithData() {
-        if (BuildConfig.DEBUG) {
-            if (mDefaultPreferences.getBoolean("demomode", false)) {
-                ArrayList<ExtensionWithData> ewds = new ArrayList<ExtensionWithData>();
-                ExtensionWithData ewd;
+        ArrayList<ExtensionWithData> activeExtensions = new ArrayList<ExtensionWithData>();
+        List<ExtensionListing> allExtensions = getAvailableExtensions(false);
 
-                ewd = new ExtensionWithData();
-                ewd.listing = new ExtensionListing();
-                ewd.listing.componentName = new ComponentName(
-                        mApplicationContext, WeatherExtension.class);
-                ewd.latestData = new ExtensionData()
-                        .visible(true)
-                        .status("72°")
-                        .expandedTitle("72°F — Sunny")
-                        .expandedBody("70° – 75°\nNew York, NY")
-                        .icon(R.drawable.ic_weather_sunny);
-                ewds.add(ewd);
-
-                ewd = new ExtensionWithData();
-                ewd.listing = new ExtensionListing();
-                ewd.listing.componentName = new ComponentName(
-                        mApplicationContext, GmailExtension.class);
-                ewd.latestData = new ExtensionData()
-                        .visible(true)
-                        .status("3")
-                        .expandedTitle("3 unread")
-                        .expandedBody("john.smith@gmail.com (2)\njohn@example.com (1)")
-                        .icon(R.drawable.ic_extension_gmail);
-                ewds.add(ewd);
-
-                ewd = new ExtensionWithData();
-                ewd.listing = new ExtensionListing();
-                ewd.listing.componentName = new ComponentName(
-                        mApplicationContext, NextAlarmExtension.class);
-                ewd.latestData = new ExtensionData()
-                        .visible(true)
-                        .status("Sat\n9:00 AM")
-                        .expandedTitle("Sat 9:00 AM")
-                        .icon(R.drawable.ic_extension_next_alarm);
-                ewds.add(ewd);
-                return ewds;
-            }
-        }
-        ArrayList<ExtensionWithData> activeExtensions;
         synchronized (mActiveExtensions) {
-            activeExtensions = new ArrayList<ExtensionWithData>(mActiveExtensions);
+            for (ExtensionListing listing : allExtensions) {
+                if (!mActiveExtensions.contains(listing.componentName())) {
+                    continue;
+                }
+                ExtensionData data = getExtensionData(listing.componentName());
+                if (data == null) {
+                    continue;
+                }
+                ExtensionWithData ewd = new ExtensionWithData();
+                ewd.listing = listing;
+                ewd.latestData = data;
+                activeExtensions.add(ewd);
+            }
         }
         return activeExtensions;
     }
 
-    public List<ExtensionWithData> getVisibleExtensionsWithData() {
-        if (BuildConfig.DEBUG) {
-            if (mDefaultPreferences.getBoolean("demomode", false)) {
-                return getActiveExtensionsWithData();
-            }
-        }
-        ArrayList<ExtensionWithData> visibleExtensions = new ArrayList<ExtensionWithData>();
-        synchronized (mActiveExtensions) {
-            for (ExtensionManager.ExtensionWithData ewd : mActiveExtensions) {
-                if (ewd.latestData.visible()) {
-                    visibleExtensions.add(ewd);
-                }
-            }
-        }
-        return visibleExtensions;
-    }
-
-    public List<ComponentName> getActiveExtensionNames() {
-        List<ComponentName> list = new ArrayList<ComponentName>();
+    public Set<ComponentName> getActiveExtensionNames() {
+        Set<ComponentName> list = new HashSet<>();
         for (ExtensionWithData ci : mActiveExtensions) {
-            list.add(ci.listing.componentName);
+            list.add(ci.listing.componentName());
         }
         return list;
     }
@@ -370,32 +274,109 @@ public class ExtensionManager {
      * Returns a listing of all available (installed) extensions.
      */
     public List<ExtensionListing> getAvailableExtensions() {
-        List<ExtensionListing> availableExtensions = new ArrayList<ExtensionListing>();
+        List<ExtensionListing> availableExtensions = new ArrayList<>();
         PackageManager pm = mApplicationContext.getPackageManager();
         List<ResolveInfo> resolveInfos = pm.queryIntentServices(
                 new Intent(DashClockExtension.ACTION_EXTENSION), PackageManager.GET_META_DATA);
         for (ResolveInfo resolveInfo : resolveInfos) {
-            ExtensionListing listing = new ExtensionListing();
-            listing.componentName = new ComponentName(resolveInfo.serviceInfo.packageName,
-                    resolveInfo.serviceInfo.name);
-            listing.title = resolveInfo.loadLabel(pm).toString();
+            ExtensionListing info = new ExtensionListing();
+            info.componentName(new ComponentName(resolveInfo.serviceInfo.packageName,
+                    resolveInfo.serviceInfo.name));
+            info.title(resolveInfo.loadLabel(pm).toString());
             Bundle metaData = resolveInfo.serviceInfo.metaData;
             if (metaData != null) {
-                listing.protocolVersion = metaData.getInt("protocolVersion");
-                listing.worldReadable = metaData.getBoolean("worldReadable", false);
-                listing.description = metaData.getString("description");
+                info.compatible(ExtensionHost.supportsProtocolVersion(
+                        metaData.getInt("protocolVersion")));
+                info.worldReadable(metaData.getBoolean("worldReadable", false));
+                info.description(metaData.getString("description"));
                 String settingsActivity = metaData.getString("settingsActivity");
                 if (!TextUtils.isEmpty(settingsActivity)) {
-                    listing.settingsActivity = ComponentName.unflattenFromString(
-                            resolveInfo.serviceInfo.packageName + "/" + settingsActivity);
+                    info.settingsActivity(ComponentName.unflattenFromString(
+                            resolveInfo.serviceInfo.packageName + "/" + settingsActivity));
                 }
             }
 
-            listing.icon = resolveInfo.loadIcon(pm);
-            availableExtensions.add(listing);
+            info.icon(resolveInfo.getIconResource());
+            availableExtensions.add(info);
         }
 
         return availableExtensions;
+    }
+
+
+    private void loadActiveExtensionList() {
+        List<ComponentName> activeExtensions = new ArrayList<ComponentName>();
+        String extensions;
+        if (mDefaultPreferences.contains(PREF_ACTIVE_EXTENSIONS)) {
+            extensions = mDefaultPreferences.getString(PREF_ACTIVE_EXTENSIONS, "");
+        } else {
+            extensions = createDefaultExtensionList();
+        }
+        String[] componentNameStrings = extensions.split(",");
+        for (String componentNameString : componentNameStrings) {
+            if (TextUtils.isEmpty(componentNameString)) {
+                continue;
+            }
+            activeExtensions.add(ComponentName.unflattenFromString(componentNameString));
+        }
+        setActiveExtensions(activeExtensions);
+    }
+
+    private String createDefaultExtensionList() {
+        StringBuilder sb = new StringBuilder();
+
+        for (Class cls : DEFAULT_EXTENSIONS) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(new ComponentName(mApplicationContext, cls).flattenToString());
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Replaces the set of active extensions with the given list.
+     */
+    public void setActiveExtensions(List<ComponentName> extensions) {
+        StringBuilder sb = new StringBuilder();
+
+        for (ComponentName extension : extensions) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(extension.flattenToString());
+        }
+
+        mDefaultPreferences.edit()
+                .putString(PREF_ACTIVE_EXTENSIONS, sb.toString())
+                .commit();
+        new BackupManager(mApplicationContext).dataChanged();
+
+        mActiveExtensions2 = extensions;
+        listenTo(new HashSet<ComponentName>(extensions));
+    }
+
+    public List<ExtensionWithData> getVisibleExtensionsWithData() {
+        ArrayList<ExtensionWithData> visibleExtensions = new ArrayList<ExtensionWithData>();
+        for (ExtensionWithData ewd : getActiveExtensionsWithData()) {
+            if (ewd.latestData.visible()) {
+                visibleExtensions.add(ewd);
+            }
+        }
+        return visibleExtensions;
+    }
+
+    @Override
+    protected void onAvailableExtensionsChanged() {
+        super.onAvailableExtensionsChanged();
+        notifyOnChangeListeners(null);
+    }
+
+    @Override
+    protected void onExtensionDataChanged(ComponentName extension) {
+        super.onExtensionDataChanged(extension);
+        notifyOnChangeListeners(extension);
     }
 
     /**
@@ -435,15 +416,5 @@ public class ExtensionManager {
     public static class ExtensionWithData {
         public ExtensionListing listing;
         public ExtensionData latestData;
-    }
-
-    public static class ExtensionListing {
-        public ComponentName componentName;
-        public int protocolVersion;
-        public boolean worldReadable;
-        public String title;
-        public String description;
-        public Drawable icon;
-        public ComponentName settingsActivity;
     }
 }

@@ -24,9 +24,15 @@ import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
 import net.nurik.roman.dashclock.R;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -44,10 +50,50 @@ public class NextAlarmExtension extends DashClockExtension {
 
     private static Pattern sDigitPattern = Pattern.compile("\\s[0-9]");
 
+    private boolean mRegistered = false;
+    private BroadcastReceiver mNextAlarmReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onUpdateData(0);
+        }
+    };
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void registerNextAlarmBroadcast() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(AlarmManager.ACTION_NEXT_ALARM_CLOCK_CHANGED);
+            registerReceiver(mNextAlarmReceiver, filter);
+            mRegistered = true;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void unregisterNextAlarmBroadcast() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mRegistered) {
+                unregisterReceiver(mNextAlarmReceiver);
+                mRegistered = false;
+            }
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        registerNextAlarmBroadcast();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNextAlarmBroadcast();
+    }
+
     @Override
     protected void onInitialize(boolean isReconnect) {
         super.onInitialize(isReconnect);
-        if (!isReconnect) {
+        if (!isReconnect && !mRegistered) {
             addWatchContentUris(new String[]{
                     Settings.System.getUriFor(Settings.System.NEXT_ALARM_FORMATTED).toString()
             });

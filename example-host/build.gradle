@@ -14,6 +14,34 @@
  * limitations under the License.
  */
 
-package com.google.android.apps.dashclock.api;
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.1'
+    }
+}
 
-parcelable VisibleExtension;
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.afollestad:material-dialogs:0.6.6.3'
+    compile project(':api')
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 21
+    }
+}

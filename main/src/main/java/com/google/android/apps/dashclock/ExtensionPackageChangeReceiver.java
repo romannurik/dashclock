@@ -24,6 +24,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.android.apps.dashclock.LogUtils.LOGD;
 
@@ -56,7 +57,7 @@ public class ExtensionPackageChangeReceiver extends WakefulBroadcastReceiver {
                 return;
             }
 
-            List<ComponentName> activeExtensions = extensionManager.getActiveExtensionNames();
+            Set<ComponentName> activeExtensions = extensionManager.getActiveExtensionNames();
             for (ComponentName cn : activeExtensions) {
                 if (packageName.equals(cn.getPackageName())) {
                     LOGD(TAG, "Package for extension " + cn + " changed; asking it for an update.");
