@@ -144,6 +144,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LOGD(TAG, "onStartCommand: " + (intent != null ? intent.toString() : "no intent"));
+        enforceCallingPermission(DashClockExtension.PERMISSION_READ_EXTENSION_DATA);
 
         if (intent != null) {
             String action = intent.getAction();

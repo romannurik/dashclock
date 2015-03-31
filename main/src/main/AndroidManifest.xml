@@ -84,8 +84,8 @@
             android:exported="false" />
 
         <service android:name="com.google.android.apps.dashclock.DashClockService"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
-            android:exported="true" />
+            android:exported="true"
+            tools:ignore="ExportedService" />
 
         <activity
             android:name="com.google.android.apps.dashclock.configuration.ConfigurationActivity"
