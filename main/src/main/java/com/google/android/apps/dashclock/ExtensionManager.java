@@ -30,7 +30,6 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
-import com.google.android.apps.dashclock.api.DashClockHost;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.api.ExtensionListing;
 import com.google.android.apps.dashclock.gmail.GmailExtension;
@@ -56,14 +55,12 @@ import static com.google.android.apps.dashclock.LogUtils.LOGW;
  * A singleton class in charge of extension registration, activation (change in user-specified
  * 'active' extensions), and data caching.
  */
-// TODO: Why does ExtensionManager extend DashClockHost?
-public class ExtensionManager extends DashClockHost {
+public class ExtensionManager {
     private static final String TAG = LogUtils.makeLogTag(ExtensionManager.class);
 
     private final Context mApplicationContext;
 
-    // TODO: Should only be one mActiveExtensions!
-    private List<ComponentName> mActiveExtensions2;
+    private final List<ComponentName> mInternalActiveExtensions = new ArrayList<>();
     private final Set<ExtensionWithData> mActiveExtensions = new HashSet<>();
 
     private Map<ComponentName, ExtensionWithData> mExtensionInfoMap = new HashMap<>();
@@ -84,11 +81,10 @@ public class ExtensionManager extends DashClockHost {
     private SharedPreferences mDefaultPreferences;
 
     private ExtensionManager(Context context) {
-        super(context);
         mApplicationContext = context.getApplicationContext();
         mValuesPreferences = mApplicationContext.getSharedPreferences("extension_data", 0);
         mDefaultPreferences = PreferenceManager.getDefaultSharedPreferences(mApplicationContext);
-        loadActiveExtensionList();
+        loadInternalActiveExtensionList();
     }
 
     public static ExtensionManager getInstance(Context context) {
@@ -139,20 +135,28 @@ public class ExtensionManager extends DashClockHost {
      * Replaces the set of active extensions with the given list.
      */
     public void setActiveExtensions(Set<ComponentName> extensions) {
+        // Join external and internal extensions
+        Set<ComponentName> allExtensions = new HashSet<>(getActiveExtensionNames());
+        for (ComponentName cn : extensions) {
+            if (!allExtensions.contains(cn)) {
+                allExtensions.add(cn);
+            }
+        }
+
         Map<ComponentName, ExtensionListing> infos = new HashMap<>();
         for (ExtensionListing info : getAvailableExtensions()) {
             infos.put(info.componentName(), info);
         }
 
         Set<ComponentName> activeExtensionNames = getActiveExtensionNames();
-        if (activeExtensionNames.equals(extensions)) {
+        if (activeExtensionNames.equals(allExtensions)) {
             LOGD(TAG, "No change to list of active extensions.");
             return;
         }
 
         // Clear cached data for any no-longer-active extensions.
         for (ComponentName cn : activeExtensionNames) {
-            if (!extensions.contains(cn)) {
+            if (!allExtensions.contains(cn)) {
                 destroyExtensionData(cn);
             }
         }
@@ -224,7 +228,7 @@ public class ExtensionManager extends DashClockHost {
             mValuesPreferences.edit()
                     .putString(componentName.flattenToString(),
                             extensionData.serialize().toString())
-                    .commit();
+                    .apply();
         } catch (JSONException e) {
             LOGE(TAG, "Error storing extension data cache for " + componentName + ".", e);
         }
@@ -233,7 +237,7 @@ public class ExtensionManager extends DashClockHost {
     private void destroyExtensionData(ComponentName componentName) {
         mValuesPreferences.edit()
                 .remove(componentName.flattenToString())
-                .commit();
+                .apply();
     }
 
     public ExtensionWithData getExtensionWithData(ComponentName extension) {
@@ -241,22 +245,21 @@ public class ExtensionManager extends DashClockHost {
     }
 
     public List<ExtensionWithData> getActiveExtensionsWithData() {
-        ArrayList<ExtensionWithData> activeExtensions = new ArrayList<ExtensionWithData>();
-        List<ExtensionListing> allExtensions = getAvailableExtensions(false);
-
+        ArrayList<ExtensionWithData> activeExtensions;
         synchronized (mActiveExtensions) {
-            for (ExtensionListing listing : allExtensions) {
-                if (!mActiveExtensions.contains(listing.componentName())) {
-                    continue;
+            activeExtensions = new ArrayList<>(mActiveExtensions);
+        }
+        return activeExtensions;
+    }
+
+    public List<ExtensionWithData> getInternalActiveExtensionsWithData() {
+        ArrayList<ExtensionWithData> activeExtensions = new ArrayList<>();
+        List<ComponentName> internalActiveExtensions = getInternalActiveExtensionNames();
+        synchronized (mActiveExtensions) {
+            for (ExtensionWithData ewd : mActiveExtensions) {
+                if (internalActiveExtensions.contains(ewd.listing.componentName())) {
+                    activeExtensions.add(ewd);
                 }
-                ExtensionData data = getExtensionData(listing.componentName());
-                if (data == null) {
-                    continue;
-                }
-                ExtensionWithData ewd = new ExtensionWithData();
-                ewd.listing = listing;
-                ewd.latestData = data;
-                activeExtensions.add(ewd);
             }
         }
         return activeExtensions;
@@ -268,6 +271,10 @@ public class ExtensionManager extends DashClockHost {
             list.add(ci.listing.componentName());
         }
         return list;
+    }
+
+    public List<ComponentName> getInternalActiveExtensionNames() {
+        return new ArrayList<>(mInternalActiveExtensions);
     }
 
     /**
@@ -304,8 +311,8 @@ public class ExtensionManager extends DashClockHost {
     }
 
 
-    private void loadActiveExtensionList() {
-        List<ComponentName> activeExtensions = new ArrayList<ComponentName>();
+    private void loadInternalActiveExtensionList() {
+        List<ComponentName> activeExtensions = new ArrayList<>();
         String extensions;
         if (mDefaultPreferences.contains(PREF_ACTIVE_EXTENSIONS)) {
             extensions = mDefaultPreferences.getString(PREF_ACTIVE_EXTENSIONS, "");
@@ -319,7 +326,7 @@ public class ExtensionManager extends DashClockHost {
             }
             activeExtensions.add(ComponentName.unflattenFromString(componentNameString));
         }
-        setActiveExtensions(activeExtensions);
+        setInternalActiveExtensions(activeExtensions);
     }
 
     private String createDefaultExtensionList() {
@@ -338,7 +345,7 @@ public class ExtensionManager extends DashClockHost {
     /**
      * Replaces the set of active extensions with the given list.
      */
-    public void setActiveExtensions(List<ComponentName> extensions) {
+    public void setInternalActiveExtensions(List<ComponentName> extensions) {
         StringBuilder sb = new StringBuilder();
 
         for (ComponentName extension : extensions) {
@@ -350,33 +357,22 @@ public class ExtensionManager extends DashClockHost {
 
         mDefaultPreferences.edit()
                 .putString(PREF_ACTIVE_EXTENSIONS, sb.toString())
-                .commit();
+                .apply();
         new BackupManager(mApplicationContext).dataChanged();
 
-        mActiveExtensions2 = extensions;
-        listenTo(new HashSet<ComponentName>(extensions));
+        mInternalActiveExtensions.clear();
+        mInternalActiveExtensions.addAll(extensions);
+        setActiveExtensions(getActiveExtensionNames());
     }
 
     public List<ExtensionWithData> getVisibleExtensionsWithData() {
-        ArrayList<ExtensionWithData> visibleExtensions = new ArrayList<ExtensionWithData>();
-        for (ExtensionWithData ewd : getActiveExtensionsWithData()) {
+        ArrayList<ExtensionWithData> visibleExtensions = new ArrayList<>();
+        for (ExtensionWithData ewd : getInternalActiveExtensionsWithData()) {
             if (ewd.latestData.visible()) {
                 visibleExtensions.add(ewd);
             }
         }
         return visibleExtensions;
-    }
-
-    @Override
-    protected void onAvailableExtensionsChanged() {
-        super.onAvailableExtensionsChanged();
-        notifyOnChangeListeners(null);
-    }
-
-    @Override
-    protected void onExtensionDataChanged(ComponentName extension) {
-        super.onExtensionDataChanged(extension);
-        notifyOnChangeListeners(extension);
     }
 
     /**
@@ -405,7 +401,7 @@ public class ExtensionManager extends DashClockHost {
         });
     }
 
-    public static interface OnChangeListener {
+    public interface OnChangeListener {
         /**
          * @param sourceExtension null if not related to any specific extension (e.g. list of
          *                        extensions has changed).

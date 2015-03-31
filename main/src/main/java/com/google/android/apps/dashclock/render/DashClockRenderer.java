@@ -75,7 +75,7 @@ public abstract class DashClockRenderer {
         Resources res = mContext.getResources();
 
         // Load data from extensions
-        List<ExtensionWithData> extensions = mExtensionManager.getActiveExtensionsWithData();
+        List<ExtensionWithData> extensions = mExtensionManager.getInternalActiveExtensionsWithData();
         int activeExtensions = extensions.size();
 
         // Determine if we're on a tablet or not (lock screen widgets can't be collapsed on

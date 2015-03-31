@@ -49,12 +49,13 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.android.apps.dashclock.DashClockService;
 import com.google.android.apps.dashclock.ExtensionManager;
+import com.google.android.apps.dashclock.ExtensionSettingActivityProxy;
 import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.ExtensionListing;
 import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
 import com.google.android.apps.dashclock.ui.UndoBarController;
-
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
 
@@ -81,14 +82,12 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
     private ExtensionManager mExtensionManager;
 
-    private List<ComponentName> mSelectedExtensions = new ArrayList<ComponentName>();
+    private List<ComponentName> mSelectedExtensions = new ArrayList<>();
     private ExtensionListAdapter mSelectedExtensionsAdapter;
 
-    private Map<ComponentName, ExtensionListing> mExtensionListings
-            = new HashMap<ComponentName, ExtensionListing>();
-    private Map<ComponentName, BitmapDrawable> mExtensionIcons =
-            new HashMap<ComponentName, BitmapDrawable>();
-    private List<ComponentName> mAvailableExtensions = new ArrayList<ComponentName>();
+    private Map<ComponentName, ExtensionListing> mExtensionListings = new HashMap<>();
+    private Map<ComponentName, BitmapDrawable> mExtensionIcons = new HashMap<>();
+    private List<ComponentName> mAvailableExtensions = new ArrayList<>();
     private PopupMenu mAddExtensionPopupMenu;
 
     private BroadcastReceiver mPackageChangedReceiver = new BroadcastReceiver() {
@@ -115,7 +114,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
         if (savedInstanceState == null) {
             // TODO: should load in the correct order
-            mSelectedExtensions = new ArrayList<>(mExtensionManager.getActiveExtensionNames());
+            mSelectedExtensions = mExtensionManager.getInternalActiveExtensionNames();
         } else {
             List<String> selected = savedInstanceState
                     .getStringArrayList(SAVE_KEY_SELECTED_EXTENSIONS);
@@ -156,7 +155,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                 ComponentName name = mSelectedExtensions.remove(from);
                 mSelectedExtensions.add(to, name);
                 mSelectedExtensionsAdapter.notifyDataSetChanged();
-                mExtensionManager.setActiveExtensions(mSelectedExtensions);
+                mExtensionManager.setInternalActiveExtensions(mSelectedExtensions);
             }
         });
         mSwipeDismissTouchListener = new SwipeDismissListViewTouchListener(
@@ -173,7 +172,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                         }
                         repopulateAvailableExtensions();
                         mSelectedExtensionsAdapter.notifyDataSetChanged();
-                        mExtensionManager.setActiveExtensions(mSelectedExtensions);
+                        mExtensionManager.setInternalActiveExtensions(mSelectedExtensions);
                     }
                 });
         mListView.setOnItemClickListener(this);
@@ -211,7 +210,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        mExtensionManager.setActiveExtensions(mSelectedExtensions);
+        mExtensionManager.setInternalActiveExtensions(mSelectedExtensions);
     }
 
     @Override
@@ -224,7 +223,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<String> selectedExtensions = new ArrayList<String>();
+        ArrayList<String> selectedExtensions = new ArrayList<>();
         for (ComponentName cn : mSelectedExtensions) {
             selectedExtensions.add(cn.flattenToString());
         }
@@ -235,7 +234,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
     }
 
     private void repopulateAvailableExtensions() {
-        Set<ComponentName> selectedExtensions = new HashSet<ComponentName>();
+        Set<ComponentName> selectedExtensions = new HashSet<>();
         selectedExtensions.addAll(mSelectedExtensions);
         boolean selectedExtensionsDirty = false;
 
@@ -286,7 +285,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
         if (selectedExtensionsDirty && mSelectedExtensionsAdapter != null) {
             mSelectedExtensionsAdapter.notifyDataSetChanged();
-            mExtensionManager.setActiveExtensions(mSelectedExtensions);
+            mExtensionManager.setInternalActiveExtensions(mSelectedExtensions);
         }
 
         if (mAddExtensionPopupMenu != null) {
@@ -639,14 +638,27 @@ public class ConfigureExtensionsFragment extends Fragment implements
                             return false;
                         }
 
-                        if (!mExtensionManager.startSettingsActivityForExtension(listing)) {
-                            // TODO: show error to user
-                        }
+                        showExtensionSettings(getActivity(), listing);
                         return true;
                 }
                 return false;
             }
         }
+    }
+
+    public void showExtensionSettings(Context context, ExtensionListing listing){
+        if (listing.settingsActivity() == null) {
+            // Nothing to show
+            return;
+        }
+
+        // Start the proxy activity
+        Intent i = new Intent(context, ExtensionSettingActivityProxy.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra(DashClockService.EXTRA_COMPONENT_NAME, listing.componentName().flattenToString());
+        i.putExtra(ExtensionSettingActivityProxy.EXTRA_SETTINGS_ACTIVITY,
+                listing.settingsActivity().flattenToString());
+        startActivity(i);
     }
 
     public static class CantAddExtensionDialog extends DialogFragment {
