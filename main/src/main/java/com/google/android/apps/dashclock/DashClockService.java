@@ -111,9 +111,6 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         super.onCreate();
         LOGD(TAG, "onCreate");
 
-        mExtensionManager = ExtensionManager.getInstance(this);
-        mExtensionManager.addOnChangeListener(this);
-
         // Initialize the extensions components (host and manager)
         mCallbacks = new CallbackList();
         mRegisteredCallbacks = new HashMap<>();
