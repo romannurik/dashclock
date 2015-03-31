@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -136,7 +137,7 @@ public class ExtensionManager {
      */
     public void setActiveExtensions(Set<ComponentName> extensions) {
         // Join external and internal extensions
-        Set<ComponentName> allExtensions = new HashSet<>(getActiveExtensionNames());
+        Set<ComponentName> allExtensions = new HashSet<>(getInternalActiveExtensionNames());
         for (ComponentName cn : extensions) {
             if (!allExtensions.contains(cn)) {
                 allExtensions.add(cn);
@@ -164,7 +165,7 @@ public class ExtensionManager {
         // Set the new list of active extensions, loading cached data if necessary.
         List<ExtensionWithData> newActiveExtensions = new ArrayList<>();
 
-        for (ComponentName cn : extensions) {
+        for (ComponentName cn : allExtensions) {
             if (mExtensionInfoMap.containsKey(cn)) {
                 newActiveExtensions.add(mExtensionInfoMap.get(cn));
             } else {
@@ -253,13 +254,24 @@ public class ExtensionManager {
     }
 
     public List<ExtensionWithData> getInternalActiveExtensionsWithData() {
-        ArrayList<ExtensionWithData> activeExtensions = new ArrayList<>();
+        // Extract the data from the all active extension cache
         List<ComponentName> internalActiveExtensions = getInternalActiveExtensionNames();
+        ArrayList<ExtensionWithData> activeExtensions = new ArrayList<>(
+                Arrays.asList(new ExtensionWithData[internalActiveExtensions.size()]));
         synchronized (mActiveExtensions) {
             for (ExtensionWithData ewd : mActiveExtensions) {
-                if (internalActiveExtensions.contains(ewd.listing.componentName())) {
-                    activeExtensions.add(ewd);
+                int pos = internalActiveExtensions.indexOf(ewd.listing.componentName());
+                if (pos >= 0) {
+                    activeExtensions.set(pos, ewd);
                 }
+            }
+        }
+
+        // Clean any null/unset data
+        int count = activeExtensions.size();
+        for (int i = count - 1; i >= 0; i--) {
+            if (activeExtensions.get(i) == null) {
+                activeExtensions.remove(i);
             }
         }
         return activeExtensions;
