@@ -136,4 +136,14 @@
         <item>none</item>
     </string-array>
     <string name="pref_daydream_system_settings_title">System Daydream settings</string>
+
+    <!-- World readability -->
+    <string name="pref_force_world_readable_title">Allow other apps to see all extensions</string>
+    <string name="pref_force_world_readable_description">Allow other apps to see information from all extensions, including your calendar, contacts, etc.</string>
+
+    <string name="force_world_readable_dialog_description">Another app is requesting the ability to see information from all your DashClock extensions, including private ones such as calendar, contacts, etc. Do you want to <b>allow this for all apps</b>?</string>
+
+    <string name="force_world_readable_dialog_no">Cancel</string>
+    <string name="force_world_readable_dialog_yes">Allow for all apps</string>
+
 </resources>

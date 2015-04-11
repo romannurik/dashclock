@@ -37,6 +37,12 @@
         android:summary="@string/pref_aggressive_centering_description"
         android:defaultValue="true" />
 
+    <CheckBoxPreference
+        android:key="pref_force_world_readable"
+        android:title="@string/pref_force_world_readable_title"
+        android:summary="@string/pref_force_world_readable_description"
+        android:defaultValue="false" />
+
     <PreferenceCategory android:title="@string/pref_homescreen_title">
         <ListPreference
             android:key="pref_homescreen_background_opacity"

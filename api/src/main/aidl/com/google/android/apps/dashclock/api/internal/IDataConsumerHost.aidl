@@ -68,5 +68,11 @@ interface IDataConsumerHost {
      */
     List<ExtensionListing> getAvailableExtensions();
 
+    /**
+     * Returns whether the user has expressly allowed non-world-readable
+     * extensions to be visible to all apps.
+     */
+    boolean areNonWorldReadableExtensionsVisible();
+
    // Protocol version 2 below
 }

@@ -57,6 +57,12 @@
         android:description="@string/permission_desc_read_extension_data"
         android:protectionLevel="normal" />
 
+    <permission
+        android:name="com.google.android.apps.dashclock.permission.BIND_DATA_CONSUMER"
+        android:label="@string/permission_label_bind_data_consumer"
+        android:description="@string/permission_desc_bind_data_consumer"
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" />
     <uses-permission android:name="com.google.android.apps.dashclock.permission.BIND_DATA_CONSUMER" />
 
@@ -174,7 +180,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
-            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="worldReadable" android:value="false" />
             <meta-data android:name="description"
                 android:value="@string/gmail_extension_description" />
             <meta-data android:name="settingsActivity"
@@ -194,7 +200,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
-            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="worldReadable" android:value="false" />
             <meta-data android:name="description"
                 android:value="@string/calendar_extension_description" />
             <meta-data android:name="settingsActivity"
@@ -214,7 +220,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
-            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="worldReadable" android:value="false" />
             <meta-data android:name="description"
                 android:value="@string/missed_calls_extension_description" />
         </service>
@@ -229,7 +235,7 @@
             </intent-filter>
             <meta-data android:name="protocolVersion"
                 android:value="@integer/current_extension_protocol_version" />
-            <meta-data android:name="worldReadable" android:value="true" />
+            <meta-data android:name="worldReadable" android:value="false" />
             <meta-data android:name="description"
                 android:value="@string/sms_extension_description" />
         </service>
@@ -285,6 +291,23 @@
 
         <receiver android:name="com.google.android.apps.dashclock.PeriodicExtensionRefreshReceiver"
             android:exported="false" />
+
+        <receiver android:name="com.google.android.apps.dashclock.MultiplexerOnlyModeReceiver"
+            android:permission="com.google.android.apps.dashclock.permission.BIND_DATA_CONSUMER">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.action.MULTIPLEXER_ONLY_MODE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="com.google.android.apps.dashclock.EnableForceWorldReadableDialogActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:excludeFromRecents="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.action.ASK_ENABLE_FORCE_WORLD_READABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 

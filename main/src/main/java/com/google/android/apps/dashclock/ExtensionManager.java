@@ -290,7 +290,8 @@ public class ExtensionManager {
     }
 
     /**
-     * Returns a listing of all available (installed) extensions.
+     * Returns a listing of all available (installed) extensions, including those that aren't
+     * world-readable.
      */
     public List<ExtensionListing> getAvailableExtensions() {
         List<ExtensionListing> availableExtensions = new ArrayList<>();

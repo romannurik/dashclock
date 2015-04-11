@@ -16,12 +16,9 @@
 
 package com.google.android.apps.dashclock.api;
 
-import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -33,7 +30,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
-import android.widget.Toast;
 
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHost;
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHostCallback;
@@ -88,6 +84,9 @@ public abstract class DashClockHost {
     private static final ComponentName MULTIPLEXER_HOST_SERVICE =
             new ComponentName("net.nurik.roman.dashclock",
                     "com.google.android.apps.dashclock.DashClockService");
+
+    private static final String ACTION_ASK_ENABLE_FORCE_WORLD_READABLE
+            = "com.google.android.apps.dashclock.action.ASK_ENABLE_FORCE_WORLD_READABLE";
 
     /*
      * PUBLIC API
@@ -171,6 +170,27 @@ public abstract class DashClockHost {
                 // ignored
             }
         }
+    }
+
+    /**
+     * Returns whether the user has expressly allowed non-world-readable
+     * extensions to be visible to all apps.
+     *
+     * @see #getEnableForceWorldReadabilityIntent()
+     */
+    public boolean areNonWorldReadableExtensionsVisible() {
+        return mNonWorldReadableExtensionsVisible;
+    }
+
+    /**
+     * Returns an activity intent that can be called to ask the user to force
+     * world-readability enabled (that is, to set {@link #areNonWorldReadableExtensionsVisible()}
+     * to true.
+     *
+     * @see #areNonWorldReadableExtensionsVisible()
+     */
+    public Intent getEnableForceWorldReadabilityIntent() {
+        return new Intent(ACTION_ASK_ENABLE_FORCE_WORLD_READABLE);
     }
 
     /**
@@ -349,6 +369,7 @@ public abstract class DashClockHost {
     private Context mContext;
     private IDataConsumerHost mService;
     private List<ExtensionListing> mAvailableExtensions;
+    private boolean mNonWorldReadableExtensionsVisible;
     private final Map<ComponentName, ExtensionData> mDataCache;
     private Set<ComponentName> mListenedExtensions;
     private boolean mDestroyed;
@@ -368,6 +389,8 @@ public abstract class DashClockHost {
                     listenTo(mListenedExtensions);
                 }
                 Message msg = mHandler.obtainMessage(MSG_NOTIFY_EXTENSION_LIST_CHANGE,
+                        mService.areNonWorldReadableExtensionsVisible() ? 0 : 1,
+                        0,
                         mService.getAvailableExtensions());
                 msg.sendToTarget();
             } catch (RemoteException ex) {
@@ -377,6 +400,7 @@ public abstract class DashClockHost {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            mNonWorldReadableExtensionsVisible = false;
             mAvailableExtensions.clear();
             mService = null;
             if (!mDestroyed) {
@@ -411,8 +435,12 @@ public abstract class DashClockHost {
         }
 
         @Override
-        public void notifyAvailableExtensionChanged(List<ExtensionListing> extensions) {
-            mHandler.obtainMessage(MSG_NOTIFY_EXTENSION_LIST_CHANGE, extensions).sendToTarget();
+        public void notifyAvailableExtensionChanged(List<ExtensionListing> extensions,
+                                                    boolean nonWorldReadableExtensionsVisible) {
+            mHandler.obtainMessage(MSG_NOTIFY_EXTENSION_LIST_CHANGE,
+                    nonWorldReadableExtensionsVisible ? 0 : 1,
+                    0,
+                    extensions).sendToTarget();
         }
     };
 
@@ -431,6 +459,7 @@ public abstract class DashClockHost {
                 case MSG_NOTIFY_EXTENSION_LIST_CHANGE:
                     mAvailableExtensions.clear();
                     mAvailableExtensions.addAll((List<ExtensionListing>) msg.obj);
+                    mNonWorldReadableExtensionsVisible = msg.arg1 == 0;
                     onAvailableExtensionsChanged();
                     return true;
                 case MSG_NOTIFY_DATA_CHANGE:

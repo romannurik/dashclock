@@ -65,6 +65,7 @@ public class ExampleHostActivity extends Activity implements View.OnClickListene
             "com.example.dashclock.examplehost.MULTIPLEXER_PACKAGE_CHANGED";
 
     private ExtensionAdapter mAdapter;
+    private View mOnlyShowingWorldReadableExtensionsView;
     private Host mHost;
 
     private MaterialDialog mMultiplexerDialog;
@@ -94,6 +95,19 @@ public class ExampleHostActivity extends Activity implements View.OnClickListene
         filter.addAction(ACTION_MULTIPLEXER_PACKAGE_CHANGED);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMultiplexerEventsReceiver, filter);
+
+        // Set up force world-readability button
+        mOnlyShowingWorldReadableExtensionsView =
+                findViewById(R.id.only_showing_world_readable_view);
+        mOnlyShowingWorldReadableExtensionsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(mHost.getEnableForceWorldReadabilityIntent());
+                } catch (ActivityNotFoundException e) {
+                }
+            }
+        });
     }
 
     private final BroadcastReceiver mMultiplexerEventsReceiver = new BroadcastReceiver() {
@@ -227,7 +241,8 @@ public class ExampleHostActivity extends Activity implements View.OnClickListene
         public void onAvailableExtensionsChanged() {
             super.onAvailableExtensionsChanged();
 
-            List<ExtensionListing> availableExtensions = getAvailableExtensions(false);
+            List<ExtensionListing> availableExtensions = getAvailableExtensions(
+                    !areNonWorldReadableExtensionsVisible());
             Set<ComponentName> worldReadableExtensions = new HashSet<>();
             for (ExtensionListing info : availableExtensions) {
                 worldReadableExtensions.add(info.componentName());
@@ -236,13 +251,15 @@ public class ExampleHostActivity extends Activity implements View.OnClickListene
             mAdapter.clear();
             mAdapter.addAll(availableExtensions);
             mHost.listenTo(worldReadableExtensions);
+            mOnlyShowingWorldReadableExtensionsView.setVisibility(
+                    areNonWorldReadableExtensionsVisible() ? View.GONE : View.VISIBLE);
         }
 
         @Override
         protected void onExtensionDataChanged(ComponentName extension) {
             super.onExtensionDataChanged(extension);
             Log.d(TAG, "Extension data changed for " + extension.flattenToString());
-            mAdapter.notifyDataSetChanged();mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
 
         @Override

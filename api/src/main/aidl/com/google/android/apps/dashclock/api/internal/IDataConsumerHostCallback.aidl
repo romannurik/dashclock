@@ -36,5 +36,5 @@ interface IDataConsumerHostCallback {
      *
      * @param extensions the list of the current available {@link ExtensionListing} classes.
      */
-    oneway void notifyAvailableExtensionChanged(in List<ExtensionListing> extensions);
+    oneway void notifyAvailableExtensionChanged(in List<ExtensionListing> extensions, in boolean nonWorldReadableExtensionsVisible);
 }

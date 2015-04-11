@@ -33,4 +33,6 @@
 
     <!-- The message displayed when something is wrong accessing the PlayStore -->
     <string name="multiplexer_dialog_failed">Unable to access the Play store, please try again later.</string>
+
+    <string name="only_showing_world_readable">Only world-readable extensions are shown. Touch to see all extensions.</string>
 </resources>

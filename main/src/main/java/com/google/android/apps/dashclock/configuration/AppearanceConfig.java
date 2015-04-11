@@ -104,6 +104,12 @@ public class AppearanceConfig {
         return !PREF_SETTINGS_BUTTON_IN_WIDGET.equals(pref);
     }
 
+    public static boolean shouldLauncherSettingsBeShown(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String pref = sp.getString(PREF_SETTINGS_BUTTON, null);
+        return PREF_SETTINGS_BUTTON_IN_LAUNCHER.equals(pref);
+    }
+
     public static boolean isClockHiddenOnHomeScreen(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_HOMESCREEN_HIDE_CLOCK, false);

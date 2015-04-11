@@ -23,6 +23,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Binder;
@@ -31,6 +32,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
@@ -56,7 +58,9 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
  * The primary service for DashClock. This service is in charge of updating widget UI (see {@link
  * #ACTION_UPDATE_WIDGETS}) and updating extension data (see {@link #ACTION_UPDATE_EXTENSIONS}).
  */
-public class DashClockService extends Service implements ExtensionManager.OnChangeListener {
+public class DashClockService extends Service implements
+        ExtensionManager.OnChangeListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LogUtils.makeLogTag(DashClockService.class);
 
     /**
@@ -100,11 +104,17 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
      */
     public static final int UPDATE_COLLAPSE_TIME_MILLIS = 500;
 
+    /**
+     * Force all extensions to be readable by external apps.
+     */
+    public static final String PREF_FORCE_WORLD_READABLE = "pref_force_world_readable";
+
     private ExtensionHost mExtensionHost;
     private ExtensionManager mExtensionManager;
     private CallbackList mCallbacks;
     private Map<IBinder, CallbackData> mRegisteredCallbacks;
     private Handler mHandler = new Handler();
+    private boolean mForceWorldReadable;
 
     @Override
     public void onCreate() {
@@ -124,6 +134,10 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         // Start a periodic refresh of all the extensions
         // FIXME: only do this if there are any active extensions
         PeriodicExtensionRefreshReceiver.updateExtensionsAndEnsurePeriodicRefresh(this);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.registerOnSharedPreferenceChangeListener(this);
+        onSharedPreferenceChanged(sp, PREF_FORCE_WORLD_READABLE);
     }
 
     @Override
@@ -139,6 +153,9 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
 
         mUpdateHandler.removeCallbacksAndMessages(null);
         mExtensionManager.removeOnChangeListener(this);
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -221,6 +238,12 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         }
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        mForceWorldReadable = sp.getBoolean(PREF_FORCE_WORLD_READABLE, false);
+        onExtensionsChanged(null);
+    }
+
     /*
      * Read API
      */
@@ -288,6 +311,11 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         public List<ExtensionListing> getAvailableExtensions() throws RemoteException {
             return mExtensionManager.getAvailableExtensions();
         }
+
+        @Override
+        public boolean areNonWorldReadableExtensionsVisible() throws RemoteException {
+            return mForceWorldReadable;
+        }
     };
 
     private class CallbackList extends RemoteCallbackList<IDataConsumerHostCallback> {
@@ -318,8 +346,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
                         // Do not leak data if extension expressly denied access
                         // to non-dashclock apps
                         if (e != null && e.latestData != null &&
-                                (e.listing.worldReadable() || (!e.listing.worldReadable()
-                                        && data.mHasDashClockSignature))) {
+                                isExtensionReadableByHost(e, data)) {
                             cb.notifyUpdate(e.listing.componentName(), e.latestData);
                         } else {
                             final ExtensionData notData = new ExtensionData();
@@ -343,6 +370,12 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         }
     }
 
+    private boolean isExtensionReadableByHost(ExtensionManager.ExtensionWithData e, CallbackData data) {
+        return mForceWorldReadable
+                || e.listing.worldReadable()
+                || (!e.listing.worldReadable() && data.mHasDashClockSignature);
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -358,7 +391,8 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
                 UPDATE_COLLAPSE_TIME_MILLIS);
 
         if (sourceExtension == null) {
-            broadcastExtensionListChange(mExtensionManager.getAvailableExtensions());
+            broadcastExtensionListChange(
+                    mExtensionManager.getAvailableExtensions());
         } else {
             ExtensionManager.ExtensionWithData data = mExtensionManager.getExtensionWithData(sourceExtension);
             if (data != null && data.latestData != null) {
@@ -371,7 +405,8 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
         int count = mCallbacks.beginBroadcast();
         for (int i = 0; i < count; i++) {
             try {
-                mCallbacks.getBroadcastItem(i).notifyAvailableExtensionChanged(extensions);
+                mCallbacks.getBroadcastItem(i).notifyAvailableExtensionChanged(
+                        extensions, mForceWorldReadable);
             } catch (RemoteException e) {
                 // ignored
             }
@@ -389,8 +424,7 @@ public class DashClockService extends Service implements ExtensionManager.OnChan
                 if (extension != null && extension.contains(source)) {
                     // Do not leak data if extension expressly denied access
                     // to non-dashclock apps
-                    if (ewd.listing.worldReadable() || (!ewd.listing.worldReadable()
-                            && cbData.mHasDashClockSignature)) {
+                    if (isExtensionReadableByHost(ewd, cbData)) {
                         cb.notifyUpdate(source, ewd.latestData);
                     }
                 }
