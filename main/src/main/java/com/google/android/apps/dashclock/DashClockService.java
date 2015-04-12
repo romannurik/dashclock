@@ -240,8 +240,10 @@ public class DashClockService extends Service implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        mForceWorldReadable = sp.getBoolean(PREF_FORCE_WORLD_READABLE, false);
-        onExtensionsChanged(null);
+        if (PREF_FORCE_WORLD_READABLE.equals(key)) {
+            mForceWorldReadable = sp.getBoolean(PREF_FORCE_WORLD_READABLE, false);
+            onExtensionsChanged(null);
+        }
     }
 
     /*
