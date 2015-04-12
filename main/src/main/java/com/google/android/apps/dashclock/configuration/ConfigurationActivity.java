@@ -16,7 +16,6 @@
 
 package com.google.android.apps.dashclock.configuration;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -24,6 +23,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -53,7 +54,7 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
  * The primary widget configuration activity. Serves as an interstitial when adding the widget, and
  * shows when pressing the settings button in the widget.
  */
-public class ConfigurationActivity extends Activity {
+public class ConfigurationActivity extends ActionBarActivity {
     private static final String TAG = LogUtils.makeLogTag(ConfigurationActivity.class);
 
     public static final String LAUNCHER_ACTIVITY_NAME =
@@ -88,6 +89,8 @@ public class ConfigurationActivity extends Activity {
     private int mStartSection = START_SECTION_EXTENSIONS;
 
     private boolean mBackgroundCleared = false;
+
+    private Toolbar mAppBar;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
@@ -154,14 +157,7 @@ public class ConfigurationActivity extends Activity {
         showWallpaper();
     }
 
-    public void setTranslucentActionBar(boolean translucentActionBar) {
-        Drawable backgroundDrawable = getResources().getDrawable(translucentActionBar
-                        ? R.drawable.ab_background_translucent : R.drawable.ab_background);
-        getActionBar().setBackgroundDrawable(backgroundDrawable);
-        showWallpaper();
-    }
-
-    private void showWallpaper() {
+    public void showWallpaper() {
         if (!mBackgroundCleared) {
             // We initially show a background so that the activity transition (zoom-up animation
             // in Android 4.1) doesn't show the system wallpaper (which is needed in the
@@ -174,23 +170,27 @@ public class ConfigurationActivity extends Activity {
     }
 
     private void setupActionBar() {
-        final LayoutInflater inflater = getLayoutInflater();
-        View navContainerView = inflater.inflate(R.layout.include_configure_actionbar_nav, null);
-        navContainerView.findViewById(R.id.actionbar_done).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // "Done"
-                        if (mNewWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                            setResult(RESULT_OK, new Intent()
-                                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mNewWidgetId));
-                        }
+        mAppBar = (Toolbar) findViewById(R.id.app_bar);
 
-                        finish();
-                    }
-                });
+        // Done button
+        mAppBar.setNavigationIcon(R.drawable.ic_action_done);
+        mAppBar.setNavigationContentDescription(R.string.done);
+        mAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // "Done"
+                if (mNewWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                    setResult(RESULT_OK, new Intent()
+                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mNewWidgetId));
+                }
 
-        Spinner sectionSpinner = (Spinner) navContainerView.findViewById(R.id.section_spinner);
+                finish();
+            }
+        });
+
+        // Spinner
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        Spinner sectionSpinner = (Spinner) findViewById(R.id.app_bar_section_spinner);
         sectionSpinner.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
@@ -259,45 +259,38 @@ public class ConfigurationActivity extends Activity {
 
         sectionSpinner.setSelection(mStartSection);
 
-        getActionBar().setCustomView(navContainerView);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.configure_overflow, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Actions
+        mAppBar.inflateMenu(R.menu.configure_overflow);
+        Menu menu = mAppBar.getMenu();
         if (!BuildConfig.DEBUG) {
             MenuItem sendLogsItem = menu.findItem(R.id.action_send_logs);
             if (sendLogsItem != null) {
                 sendLogsItem.setVisible(false);
             }
         }
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_get_more_extensions:
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
-                                + "&c=apps"))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return true;
+        mAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_get_more_extensions:
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://play.google.com/store/search?q=DashClock+Extension"
+                                        + "&c=apps"))
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        return true;
 
-            case R.id.action_send_logs:
-                LogUtils.sendDebugLog(ConfigurationActivity.this);
-                return true;
+                    case R.id.action_send_logs:
+                        LogUtils.sendDebugLog(ConfigurationActivity.this);
+                        return true;
 
-            case R.id.action_about:
-                HelpUtils.showAboutDialog(ConfigurationActivity.this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+                    case R.id.action_about:
+                        HelpUtils.showAboutDialog(ConfigurationActivity.this);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

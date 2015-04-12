@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,11 +14,20 @@
   limitations under the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    style="?android:attr/spinnerItemStyle"
-    android:textAppearance="?android:textAppearanceMediumInverse"
-    android:singleLine="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="marquee" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@android:id/text1"
+        android:paddingLeft="16dp"
+        android:paddingRight="4dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="#fff"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:drawablePadding="4dp"
+        android:drawableRight="@drawable/spinner_triangle" />
+
+</LinearLayout>

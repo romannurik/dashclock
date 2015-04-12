@@ -31,25 +31,19 @@ import java.util.Set;
 
 public class GmailSettingsActivity extends BaseSettingsActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActionBar().setIcon(R.drawable.ic_extension_gmail);
-    }
-
-    @Override
     protected void setupSimplePreferencesScreen() {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
         // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_gmail);
+        mFragment.addPreferencesFromResource(R.xml.pref_gmail);
 
         addAccountsPreference();
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(GmailExtension.PREF_LABEL));
+        bindPreferenceSummaryToValue(mFragment.findPreference(GmailExtension.PREF_LABEL));
     }
 
     private void addAccountsPreference() {
@@ -63,7 +57,7 @@ public class GmailSettingsActivity extends BaseSettingsActivity {
         accountsPreference.setEntries(accounts);
         accountsPreference.setEntryValues(accounts);
         accountsPreference.setDefaultValue(allAccountsSet);
-        getPreferenceScreen().addPreference(accountsPreference);
+        mFragment.getPreferenceScreen().addPreference(accountsPreference);
 
         Preference.OnPreferenceChangeListener accountsChangeListener
                 = new Preference.OnPreferenceChangeListener() {

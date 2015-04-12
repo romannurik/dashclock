@@ -22,7 +22,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -36,24 +35,18 @@ public class EnableForceWorldReadableDialogActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new ForceWorldReadableDialog().show(getFragmentManager().beginTransaction(), "dialog");
+        if (savedInstanceState == null) {
+            new ForceWorldReadableDialog().show(getFragmentManager().beginTransaction(), "dialog");
+        }
     }
 
     public static class ForceWorldReadableDialog extends DialogFragment {
         public ForceWorldReadableDialog() {
         }
 
-        private int getDialogTheme() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                return android.R.style.Theme_Material_Light_Dialog;
-            } else {
-                return android.R.style.Theme_Holo_Light_Dialog;
-            }
-        }
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new AlertDialog.Builder(getActivity(), getDialogTheme())
+            return new AlertDialog.Builder(getActivity(), R.style.Theme_Dialog)
                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle(R.string.app_name)
                     .setMessage(R.string.force_world_readable_dialog_description)
@@ -68,6 +61,7 @@ public class EnableForceWorldReadableDialogActivity extends Activity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     enableForceWorldReadable();
+                                    getActivity().setResult(Activity.RESULT_OK);
                                     dialog.dismiss();
                                 }
                             }
@@ -78,7 +72,9 @@ public class EnableForceWorldReadableDialogActivity extends Activity {
         @Override
         public void onDismiss(DialogInterface dialog) {
             super.onDismiss(dialog);
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
         }
 
         private void enableForceWorldReadable() {

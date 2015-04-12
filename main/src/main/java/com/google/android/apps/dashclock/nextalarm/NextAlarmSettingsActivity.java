@@ -24,22 +24,17 @@ import net.nurik.roman.dashclock.R;
 
 public class NextAlarmSettingsActivity extends BaseSettingsActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActionBar().setIcon(R.drawable.ic_extension_next_alarm);
-    }
-
-    @Override
     protected void setupSimplePreferencesScreen() {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
         // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_nextalarm);
+        mFragment.addPreferencesFromResource(R.xml.pref_nextalarm);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(NextAlarmExtension.PREF_ALARM_SHORTCUT));
+        bindPreferenceSummaryToValue(
+                mFragment.findPreference(NextAlarmExtension.PREF_ALARM_SHORTCUT));
     }
 }

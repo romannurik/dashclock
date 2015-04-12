@@ -86,7 +86,7 @@ public class ConfigureAppearanceFragment extends Fragment {
                 (PagerPositionStrip) rootView.findViewById(R.id.pager_date_position_strip),
                 AppearanceConfig.DATE_STYLE_NAMES, AppearanceConfig.COMPONENT_DATE,
                 Gravity.CENTER_HORIZONTAL | Gravity.TOP, AppearanceConfig.PREF_STYLE_DATE);
-        ((ConfigurationActivity) getActivity()).setTranslucentActionBar(true);
+        ((ConfigurationActivity) getActivity()).showWallpaper();
         return rootView;
     }
 
@@ -243,6 +243,5 @@ public class ConfigureAppearanceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((ConfigurationActivity) getActivity()).setTranslucentActionBar(false);
     }
 }

@@ -257,7 +257,7 @@ public class ColorPreference extends Preference {
 
             Drawable currentDrawable = imageView.getDrawable();
             GradientDrawable colorChoiceDrawable;
-            if (currentDrawable != null && currentDrawable instanceof GradientDrawable) {
+            if (currentDrawable instanceof GradientDrawable) {
                 // Reuse drawable
                 colorChoiceDrawable = (GradientDrawable) currentDrawable;
             } else {
@@ -273,7 +273,7 @@ public class ColorPreference extends Preference {
 
             colorChoiceDrawable.setColor(color);
             colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 1, res.getDisplayMetrics()), darkenedColor);
+                    TypedValue.COMPLEX_UNIT_DIP, 2, res.getDisplayMetrics()), darkenedColor);
 
             Drawable drawable = colorChoiceDrawable;
             if (selected) {

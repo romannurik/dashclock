@@ -22,6 +22,7 @@ import net.nurik.roman.dashclock.R;
 
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Pair;
 
@@ -31,26 +32,20 @@ import java.util.Set;
 
 public class CalendarSettingsActivity extends BaseSettingsActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActionBar().setIcon(R.drawable.ic_extension_calendar);
-    }
-
-    @Override
     protected void setupSimplePreferencesScreen() {
         // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_calendar);
+        mFragment.addPreferencesFromResource(R.xml.pref_calendar);
         bindSelectedCalendarsPreference();
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(CalendarExtension.PREF_LOOK_AHEAD_HOURS));
+        bindPreferenceSummaryToValue(mFragment.findPreference(CalendarExtension.PREF_LOOK_AHEAD_HOURS));
     }
 
     private void bindSelectedCalendarsPreference() {
-        CalendarSelectionPreference preference = (CalendarSelectionPreference) findPreference(
-                CalendarExtension.PREF_SELECTED_CALENDARS);
+        CalendarSelectionPreference preference = (CalendarSelectionPreference)
+                mFragment.findPreference(CalendarExtension.PREF_SELECTED_CALENDARS);
         final List<Pair<String, Boolean>> allCalendars = CalendarExtension.getAllCalendars(this);
         Set<String> allVisibleCalendarsSet = new HashSet<String>();
         for (Pair<String, Boolean> pair : allCalendars) {

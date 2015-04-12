@@ -29,7 +29,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,7 +41,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -76,8 +74,8 @@ import java.util.Set;
  */
 public class ConfigureExtensionsFragment extends Fragment implements
         ExtensionManager.OnChangeListener,
-        AdapterView.OnItemClickListener,
         UndoBarController.UndoListener {
+
     private static final String SAVE_KEY_SELECTED_EXTENSIONS = "selected_extensions";
 
     private ExtensionManager mExtensionManager;
@@ -100,6 +98,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
     private DragSortListView mListView;
     private SwipeDismissListViewTouchListener mSwipeDismissTouchListener;
     private UndoBarController mUndoBarController;
+    private View mAddFabView;
 
     public ConfigureExtensionsFragment() {
     }
@@ -162,7 +161,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
                 mListView,
                 new SwipeDismissListViewTouchListener.DismissCallbacks() {
                     public boolean canDismiss(int position) {
-                        return position < mSelectedExtensionsAdapter.getCount() - 1;
+                        return true;
                     }
 
                     public void onDismiss(ListView listView, int[] reverseSortedPositions) {
@@ -175,7 +174,6 @@ public class ConfigureExtensionsFragment extends Fragment implements
                         mExtensionManager.setInternalActiveExtensions(mSelectedExtensions);
                     }
                 });
-        mListView.setOnItemClickListener(this);
         mListView.setOnScrollListener(mSwipeDismissTouchListener.makeScrollListener());
         mListView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -193,13 +191,15 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
         mListView.setItemsCanFocus(true);
 
-        rootView.findViewById(R.id.empty_add_extension_button).setOnClickListener(
+        mAddFabView = rootView.findViewById(R.id.add_extension_fab);
+        mAddFabView.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         showAddExtensionMenu(view);
                     }
                 });
+        showHideAddFabView(false);
 
         mUndoBarController = new UndoBarController(rootView.findViewById(R.id.undobar), this);
         mUndoBarController.onRestoreInstanceState(savedInstanceState);
@@ -250,7 +250,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
             if (listing.icon() != 0) {
                 Bitmap icon = Utils.loadExtensionIcon(getActivity(), extension,
-                        listing.icon(), null, res.getColor(R.color.extension_list_item_color));
+                        listing.icon(), null, res.getColor(R.color.extension_item_color));
                 mExtensionIcons.put(extension, new BitmapDrawable(res, icon));
             }
 
@@ -283,6 +283,8 @@ public class ConfigureExtensionsFragment extends Fragment implements
             }
         });
 
+        showHideAddFabView(true);
+
         if (selectedExtensionsDirty && mSelectedExtensionsAdapter != null) {
             mSelectedExtensionsAdapter.notifyDataSetChanged();
             mExtensionManager.setInternalActiveExtensions(mSelectedExtensions);
@@ -294,10 +296,18 @@ public class ConfigureExtensionsFragment extends Fragment implements
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> listView, View view, int position, long id) {
-        if (id == -1) {
-            showAddExtensionMenu(view.findViewById(R.id.add_extension_label));
+    private void showHideAddFabView(boolean animate) {
+        if (mAddFabView == null) {
+            return;
+        }
+
+        boolean show = mAvailableExtensions.size() > 0;
+        Boolean lastValue = (Boolean) mAddFabView.getTag();
+        if (lastValue == null || lastValue != show) {
+            mAddFabView.animate()
+                    .setDuration(animate ? 200 : 0)
+                    .scaleX(show ? 1 : 0)
+                    .scaleY(show ? 1 : 0);
         }
     }
 
@@ -386,64 +396,12 @@ public class ConfigureExtensionsFragment extends Fragment implements
         }
 
         @Override
-        public int startDragPosition(MotionEvent ev) {
-            int res = super.dragHandleHitPosition(ev);
-            if (res >= mSelectedExtensionsAdapter.getCount() - 1) {
-                return DragSortController.MISS;
-            }
-
-            return res;
-        }
-
-        @Override
         public View onCreateFloatView(int position) {
             Vibrator v = (Vibrator) ConfigureExtensionsFragment.this.mListView
                     .getContext().getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(10);
             mPos = position;
             return mSelectedExtensionsAdapter.getView(position, null, mListView);
-        }
-
-        private int origHeight = -1;
-
-        @Override
-        public void onDragFloatView(View floatView, Point floatPoint, Point touchPoint) {
-            final int addPos = mSelectedExtensionsAdapter.getCount() - 1;
-            final int first = mListView.getFirstVisiblePosition();
-            final int lvDivHeight = mListView.getDividerHeight();
-
-            if (origHeight == -1) {
-                origHeight = floatView.getHeight();
-            }
-
-            View div = mListView.getChildAt(addPos - first);
-
-            if (touchPoint.x > mListView.getWidth() / 2) {
-                float scale = touchPoint.x - mListView.getWidth() / 2;
-                scale /= (float) (mListView.getWidth() / 5);
-                ViewGroup.LayoutParams lp = floatView.getLayoutParams();
-                lp.height = Math.max(origHeight, (int) (scale * origHeight));
-                //Log.d("mobeta", "setting height " + lp.height);
-                floatView.setLayoutParams(lp);
-            }
-
-            if (div != null) {
-                if (mPos > addPos) {
-                    // don't allow floating View to go above
-                    // section divider
-                    final int limit = div.getBottom() + lvDivHeight;
-                    if (floatPoint.y < limit) {
-                        floatPoint.y = limit;
-                    }
-                } else {
-                    // don't allow floating View to go below
-                    // section divider
-                    final int limit = div.getTop() - lvDivHeight - floatView.getHeight();
-                    if (floatPoint.y > limit) {
-                        floatPoint.y = limit;
-                    }
-                }
-            }
         }
 
         @Override
@@ -503,11 +461,10 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
     public class ExtensionListAdapter extends BaseAdapter {
         private static final int VIEW_TYPE_ITEM = 0;
-        private static final int VIEW_TYPE_ADD = 1;
 
         @Override
         public int getViewTypeCount() {
-            return 2;
+            return 1;
         }
 
         @Override
@@ -517,35 +474,27 @@ public class ConfigureExtensionsFragment extends Fragment implements
 
         @Override
         public int getCount() {
-            int numItems = mSelectedExtensions.size();
-            // Hide add row to show empty view if there are no items.
-            return (numItems == 0) ? 0 : (numItems + 1);
+            return mSelectedExtensions.size();
         }
 
         @Override
         public int getItemViewType(int position) {
-            return (position == getCount() - 1)
-                    ? VIEW_TYPE_ADD
-                    : VIEW_TYPE_ITEM;
+            return VIEW_TYPE_ITEM;
         }
 
         @Override
         public Object getItem(int position) {
-            return (getItemViewType(position) == VIEW_TYPE_ADD)
-                    ? null
-                    : mSelectedExtensions.get(position);
+            return mSelectedExtensions.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return (getItemViewType(position) == VIEW_TYPE_ADD)
-                    ? -1
-                    : mSelectedExtensions.get(position).hashCode();
+            return mSelectedExtensions.get(position).hashCode();
         }
 
         @Override
         public boolean isEnabled(int position) {
-            return (getItemViewType(position) == VIEW_TYPE_ADD) && mAvailableExtensions.size() > 0;
+            return false;
         }
 
         @Override
@@ -556,15 +505,6 @@ public class ConfigureExtensionsFragment extends Fragment implements
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             switch (getItemViewType(position)) {
-                case VIEW_TYPE_ADD: {
-                    if (convertView == null) {
-                        convertView = getActivity().getLayoutInflater()
-                                .inflate(R.layout.list_item_add_extension, parent, false);
-                    }
-                    convertView.setEnabled(isEnabled(position));
-                    return convertView;
-                }
-
                 case VIEW_TYPE_ITEM: {
                     ComponentName cn = (ComponentName) getItem(position);
                     if (convertView == null) {
@@ -682,7 +622,7 @@ public class ConfigureExtensionsFragment extends Fragment implements
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final String extensionTitle = getArguments().getString(ARG_EXTENSION_TITLE);
             final String extensionPackageName = getArguments().getString(ARG_EXTENSION_PACKAGE_NAME);
-            return new AlertDialog.Builder(getActivity())
+            return new AlertDialog.Builder(getActivity(), R.style.Theme_Dialog)
                     .setTitle(R.string.incompatible_extension_title)
                     .setMessage(Html.fromHtml(getString(
                             R.string.incompatible_extension_message_search_play_template,

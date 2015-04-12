@@ -123,7 +123,7 @@ public class AppChooserPreference extends Preference {
 
         PackageManager pm = context.getPackageManager();
         List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
-        if (resolveInfos.size() == 0) {
+        if (resolveInfos.isEmpty()) {
             return null;
         }
 
@@ -209,7 +209,7 @@ public class AppChooserPreference extends Preference {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Force Holo Light since ?android:actionBarXX would use dark action bar
             Context layoutContext = new ContextThemeWrapper(getActivity(),
-                    android.R.style.Theme_Holo_Light);
+                    R.style.Theme_Dialog);
 
             LayoutInflater layoutInflater = LayoutInflater.from(layoutContext);
             View rootView = layoutInflater.inflate(R.layout.dialog_app_chooser, null);
@@ -305,7 +305,7 @@ public class AppChooserPreference extends Preference {
                 mPackageManager = getActivity().getPackageManager();
                 mAllowUseDefault = allowUseDefault;
 
-                mInfos = new ArrayList<ActivityInfo>();
+                mInfos = new ArrayList<>();
                 List<ResolveInfo> resolveInfos = mPackageManager.queryIntentActivities(queryIntent,
                         0);
                 for (ResolveInfo ri : resolveInfos) {

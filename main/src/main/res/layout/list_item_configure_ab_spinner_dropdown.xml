@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    style="?android:attr/spinnerDropDownItemStyle"
-    android:textAppearance="?android:textAppearanceMedium"
-    android:singleLine="true"
+    android:layout_height="?listPreferredItemHeightSmall"
     android:layout_width="match_parent"
-    android:layout_height="?android:listPreferredItemHeightSmall"
-    android:ellipsize="marquee" />
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:gravity="center_vertical|start"
+    android:singleLine="true"
+    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small" />

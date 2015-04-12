@@ -16,7 +16,47 @@
 
 <resources>
 
-    <style name="EmptyParent" />
+    <!-- Themes -->
+
+    <style name="Theme.Configuration.Base" parent="Theme.AppCompat.Light">
+        <item name="isDialog">false</item>
+    </style>
+
+    <style name="Theme.Configuration" parent="Theme.Configuration.Base">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorAccent">@color/theme_accent</item>
+    </style>
+
+    <style name="Theme.ExtensionConfiguration" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/theme_accent</item>
+        <item name="colorPrimaryDark">@color/theme_accent_dark</item>
+        <item name="colorAccent">@color/theme_accent</item>
+    </style>
+
+    <style name="ThemeOverlay.AppBar.White" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="colorControlNormal">#fff</item>
+        <item name="colorControlHighlight">#fff</item>
+    </style>
+
+    <style name="ThemeOverlay.AppBar.White.Popup" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorAccent">@color/theme_primary</item>
+        <item name="android:textColorLink">@color/theme_primary</item>
+        <item name="android:windowMinWidthMajor">320dp</item>
+        <item name="android:windowMinWidthMinor">320dp</item>
+    </style>
+
+    <!-- Components -->
 
     <style name="TimeComponent">
         <item name="android:layout_width">wrap_content</item>
@@ -43,7 +83,7 @@
 
     <style name="ExtensionData.Container" />
 
-    <style name="ExtensionData.Container.Collapsed" parent="EmptyParent">
+    <style name="ExtensionData.Container.Collapsed" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">8dp</item>
@@ -55,7 +95,7 @@
         <item name="android:background">?android:selectableItemBackground</item>
     </style>
 
-    <style name="ExtensionData.Icon" parent="EmptyParent">
+    <style name="ExtensionData.Icon" parent="">
         <item name="android:layout_width">@dimen/extension_icon_expanded_size</item>
         <item name="android:layout_height">@dimen/extension_icon_expanded_size</item>
     </style>
@@ -101,39 +141,13 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="Configuration.Theme.Base" parent="android:Theme.Holo.Light">
-        <item name="isDialog">false</item>
-    </style>
-
-    <style name="Configuration.Theme" parent="Configuration.Theme.Base">
-        <item name="android:actionBarStyle">@style/Configuration.ActionBar</item>
-        <item name="android:actionOverflowButtonStyle">@style/Configuration.ActionButton.Overflow</item>
-        <item name="android:actionBarItemBackground">@drawable/configure_ab_item_background</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-         <!--<item name="android:actionBarWidgetTheme">@android:style/Theme.Holo</item>-->
-    </style>
-
-    <style name="Configuration.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_background</item>
-        <item name="android:displayOptions">disableHome|showCustom</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="Configuration.ActionButton.Overflow" parent="android:Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_action_overflow</item>
-    </style>
-
     <!-- Undo bar -->
     <style name="UndoBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginRight">88dp</item>
         <item name="android:layout_marginBottom">16dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/undobar</item>

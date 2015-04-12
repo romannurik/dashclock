@@ -15,8 +15,14 @@
   -->
 
 <resources>
-    <color name="extension_list_item_color">#09c</color>
-    <color name="configure_light_background">#f2f2f2</color>
+    <color name="theme_primary_dark">#0176BC</color>
+    <color name="theme_primary">#0187D0</color>
+    <color name="theme_accent_dark">#00a992</color>
+    <color name="theme_accent">#00BFA5</color>
+
+    <color name="extension_item_color">#c000</color>
+
+    <color name="configure_light_background">#fafafa</color>
 
     <string-array name="default_color_choice_values" translatable="false">
         <item>#33b5e5</item>

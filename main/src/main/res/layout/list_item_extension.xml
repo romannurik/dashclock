@@ -25,22 +25,14 @@
         android:layout_width="64dp"
         android:layout_height="match_parent"
         android:layout_gravity="fill_vertical|start"
-        android:paddingStart="16dp"
+        android:paddingStart="8dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:color="#2333" />
-    <!--
-    <View
-        android:id="@+id/drag_handle"
-        android:layout_width="24dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/drag_grip" />
-    -->
-    <!-- TODO: accessibility for dragging and removing -->
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="32dp"
         android:orientation="horizontal"
         android:baselineAligned="false">
 
@@ -53,9 +45,11 @@
 
             <!--suppress AndroidLintContentDescription -->
             <ImageView android:id="@android:id/icon1"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="12dp"
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription" />
 
@@ -64,11 +58,10 @@
                 android:layout_toEndOf="@android:id/icon1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:textColor="@color/extension_list_item_color"
-                android:textAppearance="?android:textAppearanceMedium" />
+                android:textStyle="@integer/font_textStyle_medium"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:textSize="20sp"
+                android:textColor="@color/extension_item_color" />
 
             <TextView
                 android:id="@android:id/text2"
@@ -77,16 +70,19 @@
                 android:layout_alignStart="@android:id/text1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.1"
+                android:textColor="#757575" />
 
         </RelativeLayout>
 
         <ImageButton android:id="@+id/overflow_button"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:src="@drawable/configure_item_overflow_default"
-            android:scaleType="fitXY"
+            android:layout_width="44dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="bottom"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_configure_item_overflow"
             android:contentDescription="@string/settings" />
 
     </LinearLayout>

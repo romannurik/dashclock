@@ -41,6 +41,7 @@
             android:layout_weight="1"
             android:requiresFadingEdge="vertical"
             android:fadingEdgeLength="@dimen/list_fading_edge_length"
+            android:overScrollMode="never"
             android:scrollbars="none">
 
             <LinearLayout android:id="@+id/extensions_container"

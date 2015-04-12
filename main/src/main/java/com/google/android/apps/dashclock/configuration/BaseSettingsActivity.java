@@ -22,32 +22,44 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.apps.dashclock.weather.WeatherLocationPreference;
+
+import net.nurik.roman.dashclock.R;
 
 /**
  * A base activity for extension configuration activities.
  */
-public abstract class BaseSettingsActivity extends PreferenceActivity {
+public abstract class BaseSettingsActivity extends ActionBarActivity {
+    protected ExtensionPreferenceFragment mFragment;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+        setContentView(R.layout.activity_extension_configuration_simple);
+        setSupportActionBar((Toolbar) findViewById(R.id.app_bar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        setupSimplePreferencesScreen();
-    }
+        mFragment = (ExtensionPreferenceFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_container);
+        if (mFragment == null) {
+            mFragment = new ExtensionPreferenceFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, mFragment)
+                    .commit();
+        }
 
-    @Override
-    protected boolean isValidFragment(String fragmentName) {
-        return false;
+        ((TextView) findViewById(android.R.id.title)).setText(getTitle());
     }
 
     @Override
@@ -151,5 +163,23 @@ public abstract class BaseSettingsActivity extends PreferenceActivity {
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
+    }
+
+    public static class ExtensionPreferenceFragment extends PreferenceFragment {
+        public ExtensionPreferenceFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_configure_extension_simple_prefs,
+                    container, false);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            ((BaseSettingsActivity) getActivity()).setupSimplePreferencesScreen();
+        }
     }
 }

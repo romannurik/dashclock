@@ -26,25 +26,19 @@ import android.preference.PreferenceManager;
 
 public class WeatherSettingsActivity extends BaseSettingsActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActionBar().setIcon(R.drawable.ic_weather_sunny);
-    }
-
-    @Override
     protected void setupSimplePreferencesScreen() {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
         // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_weather);
+        mFragment.addPreferencesFromResource(R.xml.pref_weather);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_UNITS));
-        bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_SHORTCUT));
-        bindPreferenceSummaryToValue(findPreference(WeatherExtension.PREF_WEATHER_LOCATION));
+        bindPreferenceSummaryToValue(mFragment.findPreference(WeatherExtension.PREF_WEATHER_UNITS));
+        bindPreferenceSummaryToValue(mFragment.findPreference(WeatherExtension.PREF_WEATHER_SHORTCUT));
+        bindPreferenceSummaryToValue(mFragment.findPreference(WeatherExtension.PREF_WEATHER_LOCATION));
     }
 
     @Override

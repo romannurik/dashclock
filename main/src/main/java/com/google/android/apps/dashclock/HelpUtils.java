@@ -25,12 +25,14 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -73,7 +75,8 @@ public class HelpUtils {
             }
 
             // Build the about body view and append the link to see OSS licenses
-            LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+            Context themedContext = new ContextThemeWrapper(getActivity(), R.style.Theme_Dialog);
+            LayoutInflater layoutInflater = LayoutInflater.from(themedContext);
             View rootView = layoutInflater.inflate(R.layout.dialog_about, null);
             TextView nameAndVersionView = (TextView) rootView.findViewById(
                     R.id.app_name_and_version);
@@ -84,7 +87,7 @@ public class HelpUtils {
             aboutBodyView.setText(Html.fromHtml(getString(R.string.about_body)));
             aboutBodyView.setMovementMethod(new LinkMovementMethod());
 
-            return new AlertDialog.Builder(getActivity())
+            return new AlertDialog.Builder(getActivity(), R.style.Theme_Dialog)
                     .setView(rootView)
                     .setPositiveButton(R.string.close,
                             new DialogInterface.OnClickListener() {
