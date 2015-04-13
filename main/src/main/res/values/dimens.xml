@@ -34,4 +34,6 @@
     <dimen name="fab_elevation">8dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
 
+    <dimen name="configure_appearance_panel_height">240dp</dimen>
+
 </resources>

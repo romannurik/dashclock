@@ -44,7 +44,7 @@ import java.util.Map;
  * ConfigurationActivity}.
  */
 public class ConfigureAppearanceFragment extends Fragment {
-    private static final int AUTO_HIDE_DELAY_MILLIS = 1 * Utils.MINUTES_MILLIS;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 1 * Utils.SECONDS_MILLIS;
 
     private Handler mHandler = new Handler();
 
@@ -53,6 +53,7 @@ public class ConfigureAppearanceFragment extends Fragment {
     private Map<String, String> mCurrentStyleNames = new HashMap<String, String>();
     private int mAnimationDuration;
     private View[] mPositionStrips;
+    private View mAppearanceContainerView;
 
     public ConfigureAppearanceFragment() {
     }
@@ -87,6 +88,14 @@ public class ConfigureAppearanceFragment extends Fragment {
                 AppearanceConfig.DATE_STYLE_NAMES, AppearanceConfig.COMPONENT_DATE,
                 Gravity.CENTER_HORIZONTAL | Gravity.TOP, AppearanceConfig.PREF_STYLE_DATE);
         ((ConfigurationActivity) getActivity()).showWallpaper();
+
+        mAppearanceContainerView = rootView.findViewById(R.id.appearance_container);
+
+        if (savedInstanceState == null) {
+            getChildFragmentManager().beginTransaction()
+                    .add(R.id.appearance_more_container, new ConfigureAppearanceMoreFragment())
+                    .commit();
+        }
         return rootView;
     }
 
@@ -243,5 +252,9 @@ public class ConfigureAppearanceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void setAppearanceContainerTranslationY(int translationY) {
+        mAppearanceContainerView.setTranslationY(translationY);
     }
 }

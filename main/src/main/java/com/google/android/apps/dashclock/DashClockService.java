@@ -323,7 +323,7 @@ public class DashClockService extends Service implements
     private class CallbackList extends RemoteCallbackList<IDataConsumerHostCallback> {
         public void update(IDataConsumerHostCallback cb, CallbackData data) {
             final IBinder binder = cb.asBinder();
-            if (data.mExtensions == null || data.mExtensions.isEmpty()) {
+            if (data.mExtensions == null) {
                 if (mRegisteredCallbacks.containsKey(binder)) {
                     unregister(cb);
                     mRegisteredCallbacks.remove(binder);

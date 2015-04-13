@@ -16,67 +16,81 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:background="#8000"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/appearance_more_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <LinearLayout
+    <LinearLayout
+        android:id="@+id/appearance_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/configure_appearance_panel_height"
+        android:background="#8000"
+        android:orientation="vertical">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="3">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_time_style"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:translationY="10dp"
+                android:overScrollMode="never" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/configure_appearance_arrow"
+                android:layout_marginTop="@dimen/clock_date_top_margin"
+                android:layout_gravity="bottom|left"
+                android:alpha="0.35" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/configure_appearance_arrow"
+                android:layout_marginTop="@dimen/clock_date_top_margin"
+                android:layout_gravity="bottom|right"
+                android:alpha="0.35" />
+
+            <com.google.android.apps.dashclock.ui.PagerPositionStrip
+                android:id="@+id/pager_time_position_strip"
+                android:layout_width="200dp"
+                android:layout_height="3dp"
+                app:backgroundColor="#3fff"
+                app:indicatorColor="#fff"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="16dp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_date_style"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/clock_date_top_margin" />
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
 
-        </LinearLayout>
+            <com.google.android.apps.dashclock.ui.PagerPositionStrip
+                android:id="@+id/pager_date_position_strip"
+                android:layout_width="200dp"
+                android:layout_height="3dp"
+                app:backgroundColor="#3fff"
+                app:indicatorColor="#fff"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="16dp" />
 
-        <com.google.android.apps.dashclock.ui.PagerPositionStrip
-            android:id="@+id/pager_time_position_strip"
-            android:layout_width="200dp"
-            android:layout_height="3dp"
-            app:backgroundColor="#3fff"
-            app:indicatorColor="#fff"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="16dp" />
-
-        <com.google.android.apps.dashclock.ui.PagerPositionStrip
-            android:id="@+id/pager_date_position_strip"
-            android:layout_width="200dp"
-            android:layout_height="3dp"
-            app:backgroundColor="#3fff"
-            app:indicatorColor="#fff"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="16dp" />
-
-    </FrameLayout>
-
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/configure_appearance_arrow"
-        android:layout_marginTop="@dimen/clock_date_top_margin"
-        android:layout_gravity="center_vertical|left"
-        android:alpha="0.35" />
-
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/configure_appearance_arrow"
-        android:layout_marginTop="@dimen/clock_date_top_margin"
-        android:layout_gravity="center_vertical|right"
-        android:alpha="0.35" />
+        </FrameLayout>
+    </LinearLayout>
 
 </FrameLayout>
