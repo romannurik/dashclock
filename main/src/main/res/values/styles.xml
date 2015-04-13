@@ -30,14 +30,60 @@
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
+
+        <item name="android:preferenceStyle">@style/Preference</item>
+        <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference</item>
+        <item name="android:yesNoPreferenceStyle">@style/Preference.DialogPreference.YesNoPreference</item>
+        <item name="android:dialogPreferenceStyle">@style/Preference.DialogPreference</item>
     </style>
 
-    <style name="Theme.ExtensionConfiguration" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.ExtensionConfiguration" parent="Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/theme_accent</item>
         <item name="colorPrimaryDark">@color/theme_accent_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
+
+        <item name="android:preferenceStyle">@style/Preference</item>
+        <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference</item>
+        <item name="android:yesNoPreferenceStyle">@style/Preference.DialogPreference.YesNoPreference</item>
+        <item name="android:dialogPreferenceStyle">@style/Preference.DialogPreference</item>
+
+        <!--<item name="android:preferenceScreenStyle">@style/Preference.PreferenceScreen</item>-->
+        <!--<item name="android:preferenceInformationStyle">@style/Preference.Information</item>-->
+        <!--<item name="android:editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference</item>-->
+        <!--<item name="android:ringtonePreferenceStyle">@style/Preference.RingtonePreference</item>-->
+        <!--<item name="android:preferenceLayoutChild">@layout/preference_child</item>-->
+    </style>
+
+    <style name="Preference" parent="">
+        <item name="android:layout">@layout/preference</item>
+    </style>
+
+    <style name="Preference.Category">
+        <item name="android:layout">@layout/preference_category</item>
+        <item name="android:shouldDisableView">false</item>
+        <item name="android:selectable">false</item>
+    </style>
+
+    <style name="Preference.CheckBoxPreference">
+        <item name="android:widgetLayout">@layout/preference_widget_checkbox</item>
+    </style>
+
+    <style name="Preference.DialogPreference">
+        <item name="android:positiveButtonText">@android:string/ok</item>
+        <item name="android:negativeButtonText">@android:string/cancel</item>
+    </style>
+
+    <style name="Preference.DialogPreference.YesNoPreference">
+        <item name="android:positiveButtonText">@android:string/yes</item>
+        <item name="android:negativeButtonText">@android:string/no</item>
+    </style>
+
+    <style name="Preference.DialogPreference.EditTextPreference">
+        <!--<item name="android:dialogLayout">@layout/preference_dialog_edittext</item>-->
     </style>
 
     <style name="ThemeOverlay.AppBar.White" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -52,6 +98,7 @@
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorAccent">@color/theme_primary</item>
         <item name="android:textColorLink">@color/theme_primary</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowMinWidthMajor">320dp</item>
         <item name="android:windowMinWidthMinor">320dp</item>
     </style>
@@ -144,7 +191,8 @@
     <!-- Undo bar -->
     <style name="UndoBar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">88dp</item>
@@ -152,22 +200,20 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/undobar</item>
         <item name="android:clickable">true</item>
-        <item name="android:showDividers">middle</item>
-        <item name="android:divider">@drawable/undobar_divider</item>
-        <item name="android:dividerPadding">10dp</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <style name="UndoBarMessage">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:maxLines">3</item>
         <item name="android:ellipsize">middle</item>
 
     </style>
@@ -175,15 +221,13 @@
     <style name="UndoBarButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:background">@drawable/undobar_button</item>
-        <item name="android:drawableLeft">@drawable/ic_undobar_undo</item>
-        <item name="android:drawablePadding">12dp</item>
-        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:background">?selectableItemBackground</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textStyle">@integer/font_textStyle_medium</item>
+        <item name="android:fontFamily">@string/font_fontFamily_medium</item>
+        <item name="android:textColor">?colorAccent</item>
         <item name="android:text">@string/undo</item>
     </style>
 </resources>

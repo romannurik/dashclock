@@ -301,13 +301,24 @@ public class ConfigureExtensionsFragment extends Fragment implements
             return;
         }
 
-        boolean show = mAvailableExtensions.size() > 0;
+        final boolean show = mAvailableExtensions.size() > 0;
         Boolean lastValue = (Boolean) mAddFabView.getTag();
         if (lastValue == null || lastValue != show) {
+            if (show) {
+                mAddFabView.setVisibility(View.VISIBLE);
+            }
             mAddFabView.animate()
                     .setDuration(animate ? 200 : 0)
                     .scaleX(show ? 1 : 0)
-                    .scaleY(show ? 1 : 0);
+                    .scaleY(show ? 1 : 0)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!show) {
+                                mAddFabView.setVisibility(View.GONE);
+                            }
+                        }
+                    });
         }
     }
 
