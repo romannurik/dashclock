@@ -94,13 +94,16 @@
 
     <style name="ThemeOverlay.AppBar.White.Popup" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.Dialog.Base" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorAccent">@color/theme_primary</item>
         <item name="android:textColorLink">@color/theme_primary</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowMinWidthMajor">320dp</item>
         <item name="android:windowMinWidthMinor">320dp</item>
+    </style>
+
+    <style name="Theme.Dialog" parent="Theme.Dialog.Base">
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!-- Components -->
