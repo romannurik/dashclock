@@ -16,7 +16,7 @@
 
 /**
  * This package contains API definitions and base classes for the DashClock host API.
- *
+ * <p>
  * To get started, see the {@link com.google.android.apps.dashclock.api.host.DashClockHost} class
  * documentation.
  */
