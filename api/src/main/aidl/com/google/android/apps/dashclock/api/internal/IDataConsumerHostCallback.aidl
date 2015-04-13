@@ -17,7 +17,7 @@
 package com.google.android.apps.dashclock.api.internal;
 
 import com.google.android.apps.dashclock.api.ExtensionData;
-import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.host.ExtensionListing;
 
 /**
  * The callback used by the {@link IDataConsumerHost} to be notified

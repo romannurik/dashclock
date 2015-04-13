@@ -15,9 +15,9 @@
   -->
 
 <resources>
-    <color name="theme_primary_dark">#0176BC</color>
-    <color name="theme_primary">#0187D0</color>
-    <color name="theme_accent_dark">#00a992</color>
+    <color name="theme_primary_dark">#0277BD</color>
+    <color name="theme_primary">#0288D1</color>
+    <color name="theme_accent_dark">#00A992</color>
     <color name="theme_accent">#00BFA5</color>
 
     <color name="extension_item_color">#c000</color>

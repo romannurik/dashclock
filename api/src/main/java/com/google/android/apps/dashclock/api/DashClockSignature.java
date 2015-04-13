@@ -18,6 +18,9 @@ package com.google.android.apps.dashclock.api;
 
 import android.content.pm.Signature;
 
+/**
+ * The signature of the official DashClock app (net.nurik.roman.dashclock).
+ */
 public final class DashClockSignature {
     /**
      * The signature of the official DashClock app (net.nurik.roman.dashclock).

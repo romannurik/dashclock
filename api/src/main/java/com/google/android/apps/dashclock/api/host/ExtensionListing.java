@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.android.apps.dashclock.api;
+package com.google.android.apps.dashclock.api.host;
 
 import android.content.ComponentName;
 import android.os.Parcel;
@@ -22,9 +22,8 @@ import android.os.Parcelable;
 
 /**
  * A parcelable, serializable object containing information about an
- * {@link com.google.android.apps.dashclock.api.DashClockExtension} shared with
- * {@link com.google.android.apps.dashclock.api.internal.IDataConsumerHost} registered
- * instances.
+ * {@link com.google.android.apps.dashclock.api.DashClockExtension} shared with your
+ * registered {@link DashClockHost}.
  *
  * <p>
  * This class follows the <a href="http://en.wikipedia.org/wiki/Fluent_interface">fluent
@@ -33,12 +32,12 @@ import android.os.Parcelable;
  * methods like so:
  *
  * <pre class="prettyprint">
- * ExtensionInfo data = new Extension();
- * data.title("GMail Extension").description("Extension for reading count unread GMail emails");
+ * ExtensionInfo data = new Extension()
+ *     .title("GMail Extension")
+ *     .description("Extension for reading count unread GMail emails");
  * </pre>
  *
- * @see com.google.android.apps.dashclock.api.internal.IDataConsumerHost)
- * @see com.google.android.apps.dashclock.api.internal.IDataConsumerHostCallback#notifyAvailableExtensionChanged(java.util.List) lableExtensionChangedUpdate(java.util.List)
+ * @see DashClockHost
  */
 public class ExtensionListing implements Parcelable {
     /**
@@ -110,18 +109,16 @@ public class ExtensionListing implements Parcelable {
     }
 
     /**
-     * Returns if the data of the ExtensionInfo is available to all the
-     * {@link com.google.android.apps.dashclock.api.internal.IDataConsumerHost} clients
-     * or only for the {@code DashClock} app.
+     * Returns if the data of the ExtensionInfo is available to all hosts or only for the
+     * DashClock app.
      */
     public boolean worldReadable() {
         return mWorldReadable;
     }
 
     /**
-     * Sets if the data of the ExtensionInfo is available to all the
-     * {@link com.google.android.apps.dashclock.api.internal.IDataConsumerHost} clients
-     * or only for the {@code DashClock} app.
+     * Sets if the data of the ExtensionInfo is available to all hosts or only for the
+     * DashClock app.
      */
     public ExtensionListing worldReadable(boolean worldReadable) {
         mWorldReadable = worldReadable;

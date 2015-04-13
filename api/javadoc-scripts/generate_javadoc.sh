@@ -20,15 +20,17 @@ cd `dirname $0`
 
 source _locals.sh
 javadoc -linkoffline http://developer.android.com/reference ${ANDROID_SDK}/docs/reference \
-        -sourcepath ../src/main/java:../build/source/aidl/debug \
+        -sourcepath ../src/main/java:../build-aidl \
         -classpath ${ANDROID_SDK}/platforms/${PLATFORM}/android.jar:${ANDROID_SDK}/tools/support/annotations.jar \
         -d ${OUT_PATH} \
         -notree -nonavbar -noindex -notree -nohelp -nodeprecated \
         -stylesheetfile javadoc_stylesheet.css \
         -windowtitle "DashClock API" \
         -doctitle "DashClock API" \
-        com.google.android.apps.dashclock.api
+        com.google.android.apps.dashclock.api \
+        com.google.android.apps.dashclock.api.host
 
 cp prettify* ${OUT_PATH}/resources/
+cp index.html ${OUT_PATH}/
 
 python tweak_javadoc_html.py ${OUT_PATH}/

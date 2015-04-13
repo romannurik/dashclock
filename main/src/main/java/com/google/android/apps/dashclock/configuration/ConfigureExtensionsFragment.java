@@ -51,7 +51,7 @@ import com.google.android.apps.dashclock.DashClockService;
 import com.google.android.apps.dashclock.ExtensionManager;
 import com.google.android.apps.dashclock.ExtensionSettingActivityProxy;
 import com.google.android.apps.dashclock.Utils;
-import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.host.ExtensionListing;
 import com.google.android.apps.dashclock.ui.SwipeDismissListViewTouchListener;
 import com.google.android.apps.dashclock.ui.UndoBarController;
 import com.mobeta.android.dslv.DragSortController;

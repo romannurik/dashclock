@@ -48,14 +48,18 @@ def main():
 
 def process(toroot, html):
   re_flags = re.I | re.M | re.S
-  html = re.sub(r'<HR>\s+<HR>', '', html, 0, re_flags)
-  html = re.sub(r'windowTitle\(\);', 'windowTitle();prettyPrint();', html, 0, re_flags)
-  html = re.sub(r'\s+</PRE>', '</PRE>', html, 0, re_flags)
-  html = re.sub(PACKAGE_NAME + '</font>', '<A HREF="package-summary.html" STYLE="border:0">' + PACKAGE_NAME + '</A></FONT>', html, 0, re_flags)
-  html = re.sub(r'<HEAD>', '''<HEAD>
-<LINK REL="stylesheet" TYPE="text/css" HREF="http://fonts.googleapis.com/css?family=Roboto:400,700,300|Inconsolata">
-<LINK REL="stylesheet" TYPE="text/css" HREF="%(root)sresources/prettify.css">
-<SCRIPT SRC="%(root)sresources/prettify.js"></SCRIPT>
+  #html = re.sub(r'<HR>\s+<HR>', '', html, 0, re_flags)
+  html = re.sub(r'<body>', '<body onload="prettyPrint();">', html, 0, re_flags)
+  html = re.sub(r'\s+</pre>', '</pre>', html, 0, re_flags)
+  html = re.sub(r'<div class="header">', '''<div class="header">
+<a class="home-link" href="%(root)sindex.html">API Home</a>
+''' % dict(root=toroot), html, 0, re_flags)
+  html = re.sub(PACKAGE_NAME + '</font>', '<a href="package-summary.html" style="border:0">' + PACKAGE_NAME + '</a></font>', html, 0, re_flags)
+  html = re.sub(r'<head>', '''<head>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700|Inconsolata:400,700">
+<link rel="stylesheet" type="text/css" href="%(root)sresources/prettify.css">
+<script src="%(root)sresources/prettify.js"></script>
 ''' % dict(root=toroot), html, 0, re_flags)
   #html = re.sub(r'<HR>\s+<HR>', '', html, re.I | re.M | re.S)
   return html
@@ -63,10 +67,10 @@ def process(toroot, html):
 
 def process_package_summary(toroot, html):
   re_flags = re.I | re.M | re.S
-  html = re.sub(r'</H2>\s+.*?\n', '</H2>\n', html, 0, re_flags)
-  html = re.sub(r'<B>See:</B>\n<br>', '\n', html, 0, re_flags)
-  html = re.sub(r'&nbsp;&nbsp;(&nbsp;)+[^\n]+\n', '\n', html, 0, re_flags)
-  html = re.sub(r'\n[^\n]+\s+description\n', '\nDescription\n', html, 0, re_flags)
+  # html = re.sub(r'</H2>\s+.*?\n', '</H2>\n', html, 0, re_flags)
+  # html = re.sub(r'<B>See:</B>\n<br>', '\n', html, 0, re_flags)
+  # html = re.sub(r'&nbsp;&nbsp;(&nbsp;)+[^\n]+\n', '\n', html, 0, re_flags)
+  # html = re.sub(r'\n[^\n]+\s+description\n', '\nDescription\n', html, 0, re_flags)
   return html
 
 

@@ -30,7 +30,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,9 +47,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.apps.dashclock.api.DashClockHost;
+import com.google.android.apps.dashclock.api.host.DashClockHost;
 import com.google.android.apps.dashclock.api.ExtensionData;
-import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.host.ExtensionListing;
 
 import java.util.ArrayList;
 import java.util.HashSet;

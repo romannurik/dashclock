@@ -31,7 +31,7 @@ import android.text.TextUtils;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
-import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.host.ExtensionListing;
 import com.google.android.apps.dashclock.gmail.GmailExtension;
 import com.google.android.apps.dashclock.nextalarm.NextAlarmExtension;
 import com.google.android.apps.dashclock.weather.WeatherExtension;

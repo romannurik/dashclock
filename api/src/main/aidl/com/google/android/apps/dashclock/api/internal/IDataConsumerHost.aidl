@@ -17,7 +17,7 @@
 package com.google.android.apps.dashclock.api.internal;
 
 import android.content.ComponentName;
-import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.host.ExtensionListing;
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHostCallback;
 
 interface IDataConsumerHost {

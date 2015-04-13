@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Google Inc.
+ * Copyright 2014 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * This package contains API definitions and base classes for the DashClock extension API.
- * <p>
- * To get started, see the {@link com.google.android.apps.dashclock.api.DashClockExtension} class
- * documentation.
- * <p>
- * There's also a {@linkplain com.google.android.apps.dashclock.api.host host API} that allows you
- * to display extension information in your app.
- */
-package com.google.android.apps.dashclock.api;
+package com.google.android.apps.dashclock.api.host;
+
+parcelable ExtensionListing;

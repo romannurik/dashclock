@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.android.apps.dashclock.api;
+package com.google.android.apps.dashclock.api.host;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,6 +31,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 
+import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.DashClockSignature;
+import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHost;
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHostCallback;
 
@@ -45,33 +48,30 @@ import static android.content.pm.PackageManager.NameNotFoundException;
 /**
  * Base class to be used by data consumer host implementations in order to get
  * updates for installed extensions and their data.<br/>
- * <br/>
+ * <p>
  * Subclasses MUST call the {@link #listenTo(java.util.Set)} method to start listening
  * for extension updates, and MUST call {@link #destroy()} when the instance is not
- * used anymore.<br/>
- * <br/>
+ * used anymore.
+ * <p>
  * Subclasses should implement {@link #onExtensionDataChanged(android.content.ComponentName)}
  * in order to receive updates for the registered extensions passed to
  * {@link #listenTo(java.util.Set)}.<br/>
- * <br/>
+ * <p>
  * Subclasses should implement {@link #onAvailableExtensionsChanged()} to get notifications
  * of additions or removals of DashClock extensions installed on the device.<br/>
- * <br/>
+ * <p>
  * Subclasses should override {@link #onMultiplexerChangedDetected(boolean)}} to get notifications
  * about when a multiplexer service app is available or not in the device.<br/>
- * Subclasses are responsible of redirect the user to PlayStore to download the official
- * DashClock Multiplexer app. Subclasses can direct call the
- * {@link #displayMultiplexerDownloadDialog()} to use the default implementation, or define its
- * own implementation, but <b>MUST</b> be get the intent to redirect the user from
- * {@link #getMultiplexerDownloadIntent()}.<br/>
- * <br/>
- * <br/>
+ * Subclasses are responsible for redirecting the user to the Play Store to download the official
+ * DashClock app. Subclasses should use {@link #getMultiplexerDownloadIntent()} to to get an
+ * intent to download the official app. An example UI can be found in the {@code example-host}
+ * project.
+ * <p>
  * Lastly, there are a few <code>&lt;meta-data&gt;</code> elements that
  * you should add to your service definition:
  * <ul>
  * <li><code>protocolVersion</code> (required): should be <strong>1</strong>.</li>
  * </ul>
- * <br/>
  */
 public abstract class DashClockHost {
     /**
@@ -314,17 +314,15 @@ public abstract class DashClockHost {
      * in a proper way.<br/>
      * <br/>
      * When there isn't an installed package providing a Multiplexer Service implementation,
-     * implementations <b>MUST</b> redirect the users to the official app in the PlayStore.<br/>
+     * implementations <b>MUST</b> redirect the users to the official app in the Play Store.<br/>
      * Implementations can obtain an {@link Intent} calling {@link #getMultiplexerDownloadIntent()}.
      * <br/>
-     * A default dialog implementation to redirect the user, is provided along this class by
-     * calling {@link #displayMultiplexerDownloadDialog()}.
+     * An example UI to redirect the user can be found in the {@code example-host} project.
      *
      * @param available  Indicates if is there present a multiplexer service.
      *
      * @see #isMultiplexerServicePresent(android.content.Context)
      * @see #getMultiplexerDownloadIntent()
-     * @see #displayMultiplexerDownloadDialog()
      */
     protected void onMultiplexerChangedDetected(boolean available) {
 
@@ -332,7 +330,7 @@ public abstract class DashClockHost {
 
     /**
      * Return an {@link android.content.Intent} reference to redirect the user
-     * to a the {@code PlayStore} to download the official DashClock Multiplexer app.<br/>
+     * to a the Play Store to download the official DashClock app.<br/>
      * Implementers should call to {@link Context#startActivity(android.content.Intent)}.
      *
      * @return The download {@link android.content.Intent} or {@code null} if the the multiplexer
@@ -346,19 +344,12 @@ public abstract class DashClockHost {
         // permission. In that case, the update for DashClock or the installation of the mux
         // will not work. Users MUST uninstall the app
         List<String> apps = getOtherAppsWithReadDataExtensionsPermission(mContext);
-        if (apps.size() > 0) {
+        if (!apps.isEmpty()) {
             return null;
         }
 
         final String pkgName = MULTIPLEXER_HOST_SERVICE.getPackageName();
-        Uri uri;
-        try {
-            // Check whether the Google Play Store is installed or not:
-            mContext.getPackageManager().getPackageInfo("com.android.vending", 0);
-            uri = Uri.parse("market://details?id=" + pkgName);
-        } catch ( final NameNotFoundException e ) {
-            uri = Uri.parse("https://play.google.com/store/apps/details?id=" + pkgName);
-        }
+        Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + pkgName);
         return new Intent("android.intent.action.VIEW", uri);
     }
 

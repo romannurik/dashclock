@@ -38,10 +38,10 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
-import com.google.android.apps.dashclock.api.DashClockHost;
+import com.google.android.apps.dashclock.api.host.DashClockHost;
 import com.google.android.apps.dashclock.api.DashClockSignature;
 import com.google.android.apps.dashclock.api.ExtensionData;
-import com.google.android.apps.dashclock.api.ExtensionListing;
+import com.google.android.apps.dashclock.api.host.ExtensionListing;
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHost;
 import com.google.android.apps.dashclock.api.internal.IDataConsumerHostCallback;
 import com.google.android.apps.dashclock.render.WidgetRenderer;
