@@ -147,7 +147,7 @@ public abstract class DashClockHost {
             if (!connect()) {
                 mHandler.sendEmptyMessageDelayed(MSG_RECONNECT, AUTO_RECONNECT_DELAY);
             }
-        } catch (NoMultiplexerAvailableException ex) {
+        } catch (NoMultiplexerAvailableException | SecurityException ex) {
             // Notify the implementation that the multiplexer isn't available
             mHandler.obtainMessage(MSG_NOTIFY_MUX_NOT_AVAILABLE).sendToTarget();
         }
