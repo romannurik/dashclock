@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.apps.dashclock.RecentTasksStyler;
 import com.google.android.apps.dashclock.weather.WeatherLocationPreference;
 
 import net.nurik.roman.dashclock.R;
@@ -49,6 +50,7 @@ public abstract class BaseSettingsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_extension_configuration_simple);
         setSupportActionBar((Toolbar) findViewById(R.id.app_bar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        RecentTasksStyler.styleRecentTasksEntry(this);
 
         mFragment = (ExtensionPreferenceFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_container);

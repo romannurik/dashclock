@@ -42,6 +42,7 @@ import android.widget.TextView;
 import com.google.android.apps.dashclock.DashClockService;
 import com.google.android.apps.dashclock.HelpUtils;
 import com.google.android.apps.dashclock.LogUtils;
+import com.google.android.apps.dashclock.RecentTasksStyler;
 import com.google.android.apps.dashclock.Utils;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 
@@ -93,8 +94,8 @@ public class ConfigurationActivity extends ActionBarActivity {
     private Toolbar mAppBar;
 
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setupFauxDialog();
+        RecentTasksStyler.styleRecentTasksEntry(this);
         super.onCreate(savedInstanceState);
 
         Utils.enableDisablePhoneOnlyExtensions(this);

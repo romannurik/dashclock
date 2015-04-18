@@ -18,7 +18,9 @@ package com.google.android.apps.dashclock.configuration;
 
 import android.app.backup.BackupManager;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import net.nurik.roman.dashclock.BuildConfig;
 import net.nurik.roman.dashclock.R;
 
 /**
@@ -54,6 +57,11 @@ public class ConfigureAppearanceMoreFragment extends PreferenceFragment
                 findPreference(AppearanceConfig.PREF_HOMESCREEN_BACKGROUND_OPACITY));
         BaseSettingsActivity.bindPreferenceSummaryToValue(
                 findPreference(AppearanceConfig.PREF_LOCKSCREEN_BACKGROUND_OPACITY));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Preference p = findPreference("pref_category_lockscreen");
+            getPreferenceScreen().removePreference(p);
+        }
     }
 
     @Override

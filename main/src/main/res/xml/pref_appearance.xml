@@ -54,7 +54,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_lockscreen_title">
+    <PreferenceCategory android:key="pref_category_lockscreen" android:title="@string/pref_lockscreen_title">
         <ListPreference
             android:key="pref_lockscreen_background_opacity"
             android:entryValues="@array/pref_background_opacity_values"

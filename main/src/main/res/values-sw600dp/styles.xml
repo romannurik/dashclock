@@ -16,7 +16,7 @@
 
 <resources>
 
-    <style name="Configuration.Theme.Base" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.Configuration.Base" parent="Theme.AppCompat.Light.Dialog">
         <item name="isDialog">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowContentOverlay">@null</item>
