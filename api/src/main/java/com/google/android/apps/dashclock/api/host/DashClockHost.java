@@ -541,7 +541,7 @@ public abstract class DashClockHost {
                     return;
                 }
             }
-        } catch (NameNotFoundException ex) {
+        } catch (NameNotFoundException e) {
             // Ignore. Package wasn't found
         }
         throw new SecurityException("Caller didn't request the permission \"" + permission + "\"");
@@ -553,7 +553,7 @@ public abstract class DashClockHost {
             context.getPackageManager().getPackageInfo(
                     MULTIPLEXER_HOST_SERVICE.getPackageName(), 0);
             return true;
-        } catch ( final NameNotFoundException e ) {
+        } catch (NameNotFoundException e) {
             return false;
         }
     }
