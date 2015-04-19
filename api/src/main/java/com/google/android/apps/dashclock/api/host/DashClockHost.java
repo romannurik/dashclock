@@ -61,7 +61,7 @@ import static android.content.pm.PackageManager.NameNotFoundException;
  * of additions or removals of DashClock extensions installed on the device.<br/>
  * <p>
  * Subclasses should override {@link #onMultiplexerChangedDetected(boolean)}} to get notifications
- * about when a multiplexer service app is available or not in the device.<br/>
+ * about changes in multiplexer service app availability.<br/>
  * Subclasses are responsible for redirecting the user to the Play Store to download the official
  * DashClock app. Subclasses should use {@link #getMultiplexerDownloadIntent()} to to get an
  * intent to download the official app. An example UI can be found in the {@code example-host}
@@ -109,8 +109,8 @@ public abstract class DashClockHost {
     }
 
     /**
-     * Return a list of packages that implements {@link
-     * DashClockExtension#PERMISSION_READ_EXTENSION_DATA} permission, which aren't DashClock
+     * Return a list of packages that implement the {@link
+     * DashClockExtension#PERMISSION_READ_EXTENSION_DATA} permission and aren't DashClock
      */
     public static List<String> getOtherAppsWithReadDataExtensionsPermission(Context context) {
         List<String> installedApps = new ArrayList<>();
@@ -307,19 +307,19 @@ public abstract class DashClockHost {
 
     /**
      * Called when a multiplexer service package change was detected. That means
-     * a multiplexer service package was installed/remove.<br/>
+     * a multiplexer service package was installed or removed.<br/>
      * <br/>
-     * The default implementation ignore these events, so implementers of this
+     * The default implementation ignores these events, so implementers of this
      * class are encouraged to override this method and handle this event
      * in a proper way.<br/>
      * <br/>
      * When there isn't an installed package providing a Multiplexer Service implementation,
-     * implementations <b>MUST</b> redirect the users to the official app in the Play Store.<br/>
+     * implementations <b>MUST</b> redirect the user to the official app in the Play Store.<br/>
      * Implementations can obtain an {@link Intent} calling {@link #getMultiplexerDownloadIntent()}.
      * <br/>
      * An example UI to redirect the user can be found in the {@code example-host} project.
      *
-     * @param available  Indicates if is there present a multiplexer service.
+     * @param available  Indicates whether a multiplexer service is present.
      *
      * @see #isMultiplexerServicePresent(android.content.Context)
      * @see #getMultiplexerDownloadIntent()
@@ -330,17 +330,17 @@ public abstract class DashClockHost {
 
     /**
      * Return an {@link android.content.Intent} reference to redirect the user
-     * to a the Play Store to download the official DashClock app.<br/>
+     * to the Play Store to download the official DashClock app.<br/>
      * Implementers should call to {@link Context#startActivity(android.content.Intent)}.
      *
      * @return The download {@link android.content.Intent} or {@code null} if the the multiplexer
-     * cannot be installed because other app defines the {@link
-     * DashClockExtension#PERMISSION_READ_EXTENSION_DATA}.
+     * cannot be installed because another app that defines the {@link
+     * DashClockExtension#PERMISSION_READ_EXTENSION_DATA} is already installed.
      *
      * @see #getOtherAppsWithReadDataExtensionsPermission(android.content.Context)
      */
     public final Intent getMultiplexerDownloadIntent() {
-        // First we need to check if there are other apps that declares the READ_EXTENSION_DATA
+        // First we need to check if there are other apps that declare the READ_EXTENSION_DATA
         // permission. In that case, the update for DashClock or the installation of the mux
         // will not work. Users MUST uninstall the app
         List<String> apps = getOtherAppsWithReadDataExtensionsPermission(mContext);
@@ -365,8 +365,8 @@ public abstract class DashClockHost {
     private Set<ComponentName> mListenedExtensions;
     private boolean mDestroyed;
 
-    // We assume that multiplexer is initially present. This allow to detect that
-    // isn't present the first time and could display the dialog
+    // We assume that multiplexer is initially present. This makes sure
+    // onMultiplexerChangedDetected is called if the multiplexer isn't present initially
     private boolean mIsMultiplexerPresent = true;
 
     private final Handler mHandler;
@@ -477,7 +477,7 @@ public abstract class DashClockHost {
     /**
      * Connects to the {@link IDataConsumerHost} multiplexer service.
      *
-     * @return If connection to the multiplexer service was success.
+     * @return If connection to the multiplexer service was successful.
      */
     private boolean connect() throws SecurityException, NoMultiplexerAvailableException {
         ComponentName cn = getMultiplexerService(mContext);
