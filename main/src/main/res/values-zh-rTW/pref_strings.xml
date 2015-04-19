@@ -17,54 +17,99 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">時鐘捷徑</string>
+    <string name="pref_background_title">背景</string>
+    <string name="pref_foreground_color_title">前景顏色</string>
+    <string name="pref_homescreen_title">主螢幕小工具</string>
+    <string name="pref_lockscreen_title">鎖定畫面小工具</string>
+    <string name="pref_background_opacity_title">背景透明度</string>
+    <string-array name="pref_background_opacity_display_names">
+        <item>完全透明</item>
+        <item>75% 透明</item>
+        <item>50% 透明</item>
+        <item>25% 透明</item>
+        <item>不透明</item>
+    </string-array>
+    <string name="pref_foreground_color_description">文字與圖示的顏色</string>
     <string name="pref_aggressive_centering_title">永遠置中</string>
-    <string name="pref_aggressive_centering_description">是否強制時鐘內容永遠置中</string>
+    <string name="pref_aggressive_centering_description">是否將日期與時間強制置中</string>
+    <string name="pref_settings_button_title">設定按鈕</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>隱藏</item>
+        <item>在展開的小工具中</item>
+        <item>在應用程式啟動器中</item>
+    </string-array>
+    <string name="pref_hide_clock_title">隱藏時鐘</string>
+    <string name="pref_hide_clock_description">隱藏日期與時間，僅顯示擴充套件</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">捷徑</string>
     <string name="pref_shortcut_default">(預設)</string>
 
     <!-- Weather -->
-    <string name="pref_weather_units_title">溫度單位</string>
+    <string name="pref_weather_units_title">氣溫單位</string>
     <string-array name="pref_weather_units_display_names">
-        <item>華氏度°F</item>
-        <item>攝氏度°C</item>
+        <item>°F</item>
+        <item>°C</item>
     </string-array>
+    <string name="pref_weather_location_title">地點位置</string>
+    <string name="pref_weather_location_query_hint">搜尋地點</string>
+    <string name="pref_weather_location_automatic">自動</string>
+    <string name="pref_weather_location_automatic_description">自動偵測我的位置</string>
 
     <!-- Gmail -->
-    <string name="pref_gmail_label_title">顯示未讀取郵件的標籤</string>
+    <string name="pref_gmail_label_title">選擇收件匣</string>
     <string-array name="pref_gmail_label_display_names">
         <item>收件匣</item>
-        <item>優先收件匣</item>
+        <item>主要收件匣</item>
     </string-array>
 
-    <string name="pref_gmail_accounts_title">顯示未讀取郵件的帳戶</string>
+    <string name="pref_gmail_accounts_title">選擇帳戶</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">從%2$d個帳戶選中%1$d個</item>
-        <item quantity="other">從%2$d個帳戶選中%1$d個</item>
+        <item quantity="one">已從 %2$d 個帳戶中選取了 %1$d 個</item>
+        <item quantity="other">已從 %2$d 個帳戶中選取了 %1$d 個</item>
     </plurals>
 
     <!-- Calendar -->
-    <string name="pref_calendar_look_ahead_hours_title">顯示未來多長時間的活動</string>
+    <string name="pref_calendar_look_ahead_hours_title">顯示未來多久之內的活動</string>
     <string-array name="pref_calendar_look_ahead_hours_display_names">
-        <item>3小時</item>
-        <item>6小時</item>
-        <item>12小時</item>
-        <item>24小時</item>
-        <item>2天</item>
-        <item>1週</item>
+        <item>3 小時</item>
+        <item>6 小時</item>
+        <item>12 小時</item>
+        <item>24 小時</item>
+        <item>2 天</item>
+        <item>1 週</item>
     </string-array>
-    <string name="pref_calendar_selected_title">顯示日歷</string>
+    <string name="pref_calendar_selected_title">選擇日曆</string>
     <plurals name="pref_calendar_selected_summary_template">
-        <item quantity="one">從%2$d個日歷選中%1$d個</item>
-        <item quantity="other">從%2$d個日歷選中%1$d個</item>
+        <item quantity="one">已從 %2$d 個日曆中選取了 %1$d 個</item>
+        <item quantity="other">已從 %2$d 個日曆中選取了 %1$d 個</item>
     </plurals>
-    <string name="pref_calendar_custom_visibility_title">定制可見的日歷</string>
-    <string name="pref_calendar_custom_visibility_description">顯示日歷應用程式中所有可見的日歷</string>
-    <string name="pref_calendar_show_all_day_title">顯示一整天長度的活動</string>
-    <string name="pref_calendar_show_all_day_description">顯示一整天長度的活動，比如生日。</string>
+    <string name="pref_calendar_custom_visibility_title">自訂顯示的日曆</string>
+    <string name="pref_calendar_custom_visibility_description">若未勾選，將會顯示日曆程式中所有可見的日曆</string>
+    <string name="pref_calendar_show_all_day_title">顯示全天的活動</string>
+    <string name="pref_calendar_show_all_day_description">顯示整天的活動，例如生日</string>
 
     <!-- Daydream preferences -->
-    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
-    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
+    <string name="pref_daydream_color_title">前景顏色</string>
+    <string name="pref_daydream_color_description">休眠模式中文字與圖示的顏色</string>
+    <string name="pref_daydream_night_mode_title">夜間模式</string>
+    <string name="pref_daydream_night_mode_description">非常暗淡的顯示畫面 (適用於昏暗的室內)</string>
+    <string name="pref_daydream_animation_title">動畫效果</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>鐘擺 (預設)</item>
+        <item>走馬燈</item>
+        <item>明滅不定</item>
+        <item>無 (可能損害您的螢幕)</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">系統的休眠模式設定</string>
+
+    <!-- World readability -->
+    <string name="pref_force_world_readable_title">允許其他的應用程式存取擴充套件</string>
+    <string name="pref_force_world_readable_description">允許其他的應用程式讀取所有擴充套件的資料，這包含您的日曆活動、聯絡人資訊等等</string>
+
+    <string name="force_world_readable_dialog_description">其他的應用程式正在要求存取您所有的 DashClock 擴充套件的資料的權限，這包含了部分隱私的資料，例如您的日曆活動、聯絡人資訊等等。您確定要<b>對所有的應用程式允許這項權限</b>嗎？</string>
+
+    <string name="force_world_readable_dialog_no">取消</string>
+    <string name="force_world_readable_dialog_yes">對所有程式允許</string>
+
 </resources>
