@@ -15,9 +15,6 @@
   -->
 
 <resources>
-    <string name="permission_desc_read_extension_data">Povoľuje požadovanie dát DashClock rozšírenia.</string>
-    <string name="permission_label_read_extension_data">požadovanie dát DashClock rozšírenia</string>
-
     <string name="settings">Nastavenia</string>
     <string name="more_options">Viac možností</string>
 
@@ -162,9 +159,14 @@
     <string name="welcome_title">Prispôsobenie DashClocku</string>
     <string name="welcome_description">Chcete len vidieť aktuálny dátum a čas?
 	    Potom stlačte zaškrtávacie tlačidlo hore a hotovo! Ale prečo si neprispôsobiť
-		DashClock s niekoľkými<i>rozšíreniami</i>?
+		DashClock s niekoľkými <i>rozšíreniami</i>?
         \n\n<b>Rozšírenia</b> zobrazujú relevantné a včasné informácie v DashClocku!
 		Vyskúšajte ich pridaním niekoľkých rozšírení nižšie. 
     </string>
+ 
+    <string name="permission_desc_read_extension_data">Umožňuje požadovanie dát DashClock rozšírenia</string>
+    <string name="permission_label_read_extension_data">Požadovať dáta DashClock rozšírenia</string>
+    <string name="permission_desc_bind_data_consumer">Umožňuje aplikácií používať dáta zverejnené DashClock rozšíreniami</string>
+    <string name="permission_label_bind_data_consumer">Požadovať používanie dát DashClock rozšírení</string>
 
 </resources>
