@@ -75,7 +75,7 @@
     <!-- Weather -->
     <string name="weather_extension_title">Počasie</string>
     <string name="weather_extension_description">
-        Zobrazí najnovšie informácie okolo Vás a to vrátane aktuálnej teploty,
+        Zobrazí najnovšie informácie okolo vás a to vrátane aktuálnej teploty,
 		podmienok a predpovedi počasia. Dáta sú získavané zo služby Yahoo! Weather.
     </string>
     <string name="title_weather_settings">Nastavenia rozšírenia: Počasie</string>
