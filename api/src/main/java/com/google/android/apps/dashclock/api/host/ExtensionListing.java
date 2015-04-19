@@ -283,4 +283,13 @@ public class ExtensionListing implements Parcelable {
         result = 31 * result + (mSettingsActivity != null ? mSettingsActivity.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ExtensionListing[component=" + mComponentName
+                + ", compatible=" + mCompatible
+                + ", worldReadable=" + mWorldReadable
+                + ", title=" + mTitle
+                + "]";
+    }
 }
