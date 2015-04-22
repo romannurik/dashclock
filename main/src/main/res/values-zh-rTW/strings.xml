@@ -37,6 +37,22 @@
     <string name="undo">復原</string>
     <string name="extension_removed_template">「%1$s」已移除</string>
     <string name="extensions_removed_template">擴充套件 %1$d 已移除</string>
+    
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">傳送錯誤報告</string>
+    <string name="send_logs_chooser_title">傳送報告使用</string>
+
+    <string name="prev_date_style">上一個日期樣式</string>
+    <string name="prev_time_style">上一個時間樣式</string>
+    <string name="next_date_style">下一個日期樣式</string>
+    <string name="next_time_style">下一個時間樣式</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (Incompatible)</string>
+    <string name="incompatible_extension_title">Incompatible extension</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[擴充套件
+        <b>%1$s</b> 無法與此版本的 DashClock 相容。
+        您要到 Play 商店上看看有沒有該套件的更新嗎？]]></string>
+    <string name="search_play">前往 Play 商店</string>
 
     <!-- About -->
     <string name="close">關閉</string>
