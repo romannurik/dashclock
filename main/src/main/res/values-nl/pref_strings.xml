@@ -17,8 +17,41 @@
 <resources>
     <!-- Advanced widget preferences -->
     <string name="pref_clock_shortcut_title">Klok-snelkoppeling</string>
+    <string name="pref_background_title">Achtergrond</string>
+    <string name="pref_foreground_color_title">Voorgrondkleur</string>
+    <string name="pref_homescreen_title">Startscherm-widget</string>
+    <string name="pref_lockscreen_title">Vergrendelscherm-widget</string>
+    <string name="pref_background_opacity_title">Achtergrond-zichtbaarheid</string>
+    <string-array name="pref_background_opacity_display_names">
+        <item>Volledig transparant</item>
+        <item>25% zichtbaar</item>
+        <item>50% zichtbaar</item>
+        <item>75% zichtbaar</item>
+        <item>Niet transparant</item>
+    </string-array>
+    <string-array name="pref_background_opacity_values" translatable="false">
+        <item>0</item>
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+    </string-array>
+    <string name="pref_foreground_color_description">Kleur van tekst en iconen</string>
     <string name="pref_aggressive_centering_title">Altijd centreren</string>
-    <string name="pref_aggressive_centering_description">Kan erin resulteren dat de klok bij verschillende widget stadia verspringt</string>
+    <string name="pref_aggressive_centering_description">Kan erin resulteren dat de klok bij verschillende widgetstadia verspringt</string>
+    <string name="pref_settings_button_title">Instellingen-knop</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>Verborgen</item>
+        <item>In uitgeklapt widget</item>
+        <item>In applicatielijst</item>
+    </string-array>
+    <string-array name="pref_settings_button_values" translatable="false">
+        <item>hidden</item>
+        <item>inwidget</item>
+        <item>inlauncher</item>
+    </string-array>
+    <string name="pref_hide_clock_title">Klok verbergen</string>
+    <string name="pref_hide_clock_description">Verberg de klok en toon alleen de extensies</string>
 
     <!-- Universal settings preferences -->
     <string name="pref_shortcut_title">Snelkoppeling</string>
@@ -30,12 +63,24 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
+    <string-array name="pref_weather_units_values" translatable="false">
+        <item>f</item>
+        <item>c</item>
+    </string-array>
+    <string name="pref_weather_location_title">Locatie</string>
+    <string name="pref_weather_location_query_hint">Zoek een locatie</string>
+    <string name="pref_weather_location_automatic">Automatisch</string>
+    <string name="pref_weather_location_automatic_description">Gebaseerd op je huidige locatie.</string>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Geef ongelezen aantal weer voor</string>
     <string-array name="pref_gmail_label_display_names">
         <item>Inbox</item>
         <item>Postvak Prioreteit</item>
+    </string-array>
+    <string-array name="pref_gmail_label_inbox_values" translatable="false">
+        <item>i</item>
+        <item>p</item>
     </string-array>
 
     <string name="pref_gmail_accounts_title">Geef ongelezen aantal weer voor de accounts</string>
@@ -54,17 +99,50 @@
         <item>2 dagen</item>
         <item>week</item>
     </string-array>
+    <string-array name="pref_calendar_look_ahead_hours_values" translatable="false">
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+        <item>168</item>
+    </string-array>
     <string name="pref_calendar_selected_title">Selecteer agenda\'s om weer te geven</string>
     <plurals name="pref_calendar_selected_summary_template">
         <item quantity="one">%1$d van %2$d agenda geselecteerd</item>
         <item quantity="other">%1$d van %2$d agenda\'s geselecteerd</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Aangepaste agenda-zichtbaarheid</string>
-    <string name="pref_calendar_custom_visibility_description">Laat alle agenda\'s uit de Agenda-app zien op het moment dat dit uitgevinkt is</string>
+    <string name="pref_calendar_custom_visibility_description">Alle agenda\'s uit de Agenda-app worden getoond op het moment dat dit is uitgevinkt.</string>
     <string name="pref_calendar_show_all_day_title">Laat \'Hele dag\'-afspraken zien</string>
-    <string name="pref_calendar_show_all_day_description">Laat \'Hele dag\'-afspraken zien zoals verjaardagen</string>
+    <string name="pref_calendar_show_all_day_description">Laat \'Hele dag\'-afspraken zoals verjaardagen zien</string>
 
     <!-- Daydream preferences -->
-    <!--<string name="pref_daydream_color_title">Foreground color</string>-->
-    <!--<string name="pref_daydream_system_settings_title">System Daydream settings</string>-->
+    <string name="pref_daydream_color_title">Voorgrondkleur</string>
+    <string name="pref_daydream_color_description">Kleur van tekst en iconen in Dagdroom-modus</string>
+    <string name="pref_daydream_night_mode_title">Nachtmodus</string>
+    <string name="pref_daydream_night_mode_description">Erg donker scherm (voor donkere kamers)</string>
+    <string name="pref_daydream_animation_title">Animatie</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>Slingeren (standaard)</item>
+        <item>Schuiven</item>
+        <item>Fade</item>
+        <item>Geen (beschadigt mogelijk scherm)</item>
+    </string-array>
+    <string-array name="pref_daydream_animation_values" translatable="false">
+        <item>pendulum</item>
+        <item>slide</item>
+        <item>fade</item>
+        <item>none</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">Dagdroom-systeeminstellingen</string>
+
+    <!-- World readability -->
+    <string name="pref_force_world_readable_title">Sta andere apps toe alle extensies te zien</string>
+    <string name="pref_force_world_readable_description">Sta andere apps toe om informatie van al je extensies te zien, inclusief je agenda, contacten, etc.</string>
+
+    <string name="force_world_readable_dialog_description">Een andere app vraagt toegang tot de mogelijkheid om informatie van al je DashClock-extensies te zien, inclusief privé-extensies zoals je agenda, contacten, etc. Wil je dit <b>toestaan voor alle apps</b>?</string>
+
+    <string name="force_world_readable_dialog_no">Annuleren</string>
+    <string name="force_world_readable_dialog_yes">Toestaan voor alle apps</string>
 </resources>
