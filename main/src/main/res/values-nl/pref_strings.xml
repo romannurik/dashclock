@@ -29,13 +29,6 @@
         <item>75% zichtbaar</item>
         <item>Niet transparant</item>
     </string-array>
-    <string-array name="pref_background_opacity_values" translatable="false">
-        <item>0</item>
-        <item>25</item>
-        <item>50</item>
-        <item>75</item>
-        <item>100</item>
-    </string-array>
     <string name="pref_foreground_color_description">Kleur van tekst en iconen</string>
     <string name="pref_aggressive_centering_title">Altijd centreren</string>
     <string name="pref_aggressive_centering_description">Kan erin resulteren dat de klok bij verschillende widgetstadia verspringt</string>
@@ -44,11 +37,6 @@
         <item>Verborgen</item>
         <item>In uitgeklapt widget</item>
         <item>In applicatielijst</item>
-    </string-array>
-    <string-array name="pref_settings_button_values" translatable="false">
-        <item>hidden</item>
-        <item>inwidget</item>
-        <item>inlauncher</item>
     </string-array>
     <string name="pref_hide_clock_title">Klok verbergen</string>
     <string name="pref_hide_clock_description">Verberg de klok en toon alleen de extensies</string>
@@ -63,10 +51,6 @@
         <item>°F</item>
         <item>°C</item>
     </string-array>
-    <string-array name="pref_weather_units_values" translatable="false">
-        <item>f</item>
-        <item>c</item>
-    </string-array>
     <string name="pref_weather_location_title">Locatie</string>
     <string name="pref_weather_location_query_hint">Zoek een locatie</string>
     <string name="pref_weather_location_automatic">Automatisch</string>
@@ -77,10 +61,6 @@
     <string-array name="pref_gmail_label_display_names">
         <item>Inbox</item>
         <item>Postvak Prioreteit</item>
-    </string-array>
-    <string-array name="pref_gmail_label_inbox_values" translatable="false">
-        <item>i</item>
-        <item>p</item>
     </string-array>
 
     <string name="pref_gmail_accounts_title">Geef ongelezen aantal weer voor de accounts</string>
@@ -98,14 +78,6 @@
         <item>24 uur</item>
         <item>2 dagen</item>
         <item>week</item>
-    </string-array>
-    <string-array name="pref_calendar_look_ahead_hours_values" translatable="false">
-        <item>3</item>
-        <item>6</item>
-        <item>12</item>
-        <item>24</item>
-        <item>48</item>
-        <item>168</item>
     </string-array>
     <string name="pref_calendar_selected_title">Selecteer agenda\'s om weer te geven</string>
     <plurals name="pref_calendar_selected_summary_template">
@@ -128,12 +100,6 @@
         <item>Schuiven</item>
         <item>Fade</item>
         <item>Geen (beschadigt mogelijk scherm)</item>
-    </string-array>
-    <string-array name="pref_daydream_animation_values" translatable="false">
-        <item>pendulum</item>
-        <item>slide</item>
-        <item>fade</item>
-        <item>none</item>
     </string-array>
     <string name="pref_daydream_system_settings_title">Dagdroom-systeeminstellingen</string>
 
