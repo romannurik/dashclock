@@ -17,4 +17,8 @@ DashClock is a replacement lock screen and home screen clock widget for Android 
 
 ## Extensibility
 
-DashClock is extensible! You can create custom extensions that expose status information using the DashClock [API]https://github.com/romannurik/dashclock/wiki/API).
+DashClock is extensible! You can create custom extensions that expose status information using the DashClock [API](https://github.com/romannurik/dashclock/wiki/API).
+
+## Beta
+
+So you'd like to try out the latest beta version of DashClock? Great! See how to [join the beta](https://github.com/romannurik/dashclock/wiki/Beta).
