@@ -475,6 +475,15 @@ public class ExtensionData implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        try {
+            return serialize().toString();
+        } catch (JSONException e) {
+            return super.toString();
+        }
+    }
+
+    @Override
     public int hashCode() {
         throw new UnsupportedOperationException();
     }
