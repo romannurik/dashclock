@@ -20,10 +20,9 @@ import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -32,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -55,7 +53,7 @@ import static com.google.android.apps.dashclock.LogUtils.LOGD;
  * The primary widget configuration activity. Serves as an interstitial when adding the widget, and
  * shows when pressing the settings button in the widget.
  */
-public class ConfigurationActivity extends ActionBarActivity {
+public class ConfigurationActivity extends AppCompatActivity {
     private static final String TAG = LogUtils.makeLogTag(ConfigurationActivity.class);
 
     public static final String LAUNCHER_ACTIVITY_NAME =
@@ -69,7 +67,7 @@ public class ConfigurationActivity extends ActionBarActivity {
     public static final int START_SECTION_DAYDREAM = 2;
     public static final int START_SECTION_ADVANCED = 3;
 
-    private static final int[] SECTION_LABELS = new int[]{
+    private static final int[] SECTION_LABELS = {
             R.string.section_extensions,
             R.string.section_appearance,
             R.string.section_daydream,

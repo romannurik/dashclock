@@ -25,7 +25,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,7 +42,7 @@ import net.nurik.roman.dashclock.R;
 /**
  * A base activity for extension configuration activities.
  */
-public abstract class BaseSettingsActivity extends ActionBarActivity {
+public abstract class BaseSettingsActivity extends AppCompatActivity {
     protected ExtensionPreferenceFragment mFragment;
 
     public void onCreate(Bundle savedInstanceState) {

@@ -35,7 +35,7 @@ repositories {
 
 dependencies {
     compile 'com.android.support:support-v13:21.0.3'
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.0'
     compile 'com.google.android.gms:play-services-base:7.0.0'
     compile 'com.google.android.gms:play-services-location:7.0.0'
     compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1'

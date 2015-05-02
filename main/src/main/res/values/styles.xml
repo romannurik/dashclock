@@ -23,10 +23,10 @@
     </style>
 
     <style name="Theme.Configuration" parent="Theme.Configuration.Base">
-        <item name="android:windowNoTitle">true</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
@@ -39,7 +39,7 @@
     </style>
 
     <style name="Theme.ExtensionConfiguration" parent="Theme.AppCompat.Light">
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/theme_accent</item>
         <item name="colorPrimaryDark">@color/theme_accent_dark</item>
