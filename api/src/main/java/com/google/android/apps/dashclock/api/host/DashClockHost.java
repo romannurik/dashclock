@@ -208,13 +208,12 @@ public abstract class DashClockHost {
      */
     public List<ExtensionListing> getAvailableExtensions(boolean onlyWorldReadableExtensions) {
         if (!onlyWorldReadableExtensions) {
-            return mAvailableExtensions;
+            return new ArrayList<>(mAvailableExtensions);
         }
-        List<ExtensionListing> eis = new ArrayList<>();
-        for (ExtensionListing ei : mAvailableExtensions) {
-            if (ei.worldReadable()) {
-                eis.add(ei);
-            }
+        List<ExtensionListing> eis = new ArrayList<>(mAvailableExtensions);
+        int count = eis.size() - 1;
+        for (int i = count - 1; i >= 0; i++) {
+            eis.remove(i);
         }
         return eis;
     }
