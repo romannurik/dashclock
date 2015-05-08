@@ -212,8 +212,11 @@ public abstract class DashClockHost {
         }
         List<ExtensionListing> eis = new ArrayList<>(mAvailableExtensions);
         int count = eis.size() - 1;
-        for (int i = count - 1; i >= 0; i++) {
-            eis.remove(i);
+        for (int i = count; i >= 0; i--) {
+            ExtensionListing ei = eis.get(i);
+            if (!ei.worldReadable()) {
+                eis.remove(i);
+            }
         }
         return eis;
     }
