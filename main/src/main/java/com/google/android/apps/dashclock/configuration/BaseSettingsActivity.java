@@ -65,6 +65,11 @@ public abstract class BaseSettingsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onAttachFragment(android.app.Fragment fragment) {
+        mFragment = (ExtensionPreferenceFragment) fragment;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             // TODO: if the previous activity on the stack isn't a ConfigurationActivity,
