@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.1'
-    }
-}
-
 apply plugin: 'com.android.application'
 
 project.archivesBaseName = "dashclock"
-
-repositories {
-    maven {
-        url 'https://raw.githubusercontent.com/Goddchen/mvn-repo/master/'
-    }
-}
 
 dependencies {
     compile 'com.android.support:support-v13:21.0.3'
@@ -43,15 +28,15 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     def Properties versionProps = new Properties()
     versionProps.load(new FileInputStream(file('version.properties')))
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
 
         versionName versionProps['name']
         versionCode versionProps['code'].toInteger()
@@ -59,6 +44,11 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     signingConfigs {

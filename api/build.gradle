@@ -15,15 +15,6 @@
  */
 import org.gradle.api.artifacts.maven.MavenDeployment
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.1'
-    }
-}
-
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'java'
@@ -31,6 +22,9 @@ apply plugin: 'java'
 jar.baseName = 'dashclock-api'
 group = 'com.google.android.apps.dashclock'
 version = '2.1.0'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
 
 def Properties props = new Properties()
 props.load(new FileInputStream(file('../local.properties')))
