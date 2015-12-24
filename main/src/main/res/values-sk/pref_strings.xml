@@ -24,9 +24,9 @@
     <string name="pref_background_opacity_title">Viditeľnosť pozadia</string>
     <string-array name="pref_background_opacity_display_names">
         <item>Úplne priehľadné</item>
-        <item>25% viditeľne</item>
-        <item>50% viditeľne</item>
-        <item>75% viditeľne</item>
+        <item>Viditeľné na 25%</item>
+        <item>Viditeľné na 50%</item>
+        <item>Viditeľné na 75%</item>
         <item>Úplne nepriehľadné</item>
     </string-array>
     <string name="pref_foreground_color_description">Farba textu a ikon</string>
@@ -56,7 +56,7 @@
     <string name="pref_weather_location_title">Poloha</string>
     <string name="pref_weather_location_query_hint">Nájsť polohu</string>
     <string name="pref_weather_location_automatic">Automaticky</string>
-    <string name="pref_weather_location_automatic_description">Na základe Vašej aktuálnej polohy.</string>
+    <string name="pref_weather_location_automatic_description">Na základe vašej aktuálnej polohy.</string>
 
     <!-- Gmail -->
     <string name="pref_gmail_label_title">Zobraziť počet neprečítaných e-mailov na štítku</string>
@@ -67,9 +67,9 @@
 
     <string name="pref_gmail_accounts_title">Zobraziť počet neprečítaných e-mailov pre účty</string>
     <plurals name="pref_gmail_accounts_summary_template">
-        <item quantity="one">Vybraný %1$d účet z %2$d</item>
-        <item quantity="few">Vybrané %1$d účty z %2$d</item>
-        <item quantity="other">Vybraných %1$d účtov z %2$d</item>
+        <item quantity="one">Vybratý %1$d účet z %2$d</item>
+        <item quantity="few">Vybraté %1$d účty z %2$d</item>
+        <item quantity="other">Vybratých %1$d účtov z %2$d</item>
     </plurals>
 
     <!-- Calendar -->
@@ -84,9 +84,9 @@
     </string-array>
     <string name="pref_calendar_selected_title">Zobraziť kalendár</string>
     <plurals name="pref_calendar_selected_summary_template">
-        <item quantity="one">Vybraný %1$d kalendár z %2$d</item>
-        <item quantity="few">Vybrané %1$d kalendáre z %2$d</item>
-        <item quantity="other">Vybraných %1$d kalendárov z %2$d</item>
+        <item quantity="one">Vybratý %1$d kalendár z %2$d</item>
+        <item quantity="few">Vybraté %1$d kalendáre z %2$d</item>
+        <item quantity="other">Vybratých %1$d kalendárov z %2$d</item>
     </plurals>
     <string name="pref_calendar_custom_visibility_title">Vlastná viditeľnosť kalendára</string>
     <string name="pref_calendar_custom_visibility_description">Ak nie je povolené, zobrazí všetky viditeľné kalendáre v aplikácii Kalendár</string>
@@ -106,4 +106,14 @@
         <item>Žiadna (môže dôjsť k poškodeniu obrazovky)</item>
     </string-array>
     <string name="pref_daydream_system_settings_title">Systémové nastavenia šetriča obrazovky</string>
+
+    <!-- World readability -->
+    <string name="pref_force_world_readable_title">Povoliť ostatným aplikáciám zobrazenie všetkých rozšírení</string>
+    <string name="pref_force_world_readable_description">Povoliť ostatným aplikáciám zobrazenie informácií zo všetkých rozšírení, vrátane kalendára, kontaktov, atď.</string>
+
+    <string name="force_world_readable_dialog_description">Iná aplikácia požaduje zobrazenie informácií zo všetkých vašich DashClock rozšírení vrátane tých súkromných, ako sú kalendár, kontakty, atď. Chcete <b>povoliť túto funkciu pre všetky aplikácie</b>?</string>
+
+    <string name="force_world_readable_dialog_no">Zrušiť</string>
+    <string name="force_world_readable_dialog_yes">Povoliť pre všetky aplikácie</string>
+
 </resources>
