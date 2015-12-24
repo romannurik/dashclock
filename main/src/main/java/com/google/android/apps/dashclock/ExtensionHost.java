@@ -313,8 +313,10 @@ public class ExtensionHost {
         }
 
         conn.binder = null;
-        mContext.unbindService(conn.serviceConnection);
-        conn.serviceConnection = null;
+        if (conn.serviceConnection != null) {
+            mContext.unbindService(conn.serviceConnection);
+            conn.serviceConnection = null;
+        }
     }
 
     private ExtensionManager.OnChangeListener mChangeListener

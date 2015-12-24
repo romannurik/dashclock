@@ -26,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
 import android.content.pm.ServiceInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -114,6 +115,11 @@ public abstract class DashClockHost {
      */
     public static List<String> getOtherAppsWithReadDataExtensionsPermission(Context context) {
         List<String> installedApps = new ArrayList<>();
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            // There is no problem with the PERMISSION_READ_EXTENSION_DATA if
+            // the api supports multiple apps defining the same permission (< Lollipop)
+            return installedApps;
+        }
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo ai : apps) {
@@ -202,12 +208,14 @@ public abstract class DashClockHost {
      */
     public List<ExtensionListing> getAvailableExtensions(boolean onlyWorldReadableExtensions) {
         if (!onlyWorldReadableExtensions) {
-            return mAvailableExtensions;
+            return new ArrayList<>(mAvailableExtensions);
         }
-        List<ExtensionListing> eis = new ArrayList<>();
-        for (ExtensionListing ei : mAvailableExtensions) {
-            if (ei.worldReadable()) {
-                eis.add(ei);
+        List<ExtensionListing> eis = new ArrayList<>(mAvailableExtensions);
+        int count = eis.size() - 1;
+        for (int i = count; i >= 0; i--) {
+            ExtensionListing ei = eis.get(i);
+            if (!ei.worldReadable()) {
+                eis.remove(i);
             }
         }
         return eis;
