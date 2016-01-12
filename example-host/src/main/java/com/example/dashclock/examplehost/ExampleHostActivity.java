@@ -21,6 +21,7 @@ import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -46,7 +47,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import android.support.v7.app.AlertDialog;
 import com.google.android.apps.dashclock.api.host.DashClockHost;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.android.apps.dashclock.api.host.ExtensionListing;
@@ -67,7 +68,7 @@ public class ExampleHostActivity extends Activity implements View.OnClickListene
     private View mOnlyShowingWorldReadableExtensionsView;
     private Host mHost;
 
-    private MaterialDialog mMultiplexerDialog;
+    private AlertDialog mMultiplexerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,44 +163,48 @@ public class ExampleHostActivity extends Activity implements View.OnClickListene
         if (mMultiplexerDialog != null && mMultiplexerDialog.isShowing()) {
             mMultiplexerDialog.dismiss();
         }
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .iconRes(R.drawable.ic_mux_dialog_icon)
-                .negativeText(android.R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        dialog.dismiss();
-                        try {
-                            startActivity(mHost.getMultiplexerDownloadIntent());
-                        } catch (ActivityNotFoundException ex) {
-                            // wtf (there isn't a browser)
-                            Toast.makeText(ExampleHostActivity.this,
-                                    R.string.multiplexer_dialog_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
+        AlertDialog.OnClickListener positiveListener = new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                try {
+                    startActivity(mHost.getMultiplexerDownloadIntent());
+                } catch (ActivityNotFoundException ex) {
+                    // wtf (there isn't a browser)
+                    Toast.makeText(ExampleHostActivity.this,
+                            R.string.multiplexer_dialog_failed,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.support.v7.appcompat.R.style.Theme_AppCompat_Dialog_Alert)
+                .setIcon(R.drawable.ic_mux_dialog_icon)
+                .setNegativeButton(android.R.string.cancel, null);
+
         Intent muxDownloadIntent = mHost.getMultiplexerDownloadIntent();
         if (muxDownloadIntent != null) {
             if (!mHost.isDashClockPresent(this)) {
                 // Install Multiplexer app
-                builder.title(R.string.multiplexer_dialog_install_title);
-                builder.content(R.string.multiplexer_dialog_install_message);
-                builder.positiveText(R.string.multiplexer_dialog_install_positive_button);
+                builder.setTitle(R.string.multiplexer_dialog_install_title);
+                builder.setMessage(R.string.multiplexer_dialog_install_message);
+                builder.setPositiveButton(R.string.multiplexer_dialog_install_positive_button, positiveListener);
             } else {
                 // Update DashClock
-                builder.title(R.string.multiplexer_dialog_upgrade_title);
-                builder.content(R.string.multiplexer_dialog_upgrade_message);
-                builder.positiveText(R.string.multiplexer_dialog_upgrade_positive_button);
+                builder.setTitle(R.string.multiplexer_dialog_upgrade_title);
+                builder.setMessage(R.string.multiplexer_dialog_upgrade_message);
+                builder.setPositiveButton(R.string.multiplexer_dialog_upgrade_positive_button, positiveListener);
             }
         } else {
             // Not available update
             List<String> pkgs = mHost.getOtherAppsWithReadDataExtensionsPermission(this);
             String appNames = packagesNameListToAppNameString(this, pkgs);
-            builder.title(R.string.multiplexer_dialog_other_title);
-            builder.content(R.string.multiplexer_dialog_other_message, appNames);
+            builder.setTitle(R.string.multiplexer_dialog_other_title);
+            builder.setMessage(getString(R.string.multiplexer_dialog_other_message, appNames));
         }
-        mMultiplexerDialog = builder.build();
+        mMultiplexerDialog = builder.create();
         mMultiplexerDialog.show();
     }
 

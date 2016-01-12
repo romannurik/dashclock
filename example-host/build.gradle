@@ -14,38 +14,30 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.1'
-    }
-}
-
-repositories {
-    mavenCentral()
-    jcenter()
-}
 
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.afollestad:material-dialogs:0.6.6.3'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
     compile project(':api')
 }
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
     }
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
