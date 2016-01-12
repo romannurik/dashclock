@@ -3,7 +3,7 @@
 ext.buildToolsVersion = "23.0.2"
 ext.minSdkVersion = 17
 ext.targetSdkVersion = 21
-ext.compileSdkVersion = 21
+ext.compileSdkVersion = 23
 
 buildscript {
     repositories {
@@ -16,7 +16,6 @@ buildscript {
 
 subprojects {
     repositories {
-        maven { url "https://jitpack.io" }
         maven { url 'https://raw.githubusercontent.com/Goddchen/mvn-repo/master/' }
         mavenCentral()
         jcenter()
