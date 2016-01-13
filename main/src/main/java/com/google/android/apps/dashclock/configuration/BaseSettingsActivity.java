@@ -66,7 +66,11 @@ public abstract class BaseSettingsActivity extends AppCompatActivity {
 
     @Override
     public void onAttachFragment(android.app.Fragment fragment) {
-        mFragment = (ExtensionPreferenceFragment) fragment;
+        if (fragment instanceof ExtensionPreferenceFragment) {
+            // instanceof check necessary as not all attached fragments
+            // are ExtensionPreferenceFragments (e.g. app chooser dialog fragments)
+            mFragment = (ExtensionPreferenceFragment) fragment;
+        }
     }
 
     @Override
