@@ -1,0 +1,166 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="settings">設定</string>
+    <string name="more_options">追加のオプション</string>
+
+    <string name="simple_date_format">yyyy/MM/dd E</string>
+
+    <!-- Configuration -->
+    <string name="title_configure">DashClock 設定</string>
+    <string name="section_extensions">拡張</string>
+    <string name="section_appearance">外観</string>
+    <string name="section_daydream">スクリーンセイバー</string>
+    <string name="section_advanced">詳細</string>
+
+    <string name="title_apps">アプリ</string>
+    <string name="title_shortcuts">ショートカット</string>
+
+    <string name="get_more_extensions">追加の拡張を入手する</string>
+    <string name="add_another_extension">別の拡張を追加</string>
+    <string name="more_extensions">追加の拡張</string>
+    <string name="done">完了</string>
+    <string name="add_extension">拡張を追加</string>
+    <string name="cancel">キャンセル</string>
+    <string name="remove">除去</string>
+
+    <string name="undo">元に戻す</string>
+    <string name="extension_removed_template">\'%1$s\' を除去しました。</string>
+    <string name="extensions_removed_template">%1$d 拡張を除去しました。</string>
+
+    <!-- These strings never appear in release builds; translation is very low priority -->
+    <string name="send_logs">デバッグログを送信</string>
+    <string name="send_logs_chooser_title">次でログを送信</string>
+
+    <string name="prev_date_style">前の日付スタイル</string>
+    <string name="prev_time_style">前の時刻スタイル</string>
+    <string name="next_date_style">次の日付スタイル</string>
+    <string name="next_time_style">次の時刻スタイル</string>
+
+    <string name="incompatible_extension_menu_template">%1$s (非互換)</string>
+    <string name="incompatible_extension_title">互換性のない拡張</string>
+    <string name="incompatible_extension_message_search_play_template"><![CDATA[The
+        <b>%1$s</b> 拡張はこのバージョンの DashClock と互換性がありません。
+        Google Play で拡張のアップデートを検索しますか?]]></string>
+    <string name="search_play">Google Play で検索</string>
+
+    <!-- About -->
+    <string name="close">閉じる</string>
+    <string name="about">アプリについて</string>
+
+    <string name="about_body"><![CDATA[
+        Copyright 2012–2016 Google Inc.<br>All Rights Reserved.<br>
+        <a href="http://m.google.com/utos">利用規約</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.google.com/policies/privacy/">プライバシーポリシー</a>&nbsp;<br><br>
+        これらのオープンソース ツールに大変感謝します:<br><br>
+        <b><a href="http://www.androidicons.com/">Android Developer Icons</a>&nbsp;</b><br>
+        <i>by Günther Beyer of <a href="http://www.opoloo.com/">Opoloo</a></i>&nbsp;<br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b>&nbsp;<br>
+        <i>by Carl A. Bauer</i>
+    ]]></string>
+
+    <!-- Weather -->
+    <string name="weather_extension_title">天気</string>
+    <string name="weather_extension_description">
+        周辺の最新天気情報を表示します。現在の気温、気象に加えて予報情報もあります。
+        Powered by Yahoo! Weather.
+    </string>
+    <string name="title_weather_settings">天気拡張の設定</string>
+    <string name="temperature_template">%1$s°</string>
+    <string name="later_forecast_template">最新: %1$s</string>
+    <string name="no_weather_data">天気データが利用できません</string>
+    <string name="no_location_data">位置が取得できません</string>
+
+    <!-- Gmail -->
+    <string name="gmail_extension_title">Gmail</string>
+    <string name="gmail_extension_description">
+        Gmail 受信トレイまたはメインのトレイの未読件数を表示します。
+    </string>
+    <string name="title_gmail_settings">Gmail 拡張の設定</string>
+    <plurals name="gmail_title_template">
+        <item quantity="other">%1$d 未読</item>
+    </plurals>
+
+    <!-- Next alarm -->
+    <string name="next_alarm_extension_title">次のアラーム</string>
+    <string name="next_alarm_extension_description">
+        次に予定したアラームを設定している場合、関連する情報を表示します。
+    </string>
+    <string name="next_alarm">次のアラーム</string>
+    <string name="title_next_alarm_settings">次のアラーム拡張の設定</string>
+
+    <!-- Calendar -->
+    <string name="calendar_extension_title">カレンダー予約</string>
+    <string name="calendar_extension_description">
+        数時間以内に次のカレンダー予約を設定している場合、関連する情報を表示します。
+    </string>
+    <string name="title_calendar_settings">カレンダー拡張の設定</string>
+    <plurals name="calendar_template_days">
+        <item quantity="one">%1$s 日</item>
+        <item quantity="other">%1$s 日</item>
+    </plurals>
+    <plurals name="calendar_template_hours">
+        <item quantity="one">%1$s 時間</item>
+        <item quantity="other">%1$s 時間</item>
+    </plurals>
+    <plurals name="calendar_template_mins">
+        <item quantity="other">%1$s 分</item>
+    </plurals>
+    <string name="today">今日</string>
+    <string name="now">今</string>
+
+    <!-- Missed calls -->
+    <string name="missed_calls_extension_title">不在着信</string>
+    <string name="missed_calls_extension_description">
+        不在着信の数と発信者の名前を表示します。
+    </string>
+    <plurals name="missed_calls_title_template">
+        <item quantity="one">%1$s 不在着信</item>
+        <item quantity="other">%1$s 不在着信</item>
+    </plurals>
+    <string name="missed_calls_body_template">発信者: %1$s</string>
+    <string name="missed_calls_unknown">不明</string>
+
+    <!-- SMS + MMS -->
+    <string name="sms_extension_title">テキストメッセージ</string>
+    <string name="sms_extension_description">
+        SMS と MMS 会話の未読数を、送信者の名前とともに表示します。
+    </string>
+    <plurals name="sms_title_template">
+        <item quantity="one">%1$s 未読</item>
+        <item quantity="other">%1$s 未読</item>
+    </plurals>
+    <string name="sms_body_template">送信者: %1$s</string>
+    <string name="sms_body_all_participants_template">参加者: %1$s</string>
+
+    <!-- Welcome strings -->
+    <string name="welcome_title">DashClock のカスタマイズ</string>
+    <string name="welcome_description">現在の日付と時刻を見たいだけですか?
+        それは上のチェックマークを押すと設定されます! でも、DashClock をいくつかの
+        <i>拡張</i> でカスタマイズしませんか?
+        \n\n<b>拡張</b> は、関連したタイムリーな情報を DashClock の内部に示してくれます!
+        下のいくつかの拡張を追加して試してください。
+    </string>
+
+    <!-- Multiplexer -->
+    <string name="permission_desc_read_extension_data">DashClock 拡張のデータのリクエストを許可します</string>
+    <string name="permission_label_read_extension_data">DashClock 拡張データのリクエスト</string>
+    <string name="permission_desc_bind_data_consumer">アプリが DashClock 拡張によって発行されたデータの受け取りを許可します</string>
+    <string name="permission_label_bind_data_consumer">DashClock 拡張データの受け取りのリクエスト</string>
+
+</resources>

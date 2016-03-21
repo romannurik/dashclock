@@ -1,0 +1,115 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Advanced widget preferences -->
+    <string name="pref_clock_shortcut_title">時計ショートカット</string>
+    <string name="pref_background_title">背景</string>
+    <string name="pref_foreground_color_title">文字色</string>
+    <string name="pref_homescreen_title">ホーム画面ウィジェット</string>
+    <string name="pref_lockscreen_title">ロック画面ウィジェット</string>
+    <string name="pref_background_opacity_title">背景の透過度</string>
+    <string-array name="pref_background_opacity_display_names">
+        <item>Fully transparent</item>
+        <item>25% 透過</item>
+        <item>50% 透過</item>
+        <item>75% 透過</item>
+        <item>完全に透過</item>
+    </string-array>
+    <string name="pref_foreground_color_description">テキストとアイコンの色</string>
+    <string name="pref_aggressive_centering_title">常に中央</string>
+    <string name="pref_aggressive_centering_description">時計が別のウィジェットの周りを飛び回らないようにします</string>
+    <string name="pref_settings_button_title">設定ボタン</string>
+    <string-array name="pref_settings_button_display_names">
+        <item>非表示</item>
+        <item>拡張ウィジェットに</item>
+        <item>アプリランチャーに</item>
+    </string-array>
+    <string name="pref_hide_clock_title">時計を非表示</string>
+    <string name="pref_hide_clock_description">時計を非表示にして拡張のみ表示します</string>
+
+    <!-- Universal settings preferences -->
+    <string name="pref_shortcut_title">ショートカット</string>
+    <string name="pref_shortcut_default">(デフォルト)</string>
+
+    <!-- Weather -->
+    <string name="pref_weather_units_title">天気の単位</string>
+    <string-array name="pref_weather_units_display_names">
+        <item>°F</item>
+        <item>°C</item>
+    </string-array>
+    <string name="pref_weather_location_title">位置</string>
+    <string name="pref_weather_location_query_hint">位置の検索</string>
+    <string name="pref_weather_location_automatic">自動</string>
+    <string name="pref_weather_location_automatic_description">現在の位置に基づきます。</string>
+
+    <!-- Gmail -->
+    <string name="pref_gmail_label_title">未読件数を表示するラベル</string>
+    <string-array name="pref_gmail_label_display_names">
+        <item>受信トレイ</item>
+        <item>メインの受信トレイ</item>
+    </string-array>
+
+    <string name="pref_gmail_accounts_title">未読件数を表示するアカウント</string>
+    <plurals name="pref_gmail_accounts_summary_template">
+        <item quantity="one">%1$d / %2$d アカウントを選択</item>
+        <item quantity="other">%1$d / %2$d アカウントを選択</item>
+    </plurals>
+
+    <!-- Calendar -->
+    <string name="pref_calendar_look_ahead_hours_title">予約を表示する時間</string>
+    <string-array name="pref_calendar_look_ahead_hours_display_names">
+        <item>3 時間</item>
+        <item>6 時間</item>
+        <item>12 時間</item>
+        <item>24 時間</item>
+        <item>2 日</item>
+        <item>週</item>
+    </string-array>
+    <string name="pref_calendar_selected_title">表示するカレンダーの選択</string>
+    <plurals name="pref_calendar_selected_summary_template">
+        <item quantity="one">%1$d / %2$d カレンダーを選択</item>
+        <item quantity="other">%1$d / %2$d カレンダーを選択</item>
+    </plurals>
+    <string name="pref_calendar_custom_visibility_title">カレンダー表示のカスタマイズ</string>
+    <string name="pref_calendar_custom_visibility_description">チェック外すと、カレンダーアプリで表示可能なカレンダーをすべて表示します</string>
+    <string name="pref_calendar_show_all_day_title">終日イベントを表示</string>
+    <string name="pref_calendar_show_all_day_description">誕生日などの終日イベントを含めます</string>
+
+    <!-- Daydream preferences -->
+    <string name="pref_daydream_color_title">文字色</string>
+    <string name="pref_daydream_color_description">スクリーンセイバーモードでのテキストとアイコンの色</string>
+    <string name="pref_daydream_night_mode_title">夜間モード</string>
+    <string name="pref_daydream_night_mode_description">非常に暗い表示 (暗い部屋用)</string>
+    <string name="pref_daydream_animation_title">アニメーション</string>
+    <string-array name="pref_daydream_animation_display_names">
+        <item>振り子 (デフォルト)</item>
+        <item>スライド</item>
+        <item>フェード</item>
+        <item>なし (画面を痛めるかもしれません)</item>
+    </string-array>
+    <string name="pref_daydream_system_settings_title">システム スクリーンセイバー設定</string>
+
+    <!-- World readability -->
+    <string name="pref_force_world_readable_title">他のアプリがすべての拡張を参照することを許可</string>
+    <string name="pref_force_world_readable_description">他のアプリがすべての拡張から、カレンダー、連絡先などを含む情報を参照することを許可します。</string>
+
+    <string name="force_world_readable_dialog_description">他のアプリがすべての DashClock 拡張から、カレンダー、連絡先など個人的な情報を含む情報を参照する権限を要求しています。<b>すべてのアプリにこれを許可</b>してもよろしいですか?</string>
+
+    <string name="force_world_readable_dialog_no">キャンセル</string>
+    <string name="force_world_readable_dialog_yes">すべてのアプリに許可</string>
+
+</resources>
