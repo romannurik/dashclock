@@ -185,7 +185,7 @@ class YahooWeatherApiClient {
 
         // first=tagname (admin1, locality3) second=woeid
         String primaryWoeid = null;
-        List<Pair<String,String>> alternateWoeids = new ArrayList<Pair<String, String>>();
+        List<Pair<String, String>> alternateWoeids = new ArrayList<Pair<String, String>>();
 
         HttpURLConnection connection = null;
         try {
@@ -389,7 +389,10 @@ class YahooWeatherApiClient {
 
     private static String buildWeatherQueryUrl(String woeid) {
         // http://developer.yahoo.com/weather/
-        return "http://weather.yahooapis.com/forecastrss?w=" + woeid + "&u=" + sWeatherUnits;
+        String query = "https://query.yahooapis.com/v1/public/yql?q="
+                + "SELECT * FROM weather.forecast WHERE woeid=" + woeid
+                + " and u=\'" + sWeatherUnits + "\'";
+        return query.replaceAll(" ", "%20");
     }
 
     private static String buildPlaceSearchUrl(Location l) {
