@@ -1,3 +1,5 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 # DashClock Widget and API
 
 **[Install on Google Play](https://play.google.com/store/apps/details?id=net.nurik.roman.dashclock) | [Read the API Docs](https://github.com/romannurik/dashclock/wiki/API)**
